@@ -1,0 +1,30 @@
+#.
+alias ..='cd ..';
+
+#a
+alias apacheRestart='sudo systemctl restart httpd.service';
+alias apacheStart='sudo systemctl start httpd.service';
+alias apacheStop='sudo systemctl start httpd.service';
+
+#c
+alias cd='net_bazzline_cd';
+alias cdConfig='cd '$HOME'/config';
+
+#g
+alias gitPushToMaster='git push -u origin master';
+
+#m
+alias mkdir=net_bazzline_mkdir;
+alias mysqlRestart='sudo systemctl restart mysql.service';
+alias mysqlStart='sudo systemctl start mysql.service';
+alias mysqlStop='sudo systemctl start mysql.service';
+
+#s
+alias statusBattery='sh '$HOME'/code/sh/local/displayBatteryStatus.sh';
+alias statusSensor='sh '$HOME'/code/sh/local/sensorsRefresh.sh';
+alias system='net_bazzline_system_maintenance';
+
+#w
+alias webRestart='apacheRestart mysqlRestart';
+alias webStart='apacheStart mysqlStart';
+alias webStop='apacheStop mysqpStop';

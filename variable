@@ -1,0 +1,8 @@
+#net_bazzline_system_maintenance start
+
+PATH_NET_BAZZLINE_SYSTEM_MAINTENANCE=/home/nvb/data/git/com/github/stevleibelt/linux_bash_universal_system_maintenance
+NET_BAZZLINE_SYSTEM_MAINTENANCE_TARGET=arch
+complete -F _net_bazzline_system_maintenance net_bazzline_system_maintenance
+complete -F _net_bazzline_system_maintenance system
+
+#net_bazzline_system_maintenance end

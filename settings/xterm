@@ -1,0 +1,4 @@
+xterm*background: black
+xterm*foreground: grey
+xterm*selectToClipboard: true
+xterm*utf8: 1

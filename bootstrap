@@ -1,0 +1,20 @@
+source $HOME'/config/sh/variable'
+if [ -f $HOME'/config/sh/variable.local' ]; then
+  source $HOME'/config/sh/variable.local'
+fi
+source $HOME'/config/sh/source'
+if [ -f $HOME'/config/sh/source.local' ]; then
+  source $HOME'/config/sh/source.local'
+fi
+source $HOME'/config/sh/export'
+if [ -f $HOME'/config/sh/export.local' ]; then
+  source $HOME'/config/sh/export.local'
+fi
+source $HOME'/config/sh/function'
+if [ -f $HOME'/config/sh/function.local' ]; then
+  source $HOME'/config/sh/function.local'
+fi
+source $HOME'/config/sh/alias'
+if [ -f $HOME'/config/sh/alias.local' ]; then
+  source $HOME'/config/sh/alias.local'
+fi
