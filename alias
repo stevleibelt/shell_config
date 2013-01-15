@@ -20,7 +20,7 @@ alias mysqlStart='sudo systemctl start mysql.service';
 alias mysqlStop='sudo systemctl start mysql.service';
 
 #s
-if [ -f $HOME'/code/sh/local/displayBatteryStatus.sh ]; then
+if [ -f $HOME'/code/sh/local/displayBatteryStatus.sh' ]; then
   alias statusBattery='sh '$HOME'/code/sh/local/displayBatteryStatus.sh';
 fi
 if [ -f $HOME'/code/sh/local/sensorsRefresh.sh' ]; then
