@@ -1,20 +1,20 @@
-source $HOME'/config/sh/variable'
-if [ -f $HOME'/config/sh/variable.local' ]; then
-  source $HOME'/config/sh/variable.local'
+source $PATH_SHELL_CONFIG'/variable'
+if [ -f $PATH_SHELL_CONFIG'/variable.local' ]; then
+  source $PATH_SHELL_CONFIG'/variable.local'
 fi
-source $HOME'/config/sh/source'
-if [ -f $HOME'/config/sh/source.local' ]; then
-  source $HOME'/config/sh/source.local'
+source $PATH_SHELL_CONFIG'/source'
+if [ -f $PATH_SHELL_CONFIG'/source.local' ]; then
+  source $PATH_SHELL_CONFIG'/source.local'
 fi
-source $HOME'/config/sh/export'
-if [ -f $HOME'/config/sh/export.local' ]; then
-  source $HOME'/config/sh/export.local'
+source $PATH_SHELL_CONFIG'/export'
+if [ -f $PATH_SHELL_CONFIG'/export.local' ]; then
+  source $PATH_SHELL_CONFIG'/export.local'
 fi
-source $HOME'/config/sh/function'
-if [ -f $HOME'/config/sh/function.local' ]; then
-  source $HOME'/config/sh/function.local'
+source $PATH_SHELL_CONFIG'/function'
+if [ -f $PATH_SHELL_CONFIG'/function.local' ]; then
+  source $PATH_SHELL_CONFIG'/function.local'
 fi
-source $HOME'/config/sh/alias'
-if [ -f $HOME'/config/sh/alias.local' ]; then
-  source $HOME'/config/sh/alias.local'
+source $PATH_SHELL_CONFIG'/alias'
+if [ -f $PATH_SHELL_CONFIG'/alias.local' ]; then
+  source $PATH_SHELL_CONFIG'/alias.local'
 fi

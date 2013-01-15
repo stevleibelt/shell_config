@@ -20,8 +20,12 @@ alias mysqlStart='sudo systemctl start mysql.service';
 alias mysqlStop='sudo systemctl start mysql.service';
 
 #s
-alias statusBattery='sh '$HOME'/code/sh/local/displayBatteryStatus.sh';
-alias statusSensor='sh '$HOME'/code/sh/local/sensorsRefresh.sh';
+if [ -f $HOME'/code/sh/local/displayBatteryStatus.sh ]; then
+  alias statusBattery='sh '$HOME'/code/sh/local/displayBatteryStatus.sh';
+fi
+if [ -f $HOME'/code/sh/local/sensorsRefresh.sh' ]; then
+  alias statusSensor='sh '$HOME'/code/sh/local/sensorsRefresh.sh';
+fi
 alias system='net_bazzline_system_maintenance';
 
 #w
