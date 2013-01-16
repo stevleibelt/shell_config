@@ -27,4 +27,7 @@ echo "fi" >> $HOME'/.bashrc'
 echo '' >> $HOME'/.bashrc'
 echo '#net_bazzline_config_shell end' >> $HOME'/.bashrc'
 
+echo 'Creating local files'
+touch alias.local color.local export.local function.local setting.local source.local variable.local
+
 echo 'Finished'
