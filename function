@@ -1,16 +1,14 @@
 function net_bazzline_mkdir ()
 {
   #check if at least one argument is supplied
-  if [ $# -eq 0 ]
-  then
+  if [ $# -eq 0 ]; then
     echo "No arguments supplied"
     return 1
   fi
 
   #if one argument is supplied, create dir and
   # change to it
-  if [ $# -eq 1 ]
-  then
+  if [ $# -eq 1 ]; then
     mkdir -p "$1" 
     cd "$1"
     return 0
@@ -18,8 +16,7 @@ function net_bazzline_mkdir ()
 
   #if more then one argument is supplied
   # execute default mkdir
-  if [ $# -gt 1 ]
-  then
+  if [ $# -gt 1 ]; then
     mkdir $@
     return 0
   fi
@@ -35,5 +32,12 @@ function net_bazzline_cd ()
     done
   else
     cd "$1"
+  fi
+}
+
+function net_bazzline_psgrep ()
+{
+  if [ $# -eq 1 ]; then
+    ps aux | grep "$1"
   fi
 }

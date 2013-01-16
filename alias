@@ -7,8 +7,11 @@ alias apacheStart='sudo systemctl start httpd.service';
 alias apacheStop='sudo systemctl start httpd.service';
 
 #c
-alias cd='net_bazzline_cd';
+alias cal='cal -3';
+alias cd=net_bazzline_cd;
 alias cdConfig='cd '$HOME'/config';
+alias cdGitHub='cd '$HOME'/data/git/com/github';
+alias cdPhp='cd '$HOME'/code/php';
 
 #g
 alias gitPushToMaster='git push -u origin master';
@@ -18,6 +21,9 @@ alias mkdir=net_bazzline_mkdir;
 alias mysqlRestart='sudo systemctl restart mysql.service';
 alias mysqlStart='sudo systemctl start mysql.service';
 alias mysqlStop='sudo systemctl start mysql.service';
+
+#p
+alias psGrep=net_bazzline_psgrep;
 
 #s
 if [ -f $HOME'/code/sh/local/displayBatteryStatus.sh' ]; then
