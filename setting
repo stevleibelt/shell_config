@@ -1,2 +1,2 @@
-# xterm
-xrdb -merge $HOME/config/sh/settings/xterm -all
+#xterm
+xrdb -merge $PATH_SHELL_CONFIG/settings/xterm -all
