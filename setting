@@ -1,2 +1,0 @@
-#xterm
-xrdb -merge $PATH_SHELL_CONFIG/settings/xterm -all

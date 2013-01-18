@@ -30,4 +30,18 @@ echo '#net_bazzline_config_shell end' >> $HOME'/.bashrc'
 echo 'Creating local files'
 touch alias.local color.local export.local function.local setting.local source.local variable.local
 
+echo 'Adapting .xinitrc'
+
+echo '#net_bazzline_config_shell start' >> $HOME'/.xinitrc'
+echo '' >> $HOME'/.xinitrc'
+echo "if [ -f \$PATH_SHELL_CONFIG'/color' ]; then " >> $HOME'/.xinitrc'
+echo "  xrdb -merge $PATH_SHELL_CONFIG'/color'" >> $HOME'/.xinitrc'
+echo "fi" >> $HOME'/.xinitrc'
+echo "if [ -f \$PATH_SHELL_CONFIG'/color.local' ]; then " >> $HOME'/.xinitrc'
+echo "  xrdb -merge $PATH_SHELL_CONFIG'/color.local'" >> $HOME'/.xinitrc'
+echo "fi" >> $HOME'/.xinitrc'
+echo '' >> $HOME'/.xinitrc'
+echo '#net_bazzline_config_shell end' >> $HOME'/.xinitrc'
+
+
 echo 'Finished'
