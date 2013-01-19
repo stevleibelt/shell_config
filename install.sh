@@ -30,18 +30,30 @@ echo '#net_bazzline_config_shell end' >> $HOME'/.bashrc'
 echo 'Creating local files'
 touch alias.local color.local export.local function.local setting.local source.local variable.local
 
-echo 'Adapting .xinitrc'
+echo 'Creating temporary .xinitrc.temp'
+touch $HOME'/.xinitrc.temp'
 
-echo '#net_bazzline_config_shell start' >> $HOME'/.xinitrc'
-echo '' >> $HOME'/.xinitrc'
-echo "if [ -f \$PATH_SHELL_CONFIG'/color' ]; then " >> $HOME'/.xinitrc'
-echo "  xrdb -merge $PATH_SHELL_CONFIG'/color'" >> $HOME'/.xinitrc'
-echo "fi" >> $HOME'/.xinitrc'
-echo "if [ -f \$PATH_SHELL_CONFIG'/color.local' ]; then " >> $HOME'/.xinitrc'
-echo "  xrdb -merge $PATH_SHELL_CONFIG'/color.local'" >> $HOME'/.xinitrc'
-echo "fi" >> $HOME'/.xinitrc'
-echo '' >> $HOME'/.xinitrc'
-echo '#net_bazzline_config_shell end' >> $HOME'/.xinitrc'
+echo 'Adding content to temporary .xinitrc.temp'
 
+echo '#net_bazzline_config_shell start' >> $HOME'/.xinitrc.temp'
+echo '' >> $HOME'/.xinitrc.temp'
+echo PATH_SHELL_CONFIG=$PATH_SELF >> $HOME'/.xinitrc.temp'
+echo "if [ -f \$PATH_SHELL_CONFIG'/color' ]; then " >> $HOME'/.xinitrc.temp'
+echo "  xrdb -merge \$PATH_SHELL_CONFIG'/color'" >> $HOME'/.xinitrc.temp'
+echo "fi" >> $HOME'/.xinitrc.temp'
+echo "if [ -f \$PATH_SHELL_CONFIG'/color.local' ]; then " >> $HOME'/.xinitrc.temp'
+echo "  xrdb -merge \$PATH_SHELL_CONFIG'/color.local'" >> $HOME'/.xinitrc.temp'
+echo "fi" >> $HOME'/.xinitrc.temp'
+echo '' >> $HOME'/.xinitrc.temp'
+echo '#net_bazzline_config_shell end' >> $HOME'/.xinitrc.temp'
+echo '' >> $HOME'/.xinitrc.temp'
+
+echo 'Copying content of .xinitrc to .xinitrc.temp'
+
+cat $HOME'/.xinitrc' >> $HOME'/.xinitrc.temp'
+
+echo 'Replacing .xinitrc with .xinitrc.temp'
+
+mv $HOME'/.xinitrc.temp' $HOME'/.xinitrc'
 
 echo 'Finished'
