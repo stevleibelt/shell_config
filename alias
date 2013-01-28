@@ -7,6 +7,7 @@ alias apacheStart='sudo systemctl start httpd.service';
 alias apacheStop='sudo systemctl start httpd.service';
 
 #c
+alias c='clear';
 alias cal='cal -3';
 alias cd=net_bazzline_cd;
 alias cdConfig='cd '$HOME'/config';
