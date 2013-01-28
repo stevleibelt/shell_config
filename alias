@@ -16,6 +16,9 @@ alias cdPhp='cd '$HOME'/code/php';
 #g
 alias gitPushToMaster='git push -u origin master';
 
+#l
+alias la='ls -halt';
+
 #m
 alias mkdir=net_bazzline_mkdir;
 alias mysqlRestart='sudo systemctl restart mysql.service';
