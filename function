@@ -1,3 +1,10 @@
+#####
+# If one value is given, mkdir -p plus cd is called.
+# If multiple values are given. mkdir is called.
+#
+# @author stev leibelt
+# @since 2013-01-05
+####
 function net_bazzline_mkdir ()
 {
   #check if at least one argument is supplied
@@ -22,6 +29,12 @@ function net_bazzline_mkdir ()
   fi
 }
 
+#####
+# You can change $i levels by using cd $i
+#
+# @author stev leibelt
+# @since 2013-01-30
+####
 function net_bazzline_cd ()
 {
   #is numeric value?
@@ -35,9 +48,31 @@ function net_bazzline_cd ()
   fi
 }
 
+#####
+# Combines ps aux and grep
+#
+# @author stev leibelt
+# @since 2013-01-30
+####
 function net_bazzline_psgrep ()
 {
   if [ $# -eq 1 ]; then
     ps aux | grep "$1"
+  fi
+}
+
+#####
+# Calls svn diff for two repositories.
+# Call $repositoryUrlOne $repositoryUrlTwo $filePath
+#
+# @author stev leibelt
+# @since 2013-01-30
+####
+function net_bazzline_svn_diff ()
+{
+  if [ $# -eq 3 ]; then
+    svn diff "$1""/""$3" "$2""/""$3"
+  else
+    echo 'No valid arguments supplied'
   fi
 }

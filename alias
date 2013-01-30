@@ -30,13 +30,14 @@ alias mysqlStop='sudo systemctl start mysql.service';
 alias psGrep=net_bazzline_psgrep;
 
 #s
+alias svnDiff=net_bazzline_svn_diff;
 if [ -f $HOME'/code/sh/local/displayBatteryStatus.sh' ]; then
   alias statusBattery='sh '$HOME'/code/sh/local/displayBatteryStatus.sh';
 fi
 if [ -f $HOME'/code/sh/local/sensorsRefresh.sh' ]; then
   alias statusSensor='sh '$HOME'/code/sh/local/sensorsRefresh.sh';
 fi
-alias system='net_bazzline_system_maintenance';
+alias system=net_bazzline_system_maintenance;
 
 #w
 alias webRestart='apacheRestart mysqlRestart';
