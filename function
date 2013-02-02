@@ -85,15 +85,17 @@ function net_bazzline_svn_diff ()
 ####
 function net_bazzline_compress ()
 {
-  if [[ $# -lt 2 ]]; then
+  if [[ $# -lt 1 ]]; then
     echo 'No valid arguments supplied.'
-    echo 'Try net_bazzline_compress $nameOfCompressedFile $file1 [$file2]'
 
     exit 1
   fi
 
   FILENAME_TAR="$1".tar.gz
-  shift
+
+  if [[ $# -gt 1 ]]; then
+    shift
+  fi
 
   tar -zcf "$FILENAME_TAR" "$@"
 }
