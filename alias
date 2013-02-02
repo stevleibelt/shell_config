@@ -1,48 +1,52 @@
 #.
-alias ..='cd ..';
+alias ..='cd ..'
 
 #a
-alias apacheRestart='sudo systemctl restart httpd.service';
-alias apacheStart='sudo systemctl start httpd.service';
-alias apacheStop='sudo systemctl start httpd.service';
+alias apacheRestart='sudo systemctl restart httpd.service'
+alias apacheStart='sudo systemctl start httpd.service'
+alias apacheStop='sudo systemctl start httpd.service'
 
 #c
-alias c='clear';
-alias cal='cal -3';
-alias cd=net_bazzline_cd;
-alias cdConfig='cd '$HOME'/config';
-alias cdGitHub='cd '$HOME'/data/git/com/github';
-alias cdPhp='cd '$HOME'/code/php';
+alias c=clear
+alias cal='cal -3'
+alias cd=net_bazzline_cd
+alias cdConfig='cd '$HOME'/config'
+alias cdGitHub='cd '$HOME'/data/git/com/github'
+alias cdPhp='cd '$HOME'/code/php'
+alias compress=net_bazzline_compress
+
+#
+alias decompress=net_bazzline_decompress
 
 #g
-alias gitPushToMaster='git push -u origin master';
+alias gitPushToMaster='git push -u origin master'
 
 #l
-alias la='ls -halt';
+alias la='ls -halt'
 
 #m
-alias mkdir=net_bazzline_mkdir;
-alias mysqlRestart='sudo systemctl restart mysql.service';
-alias mysqlStart='sudo systemctl start mysql.service';
-alias mysqlStop='sudo systemctl start mysql.service';
+alias mkdir=net_bazzline_mkdir
+alias mysqlRestart='sudo systemctl restart mysql.service'
+alias mysqlStart='sudo systemctl start mysql.service'
+alias mysqlStop='sudo systemctl start mysql.service'
 
 #p
-alias psGrep=net_bazzline_psgrep;
+alias psGrep=net_bazzline_psgrep
 
 #s
-alias svnDiff=net_bazzline_svn_diff;
+alias svnDiff=net_bazzline_svn_diff
 if [ -f $HOME'/code/sh/local/displayBatteryStatus.sh' ]; then
-  alias statusBattery='sh '$HOME'/code/sh/local/displayBatteryStatus.sh';
+  alias statusBattery='sh '$HOME'/code/sh/local/displayBatteryStatus.sh'
 fi
 if [ -f $HOME'/code/sh/local/sensorsRefresh.sh' ]; then
-  alias statusSensor='sh '$HOME'/code/sh/local/sensorsRefresh.sh';
+  alias statusSensor='sh '$HOME'/code/sh/local/sensorsRefresh.sh'
 fi
-alias system=net_bazzline_system_maintenance;
+alias system=net_bazzline_system_maintenance
 
 #w
-alias webRestart='apacheRestart mysqlRestart';
-alias webStart='apacheStart mysqlStart';
-alias webStop='apacheStop mysqpStop';
+alias webRestart='apacheRestart mysqlRestart'
+alias webStart='apacheStart mysqlStart'
+alias webStop='apacheStop mysqpStop'
 
 #x
-alias x=exit;
+alias x=exit
