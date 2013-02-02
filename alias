@@ -43,3 +43,6 @@ alias system=net_bazzline_system_maintenance;
 alias webRestart='apacheRestart mysqlRestart';
 alias webStart='apacheStart mysqlStart';
 alias webStop='apacheStop mysqpStop';
+
+#x
+alias x=exit;
