@@ -22,7 +22,7 @@ alias decompress=net_bazzline_decompress
 alias gitPushToMaster='git push -u origin master'
 
 #l
-alias la='ls -halt'
+alias l='ls -halt'
 
 #m
 alias mkdir=net_bazzline_mkdir
