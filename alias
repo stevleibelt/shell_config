@@ -43,9 +43,6 @@ if [ -f $HOME'/code/sh/local/sensorsRefresh.sh' ]; then
 fi
 alias system=net_bazzline_system_maintenance
 
-#r
-alias reloadBash=bash -l
-
 #w
 alias webRestart='apacheRestart mysqlRestart'
 alias webStart='apacheStart mysqlStart'
