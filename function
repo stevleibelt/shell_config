@@ -130,14 +130,14 @@ function net_bazzline_decompress ()
 ####
 function net_bazzline_burn ()
 {
-  if [[ $# -lt 1]]; then
+  if [[ $# -lt 1 ]]; then
     echo 'No valid argument supplied.'
-    echo 'Try net_bazzline_burn $isoFile [$opticalDevice]
+    echo 'Try net_bazzline_burn $isoFile [$opticalDevice]'
 
     exit 1
   fi
 
-  if [[ $# -eq 1]]; then
+  if [[ $# -eq 1 ]]; then
     sudo wodim -v dev=/dev/cdrom "$1"
   else
     sudo wodim -v dev=/dev/"$2" "$1"
