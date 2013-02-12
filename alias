@@ -6,6 +6,9 @@ alias apacheRestart='sudo systemctl restart httpd.service'
 alias apacheStart='sudo systemctl start httpd.service'
 alias apacheStop='sudo systemctl start httpd.service'
 
+#b
+alias burn=net_bazzline_burn
+
 #c
 alias c=clear
 alias cal='cal -3'

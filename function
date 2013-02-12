@@ -121,3 +121,25 @@ function net_bazzline_decompress ()
     tar -zxf "$1" -C "$2"
   fi
 }
+
+####
+# burns given iso file
+#
+# @author stev leibelt
+# @since 2013-02-12
+####
+function net_bazzline_burn ()
+{
+  if [[ $# -lt 1]]; then
+    echo 'No valid argument supplied.'
+    echo 'Try net_bazzline_burn $isoFile [$opticalDevice]
+
+    exit 1
+  fi
+
+  if [[ $# -eq 1]]; then
+    sudo wodim -v dev=/dev/cdrom "$1"
+  else
+    sudo wodim -v dev=/dev/"$2" "$1"
+  fi
+}
