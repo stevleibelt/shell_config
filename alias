@@ -36,6 +36,9 @@ alias mysqlStop='sudo systemctl start mysql.service'
 #p
 alias psGrep=net_bazzline_psgrep
 
+#r
+alias rehash='hash -r'
+
 #s
 alias svnDiff=net_bazzline_svn_diff
 if [ -f $HOME'/code/sh/local/displayBatteryStatus.sh' ]; then
