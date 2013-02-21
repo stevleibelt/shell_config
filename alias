@@ -37,7 +37,7 @@ alias mysqlStop='sudo systemctl start mysql.service'
 alias psGrep=net_bazzline_psgrep
 
 #r
-alias rehash='hash -r'
+alias reloadBashEnvironment='bash -l'
 
 #s
 alias svnDiff=net_bazzline_svn_diff
