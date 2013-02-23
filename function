@@ -38,7 +38,9 @@ function net_bazzline_mkdir ()
 function net_bazzline_cd ()
 {
   #is numeric value?
-  if [[ `expr $1 + 1 2> /dev/null` ]]; then
+  if [[ $# -eq 0 ]]; then 
+    cd "$HOME"
+  elif [[ `expr $1 + 1 2> /dev/null` ]]; then
     for (( i=1; i <= $1; i++))
     do
       cd ..
