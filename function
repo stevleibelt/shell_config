@@ -38,7 +38,7 @@ function net_bazzline_mkdir ()
 function net_bazzline_mkdirPrefixCurrentDate ()
 {
   if [[ $# -eq 1 ]]; then
-    directoryName=`eval date +%Y%m%d`"_$1"
+    directoryName=`eval date +%y%m%d`"_$1"
 
     net_bazzline_mkdir "$directoryName"
   else
