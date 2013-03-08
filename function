@@ -29,6 +29,25 @@ function net_bazzline_mkdir ()
   fi
 }
 
+####
+# create a directory with a prefix of current date (Ymd)
+#
+# @author stev leibelt
+# @since 2013-03-08
+####
+function net_bazzline_mkdirPrefixCurrentDate ()
+{
+  if [[ $# -eq 1 ]]; then
+    directoryName=`eval date +%Y%m%d`"_$1"
+echo $directoryName
+return 0
+
+    mkdir "$directoryName"
+  else
+    echo 'Should be called with exactly one parameter'
+  fi
+}
+
 #####
 # You can change $i levels by using cd $i
 #

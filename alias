@@ -29,6 +29,7 @@ alias l='ls -halt'
 
 #m
 alias mkdir=net_bazzline_mkdir
+alias mkdirPrefixCurrentDate=net_bazzline_mkdirPrefixCurrentDate
 alias mysqlRestart='sudo systemctl restart mysql.service'
 alias mysqlStart='sudo systemctl start mysql.service'
 alias mysqlStop='sudo systemctl start mysql.service'
