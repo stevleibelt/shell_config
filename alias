@@ -18,8 +18,12 @@ alias cdGitHub='cd '$HOME'/data/git/com/github'
 alias cdPhp='cd '$HOME'/code/php'
 alias compress=net_bazzline_compress
 
-#
+#d
 alias decompress=net_bazzline_decompress
+
+#f
+alias findFile=net_bazzline_find_file
+alias findDirectory=net_bazzline_find_directory
 
 #g
 alias gitPushToMaster='git push -u origin master'

@@ -163,3 +163,33 @@ function net_bazzline_burn ()
     sudo wodim -v dev=/dev/"$2" "$1"
   fi
 }
+
+####
+# calles find with given param and type f
+#
+# @author stev leibelt
+# @since 2013-03-08
+####
+function net_bazzline_find_file ()
+{
+  if [[ $# -eq 1 ]]; then
+    find . -iname "$1" -type f
+  else
+    echo 'No valid argument supplied.'
+  fi
+}
+
+####
+# calles find with given param and type d
+#
+# @author stev leibelt
+# @since 2013-03-08
+####
+function net_bazzline_find_directory ()
+{
+  if [[ $# -eq 1 ]]; then
+    find . -iname "$1" -type d
+  else
+    echo 'No valid argument supplied.'
+  fi
+}
