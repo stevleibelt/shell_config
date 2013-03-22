@@ -117,7 +117,7 @@ function net_bazzline_compress ()
     shift
   fi
 
-  tar -zcf "$FILENAME_TAR" "$@"
+  tar --ignore-failed-read -zcf "$FILENAME_TAR" "$@"
 }
 
 ####
