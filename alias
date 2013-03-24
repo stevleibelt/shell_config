@@ -42,7 +42,8 @@ alias mysqlStop='sudo systemctl start mysqld'
 alias psGrep=net_bazzline_psgrep
 
 #r
-alias reloadBashEnvironment='bash -l'
+alias relogin='bash -l'
+alias reloadBashEnvironment='source ~/.bashrc'
 
 #s
 alias svnDiff=net_bazzline_svn_diff
