@@ -42,6 +42,7 @@ alias mysqlStop='sudo systemctl start mysqld'
 alias psGrep=net_bazzline_psgrep
 
 #r
+alias r='rm -fr';
 alias relogin='bash -l'
 alias reloadBashEnvironment='source ~/.bashrc'
 
