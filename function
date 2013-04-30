@@ -193,3 +193,22 @@ function net_bazzline_find_directory ()
     echo 'No valid argument supplied.'
   fi
 }
+
+####
+# refresh given interface
+#
+# @author stev leibelt
+# @since 2013-04-30
+####
+function net_bazzline_refresh_interface ()
+{
+    if [[ $# -eq 0 ]]; then
+        INTERFACE="eth0"
+    else
+        INTERFACE="$1"
+    fi
+
+    sudo ip link set $INTERFACE down
+    sudo ip link set $INTERFACE up
+    sudo dhcpcd $INTERFACE
+}

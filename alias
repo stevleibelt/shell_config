@@ -43,6 +43,7 @@ alias psGrep=net_bazzline_psgrep
 
 #r
 alias r='rm -fr';
+alias refreshInterface='net_bazzline_refresh_interface'
 alias relogin='bash -l'
 alias reloadBashEnvironment='source ~/.bashrc'
 
