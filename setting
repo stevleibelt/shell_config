@@ -1,0 +1,3 @@
+#https://wiki.archlinux.org/index.php/Xterm#TERM_Environmental_Variable
+Xterm*saveLines: 4096
+XTerm*VT100.translations: #override <Btn1Up>: select-end(PRIMARY, CLIPBOARD, CUT_BUFFER0)
