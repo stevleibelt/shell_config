@@ -20,7 +20,7 @@ alias compress=net_bazzline_compress
 
 #d
 alias decompress=net_bazzline_decompress
-alias diffDir='diff -qr '"$1"' '"$2"' | sort'
+alias diffDirectories=net_bazzline_diff_directory
 
 #f
 alias findFile=net_bazzline_find_file

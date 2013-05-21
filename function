@@ -212,3 +212,18 @@ function net_bazzline_refresh_interface ()
     sudo ip link set $INTERFACE up
     sudo dhcpcd $INTERFACE
 }
+
+####
+# Show differences between two directories
+# 
+# @author stev leibelt <artodeto@arcor.de>
+# @since 2013-05-21
+function net_bazzline_diff_directory ()
+{
+    if [[ $# -eq 2 ]]; then
+        diff -qr "$1" "$2" | sort
+    else
+        echo 'No valid argument supplied.'
+        echo 'Try $command $directory1 $directory2'
+    fi
+}
