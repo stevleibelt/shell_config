@@ -278,4 +278,3 @@ function net_bazzline_screenshot ()
 
     import -window root $FILENAME
 }
-}
