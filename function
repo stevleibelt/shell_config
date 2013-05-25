@@ -2,6 +2,8 @@
 # If one value is given, mkdir -p plus cd is called.
 # If multiple values are given. mkdir is called.
 #
+# @param string $# - string name of directory you want to create
+#
 # @author stev leibelt
 # @since 2013-01-05
 ####
@@ -32,6 +34,8 @@ function net_bazzline_mkdir ()
 ####
 # create a directory with a prefix of current date (Ymd)
 #
+# @param string $1 - directory name you want to create
+#
 # @author stev leibelt
 # @since 2013-03-08
 ####
@@ -48,6 +52,10 @@ function net_bazzline_mkdirPrefixCurrentDate ()
 
 #####
 # You can change $i levels by using cd $i
+#
+# @param mixed $1 - [optional] path where you want do change
+#                       or number of directories you want to
+#                       change upwards - default is $HOME
 #
 # @author stev leibelt
 # @since 2013-01-30
@@ -70,6 +78,8 @@ function net_bazzline_cd ()
 #####
 # Combines ps aux and grep
 #
+# @param string $1 - pattern your are searching for
+#
 # @author stev leibelt
 # @since 2013-01-30
 ####
@@ -83,6 +93,10 @@ function net_bazzline_psgrep ()
 #####
 # Calls svn diff for two repositories.
 # Call $repositoryUrlOne $repositoryUrlTwo $filePath
+#
+# @param string $1 - first repository
+# @param string $2 - second repository
+# @param string $3 - path of file to diff
 #
 # @author stev leibelt
 # @since 2013-01-30
@@ -99,6 +113,9 @@ function net_bazzline_svn_diff ()
 
 ####
 # compress given directories into tar.gz
+#
+# @param string $1 - compressed tar.gz file name
+# @param string $# - [all following] files for compressed file
 #
 # @author stev leibelt
 # @since 2013-02-02
@@ -123,6 +140,9 @@ function net_bazzline_compress ()
 ####
 # compress given directories into tar.gz
 #
+# @param string $1 - path to compressed tar.gz file
+# @param string $2 - [optional] output path - default is name of the file
+#
 # @author stev leibelt
 # @since 2013-02-02
 ####
@@ -144,6 +164,9 @@ function net_bazzline_decompress ()
 
 ####
 # burns given iso file
+#
+# @param string $1 - path to iso file
+# @param string $2 - [optional] device to burn - default is cdrom
 #
 # @author stev leibelt
 # @since 2013-02-12
@@ -167,6 +190,8 @@ function net_bazzline_burn ()
 ####
 # calles find with given param and type f
 #
+# @param string $1 - pattern you are searching for
+#
 # @author stev leibelt
 # @since 2013-03-08
 ####
@@ -182,6 +207,8 @@ function net_bazzline_find_file ()
 ####
 # calles find with given param and type d
 #
+# @param string $1 - pattern your are searching for
+#
 # @author stev leibelt
 # @since 2013-03-08
 ####
@@ -196,6 +223,8 @@ function net_bazzline_find_directory ()
 
 ####
 # refresh given interface
+#
+# @param string $1 - [optional] interface - default eth0
 #
 # @author stev leibelt
 # @since 2013-04-30
@@ -215,6 +244,9 @@ function net_bazzline_refresh_interface ()
 
 ####
 # Show differences between two directories
+#
+# @param string $1 - path to first directory
+# @param string $2 - path to second directory
 # 
 # @author stev leibelt <artodeto@arcor.de>
 # @since 2013-05-21
@@ -226,4 +258,24 @@ function net_bazzline_diff_directory ()
         echo 'No valid argument supplied.'
         echo 'Try $command $directory1 $directory2'
     fi
+}
+
+####
+# Takes a screenshot
+#
+# @param string $1 - [optional] filename with extension
+#
+# @author stev leiblt <artodeto@arcor.de>
+# @since 2013-05-25
+####
+function net_bazzline_screenshot ()
+{
+    if [[ ! $1 -z ]]; then
+        FILNAME="$1"
+    else
+        FILENAME='screenshot.jpg'
+    fi
+
+    import -window root $FILENAME
+}
 }
