@@ -58,6 +58,9 @@ if [ -f $HOME'/code/sh/local/sensorsRefresh.sh' ]; then
 fi
 alias system=net_bazzline_system_maintenance
 
+#t
+alias takeScreenshot=net_bazzline_screenshot
+
 #v
 alias v=vim
 
