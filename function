@@ -1,3 +1,7 @@
+####
+# https://www.gnu.org/software/bash/manual/bash.html
+####
+
 #####
 # If one value is given, mkdir -p plus cd is called.
 # If multiple values are given. mkdir is called.
@@ -262,6 +266,7 @@ function net_bazzline_diff_directory ()
 
 ####
 # Takes a screenshot
+# https://wiki.archlinux.org/index.php/Screenshot
 #
 # @param string $1 - [optional] filename with extension
 #
@@ -270,10 +275,10 @@ function net_bazzline_diff_directory ()
 ####
 function net_bazzline_screenshot ()
 {
-    if [[ ! $1 -z ]]; then
-        FILNAME="$1"
-    else
+    if [[ $# -eq 0 ]]; then
         FILENAME='screenshot.jpg'
+    else
+        FILENAME="$1"
     fi
 
     import -window root $FILENAME
