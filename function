@@ -13,26 +13,26 @@
 ####
 function net_bazzline_mkdir ()
 {
-  #check if at least one argument is supplied
-  if [[ $# -eq 0 ]]; then
-    echo "No arguments supplied"
-    return 1
-  fi
+    #check if at least one argument is supplied
+    if [[ $# -eq 0 ]]; then
+        echo "No arguments supplied"
+        return 1
+    fi
 
-  #if one argument is supplied, create dir and
-  # change to it
-  if [[ $# -eq 1 ]]; then
-    mkdir -p "$1" 
-    cd "$1"
-    return 0
-  fi
+    #if one argument is supplied, create dir and
+    # change to it
+    if [[ $# -eq 1 ]]; then
+        mkdir -p "$1" 
+        cd "$1"
+        return 0
+    fi
 
-  #if more then one argument is supplied
-  # execute default mkdir
-  if [[ $# -gt 1 ]]; then
-    mkdir $@
-    return 0
-  fi
+    #if more then one argument is supplied
+    # execute default mkdir
+    if [[ $# -gt 1 ]]; then
+        mkdir $@
+        return 0
+    fi
 }
 
 ####
@@ -45,13 +45,13 @@ function net_bazzline_mkdir ()
 ####
 function net_bazzline_mkdirPrefixCurrentDate ()
 {
-  if [[ $# -eq 1 ]]; then
-    directoryName=`eval date +%y%m%d`"_$1"
+    if [[ $# -eq 1 ]]; then
+        directoryName=`eval date +%y%m%d`"_$1"
 
-    net_bazzline_mkdir "$directoryName"
-  else
-    echo 'Should be called with exactly one parameter'
-  fi
+        net_bazzline_mkdir "$directoryName"
+    else
+        echo 'Should be called with exactly one parameter'
+    fi
 }
 
 #####
@@ -66,17 +66,17 @@ function net_bazzline_mkdirPrefixCurrentDate ()
 ####
 function net_bazzline_cd ()
 {
-  #is numeric value?
-  if [[ $# -eq 0 ]]; then 
-    cd "$HOME"
-  elif [[ `expr $1 + 1 2> /dev/null` ]]; then
-    for (( i=1; i <= $1; i++))
-    do
-      cd ..
-    done
-  else
-    cd "$1"
-  fi
+    #is numeric value?
+    if [[ $# -eq 0 ]]; then 
+        cd "$HOME"
+    elif [[ `expr $1 + 1 2> /dev/null` ]]; then
+        for (( i=1; i <= $1; i++))
+        do
+            cd ..
+        done
+    else
+        cd "$1"
+    fi
 }
 
 #####
@@ -89,9 +89,9 @@ function net_bazzline_cd ()
 ####
 function net_bazzline_psgrep ()
 {
-  if [[ $# -eq 1 ]]; then
-    ps aux | grep "$1"
-  fi
+    if [[ $# -eq 1 ]]; then
+        ps aux | grep "$1"
+    fi
 }
 
 #####
@@ -107,12 +107,12 @@ function net_bazzline_psgrep ()
 ####
 function net_bazzline_svn_diff ()
 {
-  if [[ $# -eq 3 ]]; then
-    svn diff "$1""/""$3" "$2""/""$3"
-  else
-    echo 'No valid arguments supplied'
-    echo 'repositoryUrlOne repositoryUrlTwo filePath'
-  fi
+    if [[ $# -eq 3 ]]; then
+        svn diff "$1""/""$3" "$2""/""$3"
+    else
+        echo 'No valid arguments supplied'
+        echo 'repositoryUrlOne repositoryUrlTwo filePath'
+    fi
 }
 
 ####
@@ -126,19 +126,19 @@ function net_bazzline_svn_diff ()
 ####
 function net_bazzline_compress ()
 {
-  if [[ $# -lt 1 ]]; then
-    echo 'No valid arguments supplied.'
+    if [[ $# -lt 1 ]]; then
+        echo 'No valid arguments supplied.'
 
-    exit 1
-  fi
+        exit 1
+    fi
 
-  FILENAME_TAR="$1".tar.gz
+    FILENAME_TAR="$1".tar.gz
 
-  if [[ $# -gt 1 ]]; then
-    shift
-  fi
+    if [[ $# -gt 1 ]]; then
+        shift
+    fi
 
-  tar --ignore-failed-read -zcf "$FILENAME_TAR" "$@"
+    tar --ignore-failed-read -zcf "$FILENAME_TAR" "$@"
 }
 
 ####
@@ -152,18 +152,18 @@ function net_bazzline_compress ()
 ####
 function net_bazzline_decompress ()
 {
-  if [[ $# -lt 1 ]]; then
-    echo 'No valid arguments supplied.'
-    echo 'Try net_bazzline_decompress $nameOfCompressedFile [$pathToDecompress]'
+    if [[ $# -lt 1 ]]; then
+        echo 'No valid arguments supplied.'
+        echo 'Try net_bazzline_decompress $nameOfCompressedFile [$pathToDecompress]'
 
-    exit 1
-  fi
+        exit 1
+    fi
 
-  if [[ $# -eq 1 ]]; then
-    tar -zxf "$1"
-  else
-    tar -zxf "$1" -C "$2"
-  fi
+    if [[ $# -eq 1 ]]; then
+        tar -zxf "$1"
+    else
+        tar -zxf "$1" -C "$2"
+    fi
 }
 
 ####
@@ -177,18 +177,18 @@ function net_bazzline_decompress ()
 ####
 function net_bazzline_burn ()
 {
-  if [[ $# -lt 1 ]]; then
-    echo 'No valid argument supplied.'
-    echo 'Try net_bazzline_burn $isoFile [$opticalDevice]'
+    if [[ $# -lt 1 ]]; then
+        echo 'No valid argument supplied.'
+        echo 'Try net_bazzline_burn $isoFile [$opticalDevice]'
 
-    exit 1
-  fi
+        exit 1
+    fi
 
-  if [[ $# -eq 1 ]]; then
-    sudo wodim -v dev=/dev/cdrom "$1"
-  else
-    sudo wodim -v dev=/dev/"$2" "$1"
-  fi
+    if [[ $# -eq 1 ]]; then
+        sudo wodim -v dev=/dev/cdrom "$1"
+    else
+        sudo wodim -v dev=/dev/"$2" "$1"
+    fi
 }
 
 ####
