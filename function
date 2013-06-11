@@ -195,34 +195,40 @@ function net_bazzline_burn ()
 # calles find with given param and type f
 #
 # @param string $1 - pattern you are searching for
+# @param [string $2] - path to serching in
 #
 # @author stev leibelt
 # @since 2013-03-08
 ####
 function net_bazzline_find_file ()
 {
-  if [[ $# -eq 1 ]]; then
-    find . -iname "$1" -type f
-  else
-    echo 'No valid argument supplied.'
-  fi
+    if [[ $# -eq 1 ]]; then
+        find . -iname "$1" -type f 2/dev/null
+    elif [[ $# -eq 2 ]]; then
+        find "$2" -iname "$1" -type 2 2>/dev/null
+    else
+        echo 'No valid argument supplied.'
+    fi
 }
 
 ####
 # calles find with given param and type d
 #
 # @param string $1 - pattern your are searching for
+# @param [string $2] - path to serching in
 #
 # @author stev leibelt
 # @since 2013-03-08
 ####
 function net_bazzline_find_directory ()
 {
-  if [[ $# -eq 1 ]]; then
-    find . -iname "$1" -type d
-  else
-    echo 'No valid argument supplied.'
-  fi
+    if [[ $# -eq 1 ]]; then
+        find . -iname "$1" -type d 2>/dev/null
+    elif [[ $# -eq 2 ]]; then
+        find "$2" -iname "$1" -type d 2>/dev/null
+    else
+        echo 'No valid argument supplied.'
+    fi
 }
 
 ####
