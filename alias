@@ -40,6 +40,7 @@ alias mysqlStart='sudo systemctl start mysqld'
 alias mysqlStop='sudo systemctl start mysqld'
 
 #p
+alias phpunitCodeCoverage=net_bazzline_phpunit_codecoverage
 alias psGrep=net_bazzline_psgrep
 
 #r

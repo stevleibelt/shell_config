@@ -289,3 +289,23 @@ function net_bazzline_screenshot ()
 
     import -window root $FILENAME
 }
+
+####
+# Creates code coverage report by using phpunit
+#
+# @param string $1 - [optional] directory where to store report
+#                    default is "./report"
+#
+# @author stev leiblt <artodeto@arcor.de>
+# @since 2013-06-13
+####
+function net_bazzline_phpunit_codecoverage ()
+{
+    if [[ $# -eq 1]]; then
+        DIRECTORY_FOR_REPORT="$1"
+    else
+        DIRECTORY_FOR_REPORT='./report'
+    fi
+
+    phpunit --coverage-html $DIRECTORY_FOR_REPORT
+}

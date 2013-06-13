@@ -2,6 +2,7 @@ set smartindent
 set expandtab
 set tabstop=4
 set shiftwidth=4
+set number
 map <F2> :retab <CR> :wq! <CR>
 syntax on
 set t_Co=256
