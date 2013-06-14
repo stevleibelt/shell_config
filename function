@@ -301,7 +301,7 @@ function net_bazzline_screenshot ()
 ####
 function net_bazzline_phpunit_codecoverage ()
 {
-    if [[ $# -eq 1]]; then
+    if [[ $# -eq 1 ]]; then
         DIRECTORY_FOR_REPORT="$1"
     else
         DIRECTORY_FOR_REPORT='./report'
