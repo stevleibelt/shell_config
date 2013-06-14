@@ -1,10 +1,14 @@
-# ip's
-export IP_BR01='123.4.5.6';
-export IP_BR02='123.4.5.7';
-export IP_BR03='123.4.5.8';
+#e
+export EDITOR="vim"
 
-# path
-export PATH_ELBZONE=$HOME'/share/in/elbzone';
+#h
+export HISTCONTROL=ignoredups
+export HISTIGNORE="ls:cd:top:ps:exit:date"
+export HISTSIZE=20
+export HISTFILESIZE=$HISTSIZE
 
-# term
+#p
+export PATH_ELBZONE=$HOME'/share/in/elbzone'
+
+#t
 export TERM=xterm-256color

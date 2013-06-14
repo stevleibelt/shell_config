@@ -1,0 +1,8 @@
+[alias]
+    history = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(    bold blue)<%an>%Creset' --abbrev-commit --date=relative --date-order
+    unadd = reset HEAD --
+[color]
+    ui = true
+[user]
+    name = stevleibelt
+    email = "stev@leibelt.de"
