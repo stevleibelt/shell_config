@@ -29,6 +29,9 @@ alias findDirectory=net_bazzline_find_directory
 #g
 alias gitPushToMaster='git push -u origin master'
 
+#i
+alias iostat='iostat -x 2'
+
 #l
 alias l='ls -halt'
 
