@@ -313,3 +313,54 @@ function net_bazzline_phpunit_codecoverage ()
 
     phpunit --coverage-html $DIRECTORY_FOR_REPORT
 }
+
+####
+# Uses rsync with ssh to copy data from remote to local host
+#
+# @param string $1 - remote user
+# @param string $2 - remote host
+# @param string $3 - source path on remote host
+# @param string $4 - destination path on local host
+#
+# @author stev leibelt <artodeto@arcor.de>
+# @since 2013-07-05
+####
+function net_bazzline_sync_from_host ()
+{
+    if [[ $# -eq 4 ]]; then
+        $USER="$1"
+        $HOST="$2"
+        $SOURCE="$3"
+        $DESTINATION="$4"
+    else
+        echo 'invalid number of variables provided'
+        echo 'command user host source destination'
+    fi
+
+    rsync -avz -e ssh $USER@$HOST:$SOURCE $DESTINATION
+}
+
+####
+# Uses rsync with ssh to copy data from local to remote host
+#
+# @param string $1 - remote user
+# @param string $2 - remote host
+# @param string $3 - source path on local host
+# @param string $4 - destination path on remote host
+#
+# @author stev leibelt <artodeto@arcor.de>
+# @since 2013-07-05
+function net_bazzline_sync_to_host ()
+{
+    if [[ $# -eq 4 ]]; then
+        $USER="$1"
+        $HOST="$2"
+        $SOURCE="$3"
+        $DESTINATION="$4"
+    else
+        echo 'invalid number of variables provided'
+        echo 'command user host source destination'
+    fi
+
+    rsync -avz -e ssh $SOURCE $USER@$HOST:$DESTINATION
+}
