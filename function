@@ -328,10 +328,10 @@ function net_bazzline_phpunit_codecoverage ()
 function net_bazzline_sync_from_host ()
 {
     if [[ $# -eq 4 ]]; then
-        $USER="$1"
-        $HOST="$2"
-        $SOURCE="$3"
-        $DESTINATION="$4"
+        USER="$1"
+        HOST="$2"
+        SOURCE="$3"
+        DESTINATION="$4"
     else
         echo 'invalid number of variables provided'
         echo 'command user host source destination'
@@ -353,10 +353,10 @@ function net_bazzline_sync_from_host ()
 function net_bazzline_sync_to_host ()
 {
     if [[ $# -eq 4 ]]; then
-        $USER="$1"
-        $HOST="$2"
-        $SOURCE="$3"
-        $DESTINATION="$4"
+        USER="$1"
+        HOST="$2"
+        SOURCE="$3"
+        DESTINATION="$4"
     else
         echo 'invalid number of variables provided'
         echo 'command user host source destination'
