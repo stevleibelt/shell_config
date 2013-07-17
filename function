@@ -383,7 +383,7 @@ function net_bazzline_convert_mp3_to_wav ()
 
 ####
 # Converts all m4as to wav in current directory
-# taken from: https://www.linuxquestions.org/questions/linux-general-1/converting-m4a-to-mp3-170553/
+# taken from: http://www.togaware.com/linux/survivor/Convert_m4a.html
 #
 # @author stev leibelt <artodeto@arcor.de>
 # @since 2013-07-17
@@ -392,7 +392,7 @@ function net_bazzline_convert_m4a_to_wav ()
 {
     for i in *.m4a;
     do
-        mplayer -ao pcm "$i" -aofile "$i.wav";
+        faad -f 1 -o "$i.wav" "$i"
     done
 }
 
