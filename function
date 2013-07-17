@@ -350,6 +350,7 @@ function net_bazzline_sync_from_host ()
 #
 # @author stev leibelt <artodeto@arcor.de>
 # @since 2013-07-05
+####
 function net_bazzline_sync_to_host ()
 {
     if [[ $# -eq 4 ]]; then
@@ -363,4 +364,49 @@ function net_bazzline_sync_to_host ()
     fi
 
     rsync -avz -e ssh $SOURCE $USER@$HOST:$DESTINATION
+}
+
+####
+# Converts all mp3s to wav in current directory
+# taken from: https://wiki.archlinux.org/index.php/CD_Burning#Burning_an_audio_CD
+#
+# @author stev leibelt <artodeto@arcor.de>
+# @since 2013-07-17
+####
+function net_bazzline_convert_mp3_to_wav ()
+{
+    for i in *.mp3; 
+    do 
+        lame --decode "$i" "$(basename "$i" .mp3)".wav;
+    done
+}
+
+####
+# Converts all m4as to wav in current directory
+# taken from: https://www.linuxquestions.org/questions/linux-general-1/converting-m4a-to-mp3-170553/
+#
+# @author stev leibelt <artodeto@arcor.de>
+# @since 2013-07-17
+####
+function net_bazzline_convert_m4a_to_wav ()
+{
+    for i in *.m4a;
+    do
+        mplayer -ao pcm "$i" -aofile "$i.wav";
+    done
+}
+
+####
+# Converts all wavs to mp3s in current directory
+# taken from: https://www.linuxquestions.org/questions/linux-general-1/converting-m4a-to-mp3-170553/
+#
+# @author stev leibelt <artodeto@arcor.de>
+# @since 2013-07-17
+####
+function net_bazzline_convert_wav_to_mp3 ()
+{
+    for i in *.wav;
+    do
+        lame --replaygain-accurate -v -h -b 192 "$i" "$i.mp3";
+    done
 }
