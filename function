@@ -200,6 +200,9 @@ function net_bazzline_burn ()
 #
 # @param string $1 - pattern you are searching for
 # @param [string $2] - path to serching in
+# @param [bool $3] - do not ignore dot files
+#
+# dot exclusion taken from: https://www.linuxquestions.org/questions/linux-general-1/find-and-excluding-all-hidden-directories-910578/
 #
 # @author stev leibelt
 # @since 2013-03-08
@@ -207,8 +210,10 @@ function net_bazzline_burn ()
 function net_bazzline_find_file ()
 {
     if [[ $# -eq 1 ]]; then
-        find . -iname "$1" -type f 2>/dev/null
+        find . -iname "$1" -not -path "*/.*/*" -not -name ".*" -type f 2>/dev/null
     elif [[ $# -eq 2 ]]; then
+        find "$2"  -iname "$1" -not -path "*/.*/*" -not -name ".*" -type f 2>/dev/null
+    elif [[ $# -eq 3 ]]; then
         find "$2" -iname "$1" -type f 2>/dev/null
     else
         echo 'No valid argument supplied.'
