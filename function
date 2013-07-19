@@ -126,7 +126,7 @@ function net_bazzline_svn_diff ()
 # @param string $@ - paths
 #
 # @author stev leibelt
-# @since 2013-02-02
+# @since 2013-07-19
 ####
 function net_bazzline_tar_create ()
 {
@@ -143,6 +143,26 @@ function net_bazzline_tar_create ()
     shift
 
     tar -cf $FILENAME "$@"
+}
+
+####
+# lists content of a tar archvie
+#
+# @param string $1 - archvie name
+#
+# @author stev leibelt
+# @since 2013-07-19
+####
+function net_bazzline_tar_list ()
+{
+    if [[ $# -eq 1 ]]; then
+        tar -tvf "$1"
+    else
+        echo 'No valid arguments supplied.'
+        echo 'archive'
+
+        exit 1
+    fi
 }
 
 ####
