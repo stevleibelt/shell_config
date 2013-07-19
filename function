@@ -120,10 +120,36 @@ function net_bazzline_svn_diff ()
 }
 
 ####
+# creates tar archvie
+#
+# @param string $1 - archvie name
+# @param string $@ - paths
+#
+# @author stev leibelt
+# @since 2013-02-02
+####
+function net_bazzline_tar_create ()
+{
+    if [[ $# -lt 2 ]]; then
+        echo 'No valid arguments supplied.'
+        echo 'archive path1 [pathX]'
+
+        exit 1
+    fi
+
+    FILENAME="$1"
+
+    # remove $1
+    shift
+
+    tar -cf $FILENAME "$@"
+}
+
+####
 # compress given directories into tar.gz
 #
 # @param string $1 - compressed tar.gz file name
-# @param string $# - [all following] files for compressed file
+# @param string $@ - [all following] files for compressed file
 #
 # @author stev leibelt
 # @since 2013-02-02
