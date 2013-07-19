@@ -70,6 +70,9 @@ alias system=net_bazzline_system_maintenance
 
 #t
 alias takeScreenshot=net_bazzline_screenshot
+alias tarCreate=net_bazzline_tar_create
+alias tarExtract=net_bazzline_tar_extract
+alias tarList=net_bazzline_tar_list
 
 #v
 alias v=vim
