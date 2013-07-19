@@ -166,6 +166,26 @@ function net_bazzline_tar_list ()
 }
 
 ####
+# extract content of a tar archvie
+#
+# @param string $1 - archvie name
+#
+# @author stev leibelt
+# @since 2013-07-19
+####
+function net_bazzline_tar_extract ()
+{
+    if [[ $# -eq 1 ]]; then
+        tar -xf "$1"
+    else
+        echo 'No valid arguments supplied.'
+        echo 'archive'
+
+        exit 1
+    fi
+}
+
+####
 # compress given directories into tar.gz
 #
 # @param string $1 - compressed tar.gz file name
