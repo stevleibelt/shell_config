@@ -490,6 +490,8 @@ function net_bazzline_convert_wav_to_mp3 ()
 ####
 # Replaces a string in all files in given path and below
 # taken from: http://www.cyberciti.biz/faq/unix-linux-replace-string-words-in-many-files/
+# taken from: http://stackoverflow.com/questions/4437901/find-and-replace-string-in-a-file
+# taken from: http://stackoverflow.com/questions/7450324/how-do-i-replace-a-string-with-another-string-in-all-files-below-my-current-dir
 #
 # @author stev leibelt <artodeto@arcor.de>
 # @since 2013-7-30
@@ -497,20 +499,18 @@ function net_bazzline_convert_wav_to_mp3 ()
 function net_bazzline_replace_string_in_files ()
 {
     if [[ $# -lt 3 ]]; then
-        echo 'invalid number of variavles provided'
+        echo 'invalid number of arguments provided'
         echo 'command search replace fileextension [path]'
         return 1
     fi
 
-    SEARCH="$1"
-    REPLACE="$2"
-    FILE_EXTENSION="$3"
+#    SEARCH="$1"
+#    REPLACE="$2"
+#    FILE_EXTENSION="$3"
 
     if [[ $# -eq 4 ]]; then
-        PATH="$4"
+        find "$4" -name "*.$3" -type f -exec sed -i 's/'"$1"'/'"$2"'/g' {} \;
     else
-        PATH='.'
+        find . -name "*.$3" -type f -exec sed -i 's/'"$1"'/'"$2"'/g' {} \;
     fi
-
-    find "$PATH" -name !*.$FILE_EXTENSION" | xargs sed -i 's/'$SEARCH'/'$REPLACE'/g'
 }
