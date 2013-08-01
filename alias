@@ -32,6 +32,8 @@ alias findDirectory=net_bazzline_find_directory
 #g
 alias generateSSHKey='ssh-keygen -b 4096 -t rsa'
 alias gitPushToMaster='git push -u origin master'
+alias guiEditor='geany'
+alias guiCdRipper='asunder'
 
 #i
 alias iftop='iftop -P -B'
