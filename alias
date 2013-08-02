@@ -68,6 +68,7 @@ if [ -f $HOME'/code/sh/local/sensorsRefresh.sh' ]; then
   alias statusSensor='sh '$HOME'/code/sh/local/sensorsRefresh.sh'
 fi
 alias searchAndReplaceInFiles=net_bazzline_replace_string_in_files
+alias svnRevertAll='svn revert -R .'
 alias syncFromHost=net_bazzline_sync_from_host
 alias syncToHost=net_bazzline_sync_to_host
 alias system=net_bazzline_system_maintenance
