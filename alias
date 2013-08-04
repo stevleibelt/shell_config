@@ -26,6 +26,7 @@ alias decompress=net_bazzline_decompress
 alias diffDirectories=net_bazzline_diff_directory
 
 #f
+alias fileManager=pcmanfm
 alias findFile=net_bazzline_find_file
 alias findDirectory=net_bazzline_find_directory
 
