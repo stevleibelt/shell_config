@@ -41,7 +41,7 @@ alias iftop='iftop -P -B'
 alias iostat='iostat -x 2'
 
 #k
-alias killSkype='killall skype'
+alias killSkype='killall -u $USER skype'
 
 #l
 alias l='ls -halt'
