@@ -5,6 +5,7 @@ alias ..='cd ..'
 alias apacheRestart='sudo systemctl restart httpd.service'
 alias apacheStart='sudo systemctl start httpd.service'
 alias apacheStop='sudo systemctl start httpd.service'
+alias archLinuxFindPacnew=net_bazzline_arch_linux_locate_pacnew_files
 
 #b
 alias burn=net_bazzline_burn
