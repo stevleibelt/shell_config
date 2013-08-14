@@ -422,6 +422,7 @@ function net_bazzline_sync_from_host ()
 # @param string $2 - remote host
 # @param string $3 - source path on local host
 # @param string $4 - destination path on remote host
+# [@param string $5 - ssh key]
 #
 # @author stev leibelt <artodeto@arcor.de>
 # @since 2013-07-05
@@ -433,13 +434,21 @@ function net_bazzline_sync_to_host ()
         HOST="$2"
         SOURCE="$3"
         DESTINATION="$4"
+
+        rsync -avz -e ssh $SOURCE $USER@$HOST:$DESTINATION
+    elif [[ $# -eq 5 ]]; then
+        USER="$1"
+        HOST="$2"
+        SOURCE="$3"
+        DESTINATION="$4"
+        KEY="$5"
+
+        rsync -avz -e ssh -i $KEY $SOURCE $USER@$HOST:$DESTINATION
     else
         echo 'invalid number of variables provided'
         echo 'command user host source destination'
         return 1
     fi
-
-    rsync -avz -e ssh $SOURCE $USER@$HOST:$DESTINATION
 }
 
 ####
