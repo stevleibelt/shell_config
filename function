@@ -514,3 +514,16 @@ function net_bazzline_replace_string_in_files ()
         find . -name "*.$3" -type f -exec sed -i 's/'"$1"'/'"$2"'/g' {} \;
     fi
 }
+
+####
+# Find all pacnew files
+#
+# @author stev leibelt <artodeto@arcor.de>
+# @since 2013-08.14
+####
+function net_bazzline_arch_linux_locate_pacnew_files ()
+{
+    FILENAME='pacnew.'$(date + '%y%m%d')
+
+    sudo find / -iname '*.pacnew' 1> $FILENAME 2>/dev/null
+}
