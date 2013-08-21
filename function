@@ -563,7 +563,6 @@ function net_bazzline_php_start_internal_webserver ()
     elif [[ $# -eq 1 ]]; then
         DIRECTORY=$1;
         PORT=80;
-    elif [[ $# -eq 1 ]]; then
     else
         DIRECTORY=public;
         PORT=80;
