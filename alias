@@ -76,7 +76,7 @@ alias searchAndReplaceInFiles=net_bazzline_replace_string_in_files
 alias svnRevertAll='svn revert -R .'
 alias syncFromHost=net_bazzline_sync_from_host
 alias syncToHost=net_bazzline_sync_to_host
-startPhpWebserver=net_bazzline_php_start_internal_webserver
+alias startPhpWebserver=net_bazzline_php_start_internal_webserver
 alias system=net_bazzline_system_maintenance
 
 #t

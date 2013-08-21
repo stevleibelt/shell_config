@@ -558,15 +558,15 @@ function net_bazzline_arch_linux_locate_pacnew_files ()
 function net_bazzline_php_start_internal_webserver ()
 {
     if [[ $# -eq 2 ]]; then
-        DIRECTORY=$1;
-        PORT=$2;
+        DIRECTORY="$1";
+        PORT="$2";
     elif [[ $# -eq 1 ]]; then
-        DIRECTORY=$1;
+        DIRECTORY="$1";
         PORT=80;
     else
-        DIRECTORY=public;
+        DIRECTORY="public";
         PORT=80;
     fi
 
-    php -s 0.0.0.0:$PORT -t $DIRECTORY
+    sudo php -S 0.0.0.0:"$PORT" -t "$DIRECTORY"
 }
