@@ -545,3 +545,29 @@ function net_bazzline_arch_linux_locate_pacnew_files ()
 
     sudo find / -iname '*.pacnew' 1> $FILENAME 2>/dev/null
 }
+
+####
+# Starts php's built in webserver
+#
+# [@param string $1 - directory that should be used as target, default is public]
+# [@param int $2 - port the webserver should listen on, default is 80]
+#
+# @author stev leibelt <artodeto@arcor.de>
+# @since 2013-08-21
+####
+function net_bazzline_php_start_internal_webserver ()
+{
+    if [[ $# -eq 2 ]]; then
+        DIRECTORY=$1;
+        PORT=$2;
+    elif [[ $# -eq 1 ]]; then
+        DIRECTORY=$1;
+        PORT=80;
+    elif [[ $# -eq 1 ]]; then
+    else
+        DIRECTORY=public;
+        PORT=80;
+    fi
+
+    php -s 0.0.0.0:$PORT -t $DIRECTORY
+}
