@@ -46,6 +46,7 @@ alias killSkype='killall -u $USER skype'
 
 #l
 alias l='ls -halt'
+alias landslideTango='landslide -t tango -i ';
 
 #m
 alias mkdir=net_bazzline_mkdir
