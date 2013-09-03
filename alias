@@ -14,6 +14,7 @@ alias burn=net_bazzline_burn
 alias c=clear
 alias cal='cal -3'
 alias cd=net_bazzline_cd
+alias cdAudioRipper=asunder
 alias cdConfig='cd '$HOME'/config'
 alias cdGitHub='cd '$HOME'/data/git/com/github'
 alias cdPhp='cd '$HOME'/code/php'
