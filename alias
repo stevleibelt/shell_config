@@ -8,6 +8,7 @@ alias apacheStop='sudo systemctl start httpd.service'
 alias archLinuxFindPacnew=net_bazzline_arch_linux_locate_pacnew_files
 
 #b
+alias batteryStatus='acpi -i'
 alias burn=net_bazzline_burn
 
 #c
