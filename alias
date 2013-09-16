@@ -95,6 +95,7 @@ alias v=vim
 alias webRestart='apacheRestart mysqlRestart'
 alias webStart='apacheStart mysqlStart'
 alias webStop='apacheStop mysqpStop'
+alias wirelessStatus='iwlist wlan0 scan'
 
 #x
 alias x=exit
