@@ -1,1 +1,3 @@
-source ~/data/git/com/github/nojhan/liquidprompt/liquidprompt
+if [ -f ~/data/git/com/github/nojhan/liquidprompt/liquidprompt ]; then
+  source ~/data/git/com/github/nojhan/liquidprompt/liquidprompt
+fi
