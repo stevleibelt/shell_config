@@ -570,3 +570,19 @@ function net_bazzline_php_start_internal_webserver ()
 
     sudo php -S 0.0.0.0:"$PORT" -t "$DIRECTORY"
 }
+
+####
+# Uses grep to prevent using ack-grep on different machines
+# Influenced by: http://developmentality.wordpress.com/2010/12/28/ack-better-than-grep/
+#
+# @param string pattern
+# [@param] string search path
+# [@param] string directory path to exclude - and following parameters
+#
+# @author stev leibelt <artodeto@arcor.de>
+# @since 2013-10-02
+####
+function net_bazzline_bash_grep ()
+{
+    grep -rI –color –exclude-dir=\.bzr –exclude-dir=\.git –exclude-dir=\.hg –exclude-dir=\.svn –exclude-dir=build –exclude-dir=dist –exclude=tags $*
+}
