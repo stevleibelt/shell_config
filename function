@@ -586,3 +586,32 @@ function net_bazzline_bash_grep ()
 {
     grep -rI –color –exclude-dir=\.bzr –exclude-dir=\.git –exclude-dir=\.hg –exclude-dir=\.svn –exclude-dir=build –exclude-dir=dist –exclude=tags $*
 }
+
+####
+# Converts images in directory with given size
+#
+# @param int size
+#
+# @author stev leibelt <artodeto@arcor.de>
+# @since 2013-10-02
+####
+function net_bazzline_image_batch_convert ()
+{
+    DIRECTORY="resized_"$1;
+
+    mkdir $DIRECTORY
+    for f in *.[jJ][pP][gG]
+    do convert $f -verbose -geometry $1x$1 -quality 98% -comment "proud made with linux" $DIRECTORY/$f
+    done
+}
+
+####
+# Converts images in directory with size of 1920
+#
+# @author stev leibelt <artodeto@arcor.de>
+# @since 2013-10-02
+####
+function net_bazzline_image_batch_convert_1920 ()
+{
+    net_bazzline_image_batch_convert 1920
+}
