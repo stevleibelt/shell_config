@@ -3,9 +3,15 @@ set expandtab
 set tabstop=4
 set shiftwidth=4
 set number
-set hls
+set hlsearch
+set ignorecase
+set ruler
+set wildmenu
+set spelllang=en_us
 map <F2> :retab <CR> :wq! <CR>
-syntax on
+syntax enable
+set showcmd
+set showmode
 set t_Co=256
 colorscheme zenburn
 autocmd FileType php setlocal makeprg=zca\ %<.php
