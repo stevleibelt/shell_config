@@ -615,3 +615,15 @@ function net_bazzline_image_batch_convert_1920 ()
 {
     net_bazzline_image_batch_convert 1920
 }
+
+####
+# Renames all existing directory content to lower case
+#
+# @author stev leibelt <artodeto@arcor.de>
+# @since 2013-11-21
+####
+function net_bazzline_filename_to_lower_batch_rename ()
+{
+    #rename 'y/A-Z/a-z/' *
+    find . -type f -execdir sh -c 'mv "'{}'" "$(echo '{}'|tr '[:upper:]' '[:lower:]')"' \;
+}

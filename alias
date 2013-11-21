@@ -67,6 +67,7 @@ alias r='rm -fr';
 alias refreshInterface='net_bazzline_refresh_interface'
 alias relogin='bash -l'
 alias reloadBashEnvironment='source ~/.bashrc'
+alias renameAllToLower=net_bazzline_filename_to_lower_batch_rename
 
 #s
 alias svnDiff=net_bazzline_svn_diff
