@@ -631,7 +631,10 @@ function net_bazzline_filename_to_lower_batch_rename ()
 ####
 # get filename from filepath
 # based: http://stackoverflow.com/questions/965053/extract-filename-and-extension-in-bash
-# take also a look to: https://www.gnu.org/software/bash/manual/html_node/Shell-Parameter-Expansion.html
+# take also a look to:  https://www.gnu.org/software/bash/manual/html_node/Shell-Parameter-Expansion.html
+#                       http://stackoverflow.com/questions/3236871/how-to-return-a-string-value-from-a-bash-function
+#
+# use it like echo $(net_bazzline_get_filename_from_filepath my/path/to/a/file.extension)
 #
 # @author stev leibelt <artodeto@arcor.de>
 # @since 2013-11-30
@@ -639,10 +642,14 @@ function net_bazzline_filename_to_lower_batch_rename ()
 function net_bazzline_get_filename_from_filepath ()
 {
     if [[ $# -eq 1 ]]; then
-        return filename=$(basename "$1")
+        FILENAME=$(basename "$1")
+        echo $FILENAME
+
+        return 0
     else
         echo "invalid number of arguments supplied"
         echo "filepath"
+
         return 1
     fi
 }
@@ -652,16 +659,22 @@ function net_bazzline_get_filename_from_filepath ()
 # based: http://stackoverflow.com/questions/965053/extract-filename-and-extension-in-bash
 # take also a look to: https://www.gnu.org/software/bash/manual/html_node/Shell-Parameter-Expansion.html
 #
+# use it like echo $(net_bazzline_get_name_from_filename name.extension)
+#
 # @author stev leibelt <artodeto@arcor.de>
 # @since 2013-11-30
 ####
 function net_bazzline_get_name_from_filename ()
 {
     if [[ $# -eq 1 ]]; then
-        return "${$1%%.*}"
+        NAME="${1%%.*}"
+        echo $NAME
+
+        return 0
     else
         echo "invalid number of arguments supplied"
         echo "filename"
+
         return 1
     fi
 }
@@ -669,7 +682,10 @@ function net_bazzline_get_name_from_filename ()
 ####
 # get extension from filename
 # based: http://stackoverflow.com/questions/965053/extract-filename-and-extension-in-bash
-# take also a look to: https://www.gnu.org/software/bash/manual/html_node/Shell-Parameter-Expansion.html
+# take also a look to:  https://www.gnu.org/software/bash/manual/html_node/Shell-Parameter-Expansion.html
+#                       http://stackoverflow.com/questions/11426590/bash-bad-substitution
+#
+# use it like echo $(net_bazzline_get_extension_from_filename name.extension)
 #
 # @author stev leibelt <artodeto@arcor.de>
 # @since 2013-11-30
@@ -677,10 +693,14 @@ function net_bazzline_get_name_from_filename ()
 function net_bazzline_get_extension_from_filename ()
 {
     if [[ $# -eq 1 ]]; then
-        return "${$1#*.}"
+        EXTENSION="${1#*.}"
+        echo $EXTENSION
+
+        return 0
     else
         echo "invalid number of arguments supplied"
         echo "filename"
+
         return 1
     fi
 }
@@ -688,14 +708,19 @@ function net_bazzline_get_extension_from_filename ()
 ####
 # copies content of mkv container to avi container
 #
+# take a look on:   http://www.cyberciti.biz/faq/bash-shell-script-function-examples/
+#
 # @author stev leibelt <artodeto@arcor.de>
 # @since 2013-11-30
 ####
-function net_bazzline_video_mkv_to_avi ()
+function net_bazzline_convert_mkv_to_avi ()
 {
     if [[ $# -eq 1 ]]; then
+        #export -f net_bazzline_get_name_from_filename
+        nameFromFilename=net_bazzline_get_name_from_filename
         INPUT_FILE="$1";
-        OUTPUT_FILE=net_bazzline_get_name_from_file "$1";
+        OUTPUT_FILE=$($nameFromFilename $INPUT_FILE)
+        #OUTPUT_FILE=$(net_bazzline_get_name_from_filename $INPUT_FILE)
         OUTPUT_FILE=$OUTPUT_FILE".avi"
     elif [[ $# -eq 2 ]]; then
         INPUT_FILE="$1";
@@ -706,5 +731,5 @@ function net_bazzline_video_mkv_to_avi ()
         return 1
     fi
 
-    ffnpeg -i $INPUT_FILE -c:v copy -c:a -copy $OUTPUT_FILE
+    ffmpeg -i "$INPUT_FILE" -c:v copy -c:a copy "$OUTPUT_FILE"
 }
