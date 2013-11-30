@@ -684,3 +684,27 @@ function net_bazzline_get_extension_from_filename ()
         return 1
     fi
 }
+
+####
+# copies content of mkv container to avi container
+#
+# @author stev leibelt <artodeto@arcor.de>
+# @since 2013-11-30
+####
+function net_bazzline_video_mkv_to_avi ()
+{
+    if [[ $# -eq 1 ]]; then
+        INPUT_FILE="$1";
+        OUTPUT_FILE=net_bazzline_get_name_from_file "$1";
+        OUTPUT_FILE=$OUTPUT_FILE".avi"
+    elif [[ $# -eq 2 ]]; then
+        INPUT_FILE="$1";
+        OUTPUT_FILE="$2";
+    else
+        echo "invalid number of arguments supplied"
+        echo "inputfile [outputfile]"
+        return 1
+    fi
+
+    ffnpeg -i $INPUT_FILE -c:v copy -c:a -copy $OUTPUT_FILE
+}
