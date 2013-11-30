@@ -627,3 +627,21 @@ function net_bazzline_filename_to_lower_batch_rename ()
     #rename 'y/A-Z/a-z/' *
     find . -type f -execdir sh -c 'mv "'{}'" "$(echo '{}'|tr '[:upper:]' '[:lower:]')"' \;
 }
+
+####
+# get filename from filepath
+# based: http://stackoverflow.com/questions/965053/extract-filename-and-extension-in-bash
+#
+# @author stev leibelt <artodeto@arcor.de>
+# @since 2013-11-30
+####
+function net_bazzline_get_filename_from_filepath ()
+{
+    if [[ $# -eq 1 ]]; then
+        return filename=$(basename "$1")
+    else
+        echo "invalid number of arguments supplied"
+        echo "filepath"
+        return 1
+    fi
+}
