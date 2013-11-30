@@ -665,3 +665,22 @@ function net_bazzline_get_name_from_filename ()
         return 1
     fi
 }
+
+####
+# get extension from filename
+# based: http://stackoverflow.com/questions/965053/extract-filename-and-extension-in-bash
+# take also a look to: https://www.gnu.org/software/bash/manual/html_node/Shell-Parameter-Expansion.html
+#
+# @author stev leibelt <artodeto@arcor.de>
+# @since 2013-11-30
+####
+function net_bazzline_get_extension_from_filename ()
+{
+    if [[ $# -eq 1 ]]; then
+        return "${$1#*.}"
+    else
+        echo "invalid number of arguments supplied"
+        echo "filename"
+        return 1
+    fi
+}
