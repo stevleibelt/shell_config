@@ -15,10 +15,12 @@ if [ ! -f $HOME'/.bashrc' ]; then
 fi
 
 PATH_SELF=$(cd $(dirname "$0"); pwd)
+DATETIME=$(date +%y%m%d_+%T)
 
 echo 'Adapting .bashrc'
 
 echo '#net_bazzline_config_shell start' >> $HOME'/.bashrc'
+echo '#date: '$DATETIME >> $HOME'/.bashrc'
 echo '' >> $HOME'/.bashrc'
 echo PATH_SHELL_CONFIG=$PATH_SELF >> $HOME'/.bashrc'
 echo "if [ -f \$PATH_SHELL_CONFIG'/bootstrap' ]; then " >> $HOME'/.bashrc'
@@ -36,6 +38,7 @@ touch $HOME'/.xinitrc.temp'
 echo 'Adding content to temporary .xinitrc.temp'
 
 echo '#net_bazzline_config_shell start' >> $HOME'/.xinitrc.temp'
+echo '#date: '$DATETIME >> $HOME'/.xinitrc.temp'
 echo '' >> $HOME'/.xinitrc.temp'
 echo PATH_SHELL_CONFIG=$PATH_SELF >> $HOME'/.xinitrc.temp'
 echo "if [ -f \$PATH_SHELL_CONFIG'/color' ]; then " >> $HOME'/.xinitrc.temp'
