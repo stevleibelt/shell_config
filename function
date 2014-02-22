@@ -427,7 +427,7 @@ function net_bazzline_sync_from_host ()
         SOURCE="$3"
         DESTINATION="$4"
 
-        rsync -avz -e ssh $USER@$HOST:$SOURCE $DESTINATION
+        rsync -avzL -e ssh $USER@$HOST:$SOURCE $DESTINATION
     elif [[ $# -eq 5 ]]; then
         USER="$1"
         HOST="$2"
