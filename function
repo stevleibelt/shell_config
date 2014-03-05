@@ -401,9 +401,9 @@ function net_bazzline_sync_to ()
         echo 'command [source one] [source ...] target'
         return 1
     elif [[ $# -eq 1 ]]; then
-        rsync -avz . "$1"
+        rsync -aq . "$1"
     else
-        rsync -avz $@
+        rsync -aq $@
     fi
 }
 
@@ -427,7 +427,7 @@ function net_bazzline_sync_from_host ()
         SOURCE="$3"
         DESTINATION="$4"
 
-        rsync -avz -e ssh $USER@$HOST:$SOURCE $DESTINATION
+        rsync -aqz -e ssh $USER@$HOST:$SOURCE $DESTINATION
     elif [[ $# -eq 5 ]]; then
         USER="$1"
         HOST="$2"
@@ -435,7 +435,7 @@ function net_bazzline_sync_from_host ()
         DESTINATION="$4"
         KEY="$5"
 
-        rsync -avz -e ssh -i $KEY $USER@$HOST:$SOURCE $DESTINATION
+        rsync -aqz -e ssh -i $KEY $USER@$HOST:$SOURCE $DESTINATION
     else
         echo 'invalid number of variables provided'
         echo 'command user host source destination'
@@ -471,7 +471,7 @@ function net_bazzline_sync_to_host ()
         DESTINATION="$4"
         KEY="$5"
 
-        rsync -avz -e ssh -i $KEY $SOURCE $USER@$HOST:$DESTINATION
+        rsync -aqz -e ssh -i $KEY $SOURCE $USER@$HOST:$DESTINATION
     else
         echo 'invalid number of variables provided'
         echo 'command user host source destination'
@@ -751,4 +751,20 @@ function net_bazzline_convert_mkv_to_avi ()
     fi
 
     ffmpeg -i "$INPUT_FILE" -c:v copy -c:a copy "$OUTPUT_FILE"
+}
+
+####
+# updates multiple git repositories
+# based on: http://community.logicalbricks.com/node/124
+#
+# @author stev leibelt <artodeto@bazzline.net>
+# @since 2014-01-11
+####
+function net_bazzline_git_pull_multiple_repositories ()
+{
+    dirs=`ls -1d */`
+    for d in $dirs
+    do
+        echo `cd $d; git pull`
+    done
 }

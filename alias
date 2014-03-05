@@ -21,6 +21,7 @@ alias cdAudioRipper=asunder
 alias cdConfig='cd '$HOME'/config'
 alias cdGitHub='cd '$HOME'/data/git/com/github'
 alias cdPhp='cd '$HOME'/code/php'
+alias compileC++11='c++ -std=c++11'
 alias compress=net_bazzline_compress
 alias convertM4aToWav=net_bazzline_convert_m4a_to_wav
 alias convertMp3ToWav=net_bazzline_convert_mp3_to_wav
@@ -40,6 +41,7 @@ alias findDirectory=net_bazzline_find_directory
 alias getExtensionFromFilename=net_bazzline_get_extension_from_filename
 alias getFilenameFromFilepath=net_bazzline_get_filename_from_filepath
 alias getNameFromFilename=net_bazzline_get_name_from_filename
+alias gitPullMultipleRepositories=net_bazzline_git_pull_multiple_repositories
 alias gitPushToMaster='git push -u origin master'
 alias guiEditor='geany'
 alias guiCdRipper='asunder'
