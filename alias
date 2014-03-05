@@ -98,6 +98,10 @@ alias tarCreate=net_bazzline_tar_create
 alias tarExtract=net_bazzline_tar_extract
 alias tarList=net_bazzline_tar_list
 
+#u
+alias updateArch='pacman -Syyu'
+alias updateAUR='yaourt -Syau'
+
 #v
 alias v=vim
 
