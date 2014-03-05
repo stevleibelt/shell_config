@@ -74,18 +74,17 @@ alias reloadBashEnvironment='source ~/.bashrc && clear'
 alias renameAllToLower=net_bazzline_filename_to_lower_batch_rename
 
 #s
+alias svnDiff=net_bazzline_svn_diff
 if [ -f $HOME'/code/sh/local/displayBatteryStatus.sh' ]; then
   alias statusBattery='sh '$HOME'/code/sh/local/displayBatteryStatus.sh'
 fi
 if [ -f $HOME'/code/sh/local/sensorsRefresh.sh' ]; then
   alias statusSensor='sh '$HOME'/code/sh/local/sensorsRefresh.sh'
 fi
-alias replaceStringInFiles=net_bazzline_replace_string_in_files
-alias skype='xhost +local: && sudo -u skype /usr/bin/skype'
+alias searchAndReplaceInFiles=net_bazzline_replace_string_in_files
 alias sshKeygen='ssh-keygen -b 4096 -t rsa'
 alias startPhpWebserver=net_bazzline_php_start_internal_webserver
 alias svnRevertAll='svn revert -R .'
-alias svnDiff=net_bazzline_svn_diff
 alias syncFromHost=net_bazzline_sync_from_host
 alias syncTo=net_bazzline_sync_to
 alias syncToHost=net_bazzline_sync_to_host
