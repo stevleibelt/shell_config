@@ -636,6 +636,17 @@ function net_bazzline_image_batch_convert_1920 ()
 }
 
 ####
+# Converts images in directory with size of 1024
+#
+# @author stev leibelt <artodeto@bazzline.net>
+# @since 2014-03-16
+####
+function net_bazzline_image_batch_convert_1024 ()
+{
+    net_bazzline_image_batch_convert 1024
+}
+
+####
 # Renames all existing directory content to lower case
 #
 # @author stev leibelt <artodeto@arcor.de>
