@@ -643,7 +643,7 @@ function net_bazzline_image_batch_convert_1920 ()
 ####
 function net_bazzline_image_batch_convert_1024 ()
 {
-    net_bazzline_image_batch_convert 2014
+    net_bazzline_image_batch_convert 1024
 }
 
 ####
