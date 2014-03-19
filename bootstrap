@@ -1,3 +1,7 @@
+source $PATH_SHELL_CONFIG'/setting'
+if [ -f $PATH_SHELL_CONFIG'/setting.local' ]; then
+  source $PATH_SHELL_CONFIG'/setting.local'
+fi
 source $PATH_SHELL_CONFIG'/variable'
 if [ -f $PATH_SHELL_CONFIG'/variable.local' ]; then
   source $PATH_SHELL_CONFIG'/variable.local'
@@ -17,8 +21,4 @@ fi
 source $PATH_SHELL_CONFIG'/alias'
 if [ -f $PATH_SHELL_CONFIG'/alias.local' ]; then
   source $PATH_SHELL_CONFIG'/alias.local'
-fi
-source $PATH_SHELL_CONFIG'/setting'
-if [ -f $PATH_SHELL_CONFIG'/setting.local' ]; then
-  source $PATH_SHELL_CONFIG'/setting.local'
 fi

@@ -1,5 +1,12 @@
+#!/bin/bash
+####
+# @author stev leibelt <artodeto@bazzline.net>
+# @since 2013-04-24
+####
+
 #https://wiki.archlinux.org/index.php/Xterm#TERM_Environmental_Variable
 export GREP_OPTIONS='--color=auto'
+
 export LESS=-R
 export LESS_TERMCAP_me=$(printf '\e[0m')
 export LESS_TERMCAP_se=$(printf '\e[0m')
@@ -8,3 +15,6 @@ export LESS_TERMCAP_mb=$(printf '\e[1;32m')
 export LESS_TERMCAP_md=$(printf '\e[1;34m')
 export LESS_TERMCAP_us=$(printf '\e[1;32m')
 export LESS_TERMCAP_so=$(printf '\e[1;44;1m')
+
+#allowed are [apt-get, none, pacman, yaourt]
+NET_BAZZLINE_PACKAGE_MANAGER='none'
