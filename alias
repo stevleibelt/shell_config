@@ -141,7 +141,6 @@ alias svnDiff=net_bazzline_svn_diff
 alias syncFromHost=net_bazzline_sync_from_host
 alias syncTo=net_bazzline_sync_to
 alias syncToHost=net_bazzline_sync_to_host
-alias system=net_bazzline_system_maintenance
 
 #t
 alias takeScreenshot=net_bazzline_screenshot
