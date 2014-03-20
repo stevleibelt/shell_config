@@ -1,3 +1,9 @@
+#!/bin/bash
+####
+# @author stev leibelt <artodeto@bazzline.net>
+# @since 2013-04-24
+####
+
 ####
 # https://www.gnu.org/software/bash/manual/bash.html
 ####
@@ -633,6 +639,17 @@ function net_bazzline_image_batch_convert ()
 function net_bazzline_image_batch_convert_1920 ()
 {
     net_bazzline_image_batch_convert 1920
+}
+
+####
+# Converts images in directory with size of 1024
+#
+# @author stev leibelt <artodeto@bazzline.net>
+# @since 2014-03-16
+####
+function net_bazzline_image_batch_convert_1024 ()
+{
+    net_bazzline_image_batch_convert 1024
 }
 
 ####
