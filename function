@@ -752,19 +752,3 @@ function net_bazzline_convert_mkv_to_avi ()
 
     ffmpeg -i "$INPUT_FILE" -c:v copy -c:a copy "$OUTPUT_FILE"
 }
-
-####
-# updates multiple git repositories
-# based on: http://community.logicalbricks.com/node/124
-#
-# @author stev leibelt <artodeto@bazzline.net>
-# @since 2014-01-11
-####
-function net_bazzline_git_pull_multiple_repositories ()
-{
-    dirs=`ls -1d */`
-    for d in $dirs
-    do
-        echo `cd $d; git pull`
-    done
-}
