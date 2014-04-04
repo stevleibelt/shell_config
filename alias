@@ -38,6 +38,7 @@ alias convertWavToMp3=net_bazzline_convert_wav_to_mp3
 #d
 alias decompress=net_bazzline_decompress
 alias diffDirectories=net_bazzline_diff_directory
+alias docker-remove-all-images='docker ps -a -q | xargs docker rm'
 
 #f
 alias fileManager=pcmanfm
