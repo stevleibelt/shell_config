@@ -29,6 +29,8 @@ alias cdConfig='cd '$HOME'/config'
 alias cdGitHub='cd '$HOME'/data/git/com/github'
 alias cdPhp='cd '$HOME'/code/php'
 alias compileC++11='c++ -std=c++11'
+alias composerDumpAutoloadOptimized='composer dump-autoload --optimize'
+alias composerUpdateNoDev='composer update --no-dev'
 alias compress=net_bazzline_compress
 alias convertM4aToWav=net_bazzline_convert_m4a_to_wav
 alias convertMp3ToWav=net_bazzline_convert_mp3_to_wav
