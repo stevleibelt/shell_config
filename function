@@ -769,3 +769,22 @@ function net_bazzline_convert_mkv_to_avi ()
 
     ffmpeg -i "$INPUT_FILE" -c:v copy -c:a copy "$OUTPUT_FILE"
 }
+
+####
+# lists all available process listening on given port
+#
+# @param integer $1 - port number
+#
+# @author stev leibelt <artodeto@bazzline.net>
+# @since 2014-04-07
+####
+function net_bazzline_what_is_listening_on_that_port()
+{
+    if [[ $# -eq 1 ]]; then
+        netstat -tulpn | grep --color :$1
+    else
+        echo "invalid number of arguments supplied"
+        echo "portnumber"
+        return 1
+    fi
+}
