@@ -547,15 +547,17 @@ function net_bazzline_replace_string_in_files ()
         return 1
     fi
 
-#    SEARCH="$1"
-#    REPLACE="$2"
-#    FILE_EXTENSION="$3"
+    SEARCH="$1"
+    REPLACE="$2"
+    FILE_EXTENSION="$3"
 
     if [[ $# -eq 4 ]]; then
-        find "$4" -name "*.$3" -type f -exec sed -i 's/'"$1"'/'"$2"'/g' {} \;
+        PATH="$4"
     else
-        find . -name "*.$3" -type f -exec sed -i 's/'"$1"'/'"$2"'/g' {} \;
+        PATH="."
     fi
+
+    find "$PATH" -name "*.$FILE_EXTENSION" -type f -exec sed -i 's/'"$SEARCH"'/'"$REPLACE"'/g' {} \;
 }
 
 ####
