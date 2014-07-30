@@ -55,6 +55,9 @@ alias gitPushToMaster='git push -u origin master'
 alias guiEditor='geany'
 alias guiCdRipper='asunder'
 
+#h
+alias hideFileSystemObject=net_bazzline_hide_file_system_object
+
 #i
 alias iftop='iftop -P -B'
 alias iostat='iostat -x 2'
@@ -153,6 +156,9 @@ alias takeScreenshot=net_bazzline_screenshot
 alias tarCreate=net_bazzline_tar_create
 alias tarExtract=net_bazzline_tar_extract
 alias tarList=net_bazzline_tar_list
+
+#u
+alias unhideFileSystemObject=net_bazzline_unhide_file_system_object
 
 #v
 alias v=vim

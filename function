@@ -557,7 +557,7 @@ function net_bazzline_replace_string_in_files ()
         PATH="."
     fi
 
-    find "$PATH" -name "*.$FILE_EXTENSION" -type f -exec sed -i 's/'"$SEARCH"'/'"$REPLACE"'/g' {} \;
+    #find "$PATH" -name "*.$FILE_EXTENSION" -type f -exec sed -i 's/'"$SEARCH"'/'"$REPLACE"'/g' {} \;
 }
 
 ####
@@ -787,6 +787,43 @@ function net_bazzline_what_is_listening_on_that_port()
     else
         echo "invalid number of arguments supplied"
         echo "portnumber"
+        return 1
+    fi
+}
+
+####
+# adds "." to the beginning of the directory or file name
+# 
+# @param string $1 - file system object identifier
+#
+# @author stev leibelt <artodeto@bazzline.net>
+# @since 2014-07-31
+####
+function net_bazzline_hide_file_system_object()
+{
+    if [[ $# -eq 1 ]]; then
+# @todo validate if identifier is file or directory and if first character is not "."
+        mv "$1" ."$1"
+    else
+        echo "Usage: net_bazzline_unhide_directory <directory_name>"
+        return 1
+    fi
+}
+
+####
+# adds "." to the beginning of the directory or file name
+#
+# @author stev leibelt <artodeto@bazzline.net>
+# @since 2014-07-31
+####
+function net_bazzline_unhide_file_system_object()
+{
+    if [[ $# -eq 1 ]]; then
+        IDENTIFIER="$1";
+# @todo validate if identifier is file or directory and if first character is "."
+        mv $IDENTIFIER ${IDENTIFIER:1};
+    else
+        echo "Usage: net_bazzline_unhide_directory <directory_name>"
         return 1
     fi
 }
