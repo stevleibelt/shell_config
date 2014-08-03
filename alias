@@ -15,6 +15,7 @@ alias apacheStop='sudo systemctl start httpd.service'
 alias archLinuxFindPacnew=net_bazzline_arch_linux_locate_pacnew_files
 
 #b
+alias batchConvertImageTo640=net_bazzline_image_batch_convert_640
 alias batchConvertImageTo1024=net_bazzline_image_batch_convert_1024
 alias batchConvertImageTo1920=net_bazzline_image_batch_convert_1920
 alias batteryStatus='clear & acpi -i'

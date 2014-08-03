@@ -654,6 +654,17 @@ function net_bazzline_image_batch_convert_1024 ()
     net_bazzline_image_batch_convert 1024
 }
 
+
+####
+# Converts images in directory with size of 640
+#
+# @author stev leibelt <artodeto@bazzline.net>
+# @since 2014-08-03
+####
+function net_bazzline_image_batch_convert_640 ()
+{
+    net_bazzline_image_batch_convert 640
+}
 ####
 # Renames all existing directory content to lower case
 #
