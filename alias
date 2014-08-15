@@ -173,3 +173,4 @@ alias wirelessStatus='clear & iwlist wlan0 scan'
 
 #x
 alias x=exit
+alias xinit='startx; exit'
