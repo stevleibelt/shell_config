@@ -18,3 +18,5 @@ export LESS_TERMCAP_so=$(printf '\e[1;44;1m')
 
 #allowed are [apt, none, pacman, yaourt]
 NET_BAZZLINE_PACKAGE_MANAGER='none'
+#add all you known interfaces in here
+NET_BAZZLINE_INTERFACES=()
