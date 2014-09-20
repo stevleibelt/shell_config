@@ -319,15 +319,31 @@ function net_bazzline_find_directory ()
 #
 # @param string $1 - [optional] interface - default eth0
 #
+# @todo implement --verbose --list-interfaces
 # @author stev leibelt
 # @since 2013-04-30
 ####
 function net_bazzline_refresh_interface ()
 {
+    LENGTH=${#NET_BAZZLINE_INTERFACES[@]}
+
+    if [[ $LENGTH -eq 0 ]]; then
+        echo 'Environment variable NET_BAZZLINE_INTERFACES not defined or empty'
+        return 1
+    fi
+
     if [[ $# -eq 0 ]]; then
-        INTERFACE="eth0"
+        INTERFACE=${NET_BAZZLINE_INTERFACES[0]}
     else
-        INTERFACE="$1"
+        for NET_BAZZLINE_INTERFACE in "${NET_BAZZLINE_INTERFACES[@]}"
+        do
+            if [[ "$1" -eq $NET_BAZZLINE_INTERFACE ]]; then
+                INTERFACE=$1
+            fi
+        done
+
+        #set default if none is found
+        INTERFACE=${INTERFACE:-$NET_BAZZLINE_INTERFACES[0]}
     fi
 
     sudo ip link set $INTERFACE down
