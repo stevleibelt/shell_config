@@ -157,6 +157,7 @@ alias takeScreenshot=net_bazzline_screenshot
 alias tarCreate=net_bazzline_tar_create
 alias tarExtract=net_bazzline_tar_extract
 alias tarList=net_bazzline_tar_list
+alias touchPrefixCurrentDate=net_bazzline_touchPrefixCurrentDate
 
 #u
 alias unhideFileSystemObject=net_bazzline_unhide_file_system_object
