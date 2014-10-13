@@ -23,7 +23,7 @@ alias burn=net_bazzline_burn
 
 #c
 alias c=clear
-alias cal='cal -3'
+alias cal='ncal -w3'
 alias cd=net_bazzline_cd
 alias cdAudioRipper=asunder
 alias cdConfig='cd '$HOME'/config'
