@@ -873,3 +873,31 @@ function net_bazzline_unhide_file_system_object()
         return 1
     fi
 }
+
+####
+# validates if string starts with given string or not
+# 
+# @param string $1 - string
+# @param string $2 - needle
+# 
+# @author stev leibelt <artodeto@bazzline.net>
+# @since 2014-07-31
+####
+function net_bazzline_stringStartsWith ()
+{
+    if [[ $# -eq 2 ]]; then
+        STRING="$1"
+        SUB_STRING="$2"
+        LENGTH_OF_SUB_STRING=${#SUB_STRING}
+        STRING_WITH_SUB_STRING_ONLY=${STRING:0:$LENGTH_OF_SUB_STRING}
+
+        if [[ $STRING_WITH_SUB_STRING_ONLY = $SUB_STRING ]]; then
+            return 0
+        else
+            return 1
+        fi
+    else
+        echo "Usage: net_bazzline_stringStartsWitch <string> <needle>"
+        return 1
+    fi
+}
