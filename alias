@@ -23,7 +23,7 @@ alias burn=net_bazzline_burn
 
 #c
 alias c=clear
-alias cal='cal -3'
+alias cal='ncal -w3'
 alias cd=net_bazzline_cd
 alias cdAudioRipper=asunder
 alias cdConfig='cd '$HOME'/config'
@@ -44,9 +44,10 @@ alias diffDirectories=net_bazzline_diff_directory
 alias docker-remove-all-images='docker ps -a -q | xargs docker rm'
 
 #f
-alias fileManager=pcmanfm
-alias findFile=net_bazzline_find_file
 alias findDirectory=net_bazzline_find_directory
+alias findFile=net_bazzline_find_file
+alias fileManager=pcmanfm
+alias findPacFiles='find / -regextype posix-extended -regex ".+\.pac(new|save|orig)" 2> /dev/null'
 
 #g
 alias getExtensionFromFilename=net_bazzline_get_extension_from_filename
