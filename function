@@ -557,7 +557,7 @@ function net_bazzline_replace_string_in_files ()
         PATH="."
     fi
 
-    #find "$PATH" -name "*.$FILE_EXTENSION" -type f -exec sed -i 's/'"$SEARCH"'/'"$REPLACE"'/g' {} \;
+    find "$PATH" -name "*.$FILE_EXTENSION" -type f -exec sed -i 's/'"$SEARCH"'/'"$REPLACE"'/g' {} \;
 }
 
 ####
