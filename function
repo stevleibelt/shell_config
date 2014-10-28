@@ -909,6 +909,17 @@ function net_bazzline_stringStartsWith ()
     fi
 }
 
+####
+# list available interfaces
+# 
+# @author stev leibelt <artodeto@bazzline.net>
+# @since 2014-10-28
+####
+function net_bazzline_list_interfaces ()
+{
+    ip a | grep ':\ '
+}
+
 function net_bazzline_test ()
 {
 STRING=".md"
