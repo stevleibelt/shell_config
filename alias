@@ -44,9 +44,10 @@ alias diffDirectories=net_bazzline_diff_directory
 alias docker-remove-all-images='docker ps -a -q | xargs docker rm'
 
 #f
-alias fileManager=pcmanfm
-alias findFile=net_bazzline_find_file
 alias findDirectory=net_bazzline_find_directory
+alias findFile=net_bazzline_find_file
+alias fileManager=pcmanfm
+alias findPacFiles='find / -regextype posix-extended -regex ".+\.pac(new|save|orig)" 2> /dev/null'
 
 #g
 alias getExtensionFromFilename=net_bazzline_get_extension_from_filename
@@ -149,6 +150,7 @@ alias sshKeygen='ssh-keygen -b 4096 -t rsa'
 alias startPhpWebserver=net_bazzline_php_start_internal_webserver
 alias svnRevertAll='svn revert -R .'
 alias syncFromHost=net_bazzline_sync_from_host
+alias syncTime='ntpd -s'
 alias syncTo=net_bazzline_sync_to
 alias syncToHost=net_bazzline_sync_to_host
 
@@ -157,6 +159,7 @@ alias takeScreenshot=net_bazzline_screenshot
 alias tarCreate=net_bazzline_tar_create
 alias tarExtract=net_bazzline_tar_extract
 alias tarList=net_bazzline_tar_list
+alias touchPrefixCurrentDate=net_bazzline_touchPrefixCurrentDate
 
 #u
 alias unhideFileSystemObject=net_bazzline_unhide_file_system_object

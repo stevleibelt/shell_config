@@ -60,6 +60,25 @@ function net_bazzline_mkdirPrefixCurrentDate ()
     fi
 }
 
+####
+# create a file with a prefix of current date (Ymd)
+#
+# @param string $1 - file name you want to create
+#
+# @author stev leibelt
+# @since 2014-09-20
+####
+function net_bazzline_touchPrefixCurrentDate ()
+{
+    if [[ $# -eq 1 ]]; then
+        directoryName=`eval date +%y%m%d`"_$1"
+
+        touch "$directoryName"
+    else
+        echo 'Should be called with exactly one parameter'
+    fi
+}
+
 #####
 # You can change $i levels by using cd $i
 #
@@ -319,15 +338,31 @@ function net_bazzline_find_directory ()
 #
 # @param string $1 - [optional] interface - default eth0
 #
+# @todo implement --verbose --list-interfaces
 # @author stev leibelt
 # @since 2013-04-30
 ####
 function net_bazzline_refresh_interface ()
 {
+    LENGTH=${#NET_BAZZLINE_INTERFACES[@]}
+
+    if [[ $LENGTH -eq 0 ]]; then
+        echo 'Environment variable NET_BAZZLINE_INTERFACES not defined or empty'
+        return 1
+    fi
+
     if [[ $# -eq 0 ]]; then
-        INTERFACE="eth0"
+        INTERFACE=${NET_BAZZLINE_INTERFACES[0]}
     else
-        INTERFACE="$1"
+        for NET_BAZZLINE_INTERFACE in "${NET_BAZZLINE_INTERFACES[@]}"
+        do
+            if [[ "$1" -eq $NET_BAZZLINE_INTERFACE ]]; then
+                INTERFACE=$1
+            fi
+        done
+
+        #set default if none is found
+        INTERFACE=${INTERFACE:-$NET_BAZZLINE_INTERFACES[0]}
     fi
 
     sudo ip link set $INTERFACE down
@@ -835,6 +870,34 @@ function net_bazzline_unhide_file_system_object()
         mv $IDENTIFIER ${IDENTIFIER:1};
     else
         echo "Usage: net_bazzline_unhide_directory <directory_name>"
+        return 1
+    fi
+}
+
+####
+# validates if string starts with given string or not
+# 
+# @param string $1 - string
+# @param string $2 - needle
+# 
+# @author stev leibelt <artodeto@bazzline.net>
+# @since 2014-07-31
+####
+function net_bazzline_stringStartsWith ()
+{
+    if [[ $# -eq 2 ]]; then
+        STRING="$1"
+        SUB_STRING="$2"
+        LENGTH_OF_SUB_STRING=${#SUB_STRING}
+        STRING_WITH_SUB_STRING_ONLY=${STRING:0:$LENGTH_OF_SUB_STRING}
+
+        if [[ $STRING_WITH_SUB_STRING_ONLY = $SUB_STRING ]]; then
+            return 0
+        else
+            return 1
+        fi
+    else
+        echo "Usage: net_bazzline_stringStartsWitch <string> <needle>"
         return 1
     fi
 }
