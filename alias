@@ -48,7 +48,7 @@ alias diffDirectories=net_bazzline_diff_directory
 alias docker-remove-all-images='docker ps -a -q | xargs docker rm'
 
 #f
-alias findBrokenSymlinks=find . -type l -! -exec test -e {} \; -print
+alias findBrokenSymlinks='find . -type l -! -exec test -e {} \; -print'
 alias findDirectory=net_bazzline_find_directory
 alias findFile=net_bazzline_find_file
 alias fileManager=pcmanfm
