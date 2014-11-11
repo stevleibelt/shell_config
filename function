@@ -119,6 +119,28 @@ function net_bazzline_psgrep ()
     fi
 }
 
+####
+# calls svn log with limit and pipes content into a grep
+#
+# @param string $1 - pattern / what you search for
+# @param integer $2 - svn log limit
+#
+# @author stev leibelt
+# @since 2014-11-11
+####
+function net_bazzline_svn_log_grep ()
+{
+    if [[ $# -eq 1 ]]; then
+        svn log --limit 1000 | grep -B2 "$1"
+    elif [[ $# -eq 2 ]]; then
+        svn log --limit "$2" | grep -B2 "$1"
+    else
+        echo 'invalid number of arguments supplied.'
+        echo 'Usage:'
+        echo 'net_bazzline_svn_log_grep <pattern:string> [<limit:int>]'
+    fi
+}
+
 #####
 # Calls svn diff for two repositories.
 # Call $repositoryUrlOne $repositoryUrlTwo $filePath
