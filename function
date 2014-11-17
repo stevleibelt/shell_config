@@ -942,24 +942,35 @@ function net_bazzline_list_interfaces ()
     ip a | grep ':\ '
 }
 
+####
+# list all users
+# 
+# @author stev leibelt <artodeto@bazzline.net>
+# @since 2014-11-17
+####
+function net_bazzline_list_all_users ()
+{
+    getent passwd | grep '/home' | awk -F ':' '{ print $1 }'
+}
+
 function net_bazzline_test ()
 {
-STRING=".md"
-SUB_STRING="."
+    STRING=".md"
+    SUB_STRING="."
 
 # not working
-if [[ $(net_bazzline_stringStartsWith $STRING $SUB_STRING) ]]; then
-    echo 'stats with'
-else
-    echo 'stats with not'
-fi
+    if [[ $(net_bazzline_stringStartsWith $STRING $SUB_STRING) ]]; then
+        echo 'stats with'
+    else
+        echo 'stats with not'
+    fi
 
-STARTS_WITH=$(net_bazzline_stringStartsWith $STRING $SUB_STRING)
-echo "$STARTS_WITH"
+    STARTS_WITH=$(net_bazzline_stringStartsWith $STRING $SUB_STRING)
+    echo "$STARTS_WITH"
 
-if [[ $STARTS_WITH -eq 0 ]]; then
-    echo 'starts with'
-else
-    echo 'starts not with'
-fi
+    if [[ $STARTS_WITH -eq 0 ]]; then
+        echo 'starts with'
+    else
+        echo 'starts not with'
+    fi
 }
