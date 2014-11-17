@@ -943,6 +943,17 @@ function net_bazzline_list_interfaces ()
 }
 
 ####
+# list groups
+# 
+# @author stev leibelt <artodeto@bazzline.net>
+# @since 2014-11-17
+####
+function net_bazzline_list_groups ()
+{
+    getent group | awk -F ':' '{ print $1 }' | sort
+}
+
+####
 # list system users
 # 
 # @author stev leibelt <artodeto@bazzline.net>
@@ -950,7 +961,7 @@ function net_bazzline_list_interfaces ()
 ####
 function net_bazzline_list_system_users ()
 {
-    getent passwd | grep -v '/home' | awk -F ':' '{ print $1 }'
+    getent passwd | grep -v '/home' | awk -F ':' '{ print $1 }' | sort
 }
 
 ####
@@ -961,7 +972,7 @@ function net_bazzline_list_system_users ()
 ####
 function net_bazzline_list_users ()
 {
-    getent passwd | grep '/home' | awk -F ':' '{ print $1 }'
+    getent passwd | grep '/home' | awk -F ':' '{ print $1 }' | sort
 }
 
 function net_bazzline_test ()
