@@ -943,23 +943,23 @@ function net_bazzline_list_interfaces ()
 }
 
 ####
-# list all system users
+# list system users
 # 
 # @author stev leibelt <artodeto@bazzline.net>
 # @since 2014-11-17
 ####
-function net_bazzline_list_all_system_users ()
+function net_bazzline_list_system_users ()
 {
     getent passwd | grep -v '/home' | awk -F ':' '{ print $1 }'
 }
 
 ####
-# list all users
+# list users
 # 
 # @author stev leibelt <artodeto@bazzline.net>
 # @since 2014-11-17
 ####
-function net_bazzline_list_all_users ()
+function net_bazzline_list_users ()
 {
     getent passwd | grep '/home' | awk -F ':' '{ print $1 }'
 }
