@@ -5,7 +5,9 @@
 ####
 
 #https://wiki.archlinux.org/index.php/Xterm#TERM_Environmental_Variable
-export GREP_OPTIONS='--color=auto'
+#export GREP_OPTIONS='--color=auto'
+#https://bbs.archlinux.org/viewtopic.php?pid=1478573
+unset GREP_OPTIONS
 
 export LESS=-R
 export LESS_TERMCAP_me=$(printf '\e[0m')
