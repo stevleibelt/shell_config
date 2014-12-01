@@ -59,7 +59,7 @@ alias getExtensionFromFilename=net_bazzline_get_extension_from_filename
 alias getFilenameFromFilepath=net_bazzline_get_filename_from_filepath
 alias getNameFromFilename=net_bazzline_get_name_from_filename
 alias gitPushToMaster='git push -u origin master'
-alias grep='grep --color=auto'
+alias grep='grep --color=auto --exclude=\*.svn\*'
 alias guiEditor='geany'
 alias guiCdRipper='asunder'
 
