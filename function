@@ -975,6 +975,25 @@ function net_bazzline_list_users ()
     getent passwd | grep '/home' | awk -F ':' '{ print $1 }' | sort
 }
 
+####
+# sets the provided optical drive speed
+# 
+# @param int $1 - speed (default is 12)
+# 
+# @author stev leibelt <artodeto@bazzline.net>
+# @since 2014-12-02
+####
+function net_bazzline_set_optical_drive_speed ()
+{
+    if [[ $# -eq 1 ]]; then
+        SPEED="$1"
+    else
+        SPEED="12"
+    fi
+
+    eject -x $SPEED /dev/sr0
+}
+
 function net_bazzline_test ()
 {
     STRING=".md"

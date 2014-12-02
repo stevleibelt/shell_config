@@ -102,6 +102,7 @@ alias replaceStringInFiles=net_bazzline_replace_string_in_files
 alias runJar='java -jar '
 
 #s
+alias setOpticalDriveSpeed=net_bazzline_set_optical_drive_speed
 alias svnDiff=net_bazzline_svn_diff
 alias svnLogGrep=net_bazzline_svn_log_grep
 if [ -f $HOME'/code/sh/local/displayBatteryStatus.sh' ]; then
