@@ -103,7 +103,8 @@ alias runJar='java -jar '
 
 #s
 alias setOpticalDriveSpeed=net_bazzline_set_optical_drive_speed
-alias svnDiff=net_bazzline_svn_diff
+#alias svnDiff=net_bazzline_svn_diff
+alias svnRepositoryDiff=net_bazzline_svn_repository_diff
 alias svnLogGrep=net_bazzline_svn_log_grep
 if [ -f $HOME'/code/sh/local/displayBatteryStatus.sh' ]; then
   alias statusBattery='sh '$HOME'/code/sh/local/displayBatteryStatus.sh'

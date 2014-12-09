@@ -154,7 +154,7 @@ function net_bazzline_svn_log_grep ()
 # @author stev leibelt
 # @since 2013-01-30
 ####
-function net_bazzline_svn_diff ()
+function net_bazzline_svn_repository_diff ()
 {
     if [[ $# -eq 3 ]]; then
         svn diff --summarize "$1""/""$3" "$2""/""$3"
