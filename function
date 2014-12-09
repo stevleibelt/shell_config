@@ -146,6 +146,9 @@ function net_bazzline_svn_log_grep ()
 # 
 # @author stev leibelt
 # @since 2014-12-09
+# @see
+#   http://zalas.eu/viewing-svn-diff-result-in-colors/
+#   http://www.cyberciti.biz/programming/color-terminal-highlighter-for-diff-files/
 ####
 function net_bazzline_svn_diff ()
 {
