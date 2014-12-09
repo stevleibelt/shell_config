@@ -58,7 +58,9 @@ alias findPacFiles='find / -regextype posix-extended -regex ".+\.pac(new|save|or
 alias getExtensionFromFilename=net_bazzline_get_extension_from_filename
 alias getFilenameFromFilepath=net_bazzline_get_filename_from_filepath
 alias getNameFromFilename=net_bazzline_get_name_from_filename
-alias gitPushToMaster='git push -u origin master'
+if [[ -x '/usr/bin/git' ]]; then
+    alias gitPushToMaster='git push -u origin master'
+fi
 alias grep='grep --color=auto --exclude=\*.svn\*'
 alias guiEditor='geany'
 alias guiCdRipper='asunder'
@@ -103,9 +105,6 @@ alias runJar='java -jar '
 
 #s
 alias setOpticalDriveSpeed=net_bazzline_set_optical_drive_speed
-alias svnDiff=net_bazzline_svn_diff
-alias svnRepositoryDiff=net_bazzline_svn_repository_diff
-alias svnLogGrep=net_bazzline_svn_log_grep
 if [ -f $HOME'/code/sh/local/displayBatteryStatus.sh' ]; then
   alias statusBattery='sh '$HOME'/code/sh/local/displayBatteryStatus.sh'
 fi
@@ -165,7 +164,12 @@ alias searchAndReplaceInFiles=net_bazzline_replace_string_in_files
 alias startXorg='startx; exit'
 alias sshKeygen='ssh-keygen -b 4096 -t rsa'
 alias startPhpWebserver=net_bazzline_php_start_internal_webserver
-alias svnRevertAll='svn revert -R .'
+if [[ -x '/usr/bin/svn' ]]; then
+    alias svnDiff=net_bazzline_svn_diff
+    alias svnRepositoryDiff=net_bazzline_svn_repository_diff
+    alias svnLogGrep=net_bazzline_svn_log_grep
+    alias svnRevertAll='svn revert -R .'
+fi
 alias syncFromHost=net_bazzline_sync_from_host
 alias syncTime='ntpd -s'
 alias syncTo=net_bazzline_sync_to
