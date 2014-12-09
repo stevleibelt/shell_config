@@ -141,6 +141,21 @@ function net_bazzline_svn_log_grep ()
     fi
 }
 
+####
+# use colordiff (if available)
+# 
+# @author stev leibelt
+# @since 2014-12-09
+####
+function net_bazzline_svn_diff ()
+{
+    if [[ -x "/usr/bin/colordiff" ]]; then
+        svn diff "${@}" | /usr/bin/colordiff
+    else
+        svn diff "${@}"
+    fi
+}
+
 #####
 # Calls svn diff for two repositories.
 # Call $repositoryUrlOne $repositoryUrlTwo $filePath
