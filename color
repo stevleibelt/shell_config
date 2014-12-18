@@ -1,14 +1,16 @@
-#!/bin/bash
-####
-# @author stev leibelt <artodeto@bazzline.net>
-# @since 2013-04-24
-####
+! ####
+! # @author stev leibelt <artodeto@bazzline.net>
+! # @since 2013-04-24
+! ####
 
-xterm*borderWidth: 0
-xterm*background: black
-xterm*foreground: grey
-xterm*selectToClipboard: true
-xterm*utf8: 1
+! ####
+! # commented out 2014-12-18
+! ####
+! xterm*borderWidth: 0
+! xterm*background: black
+! xterm*foreground: grey
+! xterm*selectToClipboard: true
+! xterm*utf8: 1
 
 ! copied 2013-04-26 from http://git.sysphere.org/dotfiles/tree/Xdefaults
 ! anrxc X application resource database
