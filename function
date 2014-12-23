@@ -1012,6 +1012,24 @@ function net_bazzline_set_optical_drive_speed ()
     eject -x $SPEED /dev/sr0
 }
 
+####
+# @author stev leibelt <artodeto@bazzline.net>
+# @since 2014-12-23
+# @see
+#   https://wiki.archlinux.org/index.php/Sshd#Encrypted_SOCKS_tunnel
+####
+function net_bazzline_start_secure_chromium ()
+{
+    if [[ $NET_BAZZLINE_SECURE_CONNECTION_PORT -eq 0 ]]; then
+        echo 'NET_BAZZLINE_SECURE_CONNECTION_PORT not defined, take a look into setting.local'
+        return 1
+    else
+        port=$NET_BAZZLINE_SECURE_CONNECTION_PORT
+        chromium --proxy-server="socks://localhost:$port" &
+        return 0
+    fi
+}
+
 function net_bazzline_test ()
 {
     STRING=".md"
