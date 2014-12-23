@@ -90,6 +90,9 @@ alias mysqlRestart='sudo systemctl restart mysqld'
 alias mysqlStart='sudo systemctl start mysqld'
 alias mysqlStop='sudo systemctl start mysqld'
 
+#n
+alias netstatListRunningServices='netstat -tulpen'
+
 #p
 alias phpunitCodeCoverage=net_bazzline_phpunit_codecoverage
 alias psGrep=net_bazzline_psgrep
