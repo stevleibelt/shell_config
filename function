@@ -416,7 +416,7 @@ function net_bazzline_refresh_interface ()
 # @param string $1 - path to first directory
 # @param string $2 - path to second directory
 # 
-# @author stev leibelt <artodeto@arcor.de>
+# @author stev leibelt <artodeto@bazzline.net>
 # @since 2013-05-21
 function net_bazzline_diff_directory ()
 {
@@ -435,7 +435,7 @@ function net_bazzline_diff_directory ()
 #
 # @param string $1 - [optional] filename with extension
 #
-# @author stev leiblt <artodeto@arcor.de>
+# @author stev leiblt <artodeto@bazzline.net>
 # @since 2013-05-25
 ####
 function net_bazzline_screenshot ()
@@ -455,7 +455,7 @@ function net_bazzline_screenshot ()
 # @param string $1 - [optional] directory where to store report
 #                    default is "./report"
 #
-# @author stev leiblt <artodeto@arcor.de>
+# @author stev leiblt <artodeto@bazzline.net>
 # @since 2013-06-13
 ####
 function net_bazzline_phpunit_codecoverage ()
@@ -472,7 +472,7 @@ function net_bazzline_phpunit_codecoverage ()
 ####
 # Rsync with default values
 #
-# @author stev leibelt <artodeto@arcor.de>
+# @author stev leibelt <artodeto@bazzline.net>
 # @since 2013-12-21
 ####
 function net_bazzline_sync_to ()
@@ -497,7 +497,7 @@ function net_bazzline_sync_to ()
 # @param string $4 - destination path on local host
 # [@param string $5 - ssh key]
 #
-# @author stev leibelt <artodeto@arcor.de>
+# @author stev leibelt <artodeto@bazzline.net>
 # @since 2013-07-05
 ####
 function net_bazzline_sync_from_host ()
@@ -533,7 +533,7 @@ function net_bazzline_sync_from_host ()
 # @param string $4 - destination path on remote host
 # [@param string $5 - ssh key]
 #
-# @author stev leibelt <artodeto@arcor.de>
+# @author stev leibelt <artodeto@bazzline.net>
 # @since 2013-07-05
 ####
 function net_bazzline_sync_to_host ()
@@ -564,7 +564,7 @@ function net_bazzline_sync_to_host ()
 # Converts all mp3s to wav in current directory
 # taken from: https://wiki.archlinux.org/index.php/CD_Burning#Burning_an_audio_CD
 #
-# @author stev leibelt <artodeto@arcor.de>
+# @author stev leibelt <artodeto@bazzline.net>
 # @since 2013-07-17
 ####
 function net_bazzline_convert_mp3_to_wav ()
@@ -579,7 +579,7 @@ function net_bazzline_convert_mp3_to_wav ()
 # Converts all m4as to wav in current directory
 # taken from: http://www.togaware.com/linux/survivor/Convert_m4a.html
 #
-# @author stev leibelt <artodeto@arcor.de>
+# @author stev leibelt <artodeto@bazzline.net>
 # @since 2013-07-17
 ####
 function net_bazzline_convert_m4a_to_wav ()
@@ -594,7 +594,7 @@ function net_bazzline_convert_m4a_to_wav ()
 # Converts all wavs to mp3s in current directory
 # taken from: https://www.linuxquestions.org/questions/linux-general-1/converting-m4a-to-mp3-170553/
 #
-# @author stev leibelt <artodeto@arcor.de>
+# @author stev leibelt <artodeto@bazzline.net>
 # @since 2013-07-17
 ####
 function net_bazzline_convert_wav_to_mp3 ()
@@ -611,7 +611,7 @@ function net_bazzline_convert_wav_to_mp3 ()
 # taken from: http://stackoverflow.com/questions/4437901/find-and-replace-string-in-a-file
 # taken from: http://stackoverflow.com/questions/7450324/how-do-i-replace-a-string-with-another-string-in-all-files-below-my-current-dir
 #
-# @author stev leibelt <artodeto@arcor.de>
+# @author stev leibelt <artodeto@bazzline.net>
 # @since 2013-7-30
 ####
 function net_bazzline_replace_string_in_files ()
@@ -638,7 +638,7 @@ function net_bazzline_replace_string_in_files ()
 ####
 # Find all pacnew files
 #
-# @author stev leibelt <artodeto@arcor.de>
+# @author stev leibelt <artodeto@bazzline.net>
 # @since 2013-08.14
 ####
 function net_bazzline_arch_linux_locate_pacnew_files ()
@@ -654,7 +654,7 @@ function net_bazzline_arch_linux_locate_pacnew_files ()
 # [@param string $1 - directory that should be used as target, default is public]
 # [@param int $2 - port the webserver should listen on, default is 80]
 #
-# @author stev leibelt <artodeto@arcor.de>
+# @author stev leibelt <artodeto@bazzline.net>
 # @since 2013-08-21
 ####
 function net_bazzline_php_start_internal_webserver ()
@@ -681,7 +681,7 @@ function net_bazzline_php_start_internal_webserver ()
 # [@param] string search path
 # [@param] string directory path to exclude - and following parameters
 #
-# @author stev leibelt <artodeto@arcor.de>
+# @author stev leibelt <artodeto@bazzline.net>
 # @since 2013-10-02
 ####
 function net_bazzline_bash_grep ()
@@ -694,7 +694,7 @@ function net_bazzline_bash_grep ()
 #
 # @param int size
 #
-# @author stev leibelt <artodeto@arcor.de>
+# @author stev leibelt <artodeto@bazzline.net>
 # @since 2013-10-02
 ####
 function net_bazzline_image_batch_convert ()
@@ -710,7 +710,7 @@ function net_bazzline_image_batch_convert ()
 ####
 # Converts images in directory with size of 1920
 #
-# @author stev leibelt <artodeto@arcor.de>
+# @author stev leibelt <artodeto@bazzline.net>
 # @since 2013-10-02
 ####
 function net_bazzline_image_batch_convert_1920 ()
@@ -743,7 +743,7 @@ function net_bazzline_image_batch_convert_640 ()
 ####
 # Renames all existing directory content to lower case
 #
-# @author stev leibelt <artodeto@arcor.de>
+# @author stev leibelt <artodeto@bazzline.net>
 # @since 2013-11-21
 ####
 function net_bazzline_filename_to_lower_batch_rename ()
@@ -760,7 +760,7 @@ function net_bazzline_filename_to_lower_batch_rename ()
 #
 # use it like echo $(net_bazzline_get_filename_from_filepath my/path/to/a/file.extension)
 #
-# @author stev leibelt <artodeto@arcor.de>
+# @author stev leibelt <artodeto@bazzline.net>
 # @since 2013-11-30
 ####
 function net_bazzline_get_filename_from_filepath ()
@@ -785,7 +785,7 @@ function net_bazzline_get_filename_from_filepath ()
 #
 # use it like echo $(net_bazzline_get_name_from_filename name.extension)
 #
-# @author stev leibelt <artodeto@arcor.de>
+# @author stev leibelt <artodeto@bazzline.net>
 # @since 2013-11-30
 ####
 function net_bazzline_get_name_from_filename ()
@@ -811,7 +811,7 @@ function net_bazzline_get_name_from_filename ()
 #
 # use it like echo $(net_bazzline_get_extension_from_filename name.extension)
 #
-# @author stev leibelt <artodeto@arcor.de>
+# @author stev leibelt <artodeto@bazzline.net>
 # @since 2013-11-30
 ####
 function net_bazzline_get_extension_from_filename ()
@@ -834,7 +834,7 @@ function net_bazzline_get_extension_from_filename ()
 #
 # take a look on:   http://www.cyberciti.biz/faq/bash-shell-script-function-examples/
 #
-# @author stev leibelt <artodeto@arcor.de>
+# @author stev leibelt <artodeto@bazzline.net>
 # @since 2013-11-30
 ####
 function net_bazzline_convert_mkv_to_avi ()
