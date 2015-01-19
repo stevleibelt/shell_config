@@ -1030,6 +1030,50 @@ function net_bazzline_start_secure_chromium ()
     fi
 }
 
+####
+# @author stev leibelt <artodeto@bazzline.net>
+# @since 2015-01-19
+# @see
+#   https://answers.yahoo.com/question/index?qid=20080901083928AA22hSM
+#   http://askubuntu.com/questions/113188/character-encoding-problem-with-filenames-find-broken-filenames
+####
+function net_bazzline_convert_file_names_to_utf_8 ()
+{
+    if [[ $# -lt 1 ]]; then
+        echo 'usage: <command> <path> [dry-run|d]'
+        return 1
+    else
+        PATH="$1"
+
+        if [[ $# -eq 2 ]]; then
+            case "$2" in 
+                "d")
+                    DRY_RUN=1;;
+                "dry-run")
+                    DRY_RUN=1;;
+                *)
+                    DRY_RUN=0
+            esac
+        fi
+
+        for name in `find . -depth `; do 
+            NEW_NAME=`echo $NAME | iconv -f ISO-8859-1 -t UTF-8` 
+
+            if [[ $DRY_RUN -eq 1 ]]; then
+                `echo $NAME | iconv -f UTF-8 -t ISO-8859-1` 
+            fi
+
+            if [[ "$NEW_NAME" != "$NAME" ]]; then 
+                if [[ $DRY_RUN -eq 1 ]]; then
+                    echo "$NAME => $NEW_NAME" 
+                else
+                    mv "$NAME" "$NEW_NAME" 
+                fi
+            fi 
+        done 
+    fi
+}
+
 function net_bazzline_test ()
 {
     STRING=".md"

@@ -37,6 +37,7 @@ alias compileC++11='c++ -std=c++11'
 alias composerDumpAutoloadOptimized='composer dump-autoload --optimize'
 alias composerUpdateNoDev='composer update --no-dev'
 alias compress=net_bazzline_compress
+alias convertFileNamesToUtf8=net_bazzline_convert_file_names_to_utf_8
 alias convertM4aToWav=net_bazzline_convert_m4a_to_wav
 alias convertMp3ToWav=net_bazzline_convert_mp3_to_wav
 alias convertMkvToAvi=net_bazzline_convert_mkv_to_avi
