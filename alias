@@ -37,6 +37,7 @@ alias compileC++11='c++ -std=c++11'
 alias composerDumpAutoloadOptimized='composer dump-autoload --optimize'
 alias composerUpdateNoDev='composer update --no-dev'
 alias compress=net_bazzline_compress
+alias convertFileNamesToUtf8=net_bazzline_convert_file_names_to_utf_8
 alias convertM4aToWav=net_bazzline_convert_m4a_to_wav
 alias convertMp3ToWav=net_bazzline_convert_mp3_to_wav
 alias convertMkvToAvi=net_bazzline_convert_mkv_to_avi
@@ -126,7 +127,7 @@ if [[ $NET_BAZZLINE_PACKAGE_MANAGER = 'yaourt' ]]; then
     alias software-search='yaourt -Ss'
     alias software-search-installed='yaourt -Qs'
     alias software-update='yaourt -Sy'
-    alias software-upgrade='yaourt -Syu --aur'
+    alias software-upgrade='yaourt -Syua'
     alias software-repository-info='yaourt -Si'
 elif [[ $NET_BAZZLINE_PACKAGE_MANAGER = 'pacman' ]]; then
     alias software-check-unneeded-dependencies='pacman -Qqdt'

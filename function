@@ -627,12 +627,12 @@ function net_bazzline_replace_string_in_files ()
     FILE_EXTENSION="$3"
 
     if [[ $# -eq 4 ]]; then
-        PATH="$4"
+        DIRECTORY_PATH="$4"
     else
-        PATH="."
+        DIRECTORY_PATH="."
     fi
 
-    find "$PATH" -name "*.$FILE_EXTENSION" -type f -exec sed -i 's/'"$SEARCH"'/'"$REPLACE"'/g' {} \;
+    find "$DIRECTPRY_PATH" -name "*.$FILE_EXTENSION" -type f -exec sed -i 's/'"$SEARCH"'/'"$REPLACE"'/g' {} \;
 }
 
 ####
@@ -957,6 +957,8 @@ function net_bazzline_stringStartsWith ()
 ####
 function net_bazzline_list_interfaces ()
 {
+    # also possible
+    # ls /sys/class/net
     ip a | grep ':\ '
 }
 
@@ -1027,6 +1029,50 @@ function net_bazzline_start_secure_chromium ()
         port=$NET_BAZZLINE_SECURE_CONNECTION_PORT
         chromium --proxy-server="socks://localhost:$port" &
         return 0
+    fi
+}
+
+####
+# @author stev leibelt <artodeto@bazzline.net>
+# @since 2015-01-19
+# @see
+#   https://answers.yahoo.com/question/index?qid=20080901083928AA22hSM
+#   http://askubuntu.com/questions/113188/character-encoding-problem-with-filenames-find-broken-filenames
+####
+function net_bazzline_convert_file_names_to_utf_8 ()
+{
+    if [[ $# -lt 1 ]]; then
+        echo 'usage: <command> <path> [dry-run|d]'
+        return 1
+    else
+        DIRECTORY_PATH="$1"
+
+        if [[ $# -eq 2 ]]; then
+            case "$2" in 
+                "d")
+                    DRY_RUN=1;;
+                "dry-run")
+                    DRY_RUN=1;;
+                *)
+                    DRY_RUN=0
+            esac
+        fi
+
+        for name in `find $DIRECTORY_PATH -depth `; do 
+            NEW_NAME=`echo $NAME | iconv -f ISO-8859-1 -t UTF-8` 
+
+            if [[ $DRY_RUN -eq 1 ]]; then
+                `echo $NAME | iconv -f UTF-8 -t ISO-8859-1` 
+            fi
+
+            if [[ "$NEW_NAME" != "$NAME" ]]; then 
+                if [[ $DRY_RUN -eq 1 ]]; then
+                    echo "$NAME => $NEW_NAME" 
+                else
+                    mv "$NAME" "$NEW_NAME" 
+                fi
+            fi 
+        done 
     fi
 }
 
