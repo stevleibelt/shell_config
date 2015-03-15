@@ -1101,17 +1101,24 @@ function net_bazzline_mount_luks_zpool ()
 ####
 # @param string $crypto name
 # @param string $zpool
+# [@param] string $mount point
 # @author stev leibelt <artodeto@bazzline.net>
 # @since 2015-03-15
 ####
 function net_bazzline_unmount_luks_zpool ()
 {
-    if [[ $# -lt 4 ]]; then
-        echo 'usage: <command> <crypto name> <zpool>'
+    if [[ $# -lt 3 ]]; then
+        echo 'usage: <command> <crypto name> <zpool> [<mount point>]'
         return 1
     else
         NAME="$1"
         ZPOOL="$2"
+
+        if [[ $# -eq 4 ]]; then
+            MOUNT_POINT="$3"
+
+            sudo zfs unmount -a "$MOUNT_POINT"
+        fi
 
         sudo zpool export "$ZPOOL"
         sudo cryptsetup close "$NAME"
