@@ -1076,6 +1076,48 @@ function net_bazzline_convert_file_names_to_utf_8 ()
     fi
 }
 
+####
+# @param string $uuid
+# @param string $crypto name
+# @param string $zpool
+# @author stev leibelt <artodeto@bazzline.net>
+# @since 2015-03-15
+####
+function net_bazzline_mount_luks_zpool ()
+{
+    if [[ $# -lt 4 ]]; then
+        echo 'usage: <command> <disk uuid> <crypto name> <zpool>'
+        return 1
+    else
+        UUID="$1"
+        NAME="$2"
+        ZPOOL="$3"
+
+        sudo cryptsetup luksOpen /dev/disk/by-uuid/"$UUID" "$NAME"
+        sudo zpool import "$ZPOOL"
+    fi
+}
+
+####
+# @param string $crypto name
+# @param string $zpool
+# @author stev leibelt <artodeto@bazzline.net>
+# @since 2015-03-15
+####
+function net_bazzline_unmount_luks_zpool ()
+{
+    if [[ $# -lt 4 ]]; then
+        echo 'usage: <command> <crypto name> <zpool>'
+        return 1
+    else
+        NAME="$1"
+        ZPOOL="$2"
+
+        sudo zpool export "$ZPOOL"
+        sudo cryptsetup close "$NAME"
+    fi
+}
+
 function net_bazzline_test ()
 {
     STRING=".md"
