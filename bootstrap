@@ -2,22 +2,27 @@ source $PATH_SHELL_CONFIG'/setting'
 if [ -f $PATH_SHELL_CONFIG'/setting.local' ]; then
   source $PATH_SHELL_CONFIG'/setting.local'
 fi
+
 source $PATH_SHELL_CONFIG'/variable'
 if [ -f $PATH_SHELL_CONFIG'/variable.local' ]; then
   source $PATH_SHELL_CONFIG'/variable.local'
 fi
+
 source $PATH_SHELL_CONFIG'/source'
 if [ -f $PATH_SHELL_CONFIG'/source.local' ]; then
   source $PATH_SHELL_CONFIG'/source.local'
 fi
+
 source $PATH_SHELL_CONFIG'/export'
 if [ -f $PATH_SHELL_CONFIG'/export.local' ]; then
   source $PATH_SHELL_CONFIG'/export.local'
 fi
+
 source $PATH_SHELL_CONFIG'/function'
 if [ -f $PATH_SHELL_CONFIG'/function.local' ]; then
   source $PATH_SHELL_CONFIG'/function.local'
 fi
+
 source $PATH_SHELL_CONFIG'/alias'
 if [ -f $PATH_SHELL_CONFIG'/alias.local' ]; then
   source $PATH_SHELL_CONFIG'/alias.local'
