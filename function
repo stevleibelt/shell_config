@@ -1076,22 +1076,58 @@ function net_bazzline_convert_file_names_to_utf_8 ()
     fi
 }
 
+function net_bazzline_mount_sshfs ()
+{
+    if [[ $# -lt 4 ]]; then
+        echo "usage: <command> <mount point> <name> <host> [<path to identity file>]"
+        return 1
+    else
+        MOUNT_POINT="$2"
+        NAME="$3"
+        HOST="$4"
+
+        if [[ -d "$MOUNT_POINT" ]]; then
+            echo 'mount point "'"$MOUNT_POINT"'" exists, remove and retry'
+            return 1
+        fi
+
+        mkdir -p "$MOUNT_POINT"
+
+        if [[ $# -eq 5 ]]; then
+            KEY="$5"
+
+            sshfs -o IdentitiyFile="$KEY" "$NAME"@"$HOST" "$MOUNT_POINT"
+        else
+            sshfs "$NAME"@"$HOST" "$MOUNT_POINT"
+        fi
+    fi
+}
+
+function net_bazzline_unmount_sshfs ()
+{
+    echo "fusermount -u <mount point>"
+    echo "rm -fr <mount point>"
+}
+
 ####
+# @param string $zpool
 # @param string $uuid
 # @param string $crypto name
-# @param string $zpool
+# [@param string $uuid]
+# [@param string $crypto name]
 # @author stev leibelt <artodeto@bazzline.net>
 # @since 2015-03-15
+# @todo implement support for multiple uuids and crypto names, <zpool> <uuid one> <crypto name one> [<uuid two> <crypto name two>[...]]
 ####
 function net_bazzline_mount_luks_zpool ()
 {
     if [[ $# -lt 4 ]]; then
-        echo 'usage: <command> <disk uuid> <crypto name> <zpool>'
+        echo 'usage: <command> <zpool> <disk uuid> <crypto name> [<disk uuid> <crypto name>[...]]'
         return 1
     else
-        UUID="$1"
-        NAME="$2"
-        ZPOOL="$3"
+        UUID="$2"
+        NAME="$3"
+        ZPOOL="$1"
 
         sudo cryptsetup luksOpen /dev/disk/by-uuid/"$UUID" "$NAME"
         sudo zpool import "$ZPOOL"
@@ -1099,26 +1135,21 @@ function net_bazzline_mount_luks_zpool ()
 }
 
 ####
-# @param string $crypto name
 # @param string $zpool
-# [@param] string $mount point
+# @param string $crypto name
+# [@param string $crypto name]
 # @author stev leibelt <artodeto@bazzline.net>
 # @since 2015-03-15
+# @todo implement support for multiple crypto names
 ####
 function net_bazzline_unmount_luks_zpool ()
 {
     if [[ $# -lt 3 ]]; then
-        echo 'usage: <command> <crypto name> <zpool> [<mount point>]'
+        echo "usage: <command> <zpool> <crypto name> <zpool>"
         return 1
     else
-        NAME="$1"
-        ZPOOL="$2"
-
-        if [[ $# -eq 4 ]]; then
-            MOUNT_POINT="$3"
-
-            sudo zfs unmount -a "$MOUNT_POINT"
-        fi
+        NAME="$2"
+        ZPOOL="$1"
 
         sudo zpool export "$ZPOOL"
         sudo cryptsetup close "$NAME"
