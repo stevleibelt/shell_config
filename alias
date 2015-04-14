@@ -24,9 +24,9 @@ alias burn=net_bazzline_burn
 #c
 alias c=clear
 if [[ $NET_BAZZLINE_PACKAGE_MANAGER = 'apt' ]]; then
-    alias cal='ncal -w3'
+    alias cal='ncal -w3 -m'
 else
-    alias cal='cal -w3'
+    alias cal='cal -w3 -m'
 fi
 alias cd=net_bazzline_cd
 alias cdAudioRipper=asunder
