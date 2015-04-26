@@ -489,6 +489,25 @@ function net_bazzline_sync_to ()
 }
 
 ####
+# Rsync with default backupt values
+#
+# @author stev leibelt <artodeto@bazzline.net>
+# @since 2015-04-07
+####
+function net_bazzline_backup_to ()
+{
+    if [[ $# -eq 0 ]]; then
+        echo 'invalid number of variables provided'
+        echo 'command [source one] [source ...] target'
+        return 1
+    elif [[ $# -eq 1 ]]; then
+        rsync -aq --delete . "$1"
+    else
+        rsync -aq --delete $@
+    fi
+}
+
+####
 # Uses rsync with ssh to copy data from remote to local host
 #
 # @param string $1 - remote user
