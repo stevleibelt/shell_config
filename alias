@@ -82,6 +82,7 @@ alias listSystemUsers=net_bazzline_list_system_users
 alias listUsers=net_bazzline_list_users
 
 #m
+alias mergeAudiAndVideo=net_bazzline_merge_audio_and_video
 alias mkdir=net_bazzline_mkdir
 alias mkdirPrefixCurrentDate=net_bazzline_mkdirPrefixCurrentDate
 alias mysqlRestart='sudo systemctl restart mysqld'
