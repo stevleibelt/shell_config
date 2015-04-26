@@ -878,6 +878,31 @@ function net_bazzline_convert_mkv_to_avi ()
 }
 
 ####
+# merges video and audio file into one file
+#
+# @param string $1 - path to audio file
+# @param string $2 - path to video file
+# @param string $3 - path to merged file
+#
+# @author stev leibelt <artodeto@bazzline.net>
+# @since 2015-04-26
+####
+function net_bazzline_merge_audio_and_video ()
+{
+    if [[ $# -eq 3 ]]; then
+        PATH_TO_AUDIO="$1"
+        PATH_TO_VIDEO="$2"
+        PATH_TO_OUTPUT="$3"
+
+        ffmpeg -i $PATH_TO_AUDIO -i $PATH_TO_VIDEO -acodec copy -vcodec copy $PATH_TO_OUTPUT
+    else
+        echo "invalid number of arguments supplied"
+        echo "<command> <path to audio file> <path to video file> <path to output file>"
+        return 1
+    fi
+}
+
+####
 # lists all available process listening on given port
 #
 # @param integer $1 - port number
