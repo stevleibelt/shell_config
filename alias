@@ -30,8 +30,7 @@ else
 fi
 alias cd=net_bazzline_cd
 alias cdAudioRipper=asunder
-alias cdConfig='cd '$HOME'/config'
-alias cdGitHub='cd '$HOME'/data/git/com/github'
+alias cdGitHub='cd '$HOME'/software/source/com/github'
 alias cdPhp='cd '$HOME'/code/php'
 alias compileC++11='c++ -std=c++11'
 alias composerDumpAutoloadOptimized='composer dump-autoload --optimize'
@@ -56,6 +55,7 @@ alias fileManager=pcmanfm
 alias findPacFiles='find / -regextype posix-extended -regex ".+\.pac(new|save|orig)" 2> /dev/null'
 
 #g
+alias gitResolveConflicts='git mergetool -t vimdiff'
 alias getExtensionFromFilename=net_bazzline_get_extension_from_filename
 alias getFilenameFromFilepath=net_bazzline_get_filename_from_filepath
 alias getNameFromFilename=net_bazzline_get_name_from_filename
