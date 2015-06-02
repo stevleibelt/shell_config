@@ -104,6 +104,7 @@ alias relogin='bash -l'
 alias reloadBashEnvironment='source ~/.bashrc && clear'
 alias renameAllToLower=net_bazzline_filename_to_lower_batch_rename
 alias replaceStringInFiles=net_bazzline_replace_string_in_files
+alias rsync=net_bazzline_rsync
 alias runJar='java -jar '
 
 #s

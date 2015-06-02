@@ -1200,6 +1200,11 @@ function net_bazzline_unmount_luks_zpool ()
     fi
 }
 
+function net_bazzline_rsync ()
+{
+    rsync -aq --delete $@
+}
+
 function net_bazzline_test ()
 {
     STRING=".md"
