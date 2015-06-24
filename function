@@ -1205,6 +1205,23 @@ function net_bazzline_rsync ()
     rsync -aq --delete $@
 }
 
+####
+# @see http://superuser.com/questions/71163/how-to-find-all-soft-links-symbolic-links-in-current-directory
+####
+function net_bazzline_list_symbolic_links ()
+{
+    if [[ $# -gt 1 ]]; then
+        echo "usage: <command> <path>"
+        return 1
+    elif [[ $# -eq 1 ]]; then
+        SEARCH_PATH="$1"
+    else
+        SEARCH_PATH="."
+    fi
+
+    find "$SEARCH_PATH" -type l -print0 | xargs -0 ls -ld
+}
+
 function net_bazzline_test ()
 {
     STRING=".md"
