@@ -100,7 +100,7 @@ function net_bazzline_cd ()
             cd ..
         done
     else
-        cd "$1"
+        \cd "$1"
     fi
 }
 
