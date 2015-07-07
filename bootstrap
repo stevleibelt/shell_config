@@ -1,3 +1,17 @@
+# SCRIPT_PATH=$(cd $(dirname "${BASH_SOURCE[0]}"); pwd)
+# declare -a SOURCE_FILES=('setting' 'variable' 'source' 'export' 'function' 'alias');
+# for SOURCE_FILE in ${SOURCE_FILES[@]}; do
+#    SOURCE_FILE_PATH=$SCRIPT_PATH'/'$SOURCE_FILE
+#    LOCAL_SOURCE_FILE_PATH=$SOURCE_FILE_PATH'.local'
+#
+#    if [ -f $SOURCE_FILE_PATH ]; then
+#        source $SOURCE_FILE_PATH
+#    fi
+#    if [ -f $LOCAL_SOURCE_FILE_PATH ]; then
+#        source $LOCAL_SOURCE_FILE_PATH
+#    fi
+# done;
+
 source $PATH_SHELL_CONFIG'/setting'
 if [ -f $PATH_SHELL_CONFIG'/setting.local' ]; then
   source $PATH_SHELL_CONFIG'/setting.local'
