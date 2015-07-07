@@ -1243,3 +1243,46 @@ function net_bazzline_test ()
         echo 'starts not with'
     fi
 }
+
+####
+# @param string $PATH_TO_SSH_KEY
+# @param string $SOURCE_HOST
+# @param string $SOURCE_PATH
+# @param string $DESTINATION_PATH
+####
+function net_bazzline_scp_from_host()
+{
+    if [[ $# -eq 4 ]]; then
+        PATH_TO_SSH_KEY="$1"
+        SOURCE_HOST="$2"
+        SOURCE_PATH="$3"
+        DESTINATION_PATH="$4"
+
+        scp -i $PATH_TO_SSH_KEY $SOURCE_HOST:$SOURCE_PATH $DESTINATION_PATH
+    else
+        echo 'invalid number of arguments'
+        echo '    de_jobleads_sleibelt_scp_from <path to ssh key> <source host> <source path> <destination path>'
+    fi  
+}
+
+####
+# @param string $PATH_TO_SSH_KEY
+# @param string $DESTINATION_HOST
+# @param string $SOURCE_PATH
+# @param string $DESTINATION_PATH
+####
+function net_bazzline_scp_to_host()
+{
+    if [[ $# -eq 4 ]]; then
+        PATH_TO_SSH_KEY="$1"
+        DESTINATION_HOST="$2"
+        SOURCE_PATH="$3"
+        DESTINATION_PATH="$4"
+
+        scp -i $PATH_TO_SSH_KEY $SOURCE_PATH $DESTINATION_HOST:$DESTINATION_PATH
+    else
+        echo 'invalid number of arguments'
+        echo '    de_jobleads_sleibelt_scp_from <path to ssh key> <source host> <source path> <destination path>'
+    fi  
+}
+
