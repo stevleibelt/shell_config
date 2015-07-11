@@ -1258,7 +1258,7 @@ function net_bazzline_scp_from_host()
         SOURCE_PATH="$3"
         DESTINATION_PATH="$4"
 
-        scp -i $PATH_TO_SSH_KEY $SOURCE_HOST:$SOURCE_PATH $DESTINATION_PATH
+        scp -r -i $PATH_TO_SSH_KEY $SOURCE_HOST:$SOURCE_PATH $DESTINATION_PATH
     else
         echo 'invalid number of arguments'
         echo '    net_bazzline_scp_from_host <path to ssh key> <source host> <source path> <destination path>'
@@ -1279,7 +1279,7 @@ function net_bazzline_scp_to_host()
         SOURCE_PATH="$3"
         DESTINATION_PATH="$4"
 
-        scp -i $PATH_TO_SSH_KEY $SOURCE_PATH $DESTINATION_HOST:$DESTINATION_PATH
+        scp -r -i $PATH_TO_SSH_KEY $SOURCE_PATH $DESTINATION_HOST:$DESTINATION_PATH
     else
         echo 'invalid number of arguments'
         echo '    net_bazzline_scp_to_host <path to ssh key> <source host> <source path> <destination path>'
