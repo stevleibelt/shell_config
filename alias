@@ -57,6 +57,7 @@ alias findPacFiles='find / -regextype posix-extended -regex ".+\.pac(new|save|or
 
 #g
 alias gitResolveConflicts='git mergetool -t vimdiff'
+alias gitUpdateAllRepositories=net_bazzline_git_update_all_repositories
 alias getExtensionFromFilename=net_bazzline_get_extension_from_filename
 alias getFilenameFromFilepath=net_bazzline_get_filename_from_filepath
 alias getNameFromFilename=net_bazzline_get_name_from_filename

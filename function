@@ -1286,3 +1286,35 @@ function net_bazzline_scp_to_host()
     fi  
 }
 
+####
+# @param string $PATH_TO_THE_REPOSITORIES
+# @see https://stackoverflow.com/questions/18884992/how-do-i-assign-ls-to-an-array-in-linux-bash
+####
+function net_bazzline_git_update_all_repositories()
+{
+    if [[ $# -lt 1 ]]; then
+        echo 'invalid number of arguments'
+        echo '    net_bazzline_git_update_all_repositories <path to the repositories>'
+        return 1
+    fi
+
+    PATH_TO_REPOSITORIES=$(realpath $1)
+    shopt -s nullglob
+    array=("$PATH_TO_REPOSITORIES"/*/)
+    shopt -u nullglob
+
+    for entry in ${array[@]}; do
+        if [ -d "$entry/.git" ]; then
+            echo "$entry"
+            cd "$entry"
+            git pull
+            git fetch all
+            cd "$PATH_TO_REPOSITORIES1"
+        else
+            net_bazzline_git_update_all_repositories "$entry"
+            cd "$PATH_TO_REPOSITORIES1"
+        fi  
+    done;
+
+    return 0;
+}
