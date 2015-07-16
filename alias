@@ -200,6 +200,7 @@ alias v=vim
 alias webRestart='apacheRestart mysqlRestart'
 alias webStart='apacheStart mysqlStart'
 alias webStop='apacheStop mysqpStop'
+alias wgetWholeWebPage='wget -np -r -k'
 alias whatIsListeningOnPort=net_bazzline_what_is_listening_on_that_port
 alias wirelessStatus='clear & iwlist wlan0 scan'
 
