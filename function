@@ -1308,7 +1308,7 @@ function net_bazzline_git_update_all_repositories()
             echo "$entry"
             cd "$entry"
             git pull
-            git fetch all
+            git fetch --all --prune
             cd "$PATH_TO_REPOSITORIES1"
         else
             net_bazzline_git_update_all_repositories "$entry"
