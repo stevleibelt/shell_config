@@ -83,6 +83,7 @@ alias listGroups=net_bazzline_list_groups
 alias listSymbolicLinks=net_bazzline_list_symbolic_links
 alias listSystemUsers=net_bazzline_list_system_users
 alias listUsers=net_bazzline_list_users
+alias loadVirtualBoxModules='sudo modprobe vboxdrv && sudo modprobe vboxnetadp && sudo modprobe vboxnetflt && sudo modprobe vboxpci'
 
 #m
 alias mergeAudioAndVideo=net_bazzline_merge_audio_and_video
@@ -193,6 +194,7 @@ alias touchPrefixCurrentDate=net_bazzline_touchPrefixCurrentDate
 
 #u
 alias unhideFileSystemObject=net_bazzline_unhide_file_system_object
+alias unloadVirtualBoxModules='sudo modprobe -r vboxdrv && sudo modprobe -r vboxnetadp && sudo modprobe -r vboxnetflt && sudo modprobe -r vboxpci'
 
 #v
 alias v=vim
