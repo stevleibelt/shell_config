@@ -174,6 +174,7 @@ alias startSecureChromium=net_bazzline_start_secure_chromium
 alias startXorg='startx; exit'
 alias sshKeygen='ssh-keygen -b 4096 -t rsa'
 alias startPhpWebserver=net_bazzline_php_start_internal_webserver
+alias startVirtualBox='sudo modprobe vboxdrv vboxnetadp vboxnetflt vboxpci vboxguest vboxsf vboxvideo'
 if [[ -x '/usr/bin/svn' ]]; then
     alias svnDiff=net_bazzline_svn_diff
     alias svnRepositoryDiff=net_bazzline_svn_repository_diff
