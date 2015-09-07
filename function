@@ -683,13 +683,13 @@ function net_bazzline_php_start_internal_webserver ()
         PORT="$2";
     elif [[ $# -eq 1 ]]; then
         DIRECTORY="$1";
-        PORT=80;
+        PORT=8080;
     else
         DIRECTORY="public";
-        PORT=80;
+        PORT=8080;
     fi
 
-    php -S 0.0.0.0:"$PORT" -t "$DIRECTORY"
+    /bin/env php -S 0.0.0.0:"$PORT" -t "$DIRECTORY"
 }
 
 ####
