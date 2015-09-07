@@ -78,12 +78,14 @@ alias killSkype='killall -u $USER skype'
 #l
 alias l='ls -halt'
 alias landslideTango='landslide -t tango -i ';
+alias lh='ls -halt | head'
 alias listInterfaces=net_bazzline_list_interfaces
 alias listGroups=net_bazzline_list_groups
 alias listSymbolicLinks=net_bazzline_list_symbolic_links
 alias listSystemUsers=net_bazzline_list_system_users
 alias listUsers=net_bazzline_list_users
 alias loadVirtualBoxModules='sudo modprobe vboxdrv && sudo modprobe vboxnetadp && sudo modprobe vboxnetflt && sudo modprobe vboxpci'
+alias lt='ls -halt | tail'
 
 #m
 alias mergeAudioAndVideo=net_bazzline_merge_audio_and_video
