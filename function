@@ -689,7 +689,7 @@ function net_bazzline_php_start_internal_webserver ()
         PORT=80;
     fi
 
-    sudo php -S 0.0.0.0:"$PORT" -t "$DIRECTORY"
+    php -S 0.0.0.0:"$PORT" -t "$DIRECTORY"
 }
 
 ####
