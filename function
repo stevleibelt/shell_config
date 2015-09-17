@@ -120,6 +120,21 @@ function net_bazzline_psgrep ()
 }
 
 ####
+# Calls grep with "-ir --color=auto --exclude=\*.svn\* --exclude=\*.git\*" and directs errors to /dev/null
+# All your provided parameters are passed to grep
+#
+# 
+####
+function net_bazzline_silent_grep ()
+{
+    if [[ $# -lt 1 ]]; then
+        grep
+    else
+        grep -ir --color=auto --exclude=\*.svn\* --exclude=\*.git\* $@ 2>/dev/null
+    fi
+}
+
+####
 # calls svn log with limit and pipes content into a grep
 #
 # @param string $1 - pattern / what you search for

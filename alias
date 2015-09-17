@@ -120,6 +120,7 @@ fi
 if [ -f $HOME'/code/sh/local/sensorsRefresh.sh' ]; then
   alias statusSensor='sh '$HOME'/code/sh/local/sensorsRefresh.sh'
 fi
+alias silentGrep=net_bazzline_silent_grep
 alias skype='xhost +local: && sudo -u skype /usr/bin/skype'
 if [[ $NET_BAZZLINE_PACKAGE_MANAGER = 'yaourt' ]]; then
     alias software-check-unneeded-dependencies='yaourt -Qqdt'
