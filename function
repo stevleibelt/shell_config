@@ -1288,6 +1288,7 @@ function net_bazzline_test ()
 # @param string $SOURCE_HOST
 # @param string $SOURCE_PATH
 # @param string $DESTINATION_PATH
+# @todo make PATH_TO_SSH_KEY optional
 ####
 function net_bazzline_scp_from_host()
 {
@@ -1309,6 +1310,7 @@ function net_bazzline_scp_from_host()
 # @param string $DESTINATION_HOST
 # @param string $SOURCE_PATH
 # @param string $DESTINATION_PATH
+# @todo make PATH_TO_SSH_KEY optional
 ####
 function net_bazzline_scp_to_host()
 {
