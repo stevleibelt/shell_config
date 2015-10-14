@@ -84,7 +84,7 @@ alias listGroups=net_bazzline_list_groups
 alias listSymbolicLinks=net_bazzline_list_symbolic_links
 alias listSystemUsers=net_bazzline_list_system_users
 alias listUsers=net_bazzline_list_users
-alias loadVirtualBoxModules='sudo modprobe vboxdrv && sudo modprobe vboxnetadp && sudo modprobe vboxnetflt && sudo modprobe vboxpci'
+alias loadVirtualBoxModules='sudo modprobe -a vboxdrv vboxnetadp vboxnetflt vboxpci'
 alias lt='ls -halt | tail'
 
 #m
@@ -177,7 +177,6 @@ alias startSecureChromium=net_bazzline_start_secure_chromium
 alias startXorg='startx; exit'
 alias sshKeygen='ssh-keygen -b 4096 -t rsa'
 alias startPhpWebserver=net_bazzline_php_start_internal_webserver
-alias startVirtualBox='sudo modprobe vboxdrv vboxnetadp vboxnetflt vboxpci vboxguest vboxsf vboxvideo'
 if [[ -x '/usr/bin/svn' ]]; then
     alias svnDiff=net_bazzline_svn_diff
     alias svnRepositoryDiff=net_bazzline_svn_repository_diff
