@@ -196,6 +196,7 @@ alias tarList=net_bazzline_tar_list
 alias touchPrefixCurrentDate=net_bazzline_touchPrefixCurrentDate
 
 #u
+alias updateVimBundlesAndPluginsWithVundle='vim +PluginInstall +qall & vim +BundleInstall +qall'
 alias unhideFileSystemObject=net_bazzline_unhide_file_system_object
 alias unloadVirtualBoxModules='sudo modprobe -r vboxdrv && sudo modprobe -r vboxnetadp && sudo modprobe -r vboxnetflt && sudo modprobe -r vboxpci'
 
