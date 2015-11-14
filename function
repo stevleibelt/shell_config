@@ -504,7 +504,7 @@ function net_bazzline_sync_to ()
 }
 
 ####
-# Rsync with default backupt values
+# Rsync with default backup values
 #
 # @author stev leibelt <artodeto@bazzline.net>
 # @since 2015-04-07
