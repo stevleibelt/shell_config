@@ -1328,6 +1328,45 @@ function net_bazzline_scp_to_host()
 }
 
 ####
+# @param string $STRING
+# @param string $SEARCH
+# @return int (0 true, 1 false)
+#
+# @usage: 
+#   if net_bazzline_string_contains 'foo' 'bar'; then
+#       echo 'contains'
+#   else
+#       echo 'does not contain'
+#   fi
+#
+# @see:
+#   http://stackoverflow.com/questions/229551/string-contains-in-bash
+#   http://stackoverflow.com/questions/6241256/what-is-proper-way-to-test-a-bash-function-return-value
+# @author stev leibelt <artodeto@bazzline.net>
+# @since 2015-11-05
+####
+function net_bazzline_string_contains()
+{
+    if [[ $# -eq 2 ]]; then
+        CONTAINS=1
+        STRING="$1"
+        SEARCH="$2"
+
+        case "$STRING" in 
+           *"$SEARCH"*)
+             CONTAINS=0
+            ;;
+        esac   
+
+        return $CONTAINS
+    else
+        echo 'invalid number of arguments'
+        echo '    net_bazzline_string_contains <string> <search>'
+        return 1
+    fi
+}
+
+####
 # @param string $PATH_TO_THE_REPOSITORIES
 # @see https://stackoverflow.com/questions/18884992/how-do-i-assign-ls-to-an-array-in-linux-bash
 ####
