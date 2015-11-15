@@ -1398,3 +1398,44 @@ function net_bazzline_git_update_all_repositories()
 
     return 0;
 }
+
+####
+# begin of zfs section
+####
+
+####
+# @param string <path to zfs pool>
+# [@param string <name of the snapshot>, default is current date
+####
+function net_bazzline_create_zfs_snapshot()
+{
+#check if snapshot exists
+#
+}
+
+####
+# @param string <path to zfs pool>
+# @param string <name of the snapshot>
+####
+function net_bazzline_delete_zfs_snapshot()
+{
+}
+
+####
+# @param string <path to zfs pool>
+####
+function net_bazzline_list_zfs_snapshots()
+{
+}
+
+####
+# @param string <path to zfs pool>
+# [@param int number of snapshots to keep, default is 1]
+####
+function net_bazzline_rotate_zfs_snapshot()
+{
+}
+
+####
+# end of zfs section
+####
