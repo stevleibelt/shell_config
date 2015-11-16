@@ -43,9 +43,11 @@ alias convertM4aToWav=net_bazzline_convert_m4a_to_wav
 alias convertMp3ToWav=net_bazzline_convert_mp3_to_wav
 alias convertMkvToAvi=net_bazzline_convert_mkv_to_avi
 alias convertWavToMp3=net_bazzline_convert_wav_to_mp3
+alias createZfsSnapshot=net_bazzline_create_zfs_snapshot
 
 #d
 alias decompress=net_bazzline_decompress
+alias deleteZfsSnapshot=net_bazzline_delete_zfs_snapshot
 alias diffDirectories=net_bazzline_diff_directory
 alias docker-remove-all-images='docker ps -a -q | xargs docker rm'
 
@@ -85,6 +87,7 @@ alias listGroups=net_bazzline_list_groups
 alias listSymbolicLinks=net_bazzline_list_symbolic_links
 alias listSystemUsers=net_bazzline_list_system_users
 alias listUsers=net_bazzline_list_users
+alias listZfsSnapshots=net_bazzline_list_zfs_snapshots
 alias loadVirtualBoxModules='sudo modprobe -a vboxdrv vboxnetadp vboxnetflt vboxpci'
 alias lt='ls -halt | tail'
 
