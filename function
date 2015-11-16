@@ -1404,30 +1404,66 @@ function net_bazzline_git_update_all_repositories()
 ####
 
 ####
-# @param string <path to zfs pool>
+# @param string <name of the zfs pool>
 # [@param string <name of the snapshot>, default is current date
 ####
 function net_bazzline_create_zfs_snapshot()
 {
-    echo 'work in progress'
-    #check if snapshot exists
+    if [[ $# -lt 1 ]]; then
+        echo 'invalid number of arguments'
+        echo '    net_bazzline_create_zfs_snapshot <name of the zfs pool> [<name of the snapshot>]'
+        return 1
+    fi
+
+    NAME_OF_THE_POOL="$1"
+
+    if [[ $# -gt 1 ]]; then
+        NAME_OF_THE_SNAPSHOT="$2"
+    else
+        NAME_OF_THE_SNAPSHOT=$(date +'%Y-%m-%d_%H-%M%-S')
+    fi
+
+    if sudo zfs snapshot -r $NAME_OF_THE_POOL@$NAME_OF_THE_SNAPSHOT; then
+        echo 'snapshot "'$NAME_OF_THE_SNAPSHOT'" created for pool "'$NAME_OF_THE_POOL'"'
+    fi
+
+    return $?
 }
 
 ####
-# @param string <path to zfs pool>
+# @param string <name of zfs pool>
 # @param string <name of the snapshot>
 ####
 function net_bazzline_delete_zfs_snapshot()
 {
-    echo 'work in progress'
+    if [[ $# -lt 2 ]]; then
+        echo 'invalid number of arguments'
+        echo '    net_bazzline_delete_zfs_snapshot <name of the zfs pool> [<name of the snapshot>]'
+        return 1
+    fi
+
+    NAME_OF_THE_POOL="$1"
+    NAME_OF_THE_SNAPSHOT="$2"
+
+    if sudo zfs destroy -f $NAME_OF_THE_POOL@$NAME_OF_THE_SNAPSHOT; then
+        echo 'snapshot "'$NAME_OF_THE_SNAPSHOT'" deleted from pool "'$NAME_OF_THE_POOL'"'
+    fi
+
+    return $?
 }
 
 ####
-# @param string <path to zfs pool>
+# [@param string <path to zfs pool>]
 ####
 function net_bazzline_list_zfs_snapshots()
 {
-    echo 'work in progress'
+    if [[ $# -lt 1 ]]; then
+        sudo zfs list -t snapshot
+    else
+        NAME_OF_THE_POOL="$1"
+
+        sudo zfs list -t snapshot | grep $NAME_OF_THE_POOL
+    fi
 }
 
 ####
