@@ -1445,7 +1445,7 @@ function net_bazzline_delete_zfs_snapshot()
     NAME_OF_THE_POOL="$1"
     NAME_OF_THE_SNAPSHOT="$2"
 
-    if sudo zfs destroy -f $NAME_OF_THE_POOL@$NAME_OF_THE_SNAPSHOT; then
+    if sudo zfs destroy -R $NAME_OF_THE_POOL@$NAME_OF_THE_SNAPSHOT; then
         echo 'snapshot "'$NAME_OF_THE_SNAPSHOT'" deleted from pool "'$NAME_OF_THE_POOL'"'
     fi
 
