@@ -1420,7 +1420,7 @@ function net_bazzline_create_zfs_snapshot()
     if [[ $# -gt 1 ]]; then
         NAME_OF_THE_SNAPSHOT="$2"
     else
-        NAME_OF_THE_SNAPSHOT=$(date +'%Y-%m-%d_%H-%M%-%S')
+        NAME_OF_THE_SNAPSHOT=$(date +'%Y-%m-%d_%H-%M-%S')
     fi
 
     if sudo zfs snapshot -r $NAME_OF_THE_POOL@$NAME_OF_THE_SNAPSHOT; then
