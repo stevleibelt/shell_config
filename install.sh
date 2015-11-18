@@ -30,7 +30,11 @@ echo '' >> $HOME'/.bashrc'
 echo '#net_bazzline_config_shell end' >> $HOME'/.bashrc'
 
 echo 'Creating local files'
-touch $PATH_SELF/alias.local $PATH_SELF/color.local $PATH_SELF/export.local $PATH_SELF/function.local $PATH_SELF/setting.local $PATH_SELF/source.local $PATH_SELF/variable.local
+declare -a FILES_TO_CREATE=('setting' 'variable' 'source' 'export' 'function' 'alias' 'automatic_start')
+for FILE_TO_CREATE in ${FILES_TO_CREATE[@]}; do
+    touch $PATH_SELF"/"$FILES_TO_CREATE".local"
+    echo "#!/bin/bash" > $PATH_SELF"/"$FILES_TO_CREATE".local"
+done;
 
 echo 'Creating temporary .xinitrc.temp'
 touch $HOME'/.xinitrc.temp'
