@@ -1,43 +1,13 @@
-# SCRIPT_PATH=$(cd $(dirname "${BASH_SOURCE[0]}"); pwd)
-# declare -a SOURCE_FILES=('setting' 'variable' 'source' 'export' 'function' 'alias');
-# for SOURCE_FILE in ${SOURCE_FILES[@]}; do
-#    SOURCE_FILE_PATH=$SCRIPT_PATH'/'$SOURCE_FILE
-#    LOCAL_SOURCE_FILE_PATH=$SOURCE_FILE_PATH'.local'
-#
-#    if [ -f $SOURCE_FILE_PATH ]; then
-#        source $SOURCE_FILE_PATH
-#    fi
-#    if [ -f $LOCAL_SOURCE_FILE_PATH ]; then
-#        source $LOCAL_SOURCE_FILE_PATH
-#    fi
-# done;
+#!/bin/bash
 
-source $PATH_SHELL_CONFIG'/setting'
-if [ -f $PATH_SHELL_CONFIG'/setting.local' ]; then
-  source $PATH_SHELL_CONFIG'/setting.local'
-fi
+# order is important
+declare -a FILES_TO_LOAD=('setting' 'variable' 'source' 'export' 'function' 'alias' 'automatic_start')
 
-source $PATH_SHELL_CONFIG'/variable'
-if [ -f $PATH_SHELL_CONFIG'/variable.local' ]; then
-  source $PATH_SHELL_CONFIG'/variable.local'
-fi
+for FILE_TO_LOAD in ${FILES_TO_LOAD[@]}; do
+    source $PATH_SHELL_CONFIG"/"$FILE_TO_LOAD
 
-source $PATH_SHELL_CONFIG'/source'
-if [ -f $PATH_SHELL_CONFIG'/source.local' ]; then
-  source $PATH_SHELL_CONFIG'/source.local'
-fi
-
-source $PATH_SHELL_CONFIG'/export'
-if [ -f $PATH_SHELL_CONFIG'/export.local' ]; then
-  source $PATH_SHELL_CONFIG'/export.local'
-fi
-
-source $PATH_SHELL_CONFIG'/function'
-if [ -f $PATH_SHELL_CONFIG'/function.local' ]; then
-  source $PATH_SHELL_CONFIG'/function.local'
-fi
-
-source $PATH_SHELL_CONFIG'/alias'
-if [ -f $PATH_SHELL_CONFIG'/alias.local' ]; then
-  source $PATH_SHELL_CONFIG'/alias.local'
-fi
+    LOCAL_FILE_TO_LOAD=$FILE_TO_LOAD".local"
+    if [ -f $PATH_SHELL_CONFIG"/"$LOCAL_FILE_TO_LOAD ]; then
+      source $PATH_SHELL_CONFIG"/"$LOCAL_FILE_TO_LOAD
+    fi
+done;
