@@ -24,5 +24,7 @@ NET_BAZZLINE_AUTOSTART_SSH_AGENT=0
 NET_BAZZLINE_PACKAGE_MANAGER='none'
 #add all you known interfaces in here
 NET_BAZZLINE_INTERFACES=()
+#timeout in minutes to forget ssh password
+NET_BAZZLINE_REMEMBER_SSH_PASSWORD_TIMEOUT_IN_MINUTES=30
 #add port where your secure connection is listen on (via ssh -D)
 NET_BAZZLINE_SECURE_CONNECTION_PORT=0

@@ -1478,3 +1478,24 @@ function net_bazzline_rotate_zfs_snapshot()
 ####
 # end of zfs section
 ####
+
+####
+# begin of ssh section
+####
+
+function net_bazzline_load_ssh_keys_in_keychain()
+{
+    if [[ -f /usr/bin/keychain ]]; then
+        if [[ $# -gt 0 ]]; then
+            eval $(keychain --eval --quiet --timeout $NET_BAZZLINE_REMEMBER_SSH_PASSWORD_TIMEOUT_IN_MINUTES $@)
+        fi
+    else
+        echo 'keychain is not installed'
+
+        return 1
+    fi
+}
+
+####
+# end of ssh section
+####
