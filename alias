@@ -31,8 +31,6 @@ else
 fi
 alias cd=net_bazzline_cd
 alias cdAudioRipper=asunder
-alias cdGitHub='cd '$HOME'/software/source/com/github'
-alias cdPhp='cd '$HOME'/code/php'
 alias compileC++11='c++ -std=c++11'
 alias compileC++14='c++ -std=c++14'
 alias composerDumpAutoloadOptimized='composer dump-autoload --optimize'
