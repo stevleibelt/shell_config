@@ -1499,3 +1499,20 @@ function net_bazzline_load_ssh_keys_in_keychain()
 ####
 # end of ssh section
 ####
+
+####
+# begin of webcam section
+####
+function net_bazzline_make_picture_via_webcam()
+{
+    if [[ -f /usr/bin/fswebcam ]]; then
+        LOCAL_CURRENT_DATE_TIME=$(date +'%Y_%m_%d_%H_%M_%S')
+        /usr/bin/fswebcam $LOCAL_CURRENT_DATE_TIME'.jpg'
+    else
+        echo 'fswebcam is not installed'
+    fi
+}
+
+####
+# end of webcam section
+####
