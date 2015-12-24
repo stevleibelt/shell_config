@@ -1507,9 +1507,14 @@ function net_bazzline_make_picture_via_webcam()
 {
     if [[ -f /usr/bin/fswebcam ]]; then
         LOCAL_CURRENT_DATE_TIME=$(date +'%Y_%m_%d_%H_%M_%S')
-        /usr/bin/fswebcam $LOCAL_CURRENT_DATE_TIME'.jpg'
+        LOCAL_FILE_NAME=$LOCAL_CURRENT_DATE_TIME'.jpg'
+
+        /usr/bin/fswebcam -r 1920x1920 $LOCAL_FILE_NAME
+        echo 'created '$LOCAL_FILE_NAME
     else
         echo 'fswebcam is not installed'
+
+        return 1
     fi
 }
 
