@@ -97,6 +97,7 @@ alias loadVirtualBoxModules='sudo modprobe -a vboxdrv vboxnetadp vboxnetflt vbox
 alias lt='ls -halt | tail'
 
 #m
+alias makePictureViaWebcam=net_bazzline_make_picture_via_webcam
 alias mergeAudioAndVideo=net_bazzline_merge_audio_and_video
 alias mkdir=net_bazzline_mkdir
 alias mkdirPrefixCurrentDate=net_bazzline_mkdirPrefixCurrentDate
