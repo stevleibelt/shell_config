@@ -1501,6 +1501,28 @@ function net_bazzline_load_ssh_keys_in_keychain()
 ####
 
 ####
+# begin of webcam section
+####
+function net_bazzline_make_picture_via_webcam()
+{
+    if [[ -f /usr/bin/fswebcam ]]; then
+        LOCAL_CURRENT_DATE_TIME=$(date +'%Y_%m_%d_%H_%M_%S')
+        LOCAL_FILE_NAME=$LOCAL_CURRENT_DATE_TIME'.jpg'
+
+        /usr/bin/fswebcam -r 1920x1920 $LOCAL_FILE_NAME
+        echo 'created '$LOCAL_FILE_NAME
+    else
+        echo 'fswebcam is not installed'
+
+        return 1
+    fi
+}
+
+####
+# end of webcam section
+####
+
+####
 # begin of vim section
 ####
 
@@ -1521,3 +1543,7 @@ function net_bazzline_update_vim_bundles_and_plugins_with_vundle()
     #install all available plugins
     vim +PluginInstall +qall & vim +BundleInstall +qall
 }
+
+####
+# end of vim section
+####
