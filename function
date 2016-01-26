@@ -1499,3 +1499,25 @@ function net_bazzline_load_ssh_keys_in_keychain()
 ####
 # end of ssh section
 ####
+
+####
+# begin of vim section
+####
+
+function net_bazzline_update_vim_bundles_and_plugins_with_vundle()
+{
+    LOCAL_PATH_TO_VUNDLE=$HOME'/.vim/bundle/Vundle.vim'
+
+    #create directory if it does not exist
+    if [[ ! -d "$LOCAL_PATH_TO_VUNDLE" ]]; then
+        mkdir -p $LOCAL_PATH_TO_VUNDLE
+    fi
+
+    #clone vundle if directory is empty
+    if [[ ! "$(ls -A $DIR_SELF)" ]]; then
+        git clone https://github.com/VundleVim/Vundle.vim.git $LOCAL_PATH_TO_VUNDLE
+    fi
+
+    #install all available plugins
+    vim +PluginInstall +qall & vim +BundleInstall +qall
+}
