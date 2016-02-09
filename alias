@@ -51,7 +51,11 @@ if [[ -f /usr/bin/zpool ]]; then
     alias deleteZfsSnapshot=net_bazzline_delete_zfs_snapshot
 fi
 alias diffDirectories=net_bazzline_diff_directory
+alias disableTouchpad='synclient TouchpadOff=1'
 alias docker-remove-all-images='docker ps -a -q | xargs docker rm'
+
+#e
+alias enableTouchpad='synclient TouchpadOff=0'
 
 #f
 alias findBrokenSymlinks='find . -type l -! -exec test -e {} \; -print'
