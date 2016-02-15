@@ -20,6 +20,7 @@ alias batchConvertImageTo640=net_bazzline_image_batch_convert_640
 alias batchConvertImageTo1024=net_bazzline_image_batch_convert_1024
 alias batchConvertImageTo1920=net_bazzline_image_batch_convert_1920
 alias batteryStatus='clear & acpi -i'
+alias becomeRoot='sudo su'
 alias burn=net_bazzline_burn
 
 #c
