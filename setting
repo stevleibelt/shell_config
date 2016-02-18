@@ -35,10 +35,5 @@ set show-all-if-ambiguous on
 set show-all-if-unmodified on
 
 # Arrow keys in 8 bit ANSI mode
-
-#bind "\e[A": history-search-backward
-#bind "\e[B": history-search-forward
-bind "\e[A": previous-history
-bind "\e[B": next-history
 bind "\e[C": forward-word
 bind "\e[D": backward-word
