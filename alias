@@ -10,17 +10,12 @@ alias ..='cd ..'
 #a
 alias abcde='abcde -S 12'
 alias ant='ant -logger org.apache.tools.ant.listener.AnsiColorLogger'
-alias apacheRestart='sudo systemctl restart httpd.service'
-alias apacheStart='sudo systemctl start httpd.service'
-alias apacheStop='sudo systemctl start httpd.service'
-alias archLinuxFindPacnew=net_bazzline_arch_linux_locate_pacnew_files
 
 #b
 alias batchConvertImageTo640=net_bazzline_image_batch_convert_640
 alias batchConvertImageTo1024=net_bazzline_image_batch_convert_1024
 alias batchConvertImageTo1920=net_bazzline_image_batch_convert_1920
 alias batteryStatus='clear & acpi -i'
-alias becomeRoot='sudo su'
 alias burn=net_bazzline_burn
 
 #c
@@ -31,11 +26,8 @@ else
     alias cal='cal -w3 -m'
 fi
 alias cd=net_bazzline_cd
-alias cdAudioRipper=asunder
 alias compileC++11='c++ -std=c++11'
 alias compileC++14='c++ -std=c++14'
-alias composerDumpAutoloadOptimized='composer dump-autoload --optimize'
-alias composerUpdateNoDev='composer update --no-dev'
 alias compress=net_bazzline_compress
 alias convertFileNamesToUtf8=net_bazzline_convert_file_names_to_utf_8
 alias convertM4aToWav=net_bazzline_convert_m4a_to_wav
@@ -53,7 +45,6 @@ if [[ -f /usr/bin/zpool ]]; then
 fi
 alias diffDirectories=net_bazzline_diff_directory
 alias disableTouchpad='synclient TouchpadOff=1'
-alias docker-remove-all-images='docker ps -a -q | xargs docker rm'
 
 #e
 alias enableTouchpad='synclient TouchpadOff=0'
@@ -62,19 +53,14 @@ alias enableTouchpad='synclient TouchpadOff=0'
 alias findBrokenSymlinks='find . -type l -! -exec test -e {} \; -print'
 alias findDirectory=net_bazzline_find_directory
 alias findFile=net_bazzline_find_file
-alias fileManager=pcmanfm
-alias findPacFiles='find / -regextype posix-extended -regex ".+\.pac(new|save|orig)" 2> /dev/null'
+alias findAllPacFiles='find / -regextype posix-extended -regex ".+\.pac(new|save|orig)" 2> /dev/null'
 alias findSymlinks='find . -type l'
 
 #g
-alias gitResolveConflicts='git mergetool -t vimdiff'
-alias gitUpdateAllRepositories=net_bazzline_git_update_all_repositories
 alias getExtensionFromFilename=net_bazzline_get_extension_from_filename
 alias getFilenameFromFilepath=net_bazzline_get_filename_from_filepath
 alias getNameFromFilename=net_bazzline_get_name_from_filename
 alias grep='grep --color=auto --exclude=\*.svn\*'
-alias guiEditor='geany'
-alias guiCdRipper='asunder'
 
 #h
 alias hideFileSystemObject=net_bazzline_hide_file_system_object
@@ -88,7 +74,6 @@ alias killSkype='killall -u $USER skype'
 
 #l
 alias l='ls -halt'
-alias landslideTango='landslide -t tango -i ';
 alias lh='ls -halt | head'
 alias listInterfaces=net_bazzline_list_interfaces
 alias listGroups=net_bazzline_list_groups
@@ -106,15 +91,11 @@ alias makePictureViaWebcam=net_bazzline_make_picture_via_webcam
 alias mergeAudioAndVideo=net_bazzline_merge_audio_and_video
 alias mkdir=net_bazzline_mkdir
 alias mkdirPrefixCurrentDate=net_bazzline_mkdirPrefixCurrentDate
-alias mysqlRestart='sudo systemctl restart mysqld'
-alias mysqlStart='sudo systemctl start mysqld'
-alias mysqlStop='sudo systemctl start mysqld'
 
 #n
 alias netstatListRunningServices='netstat -tulpen'
 
 #p
-alias phpunitCodeCoverage=net_bazzline_phpunit_codecoverage
 alias psGrep=net_bazzline_psgrep
 
 #r
@@ -122,6 +103,7 @@ alias r='rm -fr';
 alias refreshInterface='net_bazzline_refresh_interface'
 alias relogin='bash -l'
 alias reloadBashEnvironment='source ~/.bashrc && clear'
+alias removeAllDockerImages='docker ps -a -q | xargs docker rm'
 alias renameAllToLower=net_bazzline_filename_to_lower_batch_rename
 alias replaceStringInFiles=net_bazzline_replace_string_in_files
 alias rsync=net_bazzline_rsync
@@ -215,6 +197,7 @@ alias testConnection='clear && curl https://resttest.bazzline.net'
 alias touchPrefixCurrentDate=net_bazzline_touchPrefixCurrentDate
 
 #u
+alias updateAllRepositories=net_bazzline_git_update_all_repositories
 alias updateVimBundlesAndPluginsWithVundle=net_bazzline_update_vim_bundles_and_plugins_with_vundle
 alias unhideFileSystemObject=net_bazzline_unhide_file_system_object
 alias unloadVirtualBoxModules='sudo modprobe -r vboxdrv && sudo modprobe -r vboxnetadp && sudo modprobe -r vboxnetflt && sudo modprobe -r vboxpci'
@@ -223,9 +206,6 @@ alias unloadVirtualBoxModules='sudo modprobe -r vboxdrv && sudo modprobe -r vbox
 alias v=vim
 
 #w
-alias webRestart='apacheRestart mysqlRestart'
-alias webStart='apacheStart mysqlStart'
-alias webStop='apacheStop mysqpStop'
 alias wgetWholeWebPage='wget -np -r -k'
 alias whatIsListeningOnPort=net_bazzline_what_is_listening_on_that_port
 alias wirelessStatus='clear & iwlist wlan0 scan'
