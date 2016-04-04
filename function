@@ -1514,3 +1514,36 @@ function net_bazzline_update_vim_bundles_and_plugins_with_vundle()
 ####
 # end of vim section
 ####
+
+####
+# begin of filesystem section
+####
+
+function net_bazzline_organize_directory_content()
+{
+    if [[ $# -eq 0 ]]; then
+        declare -a LOCAL_DIRECTORY_NAMES=("0" "1" "2" "3" "4" "5" "6" "7" "8" "9" "a" "b" "c" "d" "e" "f" "g" "h" "i" "j" "k" "l" "m" "n" "o" "p" "q" "r" "s" "t" "u" "v" "w" "x" "y" "z");
+    else
+        LOCAL_DIRECTORY_NAMES=( "$@" )
+    fi
+
+    for LOCAL_DIRECTORY_NAME in "${LOCAL_DIRECTORY_NAMES[@]}"; do 
+        LOCAL_DIRECTORY_NAME_AS_LOWERCASE=$(echo $LOCAL_DIRECTORY_NAME | tr [A-Z] [a-z])
+        LOCAL_DIRECTORY_NAME_AS_UPPERCASE=$(echo $LOCAL_DIRECTORY_NAME | tr [a-z] [A-Z])
+
+        if [[ ! -d "$LOCAL_DIRECTORY_NAME" ]]; then
+            mkdir "$LOCAL_DIRECTORY_NAME"
+        fi
+
+        #@todo check if there is something available
+        mv "$LOCAL_DIRECTORY_NAME*" "$LOCAL_DIRECTORY_NAME"
+        mv "$LOCAL_DIRECTORY_NAME_AS_LOWERCASE*" "$LOCAL_DIRECTORY_NAME"
+        mv "$LOCAL_DIRECTORY_NAME_AS_UPPERCASE*" "$LOCAL_DIRECTORY_NAME"
+
+        #@todo check if directory is empty and remove them, also an option, do it outside of the loop and only once
+    done
+}
+
+####
+# end of filesystem section
+####
