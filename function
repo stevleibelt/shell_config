@@ -1519,29 +1519,100 @@ function net_bazzline_update_vim_bundles_and_plugins_with_vundle()
 # begin of filesystem section
 ####
 
+####
+# @param string $# - string name of directory you want to create
+#
+# @author stev leibelt
+# @since 2016-04-07
 function net_bazzline_organize_directory_content()
 {
+    #begin of input validation
     if [[ $# -eq 0 ]]; then
         declare -a LOCAL_DIRECTORY_NAMES=("0" "1" "2" "3" "4" "5" "6" "7" "8" "9" "a" "b" "c" "d" "e" "f" "g" "h" "i" "j" "k" "l" "m" "n" "o" "p" "q" "r" "s" "t" "u" "v" "w" "x" "y" "z");
     else
         LOCAL_DIRECTORY_NAMES=( "$@" )
     fi
+    #end of input validation
 
-    for LOCAL_DIRECTORY_NAME in "${LOCAL_DIRECTORY_NAMES[@]}"; do 
-        LOCAL_DIRECTORY_NAME_AS_LOWERCASE=$(echo $LOCAL_DIRECTORY_NAME | tr [A-Z] [a-z])
-        LOCAL_DIRECTORY_NAME_AS_UPPERCASE=$(echo $LOCAL_DIRECTORY_NAME | tr [a-z] [A-Z])
+    #begin of declaration
+    LOCAL_TEMPORARY_DIRECTORY_NAME="_net_bazzline_organize_directory_content_temporary"
+    #end of declaration
 
-        if [[ ! -d "$LOCAL_DIRECTORY_NAME" ]]; then
-            mkdir "$LOCAL_DIRECTORY_NAME"
+    #begin of iteration over all provided arguments
+    for LOCAL_DIRECTORY_NAME in "${LOCAL_DIRECTORY_NAMES[@]}"
+    do 
+        #@todo figure out why we have to implement this crazy workaround
+        LOCAL_LENGHT_OF_DIRECTORY_NAME=${#LOCAL_DIRECTORY_NAME} 
+        if [[ $LOCAL_LENGHT_OF_DIRECTORY_NAME -gt 0 ]]
+        then
+            #begin of declaration
+            LOCAL_DIRECTORY_NAME_AS_LOWERCASE=$(echo "$LOCAL_DIRECTORY_NAME" | tr A-Z a-z)
+            LOCAL_DIRECTORY_NAME_AS_UPPERCASE=$(echo "$LOCAL_DIRECTORY_NAME" | tr a-z A-Z)
+            declare -a LOCAL_POSSIBLE_ITEM_NAMES=( "$LOCAL_DIRECTORY_NAME" )
+
+            if [[ "$LOCAL_DIRECTORY_NAME_AS_LOWERCASE" != "$LOCAL_DIRECTORY_NAME" ]]
+            then
+                LOCAL_POSSIBLE_ITEM_NAMES+=( "$LOCAL_DIRECTORY_NAME_AS_LOWERCASE" )
+            fi
+
+            if [[ "$LOCAL_DIRECTORY_NAME_AS_UPPERCASE" != "$LOCAL_DIRECTORY_NAME" ]]
+            then
+                LOCAL_POSSIBLE_ITEM_NAMES+=( "$LOCAL_DIRECTORY_NAME_AS_UPPERCASE" )
+            fi
+            #end of declaration
+
+            #begin of create temporary directory
+            if [[ ! -d "$LOCAL_TEMPORARY_DIRECTORY_NAME" ]]
+            then
+                mkdir "$LOCAL_TEMPORARY_DIRECTORY_NAME"
+            fi
+            #end of create temporary directory
+
+            #begin of iteration over all possible argument names
+            for LOCAL_POSSIBLE_ITEM_NAME in "${LOCAL_POSSIBLE_ITEM_NAMES[@]}"
+            do 
+                #@todo figure out why we have to implement this crazy workaround
+                LOCAL_LENGHT_OF_POSSIBLE_ITEM_NAME=${#LOCAL_POSSIBLE_ITEM_NAME} 
+                if [[ $LOCAL_LENGHT_OF_POSSIBLE_ITEM_NAME -gt 0 ]]
+                then
+                    LOCAL_NUMBER_OF_ENTRIES_FOR_POSSIBLE_ITEM_NAME=$(find . -maxdepth 1 -not -name ".*" -name "$LOCAL_POSSIBLE_ITEM_NAME*" | wc -l)
+
+                    #begin of moving available files into temporary directory
+                    if [[ $LOCAL_NUMBER_OF_ENTRIES_FOR_POSSIBLE_ITEM_NAME -gt 0 ]]
+                    then
+                        #we found some files, so move it
+                        mv "$LOCAL_POSSIBLE_ITEM_NAME"* "$LOCAL_TEMPORARY_DIRECTORY_NAME/"
+                    fi
+                    #end of moving available files into temporary directory
+                fi
+            done
+            #end of iteration over all possible argument names
+
+            #begin of moving into real target directory
+            if [[ "$(ls -A $LOCAL_TEMPORARY_DIRECTORY_NAME)" ]]
+            then
+                #directory is not empty
+                if [[ ! -d "$LOCAL_DIRECTORY_NAME" ]]
+                then
+                    #create directory if it does not exist
+                    mkdir "$LOCAL_DIRECTORY_NAME"
+                fi
+
+                #move files into it final directory
+                mv "$LOCAL_TEMPORARY_DIRECTORY_NAME"/* "$LOCAL_DIRECTORY_NAME"
+            fi
+            #end of moving into real target directory
         fi
-
-        #@todo check if there is something available
-        mv "$LOCAL_DIRECTORY_NAME*" "$LOCAL_DIRECTORY_NAME"
-        mv "$LOCAL_DIRECTORY_NAME_AS_LOWERCASE*" "$LOCAL_DIRECTORY_NAME"
-        mv "$LOCAL_DIRECTORY_NAME_AS_UPPERCASE*" "$LOCAL_DIRECTORY_NAME"
-
-        #@todo check if directory is empty and remove them, also an option, do it outside of the loop and only once
     done
+    #end of iteration over all provided arguments
+
+    #begin of clean up
+    if [[ -d "$LOCAL_TEMPORARY_DIRECTORY_NAME" ]]
+    then
+        #remove temporary directory
+        rmdir "$LOCAL_TEMPORARY_DIRECTORY_NAME"
+    fi
+    #end of clean up
 }
 
 ####

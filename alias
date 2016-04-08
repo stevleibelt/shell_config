@@ -96,6 +96,9 @@ alias mkdirPrefixCurrentDate=net_bazzline_mkdirPrefixCurrentDate
 #n
 alias netstatListRunningServices='netstat -tulpen'
 
+#o
+alias organizeDirectoryContent=net_bazzline_organize_directory_content
+
 #p
 alias psGrep=net_bazzline_psgrep
 
