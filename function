@@ -1524,6 +1524,7 @@ function net_bazzline_update_vim_bundles_and_plugins_with_vundle()
 #
 # @author stev leibelt
 # @since 2016-04-07
+####
 function net_bazzline_organize_directory_content()
 {
     #begin of input validation
@@ -1615,10 +1616,66 @@ function net_bazzline_organize_directory_content()
     #end of clean up
 }
 
+####
+# [@param string $1 - path to search in]
+# [@param string $2 - name/pattern to search for]
+#
+# @author stev leibelt
+# @since 2016-04-10
+####
+function net_bazzline_count_number_of_items_in_path()
+{
+    if [[ $# -gt 0 ]]
+    then
+        LOCAL_PATH="$1"
+    else
+        LOCAL_PATH="."
+    fi
+
+    if [[ $# -gt 1 ]]
+    then
+        LOCAL_ITEM_NAME="$2"
+        LOCAL_NUMBER_OF_ENTRIES_FOR_POSSIBLE_ITEM_NAME=$(find $LOCAL_PATH -maxdepth 1 -not -name ".*" -name "$LOCAL_ITEM_NAME" | wc -l)
+    else
+        LOCAL_NUMBER_OF_ENTRIES_FOR_POSSIBLE_ITEM_NAME=$(find $LOCAL_PATH -maxdepth 1 -not -name ".*" | wc -l)
+    fi
+
+    return $LOCAL_NUMBER_OF_ENTRIES_FOR_POSSIBLE_ITEM_NAME
+}
+
 function net_bazzline_move_in_chunks()
 {
-    #<size of the chunk> <sleep between>
-    echo 'in action'
+    #source [source[...]] destination [--chunk_size=<int>] [--number_of_seconds_to_wait=<int>]
+    #begin of input validation
+    #@todo do it nicer
+    if [[ $# -lt 2 ]]
+    then
+        echo "invalid number of arguments provided"
+        echo "usage: <command> source [source[...]] destination [--chunk_size=<int>] [--number_of_seconds_to_wait=<int>]"
+        return 1
+    fi
+
+    LOCAL_CHUNK_SIZE=23
+    LOCAL_NUMBER_OF_SECONDS_TO_SLEEP_BETWEEN_CHUNKS=7
+    #end of input validation
+
+    #begin of moving
+    #iterate over source
+    #last argument is the target
+    #begin foreach souce
+    #   while LOCAL_NUMBER_OF_FILES_IN_SOURCE -gt 0
+    #       move
+    #       sleep
+    #       set_number_of_files_
+    #end foreach souce
+    #end of moving
+while [ $count -le 9 ]
+do
+echo "$count"
+sleep 1
+(( count++ ))
+done
+
 }
 
 ####
