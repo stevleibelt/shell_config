@@ -1575,13 +1575,13 @@ function net_bazzline_organize_directory_content()
                 LOCAL_LENGHT_OF_POSSIBLE_ITEM_NAME=${#LOCAL_POSSIBLE_ITEM_NAME} 
                 if [[ $LOCAL_LENGHT_OF_POSSIBLE_ITEM_NAME -gt 0 ]]
                 then
-                    LOCAL_NUMBER_OF_ENTRIES_FOR_POSSIBLE_ITEM_NAME=$(find . -maxdepth 1 -not -name ".*" -name "$LOCAL_POSSIBLE_ITEM_NAME*" | wc -l)
+                    LOCAL_NUMBER_OF_ENTRIES_FOR_POSSIBLE_ITEM_NAME=$(find . -maxdepth 1 -not -name ".*" -name "$LOCAL_POSSIBLE_ITEM_NAME?*" | wc -l)
 
                     #begin of moving available files into temporary directory
                     if [[ $LOCAL_NUMBER_OF_ENTRIES_FOR_POSSIBLE_ITEM_NAME -gt 0 ]]
                     then
                         #we found some files, so move it
-                        mv "$LOCAL_POSSIBLE_ITEM_NAME"* "$LOCAL_TEMPORARY_DIRECTORY_NAME/"
+                        mv "$LOCAL_POSSIBLE_ITEM_NAME"?* "$LOCAL_TEMPORARY_DIRECTORY_NAME/"
                     fi
                     #end of moving available files into temporary directory
                 fi
@@ -1613,6 +1613,12 @@ function net_bazzline_organize_directory_content()
         rmdir "$LOCAL_TEMPORARY_DIRECTORY_NAME"
     fi
     #end of clean up
+}
+
+function net_bazzline_move_in_chunks()
+{
+    #<size of the chunk> <sleep between>
+    echo 'in action'
 }
 
 ####
