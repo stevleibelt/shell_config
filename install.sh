@@ -33,7 +33,7 @@ echo 'Creating local files'
 declare -a FILES_TO_CREATE=('setting' 'variable' 'source' 'export' 'function' 'alias' 'automatic_start')
 for FILE_TO_CREATE in ${FILES_TO_CREATE[@]}; do
     touch $PATH_SELF"/"$FILES_TO_CREATE".local"
-    echo "#!/bin/bash" > $PATH_SELF"/"$FILES_TO_CREATE".local"
+    echo "#!/bin/bash" > $PATH_SELF"/local."$FILES_TO_CREATE
 done;
 
 echo 'Creating temporary .xinitrc.temp'
@@ -48,8 +48,8 @@ echo PATH_SHELL_CONFIG=$PATH_SELF >> $HOME'/.xinitrc.temp'
 echo "if [ -f \$PATH_SHELL_CONFIG'/color' ]; then " >> $HOME'/.xinitrc.temp'
 echo "  xrdb -merge \$PATH_SHELL_CONFIG'/color'" >> $HOME'/.xinitrc.temp'
 echo "fi" >> $HOME'/.xinitrc.temp'
-echo "if [ -f \$PATH_SHELL_CONFIG'/color.local' ]; then " >> $HOME'/.xinitrc.temp'
-echo "  xrdb -merge \$PATH_SHELL_CONFIG'/color.local'" >> $HOME'/.xinitrc.temp'
+echo "if [ -f \$PATH_SHELL_CONFIG'/local.color' ]; then " >> $HOME'/.xinitrc.temp'
+echo "  xrdb -merge \$PATH_SHELL_CONFIG'/local.color'" >> $HOME'/.xinitrc.temp'
 echo "fi" >> $HOME'/.xinitrc.temp'
 echo '' >> $HOME'/.xinitrc.temp'
 echo '#net_bazzline_config_shell end' >> $HOME'/.xinitrc.temp'

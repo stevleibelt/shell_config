@@ -13,4 +13,4 @@ A bootstrapfile that loads all files and if exists local files.
     * removes existing adaption of the bashrc
     * recalls install.sh
 * create clean
-    * removes \*.local files
+    * removes local.\* files

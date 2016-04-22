@@ -6,7 +6,14 @@ declare -a FILES_TO_LOAD=('setting' 'variable' 'source' 'export' 'function' 'ali
 for FILE_TO_LOAD in ${FILES_TO_LOAD[@]}; do
     source $PATH_SHELL_CONFIG"/"$FILE_TO_LOAD
 
-    LOCAL_FILE_TO_LOAD=$FILE_TO_LOAD".local"
+    LOCAL_LEGACY_FILE_TO_LOAD=$FILE_TO_LOAD".local"
+
+    if [ -f $PATH_SHELL_CONFIG"/"$LOCAL_LEGACY_FILE_TO_LOAD ]; then
+        echo "legacy local file name detected, please rename it to local.$FILE_TO_LOAD"
+    fi
+
+    LOCAL_FILE_TO_LOAD="local."$FILE_TO_LOAD
+
     if [ -f $PATH_SHELL_CONFIG"/"$LOCAL_FILE_TO_LOAD ]; then
       source $PATH_SHELL_CONFIG"/"$LOCAL_FILE_TO_LOAD
     fi
