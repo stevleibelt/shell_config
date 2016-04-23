@@ -1,3 +1,4 @@
 *.local
 local.*
 vim/.vim/.netrwhist
+.current_installed_version
