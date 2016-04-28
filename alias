@@ -123,6 +123,7 @@ if [ -f $HOME'/code/sh/local/sensorsRefresh.sh' ]; then
 fi
 alias silentGrep=net_bazzline_silent_grep
 alias skype='xhost +local: && sudo -u skype /usr/bin/skype'
+#@todo: validate against https://wiki.archlinux.org/index.php/Pacman/Rosetta
 if [[ $NET_BAZZLINE_PACKAGE_MANAGER = 'yaourt' ]]; then
     alias software-check-unneeded-dependencies='yaourt -Qqdt'
     alias software-clean-cache='yaourt -Scc'
