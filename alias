@@ -34,6 +34,7 @@ alias convertFileNamesToUtf8=net_bazzline_convert_file_names_to_utf_8
 alias convertM4aToWav=net_bazzline_convert_m4a_to_wav
 alias convertMp3ToWav=net_bazzline_convert_mp3_to_wav
 alias convertMkvToAvi=net_bazzline_convert_mkv_to_avi
+alias convertVideoToScreenSize=net_bazzline_convert_video_to_screen_size
 alias convertWavToMp3=net_bazzline_convert_wav_to_mp3
 if [[ -f /usr/bin/zpool ]]; then
     alias createZfsSnapshot=net_bazzline_create_zfs_snapshot

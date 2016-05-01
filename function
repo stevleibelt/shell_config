@@ -855,6 +855,10 @@ function net_bazzline_get_extension_from_filename ()
 }
 
 ####
+# begin of audio and video section
+###
+
+####
 # copies content of mkv container to avi container
 #
 # take a look on:   http://www.cyberciti.biz/faq/bash-shell-script-function-examples/
@@ -884,6 +888,31 @@ function net_bazzline_convert_mkv_to_avi ()
 }
 
 ####
+# @param string $1 - path to the source file
+# @param string $2 - path to the destination file
+# [@param string $3 - screen size, default is 1024x768]
+####
+function net_bazzline_convert_video_to_screen_size ()
+{
+    if [[ $# -lt 2 ]]; then
+        echo "invalid number of arguments supplied"
+        echo "<path to source file> <path to destination file> [<screen size>]"
+        return 1
+    else
+        if [[ $# -gt 2 ]]; then
+            LOCAL_SCREEN_SIZE="$3"
+        else
+            LOCAL_SCREEN_SIZE="1024x768"
+        fi
+
+        LOCAL_PATH_TO_DESTINATION_FILE="$2"
+        LOCAL_PATH_TO_SOURCE_FILE="$1"
+    fi
+
+    ffmpeg -i "$LOCAL_PATH_TO_SOURCE_FILE" -acodec copy -scodec copy -s "$LOCAL_SCREEN_SIZE" -vcodec libx264 -pass 1 "$LOCAL_PATH_TO_DESTINATION_FILE"
+}
+
+####
 # merges video and audio file into one file
 #
 # @param string $1 - path to audio file
@@ -907,6 +936,10 @@ function net_bazzline_merge_audio_and_video ()
         return 1
     fi
 }
+
+####
+# end of audio and video section
+###
 
 ####
 # lists all available process listening on given port
