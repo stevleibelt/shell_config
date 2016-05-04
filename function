@@ -2,325 +2,10 @@
 ####
 # @author stev leibelt <artodeto@bazzline.net>
 # @since 2013-04-24
-# @todo order it in abc
+# @see https://www.gnu.org/software/bash/manual/bash.html
 ####
 
-####
-# https://www.gnu.org/software/bash/manual/bash.html
-####
-
-#####
-# Combines ps aux and grep
-#
-# @param string $1 - pattern your are searching for
-#
-# @author stev leibelt
-# @since 2013-01-30
-####
-function net_bazzline_psgrep ()
-{
-    if [[ $# -eq 1 ]]; then
-        ps aux | grep -i "$1"
-    fi
-}
-
-####
-# Calls grep with "-ir --color=auto --exclude=\*.svn\* --exclude=\*.git\*" and directs errors to /dev/null
-# All your provided parameters are passed to grep
-#
-# 
-####
-function net_bazzline_silent_grep ()
-{
-    if [[ $# -lt 1 ]]; then
-        grep
-    else
-        grep -irI --color=auto --exclude=\*.svn\* --exclude=\*.git\* "$@" 2>/dev/null
-    fi
-}
-
-####
-# calls svn log with limit and pipes content into a grep
-#
-# @param string $1 - pattern / what you search for
-# @param integer $2 - svn log limit
-#
-# @author stev leibelt
-# @since 2014-11-11
-####
-function net_bazzline_svn_log_grep ()
-{
-    if [[ $# -eq 1 ]]; then
-        svn log --limit 1000 | grep -B2 "$1"
-    elif [[ $# -eq 2 ]]; then
-        svn log --limit "$2" | grep -B2 "$1"
-    else
-        echo 'invalid number of arguments supplied.'
-        echo 'Usage:'
-        echo 'net_bazzline_svn_log_grep <pattern:string> [<limit:int>]'
-    fi
-}
-
-####
-# use colordiff (if available)
-# 
-# @author stev leibelt
-# @since 2014-12-09
-# @see
-#   http://zalas.eu/viewing-svn-diff-result-in-colors/
-#   http://www.cyberciti.biz/programming/color-terminal-highlighter-for-diff-files/
-####
-function net_bazzline_svn_diff ()
-{
-    if [[ -x "/usr/bin/colordiff" ]]; then
-        svn diff "${@}" | /usr/bin/colordiff
-    else
-        svn diff "${@}"
-    fi
-}
-
-#####
-# Calls svn diff for two repositories.
-# Call $repositoryUrlOne $repositoryUrlTwo $filePath
-# Use --summarize as default, so only filenames are shown
-#
-# @param string $1 - first repository
-# @param string $2 - second repository
-# @param string $3 - path of file to diff
-# [@param string $4 - if set, summarize is disabled]
-#
-# @author stev leibelt
-# @since 2013-01-30
-####
-function net_bazzline_svn_repository_diff ()
-{
-    if [[ $# -eq 3 ]]; then
-        svn diff --summarize "$1""/""$3" "$2""/""$3"
-    elif [[ $# -eq 4 ]]; then
-        svn diff "$1""/""$3" "$2""/""$3"
-    else
-        echo 'No valid arguments supplied'
-        echo 'repositoryUrlOne repositoryUrlTwo filePath [disableSummerize]'
-    fi
-}
-
-####
-# creates tar archvie
-#
-# @param string $1 - archvie name
-# @param string $@ - paths
-#
-# @author stev leibelt
-# @since 2013-07-19
-####
-function net_bazzline_tar_create ()
-{
-    if [[ $# -lt 2 ]]; then
-        echo 'No valid arguments supplied.'
-        echo 'archive path1 [pathX]'
-
-        exit 1
-    fi
-
-    FILENAME="$1"
-
-    # remove $1
-    shift
-
-    tar -cf $FILENAME "$@"
-}
-
-####
-# lists content of a tar archvie
-#
-# @param string $1 - archvie name
-#
-# @author stev leibelt
-# @since 2013-07-19
-####
-function net_bazzline_tar_list ()
-{
-    if [[ $# -eq 1 ]]; then
-        tar -tvf "$1"
-    else
-        echo 'No valid arguments supplied.'
-        echo 'archive'
-
-        exit 1
-    fi
-}
-
-####
-# extract content of a tar archvie
-#
-# @param string $1 - archvie name
-#
-# @author stev leibelt
-# @since 2013-07-19
-####
-function net_bazzline_tar_extract ()
-{
-    if [[ $# -eq 1 ]]; then
-        tar -xf "$1"
-    else
-        echo 'No valid arguments supplied.'
-        echo 'archive'
-
-        exit 1
-    fi
-}
-
-####
-# compress given directories into tar.gz
-#
-# @param string $1 - compressed tar.gz file name
-# @param string $@ - [all following] files for compressed file
-#
-# @author stev leibelt
-# @since 2013-02-02
-####
-function net_bazzline_compress ()
-{
-    if [[ $# -lt 1 ]]; then
-        echo 'No valid arguments supplied.'
-
-        exit 1
-    fi
-
-    FILENAME_TAR="$1".tar.gz
-
-    if [[ $# -gt 1 ]]; then
-        shift
-    fi
-
-    tar --ignore-failed-read -zcf "$FILENAME_TAR" "$@"
-}
-
-####
-# compress given directories into tar.gz
-#
-# @param string $1 - path to compressed tar.gz file
-# @param string $2 - [optional] output path - default is name of the file
-#
-# @author stev leibelt
-# @since 2013-02-02
-####
-function net_bazzline_decompress ()
-{
-    if [[ $# -lt 1 ]]; then
-        echo 'No valid arguments supplied.'
-        echo 'Try net_bazzline_decompress $nameOfCompressedFile [$pathToDecompress]'
-
-        exit 1
-    fi
-
-    if [[ $# -eq 1 ]]; then
-        tar -zxf "$1"
-    else
-        tar -zxf "$1" -C "$2"
-    fi
-}
-
-####
-# burns given iso file
-#
-# @param string $1 - path to iso file
-# @param string $2 - [optional] device to burn - default is cdrom
-#
-# @author stev leibelt
-# @since 2013-02-12
-####
-function net_bazzline_burn ()
-{
-    if [[ $# -lt 1 ]]; then
-        echo 'No valid argument supplied.'
-        echo 'Try net_bazzline_burn $isoFile [$opticalDevice]'
-
-        exit 1
-    fi
-
-    if [[ $# -eq 1 ]]; then
-        sudo wodim -v dev=/dev/cdrom "$1"
-    else
-        sudo wodim -v dev=/dev/"$2" "$1"
-    fi
-}
-
-####
-# refresh given interface
-#
-# @param string $1 - [optional] interface - default eth0
-#
-# @todo implement --verbose --list-interfaces
-# @author stev leibelt
-# @since 2013-04-30
-####
-function net_bazzline_refresh_interface ()
-{
-    LENGTH=${#NET_BAZZLINE_INTERFACES[@]}
-
-    if [[ $LENGTH -eq 0 ]]; then
-        echo 'Environment variable NET_BAZZLINE_INTERFACES not defined or empty'
-        return 1
-    fi
-
-    if [[ $# -eq 0 ]]; then
-        INTERFACE=${NET_BAZZLINE_INTERFACES[0]}
-    else
-        for NET_BAZZLINE_INTERFACE in "${NET_BAZZLINE_INTERFACES[@]}"
-        do
-            if [[ "$1" -eq $NET_BAZZLINE_INTERFACE ]]; then
-                INTERFACE=$1
-            fi
-        done
-
-        #set default if none is found
-        INTERFACE=${INTERFACE:-$NET_BAZZLINE_INTERFACES[0]}
-    fi
-
-    sudo ip link set $INTERFACE down
-    sudo ip link set $INTERFACE up
-    sudo dhcpcd $INTERFACE
-}
-
-####
-# Takes a screenshot
-# https://wiki.archlinux.org/index.php/Screenshot
-#
-# @param string $1 - [optional] filename with extension
-#
-# @author stev leiblt <artodeto@bazzline.net>
-# @since 2013-05-25
-####
-function net_bazzline_screenshot ()
-{
-    if [[ $# -eq 0 ]]; then
-        FILENAME='screenshot.jpg'
-    else
-        FILENAME="$1"
-    fi
-
-    import -window root $FILENAME
-}
-
-####
-# Rsync with default values
-#
-# @author stev leibelt <artodeto@bazzline.net>
-# @since 2013-12-21
-####
-function net_bazzline_sync_to ()
-{
-    if [[ $# -eq 0 ]]; then
-        echo 'invalid number of variables provided'
-        echo 'command [source one] [source ...] target'
-        return 1
-    elif [[ $# -eq 1 ]]; then
-        rsync -aq . "$1"
-    else
-        rsync -aq $@
-    fi
-}
+#b
 
 ####
 # Rsync with default backup values
@@ -339,178 +24,6 @@ function net_bazzline_backup_to ()
     else
         rsync -aq --delete $@
     fi
-}
-
-####
-# Uses rsync with ssh to copy data from remote to local host
-#
-# @param string $1 - remote user
-# @param string $2 - remote host
-# @param string $3 - source path on remote host
-# @param string $4 - destination path on local host
-# [@param string $5 - ssh key]
-#
-# @author stev leibelt <artodeto@bazzline.net>
-# @since 2013-07-05
-####
-function net_bazzline_sync_from_host ()
-{
-    if [[ $# -eq 4 ]]; then
-        USER="$1"
-        HOST="$2"
-        SOURCE="$3"
-        DESTINATION="$4"
-
-        rsync -aqz -e ssh $USER@$HOST:$SOURCE $DESTINATION
-    elif [[ $# -eq 5 ]]; then
-        USER="$1"
-        HOST="$2"
-        SOURCE="$3"
-        DESTINATION="$4"
-        KEY="$5"
-
-        rsync -aqz -e ssh -i $KEY $USER@$HOST:$SOURCE $DESTINATION
-    else
-        echo 'invalid number of variables provided'
-        echo 'command user host source destination'
-        return 1
-    fi
-}
-
-####
-# Uses rsync with ssh to copy data from local to remote host
-#
-# @param string $1 - remote user
-# @param string $2 - remote host
-# @param string $3 - source path on local host
-# @param string $4 - destination path on remote host
-# [@param string $5 - ssh key]
-#
-# @author stev leibelt <artodeto@bazzline.net>
-# @since 2013-07-05
-####
-function net_bazzline_sync_to_host ()
-{
-    if [[ $# -eq 4 ]]; then
-        USER="$1"
-        HOST="$2"
-        SOURCE="$3"
-        DESTINATION="$4"
-
-        rsync -avz -e ssh $SOURCE $USER@$HOST:$DESTINATION
-    elif [[ $# -eq 5 ]]; then
-        USER="$1"
-        HOST="$2"
-        SOURCE="$3"
-        DESTINATION="$4"
-        KEY="$5"
-
-        rsync -aqz -e ssh -i $KEY $SOURCE $USER@$HOST:$DESTINATION
-    else
-        echo 'invalid number of variables provided'
-        echo 'command user host source destination'
-        return 1
-    fi
-}
-
-####
-# Converts all mp3s to wav in current directory
-# taken from: https://wiki.archlinux.org/index.php/CD_Burning#Burning_an_audio_CD
-#
-# @author stev leibelt <artodeto@bazzline.net>
-# @since 2013-07-17
-####
-function net_bazzline_convert_mp3_to_wav ()
-{
-    for i in *.mp3; 
-    do 
-        lame --decode "$i" "$(basename "$i" .mp3)".wav;
-    done
-}
-
-####
-# Converts all m4as to wav in current directory
-# taken from: http://www.togaware.com/linux/survivor/Convert_m4a.html
-#
-# @author stev leibelt <artodeto@bazzline.net>
-# @since 2013-07-17
-####
-function net_bazzline_convert_m4a_to_wav ()
-{
-    for i in *.m4a;
-    do
-        faad -f 1 -o "$i.wav" "$i"
-    done
-}
-
-####
-# Converts all wavs to mp3s in current directory
-# taken from: https://www.linuxquestions.org/questions/linux-general-1/converting-m4a-to-mp3-170553/
-#
-# @author stev leibelt <artodeto@bazzline.net>
-# @since 2013-07-17
-####
-function net_bazzline_convert_wav_to_mp3 ()
-{
-    for i in *.wav;
-    do
-        lame --replaygain-accurate -v -h -b 192 "$i" "$i.mp3";
-    done
-}
-
-####
-# Replaces a string in all files in given path and below
-# taken from: http://www.cyberciti.biz/faq/unix-linux-replace-string-words-in-many-files/
-# taken from: http://stackoverflow.com/questions/4437901/find-and-replace-string-in-a-file
-# taken from: http://stackoverflow.com/questions/7450324/how-do-i-replace-a-string-with-another-string-in-all-files-below-my-current-dir
-#
-# @author stev leibelt <artodeto@bazzline.net>
-# @since 2013-7-30
-####
-function net_bazzline_replace_string_in_files ()
-{
-    if [[ $# -lt 3 ]]; then
-        echo 'invalid number of arguments provided'
-        echo 'command search replace fileextension [path]'
-        return 1
-    fi
-
-    SEARCH="$1"
-    REPLACE="$2"
-    FILE_EXTENSION="$3"
-
-    if [[ $# -eq 4 ]]; then
-        DIRECTORY_PATH="$4"
-    else
-        DIRECTORY_PATH="."
-    fi
-
-    find "$DIRECTPRY_PATH" -name "*.$FILE_EXTENSION" -type f -exec sed -i 's/'"$SEARCH"'/'"$REPLACE"'/g' {} \;
-}
-
-####
-# Starts php's built in webserver
-#
-# [@param string $1 - directory that should be used as target, default is public]
-# [@param int $2 - port the webserver should listen on, default is 80]
-#
-# @author stev leibelt <artodeto@bazzline.net>
-# @since 2013-08-21
-####
-function net_bazzline_php_start_internal_webserver ()
-{
-    if [[ $# -eq 2 ]]; then
-        DIRECTORY="$1";
-        PORT="$2";
-    elif [[ $# -eq 1 ]]; then
-        DIRECTORY="$1";
-        PORT=8080;
-    else
-        DIRECTORY="public";
-        PORT=8080;
-    fi
-
-    /bin/env php -S 0.0.0.0:"$PORT" -t "$DIRECTORY"
 }
 
 ####
@@ -554,6 +67,23 @@ function net_bazzline_image_batch_convert ()
 }
 
 ####
+# Converts images in directory with size of 1024
+#
+# [@param] string name for the directory
+#
+# @author stev leibelt <artodeto@bazzline.net>
+# @since 2014-03-16
+####
+function net_bazzline_image_batch_convert_1024 ()
+{
+    if [[ $# -eq 1 ]]; then
+        net_bazzline_image_batch_convert 1024 "$1"
+    else
+        net_bazzline_image_batch_convert 1024
+    fi
+}
+
+####
 # Converts images in directory with size of 1920
 #
 # [@param] string name for the directory
@@ -571,24 +101,6 @@ function net_bazzline_image_batch_convert_1920 ()
 }
 
 ####
-# Converts images in directory with size of 1024
-#
-# [@param] string name for the directory
-#
-# @author stev leibelt <artodeto@bazzline.net>
-# @since 2014-03-16
-####
-function net_bazzline_image_batch_convert_1024 ()
-{
-    if [[ $# -eq 1 ]]; then
-        net_bazzline_image_batch_convert 1024 "$1"
-    else
-        net_bazzline_image_batch_convert 1024
-    fi
-}
-
-
-####
 # Converts images in directory with size of 640
 #
 # [@param] string name for the directory
@@ -604,6 +116,352 @@ function net_bazzline_image_batch_convert_640 ()
         net_bazzline_image_batch_convert 640
     fi
 }
+
+####
+# burns given iso file
+#
+# @param string $1 - path to iso file
+# @param string $2 - [optional] device to burn - default is cdrom
+#
+# @author stev leibelt
+# @since 2013-02-12
+####
+function net_bazzline_burn ()
+{
+    if [[ $# -lt 1 ]]; then
+        echo 'No valid argument supplied.'
+        echo 'Try net_bazzline_burn $isoFile [$opticalDevice]'
+
+        exit 1
+    fi
+
+    if [[ $# -eq 1 ]]; then
+        sudo wodim -v dev=/dev/cdrom "$1"
+    else
+        sudo wodim -v dev=/dev/"$2" "$1"
+    fi
+}
+
+#c
+
+#####
+# You can change $i levels by using cd $i
+#
+# @param mixed $1 - [optional] path where you want do change
+#                       or number of directories you want to
+#                       change upwards - default is $HOME
+#
+# @author stev leibelt
+# @since 2013-01-30
+####
+function net_bazzline_cd ()
+{
+    #is numeric value?
+    if [[ $# -eq 0 ]]; then 
+        cd "$HOME"
+    elif [[ `expr $1 + 1 2> /dev/null` ]]; then
+        for (( i=1; i <= $1; i++))
+        do
+            cd ..
+        done
+    else
+        \cd "$1"
+    fi
+}
+
+####
+# compress given directories into tar.gz
+#
+# @param string $1 - compressed tar.gz file name
+# @param string $@ - [all following] files for compressed file
+#
+# @author stev leibelt
+# @since 2013-02-02
+####
+function net_bazzline_compress ()
+{
+    if [[ $# -lt 1 ]]; then
+        echo 'No valid arguments supplied.'
+
+        exit 1
+    fi
+
+    FILENAME_TAR="$1".tar.gz
+
+    if [[ $# -gt 1 ]]; then
+        shift
+    fi
+
+    tar --ignore-failed-read -zcf "$FILENAME_TAR" "$@"
+}
+
+####
+# @author stev leibelt <artodeto@bazzline.net>
+# @since 2015-01-19
+# @see
+#   https://answers.yahoo.com/question/index?qid=20080901083928AA22hSM
+#   http://askubuntu.com/questions/113188/character-encoding-problem-with-filenames-find-broken-filenames
+####
+function net_bazzline_convert_file_names_to_utf_8 ()
+{
+    if [[ $# -lt 1 ]]; then
+        echo 'usage: <command> <path> [dry-run|d]'
+        return 1
+    else
+        DIRECTORY_PATH="$1"
+
+        if [[ $# -eq 2 ]]; then
+            case "$2" in 
+                "d")
+                    DRY_RUN=1;;
+                "dry-run")
+                    DRY_RUN=1;;
+                *)
+                    DRY_RUN=0
+            esac
+        fi
+
+        for name in `find $DIRECTORY_PATH -depth `; do 
+            NEW_NAME=`echo $NAME | iconv -f ISO-8859-1 -t UTF-8` 
+
+            if [[ $DRY_RUN -eq 1 ]]; then
+                `echo $NAME | iconv -f UTF-8 -t ISO-8859-1` 
+            fi
+
+            if [[ "$NEW_NAME" != "$NAME" ]]; then 
+                if [[ $DRY_RUN -eq 1 ]]; then
+                    echo "$NAME => $NEW_NAME" 
+                else
+                    mv "$NAME" "$NEW_NAME" 
+                fi
+            fi 
+        done 
+    fi
+}
+
+####
+# Converts all m4as to wav in current directory
+# taken from: http://www.togaware.com/linux/survivor/Convert_m4a.html
+#
+# @author stev leibelt <artodeto@bazzline.net>
+# @since 2013-07-17
+####
+function net_bazzline_convert_m4a_to_wav ()
+{
+    for i in *.m4a;
+    do
+        faad -f 1 -o "$i.wav" "$i"
+    done
+}
+
+####
+# copies content of mkv container to avi container
+#
+# take a look on:   http://www.cyberciti.biz/faq/bash-shell-script-function-examples/
+#
+# @author stev leibelt <artodeto@bazzline.net>
+# @since 2013-11-30
+####
+function net_bazzline_convert_mkv_to_avi ()
+{
+    if [[ $# -eq 1 ]]; then
+        #export -f net_bazzline_get_name_from_filename
+        nameFromFilename=net_bazzline_get_name_from_filename
+        INPUT_FILE="$1";
+        OUTPUT_FILE=$($nameFromFilename $INPUT_FILE)
+        #OUTPUT_FILE=$(net_bazzline_get_name_from_filename $INPUT_FILE)
+        OUTPUT_FILE=$OUTPUT_FILE".avi"
+    elif [[ $# -eq 2 ]]; then
+        INPUT_FILE="$1";
+        OUTPUT_FILE="$2";
+    else
+        echo "invalid number of arguments supplied"
+        echo "inputfile [outputfile]"
+        return 1
+    fi
+
+    ffmpeg -i "$INPUT_FILE" -c:v copy -c:a copy "$OUTPUT_FILE"
+}
+
+####
+# Converts all mp3s to wav in current directory
+# taken from: https://wiki.archlinux.org/index.php/CD_Burning#Burning_an_audio_CD
+#
+# @author stev leibelt <artodeto@bazzline.net>
+# @since 2013-07-17
+####
+function net_bazzline_convert_mp3_to_wav ()
+{
+    for i in *.mp3; 
+    do 
+        lame --decode "$i" "$(basename "$i" .mp3)".wav;
+    done
+}
+
+####
+# @param string $1 - path to the source file
+# @param string $2 - path to the destination file
+# [@param string $3 - screen size, default is 1024x768]
+####
+function net_bazzline_convert_video_to_screen_size ()
+{
+    if [[ $# -lt 2 ]]; then
+        echo "invalid number of arguments supplied"
+        echo "<path to source file> <path to destination file> [<screen size>]"
+        return 1
+    else
+        if [[ $# -gt 2 ]]; then
+            LOCAL_SCREEN_SIZE="$3"
+        else
+            LOCAL_SCREEN_SIZE="1024x768"
+        fi
+
+        LOCAL_PATH_TO_DESTINATION_FILE="$2"
+        LOCAL_PATH_TO_SOURCE_FILE="$1"
+    fi
+
+    ffmpeg -i "$LOCAL_PATH_TO_SOURCE_FILE" -acodec copy -scodec copy -s "$LOCAL_SCREEN_SIZE" -vcodec libx264 -pass 1 "$LOCAL_PATH_TO_DESTINATION_FILE"
+}
+
+####
+# Converts all wavs to mp3s in current directory
+# taken from: https://www.linuxquestions.org/questions/linux-general-1/converting-m4a-to-mp3-170553/
+#
+# @author stev leibelt <artodeto@bazzline.net>
+# @since 2013-07-17
+####
+function net_bazzline_convert_wav_to_mp3 ()
+{
+    for i in *.wav;
+    do
+        lame --replaygain-accurate -v -h -b 192 "$i" "$i.mp3";
+    done
+}
+
+####
+# [@param string $1 - path to search in]
+# [@param string $2 - name/pattern to search for]
+#
+# @author stev leibelt
+# @since 2016-04-10
+####
+function net_bazzline_count_number_of_items_in_path()
+{
+    if [[ $# -gt 0 ]]
+    then
+        LOCAL_PATH="$1"
+    else
+        LOCAL_PATH="."
+    fi
+
+    if [[ $# -gt 1 ]]
+    then
+        LOCAL_ITEM_NAME="$2"
+        LOCAL_NUMBER_OF_ENTRIES_FOR_POSSIBLE_ITEM_NAME=$(find $LOCAL_PATH -maxdepth 1 -not -name ".*" -name "$LOCAL_ITEM_NAME" | wc -l)
+    else
+        LOCAL_NUMBER_OF_ENTRIES_FOR_POSSIBLE_ITEM_NAME=$(find $LOCAL_PATH -maxdepth 1 -not -name ".*" | wc -l)
+    fi
+
+    return $LOCAL_NUMBER_OF_ENTRIES_FOR_POSSIBLE_ITEM_NAME
+}
+
+####
+# @param string <name of the zfs pool>
+# [@param string <name of the snapshot>, default is current date
+####
+function net_bazzline_create_zfs_snapshot()
+{
+    if [[ $# -lt 1 ]]; then
+        echo 'invalid number of arguments'
+        echo '    net_bazzline_create_zfs_snapshot <name of the zfs pool> [<name of the snapshot>]'
+        return 1
+    fi
+
+    NAME_OF_THE_POOL="$1"
+
+    if [[ $# -gt 1 ]]; then
+        NAME_OF_THE_SNAPSHOT="$2"
+    else
+        NAME_OF_THE_SNAPSHOT=$(date +'%Y-%m-%d_%H-%M-%S')
+    fi
+
+    if sudo zfs snapshot -r $NAME_OF_THE_POOL@$NAME_OF_THE_SNAPSHOT; then
+        echo 'snapshot "'$NAME_OF_THE_SNAPSHOT'" created for pool "'$NAME_OF_THE_POOL'"'
+    fi
+
+    return $?
+}
+
+#d
+
+####
+# compress given directories into tar.gz
+#
+# @param string $1 - path to compressed tar.gz file
+# @param string $2 - [optional] output path - default is name of the file
+#
+# @author stev leibelt
+# @since 2013-02-02
+####
+function net_bazzline_decompress ()
+{
+    if [[ $# -lt 1 ]]; then
+        echo 'No valid arguments supplied.'
+        echo 'Try net_bazzline_decompress $nameOfCompressedFile [$pathToDecompress]'
+
+        exit 1
+    fi
+
+    if [[ $# -eq 1 ]]; then
+        tar -zxf "$1"
+    else
+        tar -zxf "$1" -C "$2"
+    fi
+}
+
+####
+# @param string <name of zfs pool>
+# @param string <name of the snapshot>
+####
+function net_bazzline_delete_zfs_snapshot()
+{
+    if [[ $# -lt 2 ]]; then
+        echo 'invalid number of arguments'
+        echo '    net_bazzline_delete_zfs_snapshot <name of the zfs pool> [<name of the snapshot>]'
+        return 1
+    fi
+
+    NAME_OF_THE_POOL="$1"
+    NAME_OF_THE_SNAPSHOT="$2"
+
+    if sudo zfs destroy -R $NAME_OF_THE_POOL@$NAME_OF_THE_SNAPSHOT; then
+        echo 'snapshot "'$NAME_OF_THE_SNAPSHOT'" deleted from pool "'$NAME_OF_THE_POOL'"'
+    fi
+
+    return $?
+}
+
+####
+# Show differences between two directories
+#
+# @param string $1 - path to first directory
+# @param string $2 - path to second directory
+# 
+# @author stev leibelt <artodeto@bazzline.net>
+# @since 2013-05-21
+function net_bazzline_diff_directory ()
+{
+    if [[ $# -eq 2 ]]; then
+        diff -qr "$1" "$2" | sort
+    else
+        echo 'No valid argument supplied.'
+        echo 'Try command directory1 directory2'
+        return 1
+    fi
+}
+
+#f
+
 ####
 # Renames all existing directory content to lower case
 #
@@ -614,6 +472,81 @@ function net_bazzline_filename_to_lower_batch_rename ()
 {
     #rename 'y/A-Z/a-z/' *
     find . -type f -execdir sh -c 'mv "'{}'" "$(echo '{}'|tr '[:upper:]' '[:lower:]')"' \;
+}
+
+####
+# calles find with given param and type f
+#
+# @param string $1 - pattern you are searching for
+# @param [string $2] - path to serching in
+# @param [bool $3] - do not ignore dot files
+#
+# dot exclusion taken from: https://www.linuxquestions.org/questions/linux-general-1/find-and-excluding-all-hidden-directories-910578/
+#
+# @author stev leibelt
+# @since 2013-03-08
+####
+function net_bazzline_find_file ()
+{
+    if [[ $# -eq 1 ]]; then
+        find . -iname "$1" -not -path "*/.*/*" -not -name ".*" -type f 2>/dev/null
+    elif [[ $# -eq 2 ]]; then
+        find "$2"  -iname "$1" -not -path "*/.*/*" -not -name ".*" -type f 2>/dev/null
+    elif [[ $# -eq 3 ]]; then
+        find "$2" -iname "$1" -type f 2>/dev/null
+    else
+        echo 'No valid argument supplied.'
+        return 1
+    fi
+}
+
+####
+# calles find with given param and type d
+#
+# @param string $1 - pattern your are searching for
+# @param [string $2] - path to serching in
+#
+# @author stev leibelt
+# @since 2013-03-08
+####
+function net_bazzline_find_directory ()
+{
+    if [[ $# -eq 1 ]]; then
+        find . -iname "$1" -type d 2>/dev/null
+    elif [[ $# -eq 2 ]]; then
+        find "$2" -iname "$1" -type d 2>/dev/null
+    else
+        echo 'No valid argument supplied.'
+        return 1
+    fi
+}
+
+#g
+
+####
+# get extension from filename
+# based: http://stackoverflow.com/questions/965053/extract-filename-and-extension-in-bash
+# take also a look to:  https://www.gnu.org/software/bash/manual/html_node/Shell-Parameter-Expansion.html
+#                       http://stackoverflow.com/questions/11426590/bash-bad-substitution
+#
+# use it like echo $(net_bazzline_get_extension_from_filename name.extension)
+#
+# @author stev leibelt <artodeto@bazzline.net>
+# @since 2013-11-30
+####
+function net_bazzline_get_extension_from_filename ()
+{
+    if [[ $# -eq 1 ]]; then
+        EXTENSION="${1#*.}"
+        echo $EXTENSION
+
+        return 0
+    else
+        echo "invalid number of arguments supplied"
+        echo "filename"
+
+        return 1
+    fi
 }
 
 ####
@@ -668,500 +601,6 @@ function net_bazzline_get_name_from_filename ()
 }
 
 ####
-# get extension from filename
-# based: http://stackoverflow.com/questions/965053/extract-filename-and-extension-in-bash
-# take also a look to:  https://www.gnu.org/software/bash/manual/html_node/Shell-Parameter-Expansion.html
-#                       http://stackoverflow.com/questions/11426590/bash-bad-substitution
-#
-# use it like echo $(net_bazzline_get_extension_from_filename name.extension)
-#
-# @author stev leibelt <artodeto@bazzline.net>
-# @since 2013-11-30
-####
-function net_bazzline_get_extension_from_filename ()
-{
-    if [[ $# -eq 1 ]]; then
-        EXTENSION="${1#*.}"
-        echo $EXTENSION
-
-        return 0
-    else
-        echo "invalid number of arguments supplied"
-        echo "filename"
-
-        return 1
-    fi
-}
-
-####
-# begin of audio and video section
-###
-
-####
-# copies content of mkv container to avi container
-#
-# take a look on:   http://www.cyberciti.biz/faq/bash-shell-script-function-examples/
-#
-# @author stev leibelt <artodeto@bazzline.net>
-# @since 2013-11-30
-####
-function net_bazzline_convert_mkv_to_avi ()
-{
-    if [[ $# -eq 1 ]]; then
-        #export -f net_bazzline_get_name_from_filename
-        nameFromFilename=net_bazzline_get_name_from_filename
-        INPUT_FILE="$1";
-        OUTPUT_FILE=$($nameFromFilename $INPUT_FILE)
-        #OUTPUT_FILE=$(net_bazzline_get_name_from_filename $INPUT_FILE)
-        OUTPUT_FILE=$OUTPUT_FILE".avi"
-    elif [[ $# -eq 2 ]]; then
-        INPUT_FILE="$1";
-        OUTPUT_FILE="$2";
-    else
-        echo "invalid number of arguments supplied"
-        echo "inputfile [outputfile]"
-        return 1
-    fi
-
-    ffmpeg -i "$INPUT_FILE" -c:v copy -c:a copy "$OUTPUT_FILE"
-}
-
-####
-# @param string $1 - path to the source file
-# @param string $2 - path to the destination file
-# [@param string $3 - screen size, default is 1024x768]
-####
-function net_bazzline_convert_video_to_screen_size ()
-{
-    if [[ $# -lt 2 ]]; then
-        echo "invalid number of arguments supplied"
-        echo "<path to source file> <path to destination file> [<screen size>]"
-        return 1
-    else
-        if [[ $# -gt 2 ]]; then
-            LOCAL_SCREEN_SIZE="$3"
-        else
-            LOCAL_SCREEN_SIZE="1024x768"
-        fi
-
-        LOCAL_PATH_TO_DESTINATION_FILE="$2"
-        LOCAL_PATH_TO_SOURCE_FILE="$1"
-    fi
-
-    ffmpeg -i "$LOCAL_PATH_TO_SOURCE_FILE" -acodec copy -scodec copy -s "$LOCAL_SCREEN_SIZE" -vcodec libx264 -pass 1 "$LOCAL_PATH_TO_DESTINATION_FILE"
-}
-
-####
-# merges video and audio file into one file
-#
-# @param string $1 - path to audio file
-# @param string $2 - path to video file
-# @param string $3 - path to merged file
-#
-# @author stev leibelt <artodeto@bazzline.net>
-# @since 2015-04-26
-####
-function net_bazzline_merge_audio_and_video ()
-{
-    if [[ $# -eq 3 ]]; then
-        PATH_TO_AUDIO="$1"
-        PATH_TO_VIDEO="$2"
-        PATH_TO_OUTPUT="$3"
-
-        ffmpeg -i $PATH_TO_AUDIO -i $PATH_TO_VIDEO -acodec copy -vcodec copy $PATH_TO_OUTPUT
-    else
-        echo "invalid number of arguments supplied"
-        echo "<command> <path to audio file> <path to video file> <path to output file>"
-        return 1
-    fi
-}
-
-####
-# end of audio and video section
-###
-
-####
-# lists all available process listening on given port
-#
-# @param integer $1 - port number
-#
-# @author stev leibelt <artodeto@bazzline.net>
-# @since 2014-04-07
-####
-function net_bazzline_what_is_listening_on_that_port()
-{
-    if [[ $# -eq 1 ]]; then
-        netstat -tulpn | grep --color :$1
-    else
-        echo "invalid number of arguments supplied"
-        echo "portnumber"
-        return 1
-    fi
-}
-
-####
-# validates if string starts with given string or not
-# 
-# @param string $1 - string
-# @param string $2 - needle
-# 
-# @author stev leibelt <artodeto@bazzline.net>
-# @since 2014-07-31
-####
-function net_bazzline_stringStartsWith ()
-{
-    if [[ $# -eq 2 ]]; then
-        STRING="$1"
-        SUB_STRING="$2"
-        LENGTH_OF_SUB_STRING=${#SUB_STRING}
-        STRING_WITH_SUB_STRING_ONLY=${STRING:0:$LENGTH_OF_SUB_STRING}
-
-        if [[ $STRING_WITH_SUB_STRING_ONLY = $SUB_STRING ]]; then
-            return 0
-        else
-            return 1
-        fi
-    else
-        echo "Usage: net_bazzline_stringStartsWitch <string> <needle>"
-        return 1
-    fi
-}
-
-####
-# list available interfaces
-# 
-# @author stev leibelt <artodeto@bazzline.net>
-# @since 2014-10-28
-####
-function net_bazzline_list_interfaces ()
-{
-    # also possible
-    # ls /sys/class/net
-    ip a | grep ':\ '
-}
-
-####
-# list groups
-# 
-# @author stev leibelt <artodeto@bazzline.net>
-# @since 2014-11-17
-####
-function net_bazzline_list_groups ()
-{
-    getent group | awk -F ':' '{ print $1 }' | sort
-}
-
-####
-# list system users
-# 
-# @author stev leibelt <artodeto@bazzline.net>
-# @since 2014-11-17
-####
-function net_bazzline_list_system_users ()
-{
-    getent passwd | grep -v '/home' | awk -F ':' '{ print $1 }' | sort
-}
-
-####
-# list users
-# 
-# @author stev leibelt <artodeto@bazzline.net>
-# @since 2014-11-17
-####
-function net_bazzline_list_users ()
-{
-    getent passwd | grep '/home' | awk -F ':' '{ print $1 }' | sort
-}
-
-####
-# sets the provided optical drive speed
-# 
-# @param int $1 - speed (default is 12)
-# 
-# @author stev leibelt <artodeto@bazzline.net>
-# @since 2014-12-02
-####
-function net_bazzline_set_optical_drive_speed ()
-{
-    if [[ $# -eq 1 ]]; then
-        SPEED="$1"
-    else
-        SPEED="12"
-    fi
-
-    eject -x $SPEED /dev/sr0
-}
-
-####
-# @author stev leibelt <artodeto@bazzline.net>
-# @since 2014-12-23
-# @see
-#   https://wiki.archlinux.org/index.php/Sshd#Encrypted_SOCKS_tunnel
-####
-function net_bazzline_start_secure_chromium ()
-{
-    if [[ $NET_BAZZLINE_SECURE_CONNECTION_PORT -eq 0 ]]; then
-        echo 'NET_BAZZLINE_SECURE_CONNECTION_PORT not defined, take a look into setting.local'
-        return 1
-    else
-        port=$NET_BAZZLINE_SECURE_CONNECTION_PORT
-        chromium --proxy-server="socks://localhost:$port" &
-        return 0
-    fi
-}
-
-####
-# @author stev leibelt <artodeto@bazzline.net>
-# @since 2015-01-19
-# @see
-#   https://answers.yahoo.com/question/index?qid=20080901083928AA22hSM
-#   http://askubuntu.com/questions/113188/character-encoding-problem-with-filenames-find-broken-filenames
-####
-function net_bazzline_convert_file_names_to_utf_8 ()
-{
-    if [[ $# -lt 1 ]]; then
-        echo 'usage: <command> <path> [dry-run|d]'
-        return 1
-    else
-        DIRECTORY_PATH="$1"
-
-        if [[ $# -eq 2 ]]; then
-            case "$2" in 
-                "d")
-                    DRY_RUN=1;;
-                "dry-run")
-                    DRY_RUN=1;;
-                *)
-                    DRY_RUN=0
-            esac
-        fi
-
-        for name in `find $DIRECTORY_PATH -depth `; do 
-            NEW_NAME=`echo $NAME | iconv -f ISO-8859-1 -t UTF-8` 
-
-            if [[ $DRY_RUN -eq 1 ]]; then
-                `echo $NAME | iconv -f UTF-8 -t ISO-8859-1` 
-            fi
-
-            if [[ "$NEW_NAME" != "$NAME" ]]; then 
-                if [[ $DRY_RUN -eq 1 ]]; then
-                    echo "$NAME => $NEW_NAME" 
-                else
-                    mv "$NAME" "$NEW_NAME" 
-                fi
-            fi 
-        done 
-    fi
-}
-
-function net_bazzline_mount_sshfs ()
-{
-    if [[ $# -lt 4 ]]; then
-        echo "usage: <command> <mount point> <name> <host> [<path to identity file>]"
-        return 1
-    else
-        MOUNT_POINT="$2"
-        NAME="$3"
-        HOST="$4"
-
-        if [[ -d "$MOUNT_POINT" ]]; then
-            echo 'mount point "'"$MOUNT_POINT"'" exists, remove and retry'
-            return 1
-        fi
-
-        mkdir -p "$MOUNT_POINT"
-
-        if [[ $# -eq 5 ]]; then
-            KEY="$5"
-
-            sshfs -o IdentitiyFile="$KEY" "$NAME"@"$HOST" "$MOUNT_POINT"
-        else
-            sshfs "$NAME"@"$HOST" "$MOUNT_POINT"
-        fi
-    fi
-}
-
-function net_bazzline_unmount_sshfs ()
-{
-    echo "fusermount -u <mount point>"
-    echo "rm -fr <mount point>"
-}
-
-####
-# @param string $zpool
-# @param string $uuid
-# @param string $crypto name
-# [@param string $uuid]
-# [@param string $crypto name]
-# @author stev leibelt <artodeto@bazzline.net>
-# @since 2015-03-15
-# @todo implement support for multiple uuids and crypto names, <zpool> <uuid one> <crypto name one> [<uuid two> <crypto name two>[...]]
-####
-function net_bazzline_mount_luks_zpool ()
-{
-    if [[ $# -lt 4 ]]; then
-        echo 'usage: <command> <zpool> <disk uuid> <crypto name> [<disk uuid> <crypto name>[...]]'
-        return 1
-    else
-        UUID="$2"
-        NAME="$3"
-        ZPOOL="$1"
-
-        sudo cryptsetup luksOpen /dev/disk/by-uuid/"$UUID" "$NAME"
-        sudo zpool import "$ZPOOL"
-    fi
-}
-
-####
-# @param string $zpool
-# @param string $crypto name
-# [@param string $crypto name]
-# @author stev leibelt <artodeto@bazzline.net>
-# @since 2015-03-15
-# @todo implement support for multiple crypto names
-####
-function net_bazzline_unmount_luks_zpool ()
-{
-    if [[ $# -lt 3 ]]; then
-        echo "usage: <command> <zpool> <crypto name> <zpool>"
-        return 1
-    else
-        NAME="$2"
-        ZPOOL="$1"
-
-        sudo zpool export "$ZPOOL"
-        sudo cryptsetup close "$NAME"
-    fi
-}
-
-function net_bazzline_rsync ()
-{
-    rsync -aq --delete $@
-}
-
-####
-# @see http://superuser.com/questions/71163/how-to-find-all-soft-links-symbolic-links-in-current-directory
-####
-function net_bazzline_list_symbolic_links ()
-{
-    if [[ $# -gt 1 ]]; then
-        echo "usage: <command> <path>"
-        return 1
-    elif [[ $# -eq 1 ]]; then
-        SEARCH_PATH="$1"
-    else
-        SEARCH_PATH="."
-    fi
-
-    find "$SEARCH_PATH" -type l -print0 | xargs -0 ls -ld
-}
-
-function net_bazzline_test ()
-{
-    STRING=".md"
-    SUB_STRING="."
-
-# not working
-    if [[ $(net_bazzline_stringStartsWith $STRING $SUB_STRING) ]]; then
-        echo 'stats with'
-    else
-        echo 'stats with not'
-    fi
-
-    STARTS_WITH=$(net_bazzline_stringStartsWith $STRING $SUB_STRING)
-    echo "$STARTS_WITH"
-
-    if [[ $STARTS_WITH -eq 0 ]]; then
-        echo 'starts with'
-    else
-        echo 'starts not with'
-    fi
-}
-
-####
-# @param string $PATH_TO_SSH_KEY
-# @param string $SOURCE_HOST
-# @param string $SOURCE_PATH
-# @param string $DESTINATION_PATH
-# @todo make PATH_TO_SSH_KEY optional
-####
-function net_bazzline_scp_from_host()
-{
-    if [[ $# -eq 4 ]]; then
-        PATH_TO_SSH_KEY="$1"
-        SOURCE_HOST="$2"
-        SOURCE_PATH="$3"
-        DESTINATION_PATH="$4"
-
-        scp -r -i $PATH_TO_SSH_KEY $SOURCE_HOST:$SOURCE_PATH $DESTINATION_PATH
-    else
-        echo 'invalid number of arguments'
-        echo '    net_bazzline_scp_from_host <path to ssh key> <source host> <source path> <destination path>'
-    fi  
-}
-
-####
-# @param string $PATH_TO_SSH_KEY
-# @param string $DESTINATION_HOST
-# @param string $SOURCE_PATH
-# @param string $DESTINATION_PATH
-# @todo make PATH_TO_SSH_KEY optional
-####
-function net_bazzline_scp_to_host()
-{
-    if [[ $# -eq 4 ]]; then
-        PATH_TO_SSH_KEY="$1"
-        DESTINATION_HOST="$2"
-        SOURCE_PATH="$3"
-        DESTINATION_PATH="$4"
-
-        scp -r -i $PATH_TO_SSH_KEY $SOURCE_PATH $DESTINATION_HOST:$DESTINATION_PATH
-    else
-        echo 'invalid number of arguments'
-        echo '    net_bazzline_scp_to_host <path to ssh key> <source host> <source path> <destination path>'
-    fi  
-}
-
-####
-# @param string $STRING
-# @param string $SEARCH
-# @return int (0 true, 1 false)
-#
-# @usage: 
-#   if net_bazzline_string_contains 'foo' 'bar'; then
-#       echo 'contains'
-#   else
-#       echo 'does not contain'
-#   fi
-#
-# @see:
-#   http://stackoverflow.com/questions/229551/string-contains-in-bash
-#   http://stackoverflow.com/questions/6241256/what-is-proper-way-to-test-a-bash-function-return-value
-# @author stev leibelt <artodeto@bazzline.net>
-# @since 2015-11-05
-####
-function net_bazzline_string_contains()
-{
-    if [[ $# -eq 2 ]]; then
-        CONTAINS=1
-        STRING="$1"
-        SEARCH="$2"
-
-        case "$STRING" in 
-           *"$SEARCH"*)
-             CONTAINS=0
-            ;;
-        esac   
-
-        return $CONTAINS
-    else
-        echo 'invalid number of arguments'
-        echo '    net_bazzline_string_contains <string> <search>'
-        return 1
-    fi
-}
-
-####
 # @param string $PATH_TO_THE_REPOSITORIES
 # @see https://stackoverflow.com/questions/18884992/how-do-i-assign-ls-to-an-array-in-linux-bash
 ####
@@ -1194,9 +633,108 @@ function net_bazzline_git_update_all_repositories()
     return 0;
 }
 
+#h
+
 ####
-# begin of ssh section
+# adds "." to the beginning of the directory or file name
+# 
+# @param string $1 - file system object identifier
+#
+# @author stev leibelt <artodeto@bazzline.net>
+# @since 2014-07-31
 ####
+function net_bazzline_hide_file_system_object()
+{
+    if [[ $# -eq 1 ]]; then
+# @todo validate if identifier is file or directory and if first character is not "."
+# @todo use net_bazzline_stringStartsWith
+        mv "$1" ."$1"
+    else
+        echo "Usage: net_bazzline_unhide_directory <directory_name>"
+        return 1
+    fi
+}
+
+#i
+
+#l
+
+####
+# list available interfaces
+# 
+# @author stev leibelt <artodeto@bazzline.net>
+# @since 2014-10-28
+####
+function net_bazzline_list_interfaces ()
+{
+    # also possible
+    # ls /sys/class/net
+    ip a | grep ':\ '
+}
+
+####
+# list groups
+# 
+# @author stev leibelt <artodeto@bazzline.net>
+# @since 2014-11-17
+####
+function net_bazzline_list_groups ()
+{
+    getent group | awk -F ':' '{ print $1 }' | sort
+}
+
+####
+# @see http://superuser.com/questions/71163/how-to-find-all-soft-links-symbolic-links-in-current-directory
+####
+function net_bazzline_list_symbolic_links ()
+{
+    if [[ $# -gt 1 ]]; then
+        echo "usage: <command> <path>"
+        return 1
+    elif [[ $# -eq 1 ]]; then
+        SEARCH_PATH="$1"
+    else
+        SEARCH_PATH="."
+    fi
+
+    find "$SEARCH_PATH" -type l -print0 | xargs -0 ls -ld
+}
+
+####
+# list system users
+# 
+# @author stev leibelt <artodeto@bazzline.net>
+# @since 2014-11-17
+####
+function net_bazzline_list_system_users ()
+{
+    getent passwd | grep -v '/home' | awk -F ':' '{ print $1 }' | sort
+}
+
+####
+# list users
+# 
+# @author stev leibelt <artodeto@bazzline.net>
+# @since 2014-11-17
+####
+function net_bazzline_list_users ()
+{
+    getent passwd | grep '/home' | awk -F ':' '{ print $1 }' | sort
+}
+
+####
+# [@param string <path to zfs pool>]
+####
+function net_bazzline_list_zfs_snapshots()
+{
+    if [[ $# -lt 1 ]]; then
+        sudo zfs list -t snapshot
+    else
+        NAME_OF_THE_POOL="$1"
+
+        sudo zfs list -t snapshot | grep $NAME_OF_THE_POOL
+    fi
+}
 
 function net_bazzline_load_ssh_keys_in_keychain()
 {
@@ -1211,9 +749,7 @@ function net_bazzline_load_ssh_keys_in_keychain()
     fi
 }
 
-####
-# end of ssh section
-####
+#m
 
 ####
 # begin of webcam section
@@ -1232,40 +768,6 @@ function net_bazzline_make_picture_via_webcam()
         return 1
     fi
 }
-
-####
-# end of webcam section
-####
-
-####
-# begin of vim section
-####
-
-function net_bazzline_update_vim_bundles_and_plugins_with_vundle()
-{
-    LOCAL_PATH_TO_VUNDLE=$HOME'/.vim/bundle/Vundle.vim'
-
-    #create directory if it does not exist
-    if [[ ! -d "$LOCAL_PATH_TO_VUNDLE" ]]; then
-        mkdir -p $LOCAL_PATH_TO_VUNDLE
-    fi
-
-    #clone vundle if directory is empty
-    if [[ ! "$(ls -A $DIR_SELF)" ]]; then
-        git clone https://github.com/VundleVim/Vundle.vim.git $LOCAL_PATH_TO_VUNDLE
-    fi
-
-    #install all available plugins
-    vim +PluginInstall +qall & vim +BundleInstall +qall
-}
-
-####
-# end of vim section
-####
-
-####
-# begin of filesystem section
-####
 
 #####
 # If one value is given, mkdir -p plus cd is called.
@@ -1320,158 +822,104 @@ function net_bazzline_mkdirPrefixCurrentDate ()
 }
 
 ####
-# create a file with a prefix of current date (Ymd)
-#
-# @param string $1 - file name you want to create
-#
-# @author stev leibelt
-# @since 2014-09-20
+# @param - source one
+# [@param - source two]
+# @param destination
 ####
-function net_bazzline_touchPrefixCurrentDate ()
+function net_bazzline_move_in_chunks()
 {
-    if [[ $# -eq 1 ]]; then
-        directoryName=`eval date +%y%m%d`"_$1"
-
-        touch "$directoryName"
-    else
-        echo 'Should be called with exactly one parameter'
-    fi
-}
-
-#####
-# You can change $i levels by using cd $i
-#
-# @param mixed $1 - [optional] path where you want do change
-#                       or number of directories you want to
-#                       change upwards - default is $HOME
-#
-# @author stev leibelt
-# @since 2013-01-30
-####
-function net_bazzline_cd ()
-{
-    #is numeric value?
-    if [[ $# -eq 0 ]]; then 
-        cd "$HOME"
-    elif [[ `expr $1 + 1 2> /dev/null` ]]; then
-        for (( i=1; i <= $1; i++))
-        do
-            cd ..
-        done
-    else
-        \cd "$1"
-    fi
-}
-
-####
-# calles find with given param and type f
-#
-# @param string $1 - pattern you are searching for
-# @param [string $2] - path to serching in
-# @param [bool $3] - do not ignore dot files
-#
-# dot exclusion taken from: https://www.linuxquestions.org/questions/linux-general-1/find-and-excluding-all-hidden-directories-910578/
-#
-# @author stev leibelt
-# @since 2013-03-08
-####
-function net_bazzline_find_file ()
-{
-    if [[ $# -eq 1 ]]; then
-        find . -iname "$1" -not -path "*/.*/*" -not -name ".*" -type f 2>/dev/null
-    elif [[ $# -eq 2 ]]; then
-        find "$2"  -iname "$1" -not -path "*/.*/*" -not -name ".*" -type f 2>/dev/null
-    elif [[ $# -eq 3 ]]; then
-        find "$2" -iname "$1" -type f 2>/dev/null
-    else
-        echo 'No valid argument supplied.'
+    #source [source[...]] destination [--chunk_size=<int>] [--number_of_seconds_to_wait=<int>]
+    #begin of input validation
+    #@todo do it nicer
+    if [[ $# -lt 2 ]]
+    then
+        echo "invalid number of arguments provided"
+        echo "usage: <command> source [source[...]] destination [--chunk_size=<int>] [--number_of_seconds_to_wait=<int>]"
         return 1
     fi
+
+    LOCAL_CHUNK_SIZE=23
+    LOCAL_NUMBER_OF_SECONDS_TO_SLEEP_BETWEEN_CHUNKS=7
+    #end of input validation
+
+    #begin of moving
+    #iterate over source
+    #last argument is the target
+    #begin foreach souce
+    #   while LOCAL_NUMBER_OF_FILES_IN_SOURCE -gt 0
+    #       move
+    #       sleep
+    #       set_number_of_files_
+    #end foreach souce
+    #end of moving
+while [ $count -le 9 ]
+do
+echo "$count"
+sleep 1
+(( count++ ))
+done
+
 }
 
 ####
-# calles find with given param and type d
-#
-# @param string $1 - pattern your are searching for
-# @param [string $2] - path to serching in
-#
-# @author stev leibelt
-# @since 2013-03-08
-####
-function net_bazzline_find_directory ()
-{
-    if [[ $# -eq 1 ]]; then
-        find . -iname "$1" -type d 2>/dev/null
-    elif [[ $# -eq 2 ]]; then
-        find "$2" -iname "$1" -type d 2>/dev/null
-    else
-        echo 'No valid argument supplied.'
-        return 1
-    fi
-}
-
-####
-# Show differences between two directories
-#
-# @param string $1 - path to first directory
-# @param string $2 - path to second directory
-# 
+# @param string $zpool
+# @param string $uuid
+# @param string $crypto name
+# [@param string $uuid]
+# [@param string $crypto name]
 # @author stev leibelt <artodeto@bazzline.net>
-# @since 2013-05-21
-function net_bazzline_diff_directory ()
+# @since 2015-03-15
+# @todo implement support for multiple uuids and crypto names, <zpool> <uuid one> <crypto name one> [<uuid two> <crypto name two>[...]]
+####
+function net_bazzline_mount_luks_zpool ()
 {
-    if [[ $# -eq 2 ]]; then
-        diff -qr "$1" "$2" | sort
-    else
-        echo 'No valid argument supplied.'
-        echo 'Try command directory1 directory2'
+    if [[ $# -lt 4 ]]; then
+        echo 'usage: <command> <zpool> <disk uuid> <crypto name> [<disk uuid> <crypto name>[...]]'
         return 1
+    else
+        UUID="$2"
+        NAME="$3"
+        ZPOOL="$1"
+
+        sudo cryptsetup luksOpen /dev/disk/by-uuid/"$UUID" "$NAME"
+        sudo zpool import "$ZPOOL"
     fi
 }
 
 ####
-# adds "." to the beginning of the directory or file name
-# 
-# @param string $1 - file system object identifier
-#
-# @author stev leibelt <artodeto@bazzline.net>
-# @since 2014-07-31
+# @param string - mount point
+# @param string - name
+# @param string - host
+# [@param string - path to the identity file]
 ####
-function net_bazzline_hide_file_system_object()
+function net_bazzline_mount_sshfs ()
 {
-    if [[ $# -eq 1 ]]; then
-# @todo validate if identifier is file or directory and if first character is not "."
-# @todo use net_bazzline_stringStartsWith
-        mv "$1" ."$1"
-    else
-        echo "Usage: net_bazzline_unhide_directory <directory_name>"
+    if [[ $# -lt 4 ]]; then
+        echo "usage: <command> <mount point> <name> <host> [<path to identity file>]"
         return 1
+    else
+        MOUNT_POINT="$2"
+        NAME="$3"
+        HOST="$4"
+
+        if [[ -d "$MOUNT_POINT" ]]; then
+            echo 'mount point "'"$MOUNT_POINT"'" exists, remove and retry'
+            return 1
+        fi
+
+        mkdir -p "$MOUNT_POINT"
+
+        if [[ $# -eq 5 ]]; then
+            KEY="$5"
+
+            sshfs -o IdentitiyFile="$KEY" "$NAME"@"$HOST" "$MOUNT_POINT"
+        else
+            sshfs "$NAME"@"$HOST" "$MOUNT_POINT"
+        fi
     fi
 }
 
-####
-# adds "." to the beginning of the directory or file name
-#
-# @author stev leibelt <artodeto@bazzline.net>
-# @since 2014-07-31
-####
-function net_bazzline_unhide_file_system_object()
-{
-    if [[ $# -eq 1 ]]; then
-        IDENTIFIER="$1";
-# @todo validate if identifier is file or directory and if first character is "."
-# @todo use net_bazzline_stringStartsWith
-        #if [[ net_bazzline_stringStartsWith $IDENTIFIER "." ]]; then
-            mv $IDENTIFIER ${IDENTIFIER:1};
-            return 0
-        #else
-            #echo $IDENTIFIER" has to start with ."
-            #return 1
-    else
-        echo "Usage: net_bazzline_unhide_directory <directory_name>"
-        return 1
-    fi
-}
+#o
 
 ####
 # @param string $# - string name of directory you want to create
@@ -1570,133 +1018,115 @@ function net_bazzline_organize_directory_content()
     #end of clean up
 }
 
+#p
+
 ####
-# [@param string $1 - path to search in]
-# [@param string $2 - name/pattern to search for]
+# Starts php's built in webserver
+#
+# [@param string $1 - directory that should be used as target, default is public]
+# [@param int $2 - port the webserver should listen on, default is 80]
+#
+# @author stev leibelt <artodeto@bazzline.net>
+# @since 2013-08-21
+####
+function net_bazzline_php_start_internal_webserver ()
+{
+    if [[ $# -eq 2 ]]; then
+        DIRECTORY="$1";
+        PORT="$2";
+    elif [[ $# -eq 1 ]]; then
+        DIRECTORY="$1";
+        PORT=8080;
+    else
+        DIRECTORY="public";
+        PORT=8080;
+    fi
+
+    /bin/env php -S 0.0.0.0:"$PORT" -t "$DIRECTORY"
+}
+
+#####
+# Combines ps aux and grep
+#
+# @param string $1 - pattern your are searching for
 #
 # @author stev leibelt
-# @since 2016-04-10
+# @since 2013-01-30
 ####
-function net_bazzline_count_number_of_items_in_path()
+function net_bazzline_psgrep ()
 {
-    if [[ $# -gt 0 ]]
-    then
-        LOCAL_PATH="$1"
-    else
-        LOCAL_PATH="."
+    if [[ $# -eq 1 ]]; then
+        ps aux | grep -i "$1"
     fi
-
-    if [[ $# -gt 1 ]]
-    then
-        LOCAL_ITEM_NAME="$2"
-        LOCAL_NUMBER_OF_ENTRIES_FOR_POSSIBLE_ITEM_NAME=$(find $LOCAL_PATH -maxdepth 1 -not -name ".*" -name "$LOCAL_ITEM_NAME" | wc -l)
-    else
-        LOCAL_NUMBER_OF_ENTRIES_FOR_POSSIBLE_ITEM_NAME=$(find $LOCAL_PATH -maxdepth 1 -not -name ".*" | wc -l)
-    fi
-
-    return $LOCAL_NUMBER_OF_ENTRIES_FOR_POSSIBLE_ITEM_NAME
 }
 
-function net_bazzline_move_in_chunks()
+#r
+
+####
+# refresh given interface
+#
+# @param string $1 - [optional] interface - default eth0
+#
+# @todo implement --verbose --list-interfaces
+# @author stev leibelt
+# @since 2013-04-30
+####
+function net_bazzline_refresh_interface ()
 {
-    #source [source[...]] destination [--chunk_size=<int>] [--number_of_seconds_to_wait=<int>]
-    #begin of input validation
-    #@todo do it nicer
-    if [[ $# -lt 2 ]]
-    then
-        echo "invalid number of arguments provided"
-        echo "usage: <command> source [source[...]] destination [--chunk_size=<int>] [--number_of_seconds_to_wait=<int>]"
+    LENGTH=${#NET_BAZZLINE_INTERFACES[@]}
+
+    if [[ $LENGTH -eq 0 ]]; then
+        echo 'Environment variable NET_BAZZLINE_INTERFACES not defined or empty'
         return 1
     fi
 
-    LOCAL_CHUNK_SIZE=23
-    LOCAL_NUMBER_OF_SECONDS_TO_SLEEP_BETWEEN_CHUNKS=7
-    #end of input validation
+    if [[ $# -eq 0 ]]; then
+        INTERFACE=${NET_BAZZLINE_INTERFACES[0]}
+    else
+        for NET_BAZZLINE_INTERFACE in "${NET_BAZZLINE_INTERFACES[@]}"
+        do
+            if [[ "$1" -eq $NET_BAZZLINE_INTERFACE ]]; then
+                INTERFACE=$1
+            fi
+        done
 
-    #begin of moving
-    #iterate over source
-    #last argument is the target
-    #begin foreach souce
-    #   while LOCAL_NUMBER_OF_FILES_IN_SOURCE -gt 0
-    #       move
-    #       sleep
-    #       set_number_of_files_
-    #end foreach souce
-    #end of moving
-while [ $count -le 9 ]
-do
-echo "$count"
-sleep 1
-(( count++ ))
-done
+        #set default if none is found
+        INTERFACE=${INTERFACE:-$NET_BAZZLINE_INTERFACES[0]}
+    fi
 
+    sudo ip link set $INTERFACE down
+    sudo ip link set $INTERFACE up
+    sudo dhcpcd $INTERFACE
 }
 
 ####
-# begin of zfs section
+# Replaces a string in all files in given path and below
+# taken from: http://www.cyberciti.biz/faq/unix-linux-replace-string-words-in-many-files/
+# taken from: http://stackoverflow.com/questions/4437901/find-and-replace-string-in-a-file
+# taken from: http://stackoverflow.com/questions/7450324/how-do-i-replace-a-string-with-another-string-in-all-files-below-my-current-dir
+#
+# @author stev leibelt <artodeto@bazzline.net>
+# @since 2013-7-30
 ####
-
-####
-# @param string <name of the zfs pool>
-# [@param string <name of the snapshot>, default is current date
-####
-function net_bazzline_create_zfs_snapshot()
+function net_bazzline_replace_string_in_files ()
 {
-    if [[ $# -lt 1 ]]; then
-        echo 'invalid number of arguments'
-        echo '    net_bazzline_create_zfs_snapshot <name of the zfs pool> [<name of the snapshot>]'
+    if [[ $# -lt 3 ]]; then
+        echo 'invalid number of arguments provided'
+        echo 'command search replace fileextension [path]'
         return 1
     fi
 
-    NAME_OF_THE_POOL="$1"
+    SEARCH="$1"
+    REPLACE="$2"
+    FILE_EXTENSION="$3"
 
-    if [[ $# -gt 1 ]]; then
-        NAME_OF_THE_SNAPSHOT="$2"
+    if [[ $# -eq 4 ]]; then
+        DIRECTORY_PATH="$4"
     else
-        NAME_OF_THE_SNAPSHOT=$(date +'%Y-%m-%d_%H-%M-%S')
+        DIRECTORY_PATH="."
     fi
 
-    if sudo zfs snapshot -r $NAME_OF_THE_POOL@$NAME_OF_THE_SNAPSHOT; then
-        echo 'snapshot "'$NAME_OF_THE_SNAPSHOT'" created for pool "'$NAME_OF_THE_POOL'"'
-    fi
-
-    return $?
-}
-
-####
-# @param string <name of zfs pool>
-# @param string <name of the snapshot>
-####
-function net_bazzline_delete_zfs_snapshot()
-{
-    if [[ $# -lt 2 ]]; then
-        echo 'invalid number of arguments'
-        echo '    net_bazzline_delete_zfs_snapshot <name of the zfs pool> [<name of the snapshot>]'
-        return 1
-    fi
-
-    NAME_OF_THE_POOL="$1"
-    NAME_OF_THE_SNAPSHOT="$2"
-
-    if sudo zfs destroy -R $NAME_OF_THE_POOL@$NAME_OF_THE_SNAPSHOT; then
-        echo 'snapshot "'$NAME_OF_THE_SNAPSHOT'" deleted from pool "'$NAME_OF_THE_POOL'"'
-    fi
-
-    return $?
-}
-
-####
-# [@param string <path to zfs pool>]
-####
-function net_bazzline_list_zfs_snapshots()
-{
-    if [[ $# -lt 1 ]]; then
-        sudo zfs list -t snapshot
-    else
-        NAME_OF_THE_POOL="$1"
-
-        sudo zfs list -t snapshot | grep $NAME_OF_THE_POOL
-    fi
+    find "$DIRECTPRY_PATH" -name "*.$FILE_EXTENSION" -type f -exec sed -i 's/'"$SEARCH"'/'"$REPLACE"'/g' {} \;
 }
 
 ####
@@ -1709,9 +1139,557 @@ function net_bazzline_rotate_zfs_snapshot()
 }
 
 ####
-# end of zfs section
+# @param - rsync parameters
 ####
+function net_bazzline_rsync ()
+{
+    rsync -aq --delete $@
+}
+
+#s
 
 ####
-# end of filesystem section
+# @param string $PATH_TO_SSH_KEY
+# @param string $SOURCE_HOST
+# @param string $SOURCE_PATH
+# @param string $DESTINATION_PATH
+# @todo make PATH_TO_SSH_KEY optional
 ####
+function net_bazzline_scp_from_host()
+{
+    if [[ $# -eq 4 ]]; then
+        PATH_TO_SSH_KEY="$1"
+        SOURCE_HOST="$2"
+        SOURCE_PATH="$3"
+        DESTINATION_PATH="$4"
+
+        scp -r -i $PATH_TO_SSH_KEY $SOURCE_HOST:$SOURCE_PATH $DESTINATION_PATH
+    else
+        echo 'invalid number of arguments'
+        echo '    net_bazzline_scp_from_host <path to ssh key> <source host> <source path> <destination path>'
+    fi  
+}
+
+####
+# @param string $PATH_TO_SSH_KEY
+# @param string $DESTINATION_HOST
+# @param string $SOURCE_PATH
+# @param string $DESTINATION_PATH
+# @todo make PATH_TO_SSH_KEY optional
+####
+function net_bazzline_scp_to_host()
+{
+    if [[ $# -eq 4 ]]; then
+        PATH_TO_SSH_KEY="$1"
+        DESTINATION_HOST="$2"
+        SOURCE_PATH="$3"
+        DESTINATION_PATH="$4"
+
+        scp -r -i $PATH_TO_SSH_KEY $SOURCE_PATH $DESTINATION_HOST:$DESTINATION_PATH
+    else
+        echo 'invalid number of arguments'
+        echo '    net_bazzline_scp_to_host <path to ssh key> <source host> <source path> <destination path>'
+    fi  
+}
+
+####
+# Takes a screenshot
+# https://wiki.archlinux.org/index.php/Screenshot
+#
+# @param string $1 - [optional] filename with extension
+#
+# @author stev leiblt <artodeto@bazzline.net>
+# @since 2013-05-25
+####
+function net_bazzline_screenshot ()
+{
+    if [[ $# -eq 0 ]]; then
+        FILENAME='screenshot.jpg'
+    else
+        FILENAME="$1"
+    fi
+
+    import -window root $FILENAME
+}
+
+####
+# sets the provided optical drive speed
+# 
+# @param int $1 - speed (default is 12)
+# 
+# @author stev leibelt <artodeto@bazzline.net>
+# @since 2014-12-02
+####
+function net_bazzline_set_optical_drive_speed ()
+{
+    if [[ $# -eq 1 ]]; then
+        SPEED="$1"
+    else
+        SPEED="12"
+    fi
+
+    eject -x $SPEED /dev/sr0
+}
+
+####
+# Calls grep with "-ir --color=auto --exclude=\*.svn\* --exclude=\*.git\*" and directs errors to /dev/null
+# All your provided parameters are passed to grep
+#
+# 
+####
+function net_bazzline_silent_grep ()
+{
+    if [[ $# -lt 1 ]]; then
+        grep
+    else
+        grep -irI --color=auto --exclude=\*.svn\* --exclude=\*.git\* "$@" 2>/dev/null
+    fi
+}
+
+####
+# @author stev leibelt <artodeto@bazzline.net>
+# @since 2014-12-23
+# @see
+#   https://wiki.archlinux.org/index.php/Sshd#Encrypted_SOCKS_tunnel
+####
+function net_bazzline_start_secure_chromium ()
+{
+    if [[ $NET_BAZZLINE_SECURE_CONNECTION_PORT -eq 0 ]]; then
+        echo 'NET_BAZZLINE_SECURE_CONNECTION_PORT not defined, take a look into setting.local'
+        return 1
+    else
+        port=$NET_BAZZLINE_SECURE_CONNECTION_PORT
+        chromium --proxy-server="socks://localhost:$port" &
+        return 0
+    fi
+}
+
+####
+# @param string $STRING
+# @param string $SEARCH
+# @return int (0 true, 1 false)
+#
+# @usage: 
+#   if net_bazzline_string_contains 'foo' 'bar'; then
+#       echo 'contains'
+#   else
+#       echo 'does not contain'
+#   fi
+#
+# @see:
+#   http://stackoverflow.com/questions/229551/string-contains-in-bash
+#   http://stackoverflow.com/questions/6241256/what-is-proper-way-to-test-a-bash-function-return-value
+# @author stev leibelt <artodeto@bazzline.net>
+# @since 2015-11-05
+####
+function net_bazzline_string_contains()
+{
+    if [[ $# -eq 2 ]]; then
+        CONTAINS=1
+        STRING="$1"
+        SEARCH="$2"
+
+        case "$STRING" in 
+           *"$SEARCH"*)
+             CONTAINS=0
+            ;;
+        esac   
+
+        return $CONTAINS
+    else
+        echo 'invalid number of arguments'
+        echo '    net_bazzline_string_contains <string> <search>'
+        return 1
+    fi
+}
+
+####
+# validates if string starts with given string or not
+# 
+# @param string $1 - string
+# @param string $2 - needle
+# 
+# @author stev leibelt <artodeto@bazzline.net>
+# @since 2014-07-31
+####
+function net_bazzline_stringStartsWith ()
+{
+    if [[ $# -eq 2 ]]; then
+        STRING="$1"
+        SUB_STRING="$2"
+        LENGTH_OF_SUB_STRING=${#SUB_STRING}
+        STRING_WITH_SUB_STRING_ONLY=${STRING:0:$LENGTH_OF_SUB_STRING}
+
+        if [[ $STRING_WITH_SUB_STRING_ONLY = $SUB_STRING ]]; then
+            return 0
+        else
+            return 1
+        fi
+    else
+        echo "Usage: net_bazzline_stringStartsWitch <string> <needle>"
+        return 1
+    fi
+}
+
+####
+# use colordiff (if available)
+# 
+# @author stev leibelt
+# @since 2014-12-09
+# @see
+#   http://zalas.eu/viewing-svn-diff-result-in-colors/
+#   http://www.cyberciti.biz/programming/color-terminal-highlighter-for-diff-files/
+####
+function net_bazzline_svn_diff ()
+{
+    if [[ -x "/usr/bin/colordiff" ]]; then
+        svn diff "${@}" | /usr/bin/colordiff
+    else
+        svn diff "${@}"
+    fi
+}
+
+####
+# calls svn log with limit and pipes content into a grep
+#
+# @param string $1 - pattern / what you search for
+# @param integer $2 - svn log limit
+#
+# @author stev leibelt
+# @since 2014-11-11
+####
+function net_bazzline_svn_log_grep ()
+{
+    if [[ $# -eq 1 ]]; then
+        svn log --limit 1000 | grep -B2 "$1"
+    elif [[ $# -eq 2 ]]; then
+        svn log --limit "$2" | grep -B2 "$1"
+    else
+        echo 'invalid number of arguments supplied.'
+        echo 'Usage:'
+        echo 'net_bazzline_svn_log_grep <pattern:string> [<limit:int>]'
+    fi
+}
+
+#####
+# Calls svn diff for two repositories.
+# Call $repositoryUrlOne $repositoryUrlTwo $filePath
+# Use --summarize as default, so only filenames are shown
+#
+# @param string $1 - first repository
+# @param string $2 - second repository
+# @param string $3 - path of file to diff
+# [@param string $4 - if set, summarize is disabled]
+#
+# @author stev leibelt
+# @since 2013-01-30
+####
+function net_bazzline_svn_repository_diff ()
+{
+    if [[ $# -eq 3 ]]; then
+        svn diff --summarize "$1""/""$3" "$2""/""$3"
+    elif [[ $# -eq 4 ]]; then
+        svn diff "$1""/""$3" "$2""/""$3"
+    else
+        echo 'No valid arguments supplied'
+        echo 'repositoryUrlOne repositoryUrlTwo filePath [disableSummerize]'
+    fi
+}
+
+####
+# Uses rsync with ssh to copy data from remote to local host
+#
+# @param string $1 - remote user
+# @param string $2 - remote host
+# @param string $3 - source path on remote host
+# @param string $4 - destination path on local host
+# [@param string $5 - ssh key]
+#
+# @author stev leibelt <artodeto@bazzline.net>
+# @since 2013-07-05
+####
+function net_bazzline_sync_from_host ()
+{
+    if [[ $# -eq 4 ]]; then
+        USER="$1"
+        HOST="$2"
+        SOURCE="$3"
+        DESTINATION="$4"
+
+        rsync -aqz -e ssh $USER@$HOST:$SOURCE $DESTINATION
+    elif [[ $# -eq 5 ]]; then
+        USER="$1"
+        HOST="$2"
+        SOURCE="$3"
+        DESTINATION="$4"
+        KEY="$5"
+
+        rsync -aqz -e ssh -i $KEY $USER@$HOST:$SOURCE $DESTINATION
+    else
+        echo 'invalid number of variables provided'
+        echo 'command user host source destination'
+        return 1
+    fi
+}
+
+####
+# Rsync with default values
+#
+# @author stev leibelt <artodeto@bazzline.net>
+# @since 2013-12-21
+####
+function net_bazzline_sync_to ()
+{
+    if [[ $# -eq 0 ]]; then
+        echo 'invalid number of variables provided'
+        echo 'command [source one] [source ...] target'
+        return 1
+    elif [[ $# -eq 1 ]]; then
+        rsync -aq . "$1"
+    else
+        rsync -aq $@
+    fi
+}
+
+####
+# Uses rsync with ssh to copy data from local to remote host
+#
+# @param string $1 - remote user
+# @param string $2 - remote host
+# @param string $3 - source path on local host
+# @param string $4 - destination path on remote host
+# [@param string $5 - ssh key]
+#
+# @author stev leibelt <artodeto@bazzline.net>
+# @since 2013-07-05
+####
+function net_bazzline_sync_to_host ()
+{
+    if [[ $# -eq 4 ]]; then
+        USER="$1"
+        HOST="$2"
+        SOURCE="$3"
+        DESTINATION="$4"
+
+        rsync -avz -e ssh $SOURCE $USER@$HOST:$DESTINATION
+    elif [[ $# -eq 5 ]]; then
+        USER="$1"
+        HOST="$2"
+        SOURCE="$3"
+        DESTINATION="$4"
+        KEY="$5"
+
+        rsync -aqz -e ssh -i $KEY $SOURCE $USER@$HOST:$DESTINATION
+    else
+        echo 'invalid number of variables provided'
+        echo 'command user host source destination'
+        return 1
+    fi
+}
+
+#t
+
+####
+# creates tar archvie
+#
+# @param string $1 - archvie name
+# @param string $@ - paths
+#
+# @author stev leibelt
+# @since 2013-07-19
+####
+function net_bazzline_tar_create ()
+{
+    if [[ $# -lt 2 ]]; then
+        echo 'No valid arguments supplied.'
+        echo 'archive path1 [pathX]'
+
+        exit 1
+    fi
+
+    FILENAME="$1"
+
+    # remove $1
+    shift
+
+    tar -cf $FILENAME "$@"
+}
+
+####
+# extract content of a tar archvie
+#
+# @param string $1 - archvie name
+#
+# @author stev leibelt
+# @since 2013-07-19
+####
+function net_bazzline_tar_extract ()
+{
+    if [[ $# -eq 1 ]]; then
+        tar -xf "$1"
+    else
+        echo 'No valid arguments supplied.'
+        echo 'archive'
+
+        exit 1
+    fi
+}
+
+####
+# lists content of a tar archvie
+#
+# @param string $1 - archvie name
+#
+# @author stev leibelt
+# @since 2013-07-19
+####
+function net_bazzline_tar_list ()
+{
+    if [[ $# -eq 1 ]]; then
+        tar -tvf "$1"
+    else
+        echo 'No valid arguments supplied.'
+        echo 'archive'
+
+        exit 1
+    fi
+}
+
+function net_bazzline_test ()
+{
+    STRING=".md"
+    SUB_STRING="."
+
+# not working
+    if [[ $(net_bazzline_stringStartsWith $STRING $SUB_STRING) ]]; then
+        echo 'stats with'
+    else
+        echo 'stats with not'
+    fi
+
+    STARTS_WITH=$(net_bazzline_stringStartsWith $STRING $SUB_STRING)
+    echo "$STARTS_WITH"
+
+    if [[ $STARTS_WITH -eq 0 ]]; then
+        echo 'starts with'
+    else
+        echo 'starts not with'
+    fi
+}
+
+####
+# create a file with a prefix of current date (Ymd)
+#
+# @param string $1 - file name you want to create
+#
+# @author stev leibelt
+# @since 2014-09-20
+####
+function net_bazzline_touchPrefixCurrentDate ()
+{
+    if [[ $# -eq 1 ]]; then
+        directoryName=`eval date +%y%m%d`"_$1"
+
+        touch "$directoryName"
+    else
+        echo 'Should be called with exactly one parameter'
+    fi
+}
+
+#u
+
+####
+# adds "." to the beginning of the directory or file name
+#
+# @author stev leibelt <artodeto@bazzline.net>
+# @since 2014-07-31
+####
+function net_bazzline_unhide_file_system_object()
+{
+    if [[ $# -eq 1 ]]; then
+        IDENTIFIER="$1";
+# @todo validate if identifier is file or directory and if first character is "."
+# @todo use net_bazzline_stringStartsWith
+        #if [[ net_bazzline_stringStartsWith $IDENTIFIER "." ]]; then
+            mv $IDENTIFIER ${IDENTIFIER:1};
+            return 0
+        #else
+            #echo $IDENTIFIER" has to start with ."
+            #return 1
+    else
+        echo "Usage: net_bazzline_unhide_directory <directory_name>"
+        return 1
+    fi
+}
+
+####
+# @param string $zpool
+# @param string $crypto name
+# [@param string $crypto name]
+# @author stev leibelt <artodeto@bazzline.net>
+# @since 2015-03-15
+# @todo implement support for multiple crypto names
+####
+function net_bazzline_unmount_luks_zpool ()
+{
+    if [[ $# -lt 3 ]]; then
+        echo "usage: <command> <zpool> <crypto name> <zpool>"
+        return 1
+    else
+        NAME="$2"
+        ZPOOL="$1"
+
+        sudo zpool export "$ZPOOL"
+        sudo cryptsetup close "$NAME"
+    fi
+}
+
+####
+# @param string - mount point
+####
+function net_bazzline_unmount_sshfs ()
+{
+    echo "fusermount -u <mount point>"
+    echo "rm -fr <mount point>"
+}
+
+#v
+
+function net_bazzline_update_vim_bundles_and_plugins_with_vundle()
+{
+    LOCAL_PATH_TO_VUNDLE=$HOME'/.vim/bundle/Vundle.vim'
+
+    #create directory if it does not exist
+    if [[ ! -d "$LOCAL_PATH_TO_VUNDLE" ]]; then
+        mkdir -p $LOCAL_PATH_TO_VUNDLE
+    fi
+
+    #clone vundle if directory is empty
+    if [[ ! "$(ls -A $DIR_SELF)" ]]; then
+        git clone https://github.com/VundleVim/Vundle.vim.git $LOCAL_PATH_TO_VUNDLE
+    fi
+
+    #install all available plugins
+    vim +PluginInstall +qall & vim +BundleInstall +qall
+}
+
+#w
+
+####
+# lists all available process listening on given port
+#
+# @param integer $1 - port number
+#
+# @author stev leibelt <artodeto@bazzline.net>
+# @since 2014-04-07
+####
+function net_bazzline_what_is_listening_on_that_port()
+{
+    if [[ $# -eq 1 ]]; then
+        netstat -tulpn | grep --color :$1
+    else
+        echo "invalid number of arguments supplied"
+        echo "portnumber"
+        return 1
+    fi
+}
