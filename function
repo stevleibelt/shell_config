@@ -3,6 +3,7 @@
 # @author stev leibelt <artodeto@bazzline.net>
 # @since 2013-04-24
 # @see https://www.gnu.org/software/bash/manual/bash.html
+# @todo prefix all local variables with "LOCAL_"
 ####
 
 #b
@@ -20,9 +21,9 @@ function net_bazzline_backup_to ()
         echo 'command [source one] [source ...] target'
         return 1
     elif [[ $# -eq 1 ]]; then
-        rsync -aq --delete . "$1"
+        net_bazzline_rsync . "$1"
     else
-        rsync -aq --delete $@
+        net_bazzline_rsync $@
     fi
 }
 
@@ -475,6 +476,27 @@ function net_bazzline_filename_to_lower_batch_rename ()
 }
 
 ####
+# calles find with given param and type d
+#
+# @param string $1 - pattern your are searching for
+# @param [string $2] - path to serching in
+#
+# @author stev leibelt
+# @since 2013-03-08
+####
+function net_bazzline_find_directory ()
+{
+    if [[ $# -eq 1 ]]; then
+        find . -iname "$1" -type d 2>/dev/null
+    elif [[ $# -eq 2 ]]; then
+        find "$2" -iname "$1" -type d 2>/dev/null
+    else
+        echo 'No valid argument supplied.'
+        return 1
+    fi
+}
+
+####
 # calles find with given param and type f
 #
 # @param string $1 - pattern you are searching for
@@ -494,27 +516,6 @@ function net_bazzline_find_file ()
         find "$2"  -iname "$1" -not -path "*/.*/*" -not -name ".*" -type f 2>/dev/null
     elif [[ $# -eq 3 ]]; then
         find "$2" -iname "$1" -type f 2>/dev/null
-    else
-        echo 'No valid argument supplied.'
-        return 1
-    fi
-}
-
-####
-# calles find with given param and type d
-#
-# @param string $1 - pattern your are searching for
-# @param [string $2] - path to serching in
-#
-# @author stev leibelt
-# @since 2013-03-08
-####
-function net_bazzline_find_directory ()
-{
-    if [[ $# -eq 1 ]]; then
-        find . -iname "$1" -type d 2>/dev/null
-    elif [[ $# -eq 2 ]]; then
-        find "$2" -iname "$1" -type d 2>/dev/null
     else
         echo 'No valid argument supplied.'
         return 1
@@ -647,7 +648,7 @@ function net_bazzline_hide_file_system_object()
 {
     if [[ $# -eq 1 ]]; then
 # @todo validate if identifier is file or directory and if first character is not "."
-# @todo use net_bazzline_stringStartsWith
+# @todo use net_bazzline_string_starts_with
         mv "$1" ."$1"
     else
         echo "Usage: net_bazzline_unhide_directory <directory_name>"
@@ -810,7 +811,7 @@ function net_bazzline_mkdir ()
 # @author stev leibelt
 # @since 2013-03-08
 ####
-function net_bazzline_mkdirPrefixCurrentDate ()
+function net_bazzline_mkdir_prefix_with_current_date ()
 {
     if [[ $# -eq 1 ]]; then
         directoryName=`eval date +%y%m%d`"_$1"
@@ -1132,6 +1133,7 @@ function net_bazzline_replace_string_in_files ()
 ####
 # @param string <path to zfs pool>
 # [@param int number of snapshots to keep, default is 1]
+# @todo
 ####
 function net_bazzline_rotate_zfs_snapshot()
 {
@@ -1247,24 +1249,6 @@ function net_bazzline_silent_grep ()
 }
 
 ####
-# @author stev leibelt <artodeto@bazzline.net>
-# @since 2014-12-23
-# @see
-#   https://wiki.archlinux.org/index.php/Sshd#Encrypted_SOCKS_tunnel
-####
-function net_bazzline_start_secure_chromium ()
-{
-    if [[ $NET_BAZZLINE_SECURE_CONNECTION_PORT -eq 0 ]]; then
-        echo 'NET_BAZZLINE_SECURE_CONNECTION_PORT not defined, take a look into setting.local'
-        return 1
-    else
-        port=$NET_BAZZLINE_SECURE_CONNECTION_PORT
-        chromium --proxy-server="socks://localhost:$port" &
-        return 0
-    fi
-}
-
-####
 # @param string $STRING
 # @param string $SEARCH
 # @return int (0 true, 1 false)
@@ -1312,7 +1296,7 @@ function net_bazzline_string_contains()
 # @author stev leibelt <artodeto@bazzline.net>
 # @since 2014-07-31
 ####
-function net_bazzline_stringStartsWith ()
+function net_bazzline_string_starts_with ()
 {
     if [[ $# -eq 2 ]]; then
         STRING="$1"
@@ -1555,28 +1539,6 @@ function net_bazzline_tar_list ()
     fi
 }
 
-function net_bazzline_test ()
-{
-    STRING=".md"
-    SUB_STRING="."
-
-# not working
-    if [[ $(net_bazzline_stringStartsWith $STRING $SUB_STRING) ]]; then
-        echo 'stats with'
-    else
-        echo 'stats with not'
-    fi
-
-    STARTS_WITH=$(net_bazzline_stringStartsWith $STRING $SUB_STRING)
-    echo "$STARTS_WITH"
-
-    if [[ $STARTS_WITH -eq 0 ]]; then
-        echo 'starts with'
-    else
-        echo 'starts not with'
-    fi
-}
-
 ####
 # create a file with a prefix of current date (Ymd)
 #
@@ -1585,7 +1547,7 @@ function net_bazzline_test ()
 # @author stev leibelt
 # @since 2014-09-20
 ####
-function net_bazzline_touchPrefixCurrentDate ()
+function net_bazzline_touch_with_prefix_of_current_date ()
 {
     if [[ $# -eq 1 ]]; then
         directoryName=`eval date +%y%m%d`"_$1"
@@ -1609,8 +1571,8 @@ function net_bazzline_unhide_file_system_object()
     if [[ $# -eq 1 ]]; then
         IDENTIFIER="$1";
 # @todo validate if identifier is file or directory and if first character is "."
-# @todo use net_bazzline_stringStartsWith
-        #if [[ net_bazzline_stringStartsWith $IDENTIFIER "." ]]; then
+# @todo use net_bazzline_string_starts_with
+        #if [[ net_bazzline_string_starts_with $IDENTIFIER "." ]]; then
             mv $IDENTIFIER ${IDENTIFIER:1};
             return 0
         #else
