@@ -832,7 +832,7 @@ function net_bazzline_move_in_chunks()
     #source [source[...]] destination [--chunk_size=<int>] [--number_of_seconds_to_wait=<int>]
     #begin of input validation
     #@todo do it nicer
-    if [[ $# -lt 2 ]]
+    if [[ $# -lt 2 ]];
     then
         echo "invalid number of arguments provided"
         echo "usage: <command> source [source[...]] destination [--chunk_size=<int>] [--number_of_seconds_to_wait=<int>]"
@@ -847,13 +847,17 @@ function net_bazzline_move_in_chunks()
     #iterate over source
     #last argument is the target
     #begin foreach souce
-    #   while LOCAL_NUMBER_OF_FILES_IN_SOURCE -gt 0
+    #
+    # LOCAL_NUMBER_OF_FILES_IN_SOURCE=$(ls | head -n $LOCAL_CHUNK_SIZE)
+    # check if $LOCAL_NUMBER_OF_FILES_IN_SOURCE has entries
+    #
+    #   while $LOCAL_NUMBER_OF_FILES_IN_SOURCE -gt 0
     #       move
     #       sleep
     #       set_number_of_files_
     #end foreach souce
     #end of moving
-while [ $count -le 9 ]
+while [[ $count -le 9 ]];
 do
 echo "$count"
 sleep 1
