@@ -658,6 +658,29 @@ function net_bazzline_hide_file_system_object()
 
 #i
 
+####
+# checks if directory is empty or not
+# @param string $1 - path to the directory
+# @return int - 0 if it is empty, 1 if is not empty, 2 on error
+####
+function net_bazzline_is_directory_empty ()
+{
+    if [[ $# -lt 1 ]]; then
+        echo "Usage: net_bazzline_is_directory_empty <path to the directory>"
+        return 2;
+    fi
+
+    LOCAL_PATH_TO_THE_DIRECTORY="$1"
+
+    if [[ "$(ls -A $LOCAL_PATH_TO_THE_DIRECTORY)" ]]; then
+        LOCAL_DIRECTORY_IS_EMPTY=1;
+    else
+        LOCAL_DIRECTORY_IS_EMPTY=0;
+    fi
+
+    return $LOCAL_DIRECTORY_IS_EMPTY;
+}
+
 #l
 
 ####
