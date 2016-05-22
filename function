@@ -872,6 +872,11 @@ function net_bazzline_move_in_chunks()
     #begin foreach souce
     #
     # LOCAL_NUMBER_OF_FILES_IN_SOURCE=$(ls | head -n $LOCAL_CHUNK_SIZE)
+    # LOCAL_IF_DIRECTORY_IS_EMPTY=$(net_bazzline_is_directory_empty )
+    # @see
+    #   http://stackoverflow.com/questions/1853946/getting-the-last-argument-passed-to-a-shell-script
+    #   https://duckduckgo.com/?q=bash+get+last+function+argument&ia=qa
+    #   http://www.tldp.org/LDP/Bash-Beginners-Guide/html/sect_09_07.html
     # check if $LOCAL_NUMBER_OF_FILES_IN_SOURCE has entries
     #
     #   while $LOCAL_NUMBER_OF_FILES_IN_SOURCE -gt 0
