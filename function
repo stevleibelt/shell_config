@@ -658,6 +658,29 @@ function net_bazzline_hide_file_system_object()
 
 #i
 
+####
+# checks if directory is empty or not
+# @param string $1 - path to the directory
+# @return int - 0 if it is empty, 1 if is not empty, 2 on error
+####
+function net_bazzline_is_directory_empty ()
+{
+    if [[ $# -lt 1 ]]; then
+        echo "Usage: net_bazzline_is_directory_empty <path to the directory>"
+        return 2;
+    fi
+
+    LOCAL_PATH_TO_THE_DIRECTORY="$1"
+
+    if [[ "$(ls -A $LOCAL_PATH_TO_THE_DIRECTORY)" ]]; then
+        LOCAL_DIRECTORY_IS_EMPTY=1;
+    else
+        LOCAL_DIRECTORY_IS_EMPTY=0;
+    fi
+
+    return $LOCAL_DIRECTORY_IS_EMPTY;
+}
+
 #l
 
 function net_bazzline_list_empty_directories ()
@@ -857,6 +880,11 @@ function net_bazzline_move_in_chunks()
     #begin foreach souce
     #
     # LOCAL_NUMBER_OF_FILES_IN_SOURCE=$(ls | head -n $LOCAL_CHUNK_SIZE)
+    # LOCAL_IF_DIRECTORY_IS_EMPTY=$(net_bazzline_is_directory_empty )
+    # @see
+    #   http://stackoverflow.com/questions/1853946/getting-the-last-argument-passed-to-a-shell-script
+    #   https://duckduckgo.com/?q=bash+get+last+function+argument&ia=qa
+    #   http://www.tldp.org/LDP/Bash-Beginners-Guide/html/sect_09_07.html
     # check if $LOCAL_NUMBER_OF_FILES_IN_SOURCE has entries
     #
     #   while $LOCAL_NUMBER_OF_FILES_IN_SOURCE -gt 0
