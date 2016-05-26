@@ -660,17 +660,12 @@ function net_bazzline_hide_file_system_object()
 
 #l
 
-####
-# list available interfaces
-# 
-# @author stev leibelt <artodeto@bazzline.net>
-# @since 2014-10-28
-####
-function net_bazzline_list_interfaces ()
+function net_bazzline_list_empty_directories ()
 {
-    # also possible
-    # ls /sys/class/net
-    ip a | grep ':\ '
+    #@todo
+    find . -empty -type d
+    #@todo delete_empty_directories
+    #find . -empty -delete
 }
 
 ####
@@ -682,6 +677,19 @@ function net_bazzline_list_interfaces ()
 function net_bazzline_list_groups ()
 {
     getent group | awk -F ':' '{ print $1 }' | sort
+}
+
+####
+# list available interfaces
+# 
+# @author stev leibelt <artodeto@bazzline.net>
+# @since 2014-10-28
+####
+function net_bazzline_list_interfaces ()
+{
+    # also possible
+    # ls /sys/class/net
+    ip a | grep ':\ '
 }
 
 ####
