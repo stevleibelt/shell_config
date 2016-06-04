@@ -15,7 +15,6 @@ alias ant='ant -logger org.apache.tools.ant.listener.AnsiColorLogger'
 alias batchConvertImageTo640=net_bazzline_image_batch_convert_640
 alias batchConvertImageTo1024=net_bazzline_image_batch_convert_1024
 alias batchConvertImageTo1920=net_bazzline_image_batch_convert_1920
-alias batteryStatus='clear & acpi -i'
 alias burn=net_bazzline_burn
 
 #c
@@ -80,6 +79,7 @@ alias lh='ls -halt | head'
 alias listInterfaces=net_bazzline_list_interfaces
 alias listGroups=net_bazzline_list_groups
 alias listSymbolicLinks=net_bazzline_list_symbolic_links
+alias listSystemTemperature=sensors
 alias listSystemUsers=net_bazzline_list_system_users
 alias listUsers=net_bazzline_list_users
 if [[ -f /usr/bin/zpool ]]; then
@@ -122,6 +122,7 @@ fi
 if [ -f $HOME'/code/sh/local/sensorsRefresh.sh' ]; then
   alias statusSensor='sh '$HOME'/code/sh/local/sensorsRefresh.sh'
 fi
+alias showBatteryStatus='clear & acpi -i'
 alias silentGrep=net_bazzline_silent_grep
 alias skype='xhost +local: && sudo -u skype /usr/bin/skype'
 #@todo: validate against https://wiki.archlinux.org/index.php/Pacman/Rosetta
@@ -136,7 +137,7 @@ if [[ $NET_BAZZLINE_PACKAGE_MANAGER = 'pacaur' ]]; then
     alias software-list-foreign='pacaur -Qm'
     alias software-list-installed='pacaur -Qen'
     alias software-list-unofficial-installed='pacaur -Qem'
-    alias software-remove='pacaur -Rsu'
+    alias software-remove="pacaur -Rsu "$@
     alias software-search='pacaur -Ss'
     alias software-search-installed='pacaur -Qs'
     alias software-update='pacaur -Sy'
