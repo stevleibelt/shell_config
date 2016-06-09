@@ -128,7 +128,7 @@ alias skype='xhost +local: && sudo -u skype /usr/bin/skype'
 #@todo: validate against https://wiki.archlinux.org/index.php/Pacman/Rosetta
 if [[ $NET_BAZZLINE_PACKAGE_MANAGER = 'pacaur' ]]; then
     alias software-check-unneeded-dependencies='pacaur -Qqdt'
-    alias software-clean-cache='pacaur -Scc && sudo rm -fr ~/.cache/pacaur'
+    alias software-clean-cache='pacaur -Scc && echo "" && echo "removing ~/.cache/pacaur" && sudo rm -fr ~/.cache/pacaur'
     alias software-fetch='pacaur -G'
     alias software-info='pacaur -Qi'
     alias software-install='pacaur -S'
