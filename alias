@@ -115,6 +115,7 @@ alias rsync=net_bazzline_rsync
 alias runJar='java -jar '
 
 #s
+alias searchInComposerFiles=net_bazzline_search_in_composer_files
 alias setOpticalDriveSpeed=net_bazzline_set_optical_drive_speed
 if [ -f $HOME'/code/sh/local/displayBatteryStatus.sh' ]; then
   alias statusBattery='sh '$HOME'/code/sh/local/displayBatteryStatus.sh'
