@@ -5,62 +5,77 @@
 #
 # @author stev leibelt
 # @since 2013-01-15
+# @todo move into functions
 ########
 
 clear
 
-if [ ! -f $HOME'/.bashrc' ]; then
-  echo 'Can not find .bashrc'
-  exit 1
+LOCAL_PATH_TO_THE_BASH_RC="$HOME/.bashrc"
+
+if [[ ! -f "$LOCAL_PATH_TO_THE_BASH_RC" ]];
+then
+    echo "No .bashrc file found."
+    echo "Bash is currently the only supported shell"
+    exit 1
 fi
 
-PATH_SELF=$(cd $(dirname "$0"); pwd)
-DATETIME=$(date +%y%m%d_+%T)
+LOCAL_PATH_TO_THIS_SCRIPT=$(cd $(dirname "$0"); pwd)
+LOCAL_DATETIME=$(date +%y%m%d_+%T)
 
-echo 'Adapting .bashrc'
+echo "Adapting .bashrc"
 
-echo '#net_bazzline_config_shell start' >> $HOME'/.bashrc'
-echo '#date: '$DATETIME >> $HOME'/.bashrc'
-echo '' >> $HOME'/.bashrc'
-echo PATH_SHELL_CONFIG=$PATH_SELF >> $HOME'/.bashrc'
-echo "if [ -f \$PATH_SHELL_CONFIG'/bootstrap' ]; then " >> $HOME'/.bashrc'
-echo "  source \$PATH_SHELL_CONFIG'/bootstrap'" >> $HOME'/.bashrc'
-echo "fi" >> $HOME'/.bashrc'
-echo '' >> $HOME'/.bashrc'
-echo '#net_bazzline_config_shell end' >> $HOME'/.bashrc'
+echo "#net_bazzline_config_shell start" >> $LOCAL_PATH_TO_THE_BASH_RC
+echo "#date: "$LOCAL_DATETIME >> $LOCAL_PATH_TO_THE_BASH_RC
+echo "" >> $LOCAL_PATH_TO_THE_BASH_RC
+echo "PATH_SHELL_CONFIG=\$LOCAL_PATH_TO_THIS_SCRIPT" >> $LOCAL_PATH_TO_THE_BASH_RC
+echo "if [ -f \$PATH_SHELL_CONFIG\"/bootstrap\" ]; then " >> $LOCAL_PATH_TO_THE_BASH_RC
+echo "  source \$PATH_SHELL_CONFIG\"/bootstrap\"" >> $LOCAL_PATH_TO_THE_BASH_RC
+echo "fi" >> $LOCAL_PATH_TO_THE_BASH_RC
+echo "" >> $LOCAL_PATH_TO_THE_BASH_RC
+echo "#net_bazzline_config_shell end" >> $LOCAL_PATH_TO_THE_BASH_RC
 
-echo 'Creating local files'
-declare -a FILES_TO_CREATE=('setting' 'variable' 'source' 'export' 'function' 'alias' 'automatic_start')
+echo ""
+echo "Creating local files"
+declare -a FILES_TO_CREATE=("setting" "variable" "source" "export" "function" "alias" "automatic_start")
 for FILE_TO_CREATE in ${FILES_TO_CREATE[@]}; do
-    touch $PATH_SELF"/"$FILES_TO_CREATE".local"
-    echo "#!/bin/bash" > $PATH_SELF"/local."$FILES_TO_CREATE
+    LOCAL_FILE_PATH_NAME="$LOCAL_PATH_TO_THIS_SCRIPT/local.$FILE_TO_CREATE"
+    touch "$LOCAL_FILE_PATH_NAME"
+    echo "#!/bin/bash" > "$LOCAL_PATH_TO_THE_BASH_RC"
 done;
 
-echo 'Creating temporary .xinitrc.temp'
-touch $HOME'/.xinitrc.temp'
+LOCAL_PATH_TO_THE_XINIT="$HOME/.xinitrc.temp"
+LOCAL_PATH_TO_THE_TEMPORARY_XINIT="$LOCAL_PATH_TO_THE_XINIT.temporary"
 
-echo 'Adding content to temporary .xinitrc.temp'
+echo ""
+echo "Creating .xinitrc.temporary"
+touch "$LOCAL_PATH_TO_THE_TEMPORARY_XINIT"
 
-echo '#net_bazzline_config_shell start' >> $HOME'/.xinitrc.temp'
-echo '#date: '$DATETIME >> $HOME'/.xinitrc.temp'
-echo '' >> $HOME'/.xinitrc.temp'
-echo PATH_SHELL_CONFIG=$PATH_SELF >> $HOME'/.xinitrc.temp'
-echo "if [ -f \$PATH_SHELL_CONFIG'/color' ]; then " >> $HOME'/.xinitrc.temp'
-echo "  xrdb -merge \$PATH_SHELL_CONFIG'/color'" >> $HOME'/.xinitrc.temp'
-echo "fi" >> $HOME'/.xinitrc.temp'
-echo "if [ -f \$PATH_SHELL_CONFIG'/local.color' ]; then " >> $HOME'/.xinitrc.temp'
-echo "  xrdb -merge \$PATH_SHELL_CONFIG'/local.color'" >> $HOME'/.xinitrc.temp'
-echo "fi" >> $HOME'/.xinitrc.temp'
-echo '' >> $HOME'/.xinitrc.temp'
-echo '#net_bazzline_config_shell end' >> $HOME'/.xinitrc.temp'
-echo '' >> $HOME'/.xinitrc.temp'
+echo "Adding content to .xinitrc.temporary"
 
-echo 'Copying content of .xinitrc to .xinitrc.temp'
+echo "#net_bazzline_config_shell start" >> "$LOCAL_PATH_TO_THE_TEMPORARY_XINIT"
+echo "#date: "$LOCAL_DATETIME >> $LOCAL_PATH_TO_THE_TEMPORARY_XINIT
+echo "" >> $LOCAL_PATH_TO_THE_TEMPORARY_XINIT
+echo "PATH_SHELL_CONFIG=\$LOCAL_PATH_TO_THIS_SCRIPT" >> $LOCAL_PATH_TO_THE_TEMPORARY_XINIT
+echo "if [[ -f \$PATH_SHELL_CONFIG\"/color\" ]]; then " >> $LOCAL_PATH_TO_THE_TEMPORARY_XINIT
+echo "  xrdb -merge \$PATH_SHELL_CONFIG\"/color\"" >> $LOCAL_PATH_TO_THE_TEMPORARY_XINIT
+echo "fi" >> $LOCAL_PATH_TO_THE_TEMPORARY_XINIT
+echo "if [[ -f \$PATH_SHELL_CONFIG\"/local.color\" ]]; then " >> $LOCAL_PATH_TO_THE_TEMPORARY_XINIT
+echo "  xrdb -merge \$PATH_SHELL_CONFIG\"/local.color\"" >> $LOCAL_PATH_TO_THE_TEMPORARY_XINIT
+echo "fi" >> $LOCAL_PATH_TO_THE_TEMPORARY_XINIT
+echo "" >> $LOCAL_PATH_TO_THE_TEMPORARY_XINIT
+echo "#net_bazzline_config_shell end" >> $LOCAL_PATH_TO_THE_TEMPORARY_XINIT
+echo "" >> $LOCAL_PATH_TO_THE_TEMPORARY_XINIT
 
-cat $HOME'/.xinitrc' >> $HOME'/.xinitrc.temp'
+echo ""
+echo "Copying content of .xinitrc to .xinitrc.temporary"
 
-echo 'Replacing .xinitrc with .xinitrc.temp'
+cat $LOCAL_PATH_TO_THE_XINIT >> $LOCAL_PATH_TO_THE_TEMPORARY_XINIT
 
-mv $HOME'/.xinitrc.temp' $HOME'/.xinitrc'
+echo ""
+echo "Replacing .xinitrc with .xinitrc.temporary"
 
-echo 'Finished'
+mv $LOCAL_PATH_TO_THE_TEMPORARY_XINIT $LOCAL_PATH_TO_THE_XINIT
+rm $LOCAL_PATH_TO_THE_TEMPORARY_XINIT
+
+echo ""
+echo "Finished"
