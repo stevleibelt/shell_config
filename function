@@ -1191,6 +1191,26 @@ function net_bazzline_rsync ()
 #s
 
 ####
+# @param string $SEARCH_PATTERN
+# [@param int $MAXIMUM_LEVELS_OF_DIRECTORY_DEPTH]
+####
+function net_bazzline_search_in_composer_files()
+{
+    LOCAL_SEARCH_PATTERN="$1"
+
+    if [[ $# -gt 1 ]]; then
+        LOCAL_MAXIUM_LEVELS_OF_DIRECTORY_DEPTH=$2
+    else
+        LOCAL_MAXIUM_LEVELS_OF_DIRECTORY_DEPTH=2
+    fi
+
+    for LOCAL_FILE_PATH in $(find . -maxdepth $LOCAL_MAXIUM_LEVELS_OF_DIRECTORY_DEPTH -name composer.json); do
+        echo "$LOCAL_FILE_PATH"
+        cat "$LOCAL_FILE_PATH" | grep -i "$LOCAL_SEARCH_PATTERN"
+    done
+}
+
+####
 # @param string $PATH_TO_SSH_KEY
 # @param string $SOURCE_HOST
 # @param string $SOURCE_PATH
