@@ -367,6 +367,26 @@ function net_bazzline_count_number_of_items_in_path()
 }
 
 ####
+# @param string <path to create>
+####
+function net_bazzline_create_path_or_return_error_if_path_exists_already()
+{
+    if [[ $# -lt 1 ]]; then
+        echo "invalid number of arguments"
+        echo "    net_bazzline_create_path_or_return_error_if_path_exists_already <path to create>";
+        return 1
+    fi
+
+    LOCAL_PATH_TO_CREATE="$1"
+
+    if [[ -d "$LOCAL_PATH_TO_CREATE" ]]; then
+        return 1
+    else
+        net_bazzline_mkdir "$LOCAL_PATH_TO_CREATE"
+    fi
+}
+
+####
 # @param string <name of the zfs pool>
 # [@param string <name of the snapshot>, default is current date
 ####
