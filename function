@@ -383,7 +383,7 @@ function net_bazzline_create_path_or_return_error_if_path_exists_already()
         echo "path exist already: $LOCAL_PATH_TO_CREATE"
         return 1
     else
-        net_bazzline_mkdir "$LOCAL_PATH_TO_CREATE"
+        mkdir -p "$LOCAL_PATH_TO_CREATE"
     fi
 }
 

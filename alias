@@ -46,10 +46,6 @@ if [[ -f /usr/bin/zpool ]]; then
     alias deleteZfsSnapshot=net_bazzline_delete_zfs_snapshot
 fi
 alias diffDirectories=net_bazzline_diff_directory
-alias disableTouchpad='synclient TouchpadOff=1'
-
-#e
-alias enableTouchpad='synclient TouchpadOff=0'
 
 #f
 alias findBrokenSymlinks='find . -type l -! -exec test -e {} \; -print'
@@ -139,7 +135,7 @@ if [[ $NET_BAZZLINE_PACKAGE_MANAGER = 'pacaur' ]]; then
     alias software-list-foreign='pacaur -Qmq'
     alias software-list-installed='pacaur -Qenm'
     alias software-list-unofficial-installed='pacaur -Qem'
-    alias software-remove="pacaur -Rsu "$@
+    alias software-remove="pacaur -Rsu "
     alias software-search='pacaur -Ss'
     alias software-search-installed='pacaur -Qs'
     alias software-update='pacaur -Sy'
