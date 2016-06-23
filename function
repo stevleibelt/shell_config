@@ -906,6 +906,10 @@ function net_bazzline_move_in_chunks()
     #   http://stackoverflow.com/questions/1853946/getting-the-last-argument-passed-to-a-shell-script
     #   https://duckduckgo.com/?q=bash+get+last+function+argument&ia=qa
     #   http://www.tldp.org/LDP/Bash-Beginners-Guide/html/sect_09_07.html
+    #   getopt
+    #   http://bahmanm.com/blogs/command-line-options-how-to-parse-in-bash-using-getopt
+    #   http://mywiki.wooledge.org/BashFAQ/035#getopts
+    #   http://stackoverflow.com/questions/192249/how-do-i-parse-command-line-arguments-in-bash
     # check if $LOCAL_NUMBER_OF_FILES_IN_SOURCE has entries
     #
     #   while $LOCAL_NUMBER_OF_FILES_IN_SOURCE -gt 0
@@ -914,6 +918,7 @@ function net_bazzline_move_in_chunks()
     #       set_number_of_files_
     #end foreach souce
     #end of moving
+count=0
 while [[ $count -le 9 ]];
 do
 echo "$count"
