@@ -4,6 +4,3 @@
 # @since 2013-04-24
 ####
 
-if [ -f ~/data/git/com/github/nojhan/liquidprompt/liquidprompt ]; then
-  source ~/data/git/com/github/nojhan/liquidprompt/liquidprompt
-fi
