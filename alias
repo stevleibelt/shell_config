@@ -71,8 +71,8 @@ alias iostat='iostat -x 2'
 alias killSkype='killall -u $USER skype'
 
 #l
-alias l='ls -halt'
-alias lh='ls -halt | head'
+alias l='ls -hAlt'
+alias lh='ls -hAlt | head'
 alias listInterfaces=net_bazzline_list_interfaces
 alias listGroups=net_bazzline_list_groups
 alias listSymbolicLinks=net_bazzline_list_symbolic_links
@@ -83,7 +83,7 @@ if [[ -f /usr/bin/zpool ]]; then
     alias listZfsSnapshots=net_bazzline_list_zfs_snapshots
 fi
 alias loadVirtualBoxModules='sudo modprobe -a vboxdrv vboxnetadp vboxnetflt vboxpci'
-alias lt='ls -halt | tail'
+alias lt='ls -hAlt | tail'
 
 #m
 alias makePictureViaWebcam=net_bazzline_make_picture_via_webcam
