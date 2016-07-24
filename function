@@ -3,7 +3,9 @@
 # @author stev leibelt <artodeto@bazzline.net>
 # @since 2013-04-24
 # @see https://www.gnu.org/software/bash/manual/bash.html
-# @todo prefix all local variables with "LOCAL_"
+# @todo 
+#   prefix all local variables with "LOCAL_"
+#   move fitting code into c++ code
 ####
 
 #b
