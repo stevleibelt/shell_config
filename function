@@ -920,14 +920,29 @@ function net_bazzline_move_in_chunks()
     #       set_number_of_files_
     #end foreach souce
     #end of moving
-count=0
-while [[ $count -le 9 ]];
-do
-echo "$count"
-sleep 1
-(( count++ ))
-done
+    SOURCE="$1"                                                                                                         
+    DESTINATION="$2"                                                                                                    
+    CHUNK_SIZE=7                                                                                                        
 
+    echo "source $SOURCE"                                                                                               
+    echo "destination $DESTINATION"                                                                                     
+
+    CURRENT_NUMBER_OF_FILESYSTEM_ITEMS=$(ls -A $SOURCE | wc -l)                                                         
+
+    while [[ $CURRENT_NUMBER_OF_FILESYSTEM_ITEMS -gt 0 ]];                                                              
+    do                                                                                                                  
+        FILESYSTEM_ITEMS_TO_MOVE=$(ls -A $SOURCE | head -n $CHUNK_SIZE)                                                 
+
+        #for FILESYSTEM_ITEM_TO_MOVE in "${FILESYSTEM_ITEMS_TO_MOVE[@]}";                                               
+        for FILESYSTEM_ITEM_TO_MOVE in $(ls -A $SOURCE | head -n $CHUNK_SIZE)                                           
+            do                                                                                                              
+            #echo "$FILESYSTEM_ITEM_TO_MOVE"                                                                            
+            #echo "mv -v \"$SOURCE/$FILESYSTEM_ITEM_TO_MOVE\" \"$DESTINATION/\""                                        
+            mv -v "$SOURCE/$FILESYSTEM_ITEM_TO_MOVE" "$DESTINATION/"                                                    
+        done                                                                                                            
+                                                                        
+    sleep $LOCAL_NUMBER_OF_SECONDS_TO_SLEEP_BETWEEN_CHUNKS
+done   
 }
 
 ####
