@@ -4,7 +4,7 @@
 # @since 2013-04-24
 # @see https://www.gnu.org/software/bash/manual/bash.html
 # @todo 
-#   prefix all local variables with "LOCAL_"
+#   prefix all local variables -> http://www.tldp.org/LDP/abs/html/localvar.html
 #   move fitting code into c++ code
 ####
 
@@ -65,7 +65,7 @@ function net_bazzline_image_batch_convert ()
     #@todo implement check if directory exists
     mkdir $DIRECTORY
     for FILE in *.[jJ][pP][gG]; do
-        convert $FILE -verbose -geometry $1x$1 -quality 98% -comment "proud made with linux" $DIRECTORY/$FILE
+        convert $FILE -verbose -geometry $1x$1 -quality 98% -comment "free software leads to a free society" $DIRECTORY/$FILE
     done;
 }
 
@@ -128,6 +128,8 @@ function net_bazzline_image_batch_convert_640 ()
 #
 # @author stev leibelt
 # @since 2013-02-12
+# @todo
+#   implement check if wodim is insalled
 ####
 function net_bazzline_burn ()
 {
@@ -880,6 +882,9 @@ function net_bazzline_mkdir_prefix_with_current_date ()
 # @param - source one
 # [@param - source two]
 # @param destination
+# @todo
+#   support multiple sources
+#   support configurable chunk_size and number_of_seconds_to_wait
 ####
 function net_bazzline_move_in_chunks()
 {
