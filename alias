@@ -90,6 +90,7 @@ alias makePictureViaWebcam=net_bazzline_make_picture_via_webcam
 alias mergeAudioAndVideo=net_bazzline_merge_audio_and_video
 alias mkdir=net_bazzline_mkdir
 alias mkdirPrefixCurrentDate=net_bazzline_mkdir_prefix_with_current_date
+alias moveInChunks=net_bazzline_move_in_chunks
 
 #n
 alias netstatListRunningServices='netstat -tulpen'

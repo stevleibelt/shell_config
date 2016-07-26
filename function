@@ -4,7 +4,7 @@
 # @since 2013-04-24
 # @see https://www.gnu.org/software/bash/manual/bash.html
 # @todo 
-#   prefix all local variables -> http://www.tldp.org/LDP/abs/html/localvar.html
+#   prefix all local variables with "LOCAL_"
 #   move fitting code into c++ code
 ####
 
@@ -65,7 +65,7 @@ function net_bazzline_image_batch_convert ()
     #@todo implement check if directory exists
     mkdir $DIRECTORY
     for FILE in *.[jJ][pP][gG]; do
-        convert $FILE -verbose -geometry $1x$1 -quality 98% -comment "free software leads to a free society" $DIRECTORY/$FILE
+        convert $FILE -verbose -geometry $1x$1 -quality 98% -comment "proud made with linux" $DIRECTORY/$FILE
     done;
 }
 
@@ -128,8 +128,6 @@ function net_bazzline_image_batch_convert_640 ()
 #
 # @author stev leibelt
 # @since 2013-02-12
-# @todo
-#   implement check if wodim is insalled
 ####
 function net_bazzline_burn ()
 {
@@ -884,7 +882,8 @@ function net_bazzline_mkdir_prefix_with_current_date ()
 # @param destination
 # @todo
 #   support multiple sources
-#   support configurable chunk_size and number_of_seconds_to_wait
+#   support configurable --chunk_size=, --number_of_seconds_to_wait= and --verbose
+#   replace sync call with blockdev --flushbufs /dev/<device>
 ####
 function net_bazzline_move_in_chunks()
 {
@@ -894,15 +893,35 @@ function net_bazzline_move_in_chunks()
     if [[ $# -lt 2 ]];
     then
         echo "invalid number of arguments provided"
-        echo "usage: <command> source [source[...]] destination [--chunk_size=<int>] [--number_of_seconds_to_wait=<int>]"
+        #echo "usage: <command> source [source[...]] destination [--chunk_size=<int>] [--number_of_seconds_to_wait=<int>]"
+        echo "usage: <command> source destination"
         return 1
     fi
 
-    LOCAL_CHUNK_SIZE=23
-    LOCAL_NUMBER_OF_SECONDS_TO_SLEEP_BETWEEN_CHUNKS=7
+    local DESTINATION="$2"
+    local SOURCE="$1"
+
+    if [[ ! -d "$SOURCE" ]];
+    then
+        echo "invalid source path provided, must be a directory"
+        return 1
+    fi
+
+    if [[ ! -d "$DESTINATION" ]];
+    then
+        echo "invalid destination path provided, must be a directory"
+        return 1
+    fi
     #end of input validation
 
-    #begin of moving
+    #begin of runtime dependencies
+    local BE_VERBOSE=0
+    local CHUNK_SIZE=23
+    local CURRENT_NUMBER_OF_FILESYSTEM_ITEMS=$(ls -A $SOURCE | wc -l)
+    local NUMBER_OF_SECONDS_TO_SLEEP_BETWEEN_CHUNKS=7
+    #end of runtime dependencies
+
+    #begin of busniess logic
     #iterate over source
     #last argument is the target
     #begin foreach souce
@@ -924,30 +943,37 @@ function net_bazzline_move_in_chunks()
     #       sleep
     #       set_number_of_files_
     #end foreach souce
-    #end of moving
-    SOURCE="$1"                                                                                                         
-    DESTINATION="$2"                                                                                                    
-    CHUNK_SIZE=7                                                                                                        
+    if [[ $BE_VERBOSE -eq 1 ]];
+    then
+        echo "moving filesystem items from $SOURCE to $DESTINATION with a chunk size of $CHUNK_SIZE"
+    fi
 
-    echo "source $SOURCE"                                                                                               
-    echo "destination $DESTINATION"                                                                                     
+    while [[ $CURRENT_NUMBER_OF_FILESYSTEM_ITEMS -gt 0 ]];
+    do
+        local NUMBER_OF_MOVED_FILESYSTEM_ITEMS=0
 
-    CURRENT_NUMBER_OF_FILESYSTEM_ITEMS=$(ls -A $SOURCE | wc -l)                                                         
+        for FILESYSTEM_ITEM_TO_MOVE in $(ls -A "$SOURCE" | head -n $CHUNK_SIZE)
+        do
+            #mv -v "$SOURCE/$FILESYSTEM_ITEM_TO_MOVE" "$DESTINATION"
+            mv "$SOURCE/$FILESYSTEM_ITEM_TO_MOVE" "$DESTINATION"
 
-    while [[ $CURRENT_NUMBER_OF_FILESYSTEM_ITEMS -gt 0 ]];                                                              
-    do                                                                                                                  
-        FILESYSTEM_ITEMS_TO_MOVE=$(ls -A $SOURCE | head -n $CHUNK_SIZE)                                                 
+            if [[ $BE_VERBOSE -eq 1 ]];
+            then
+                ((++NUMBER_OF_MOVED_FILESYSTEM_ITEMS))
+            fi
+        done
 
-        #for FILESYSTEM_ITEM_TO_MOVE in "${FILESYSTEM_ITEMS_TO_MOVE[@]}";                                               
-        for FILESYSTEM_ITEM_TO_MOVE in $(ls -A $SOURCE | head -n $CHUNK_SIZE)                                           
-            do                                                                                                              
-            #echo "$FILESYSTEM_ITEM_TO_MOVE"                                                                            
-            #echo "mv -v \"$SOURCE/$FILESYSTEM_ITEM_TO_MOVE\" \"$DESTINATION/\""                                        
-            mv -v "$SOURCE/$FILESYSTEM_ITEM_TO_MOVE" "$DESTINATION/"                                                    
-        done                                                                                                            
-                                                                        
-    sleep $LOCAL_NUMBER_OF_SECONDS_TO_SLEEP_BETWEEN_CHUNKS
-done   
+        if [[ $BE_VERBOSE -eq 1 ]];
+        then
+            echo "moved $NUMBER_OF_MOVED_FILESYSTEM_ITEMS filesystem items, now syncing and sleeping for $NUMBER_OF_SECONDS_TO_SLEEP_BETWEEN_CHUNKS"
+        fi
+
+        sync
+        sleep $NUMBER_OF_SECONDS_TO_SLEEP_BETWEEN_CHUNKS
+
+        local CURRENT_NUMBER_OF_FILESYSTEM_ITEMS=$(ls -A $SOURCE | wc -l)
+    done
+    #end of busniess logic
 }
 
 ####
