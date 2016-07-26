@@ -31,3 +31,4 @@ You can overwrite or extend a logical part by creating a "local.<logical part fi
     * recalls install.sh
 * create clean
     * removes local.\* files
+* try to implement some kind of statistic usage collection
