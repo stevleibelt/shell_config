@@ -1291,7 +1291,7 @@ function net_bazzline_record_function_usage ()
     #end of input validation
 
     #begin of business logic
-    local DIRECTORY_PATH_TO_THE_STATISTICS="$HOME/.cache/net_bazzline_shell"
+    local DIRECTORY_PATH_TO_THE_STATISTICS="$HOME/.cache/net_bazzline/shell_config"
     local FUNCTION_NAME="$1"
 
     if [[ ! -d "$DIRECTORY_PATH_TO_THE_STATISTICS" ]];
