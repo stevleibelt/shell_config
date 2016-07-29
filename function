@@ -1291,6 +1291,7 @@ function net_bazzline_record_function_usage ()
     #end of input validation
 
     #begin of business logic
+    local CURRENT_DATE=$(date +"%Y-%m-%d")
     local DIRECTORY_PATH_TO_THE_STATISTICS="$HOME/.cache/net_bazzline/shell_config"
     local FUNCTION_NAME="$1"
 
@@ -1299,7 +1300,7 @@ function net_bazzline_record_function_usage ()
         mkdir -p "$DIRECTORY_PATH_TO_THE_STATISTICS"
     fi
 
-    echo "$FUNCTION_NAME" >> "$DIRECTORY_PATH_TO_THE_STATISTICS/statistics"
+    echo "${FUNCTION_NAME}    #${CURRENT_DATE}" >> "${DIRECTORY_PATH_TO_THE_STATISTICS}/statistics"
     #end of business logic
 }
 
