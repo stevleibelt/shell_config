@@ -4,7 +4,7 @@
 # @since 2013-04-24
 # @see https://www.gnu.org/software/bash/manual/bash.html
 # @todo 
-#   prefix all local variables with "LOCAL_"
+#   prefix all variables with "local "
 #   move fitting code into c++ code
 ####
 
@@ -63,9 +63,9 @@ function net_bazzline_image_batch_convert ()
     net_bazzline_record_function_usage "net_bazzline_image_batch_convert"
 
     if [[ $# -eq 2 ]]; then
-        DIRECTORY="$2";
+        local DIRECTORY="$2";
     else
-        DIRECTORY="resized_"$1;
+        local DIRECTORY="resized_"$1;
     fi
 
     #@todo implement check if directory exists
@@ -138,6 +138,9 @@ function net_bazzline_image_batch_convert_640 ()
 # @param string $1 - path to iso file
 # @param string $2 - [optional] device to burn - default is cdrom
 #
+# @see
+#   https://wiki.archlinux.org/index.php/Optical_disc_drive
+#   https://wiki.archlinux.org/index.php/Optical_disc_drive#Burning_an_ISO_image_to_CD.2C_DVD.2C_or_BD
 # @author stev leibelt
 # @since 2013-02-12
 ####
@@ -153,9 +156,9 @@ function net_bazzline_burn ()
     fi
 
     if [[ $# -eq 1 ]]; then
-        sudo wodim -v dev=/dev/cdrom "$1"
+        sudo cdrecord -v -sao dev=/dev/sr0 "$1"
     else
-        sudo wodim -v dev=/dev/"$2" "$1"
+        sudo cdrecord -v -sao dev=/dev/"$2" "$1"
     fi
 }
 
@@ -231,21 +234,21 @@ function net_bazzline_convert_file_names_to_utf_8 ()
         echo 'usage: <command> <path> [dry-run|d]'
         return 1
     else
-        DIRECTORY_PATH="$1"
+        local DIRECTORY_PATH="$1"
 
         if [[ $# -eq 2 ]]; then
             case "$2" in 
                 "d")
-                    DRY_RUN=1;;
+                    local DRY_RUN=1;;
                 "dry-run")
-                    DRY_RUN=1;;
+                    local DRY_RUN=1;;
                 *)
-                    DRY_RUN=0
+                    local DRY_RUN=0
             esac
         fi
 
         for name in `find $DIRECTORY_PATH -depth `; do 
-            NEW_NAME=`echo $NAME | iconv -f ISO-8859-1 -t UTF-8` 
+            local NEW_NAME=`echo $NAME | iconv -f ISO-8859-1 -t UTF-8` 
 
             if [[ $DRY_RUN -eq 1 ]]; then
                 `echo $NAME | iconv -f UTF-8 -t ISO-8859-1` 
@@ -293,14 +296,13 @@ function net_bazzline_convert_mkv_to_avi ()
 
     if [[ $# -eq 1 ]]; then
         #export -f net_bazzline_get_name_from_filename
-        nameFromFilename=net_bazzline_get_name_from_filename
-        INPUT_FILE="$1";
-        OUTPUT_FILE=$($nameFromFilename $INPUT_FILE)
-        #OUTPUT_FILE=$(net_bazzline_get_name_from_filename $INPUT_FILE)
-        OUTPUT_FILE=$OUTPUT_FILE".avi"
+        local NAME_FROM_FILENAME=net_bazzline_get_name_from_filename
+        local INPUT_FILE="$1";
+        local OUTPUT_FILE=$($NAME_FROM_FILENAME $INPUT_FILE)
+        local OUTPUT_FILE=$OUTPUT_FILE".avi"
     elif [[ $# -eq 2 ]]; then
-        INPUT_FILE="$1";
-        OUTPUT_FILE="$2";
+        local INPUT_FILE="$1";
+        local OUTPUT_FILE="$2";
     else
         echo "invalid number of arguments supplied"
         echo "inputfile [outputfile]"
@@ -342,16 +344,16 @@ function net_bazzline_convert_video_to_screen_size ()
         return 1
     else
         if [[ $# -gt 2 ]]; then
-            LOCAL_SCREEN_SIZE="$3"
+            local SCREEN_SIZE="$3"
         else
-            LOCAL_SCREEN_SIZE="1024x768"
+            local SCREEN_SIZE="1024x768"
         fi
 
-        LOCAL_PATH_TO_DESTINATION_FILE="$2"
-        LOCAL_PATH_TO_SOURCE_FILE="$1"
+        local PATH_TO_DESTINATION_FILE="$2"
+        local PATH_TO_SOURCE_FILE="$1"
     fi
 
-    ffmpeg -i "$LOCAL_PATH_TO_SOURCE_FILE" -acodec copy -scodec copy -s "$LOCAL_SCREEN_SIZE" -vcodec libx264 -pass 1 "$LOCAL_PATH_TO_DESTINATION_FILE"
+    ffmpeg -i "$PATH_TO_SOURCE_FILE" -acodec copy -scodec copy -s "$SCREEN_SIZE" -vcodec libx264 -pass 1 "$PATH_TO_DESTINATION_FILE"
 }
 
 ####
@@ -384,17 +386,17 @@ function net_bazzline_count_number_of_items_in_path()
 
     if [[ $# -gt 0 ]]
     then
-        LOCAL_PATH="$1"
+        local LOCAL_PATH="$1"
     else
-        LOCAL_PATH="."
+        local LOCAL_PATH="."
     fi
 
     if [[ $# -gt 1 ]]
     then
-        LOCAL_ITEM_NAME="$2"
-        LOCAL_NUMBER_OF_ENTRIES_FOR_POSSIBLE_ITEM_NAME=$(find $LOCAL_PATH -maxdepth 1 -not -name ".*" -name "$LOCAL_ITEM_NAME" | wc -l)
+        local LOCAL_ITEM_NAME="$2"
+        local LOCAL_NUMBER_OF_ENTRIES_FOR_POSSIBLE_ITEM_NAME=$(find $LOCAL_PATH -maxdepth 1 -not -name ".*" -name "$LOCAL_ITEM_NAME" | wc -l)
     else
-        LOCAL_NUMBER_OF_ENTRIES_FOR_POSSIBLE_ITEM_NAME=$(find $LOCAL_PATH -maxdepth 1 -not -name ".*" | wc -l)
+        local LOCAL_NUMBER_OF_ENTRIES_FOR_POSSIBLE_ITEM_NAME=$(find $LOCAL_PATH -maxdepth 1 -not -name ".*" | wc -l)
     fi
 
     return $LOCAL_NUMBER_OF_ENTRIES_FOR_POSSIBLE_ITEM_NAME
@@ -413,7 +415,7 @@ function net_bazzline_create_path_or_return_error_if_path_exists_already()
         return 1
     fi
 
-    LOCAL_PATH_TO_CREATE="$1"
+    local LOCAL_PATH_TO_CREATE="$1"
 
     if [[ -d "$LOCAL_PATH_TO_CREATE" ]]; then
         echo "path exist already: $LOCAL_PATH_TO_CREATE"
@@ -437,12 +439,12 @@ function net_bazzline_create_zfs_snapshot()
         return 1
     fi
 
-    NAME_OF_THE_POOL="$1"
+    local NAME_OF_THE_POOL="$1"
 
     if [[ $# -gt 1 ]]; then
-        NAME_OF_THE_SNAPSHOT="$2"
+        local NAME_OF_THE_SNAPSHOT="$2"
     else
-        NAME_OF_THE_SNAPSHOT=$(date +'%Y-%m-%d_%H-%M-%S')
+        local NAME_OF_THE_SNAPSHOT=$(date +'%Y-%m-%d_%H-%M-%S')
     fi
 
     if sudo zfs snapshot -r $NAME_OF_THE_POOL@$NAME_OF_THE_SNAPSHOT; then
@@ -495,8 +497,8 @@ function net_bazzline_delete_zfs_snapshot()
         return 1
     fi
 
-    NAME_OF_THE_POOL="$1"
-    NAME_OF_THE_SNAPSHOT="$2"
+    local NAME_OF_THE_POOL="$1"
+    local NAME_OF_THE_SNAPSHOT="$2"
 
     if sudo zfs destroy -R $NAME_OF_THE_POOL@$NAME_OF_THE_SNAPSHOT; then
         echo 'snapshot "'$NAME_OF_THE_SNAPSHOT'" deleted from pool "'$NAME_OF_THE_POOL'"'
@@ -611,7 +613,7 @@ function net_bazzline_get_extension_from_filename ()
     net_bazzline_record_function_usage "net_bazzline_get_extension_from_filename"
 
     if [[ $# -eq 1 ]]; then
-        EXTENSION="${1#*.}"
+        local EXTENSION="${1#*.}"
         echo $EXTENSION
 
         return 0
@@ -639,7 +641,7 @@ function net_bazzline_get_filename_from_filepath ()
     net_bazzline_record_function_usage "net_bazzline_get_filename_from_filepath"
 
     if [[ $# -eq 1 ]]; then
-        FILENAME=$(basename "$1")
+        local FILENAME=$(basename "$1")
         echo $FILENAME
 
         return 0
@@ -666,7 +668,7 @@ function net_bazzline_get_name_from_filename ()
     net_bazzline_record_function_usage "net_bazzline_get_name_from_filename"
 
     if [[ $# -eq 1 ]]; then
-        NAME="${1%%.*}"
+        local NAME="${1%%.*}"
         echo $NAME
 
         return 0
@@ -692,7 +694,7 @@ function net_bazzline_git_update_all_repositories()
         return 1
     fi
 
-    PATH_TO_REPOSITORIES=$(realpath $1)
+    local PATH_TO_REPOSITORIES=$(realpath $1)
     shopt -s nullglob
     array=("$PATH_TO_REPOSITORIES"/*/)
     shopt -u nullglob
@@ -753,12 +755,12 @@ function net_bazzline_is_directory_empty ()
         return 2;
     fi
 
-    LOCAL_PATH_TO_THE_DIRECTORY="$1"
+    local LOCAL_PATH_TO_THE_DIRECTORY="$1"
 
     if [[ "$(ls -A $LOCAL_PATH_TO_THE_DIRECTORY)" ]]; then
-        LOCAL_DIRECTORY_IS_EMPTY=1;
+        local LOCAL_DIRECTORY_IS_EMPTY=1;
     else
-        LOCAL_DIRECTORY_IS_EMPTY=0;
+        local LOCAL_DIRECTORY_IS_EMPTY=0;
     fi
 
     return $LOCAL_DIRECTORY_IS_EMPTY;
@@ -815,9 +817,9 @@ function net_bazzline_list_symbolic_links ()
         echo "usage: <command> <path>"
         return 1
     elif [[ $# -eq 1 ]]; then
-        SEARCH_PATH="$1"
+        local SEARCH_PATH="$1"
     else
-        SEARCH_PATH="."
+        local SEARCH_PATH="."
     fi
 
     find "$SEARCH_PATH" -type l -print0 | xargs -0 ls -ld
@@ -859,7 +861,7 @@ function net_bazzline_list_zfs_snapshots()
     if [[ $# -lt 1 ]]; then
         sudo zfs list -t snapshot
     else
-        NAME_OF_THE_POOL="$1"
+        local NAME_OF_THE_POOL="$1"
 
         sudo zfs list -t snapshot | grep $NAME_OF_THE_POOL
     fi
@@ -890,8 +892,8 @@ function net_bazzline_make_picture_via_webcam()
     net_bazzline_record_function_usage "net_bazzline_make_picture_via_webcam"
 
     if [[ -f /usr/bin/fswebcam ]]; then
-        LOCAL_CURRENT_DATE_TIME=$(date +'%Y_%m_%d_%H_%M_%S')
-        LOCAL_FILE_NAME=$LOCAL_CURRENT_DATE_TIME'.jpg'
+        local LOCAL_CURRENT_DATE_TIME=$(date +'%Y_%m_%d_%H_%M_%S')
+        local LOCAL_FILE_NAME=$LOCAL_CURRENT_DATE_TIME'.jpg'
 
         /usr/bin/fswebcam -r 1920x1920 $LOCAL_FILE_NAME
         echo 'created '$LOCAL_FILE_NAME
@@ -1078,9 +1080,9 @@ function net_bazzline_mount_luks_zpool ()
         echo 'usage: <command> <zpool> <disk uuid> <crypto name> [<disk uuid> <crypto name>[...]]'
         return 1
     else
-        UUID="$2"
-        NAME="$3"
-        ZPOOL="$1"
+        local UUID="$2"
+        local NAME="$3"
+        local ZPOOL="$1"
 
         sudo cryptsetup luksOpen /dev/disk/by-uuid/"$UUID" "$NAME"
         sudo zpool import "$ZPOOL"
@@ -1101,9 +1103,9 @@ function net_bazzline_mount_sshfs ()
         echo "usage: <command> <mount point> <name> <host> [<path to identity file>]"
         return 1
     else
-        MOUNT_POINT="$2"
-        NAME="$3"
-        HOST="$4"
+        local MOUNT_POINT="$2"
+        local NAME="$3"
+        local HOST="$4"
 
         if [[ -d "$MOUNT_POINT" ]]; then
             echo 'mount point "'"$MOUNT_POINT"'" exists, remove and retry'
@@ -1113,7 +1115,7 @@ function net_bazzline_mount_sshfs ()
         mkdir -p "$MOUNT_POINT"
 
         if [[ $# -eq 5 ]]; then
-            KEY="$5"
+            local KEY="$5"
 
             sshfs -o IdentitiyFile="$KEY" "$NAME"@"$HOST" "$MOUNT_POINT"
         else
@@ -1136,27 +1138,27 @@ function net_bazzline_organize_directory_content()
 
     #begin of input validation
     if [[ $# -eq 0 ]]; then
-        declare -a LOCAL_DIRECTORY_NAMES=("0" "1" "2" "3" "4" "5" "6" "7" "8" "9" "a" "b" "c" "d" "e" "f" "g" "h" "i" "j" "k" "l" "m" "n" "o" "p" "q" "r" "s" "t" "u" "v" "w" "x" "y" "z");
+        declare -a local LOCAL_DIRECTORY_NAMES=("0" "1" "2" "3" "4" "5" "6" "7" "8" "9" "a" "b" "c" "d" "e" "f" "g" "h" "i" "j" "k" "l" "m" "n" "o" "p" "q" "r" "s" "t" "u" "v" "w" "x" "y" "z");
     else
-        LOCAL_DIRECTORY_NAMES=( "$@" )
+        local LOCAL_DIRECTORY_NAMES=( "$@" )
     fi
     #end of input validation
 
     #begin of declaration
-    LOCAL_TEMPORARY_DIRECTORY_NAME="_net_bazzline_organize_directory_content_temporary"
+    local LOCAL_TEMPORARY_DIRECTORY_NAME="_net_bazzline_organize_directory_content_temporary"
     #end of declaration
 
     #begin of iteration over all provided arguments
     for LOCAL_DIRECTORY_NAME in "${LOCAL_DIRECTORY_NAMES[@]}"
     do 
         #@todo figure out why we have to implement this crazy workaround
-        LOCAL_LENGHT_OF_DIRECTORY_NAME=${#LOCAL_DIRECTORY_NAME} 
+        local LOCAL_LENGHT_OF_DIRECTORY_NAME=${#LOCAL_DIRECTORY_NAME} 
         if [[ $LOCAL_LENGHT_OF_DIRECTORY_NAME -gt 0 ]]
         then
             #begin of declaration
-            LOCAL_DIRECTORY_NAME_AS_LOWERCASE=$(echo "$LOCAL_DIRECTORY_NAME" | tr A-Z a-z)
-            LOCAL_DIRECTORY_NAME_AS_UPPERCASE=$(echo "$LOCAL_DIRECTORY_NAME" | tr a-z A-Z)
-            declare -a LOCAL_POSSIBLE_ITEM_NAMES=( "$LOCAL_DIRECTORY_NAME" )
+            local LOCAL_DIRECTORY_NAME_AS_LOWERCASE=$(echo "$LOCAL_DIRECTORY_NAME" | tr A-Z a-z)
+            local LOCAL_DIRECTORY_NAME_AS_UPPERCASE=$(echo "$LOCAL_DIRECTORY_NAME" | tr a-z A-Z)
+            declare -a local LOCAL_POSSIBLE_ITEM_NAMES=( "$LOCAL_DIRECTORY_NAME" )
 
             if [[ "$LOCAL_DIRECTORY_NAME_AS_LOWERCASE" != "$LOCAL_DIRECTORY_NAME" ]]
             then
@@ -1180,10 +1182,10 @@ function net_bazzline_organize_directory_content()
             for LOCAL_POSSIBLE_ITEM_NAME in "${LOCAL_POSSIBLE_ITEM_NAMES[@]}"
             do 
                 #@todo figure out why we have to implement this crazy workaround
-                LOCAL_LENGHT_OF_POSSIBLE_ITEM_NAME=${#LOCAL_POSSIBLE_ITEM_NAME} 
+                local LOCAL_LENGHT_OF_POSSIBLE_ITEM_NAME=${#LOCAL_POSSIBLE_ITEM_NAME} 
                 if [[ $LOCAL_LENGHT_OF_POSSIBLE_ITEM_NAME -gt 0 ]]
                 then
-                    LOCAL_NUMBER_OF_ENTRIES_FOR_POSSIBLE_ITEM_NAME=$(find . -maxdepth 1 -not -name ".*" -name "$LOCAL_POSSIBLE_ITEM_NAME?*" | wc -l)
+                    local LOCAL_NUMBER_OF_ENTRIES_FOR_POSSIBLE_ITEM_NAME=$(find . -maxdepth 1 -not -name ".*" -name "$LOCAL_POSSIBLE_ITEM_NAME?*" | wc -l)
 
                     #begin of moving available files into temporary directory
                     if [[ $LOCAL_NUMBER_OF_ENTRIES_FOR_POSSIBLE_ITEM_NAME -gt 0 ]]
@@ -1239,14 +1241,14 @@ function net_bazzline_php_start_internal_webserver ()
     net_bazzline_record_function_usage "net_bazzline_php_start_internal_webserver"
 
     if [[ $# -eq 2 ]]; then
-        DIRECTORY="$1";
-        PORT="$2";
+        local DIRECTORY="$1";
+        local PORT="$2";
     elif [[ $# -eq 1 ]]; then
-        DIRECTORY="$1";
-        PORT=8080;
+        local DIRECTORY="$1";
+        local PORT=8080;
     else
-        DIRECTORY="public";
-        PORT=8080;
+        local DIRECTORY="public";
+        local PORT=8080;
     fi
 
     /bin/env php -S 0.0.0.0:"$PORT" -t "$DIRECTORY"
@@ -1317,7 +1319,7 @@ function net_bazzline_refresh_interface ()
 {
     net_bazzline_record_function_usage "net_bazzline_refresh_interface"
 
-    LENGTH=${#NET_BAZZLINE_INTERFACES[@]}
+    local LENGTH=${#NET_BAZZLINE_INTERFACES[@]}
 
     if [[ $LENGTH -eq 0 ]]; then
         echo 'Environment variable NET_BAZZLINE_INTERFACES not defined or empty'
@@ -1325,17 +1327,17 @@ function net_bazzline_refresh_interface ()
     fi
 
     if [[ $# -eq 0 ]]; then
-        INTERFACE=${NET_BAZZLINE_INTERFACES[0]}
+        local INTERFACE=${NET_BAZZLINE_INTERFACES[0]}
     else
         for NET_BAZZLINE_INTERFACE in "${NET_BAZZLINE_INTERFACES[@]}"
         do
             if [[ "$1" -eq $NET_BAZZLINE_INTERFACE ]]; then
-                INTERFACE=$1
+                local INTERFACE=$1
             fi
         done
 
         #set default if none is found
-        INTERFACE=${INTERFACE:-$NET_BAZZLINE_INTERFACES[0]}
+        local INTERFACE=${INTERFACE:-$NET_BAZZLINE_INTERFACES[0]}
     fi
 
     sudo ip link set $INTERFACE down
@@ -1362,14 +1364,14 @@ function net_bazzline_replace_string_in_files ()
         return 1
     fi
 
-    SEARCH="$1"
-    REPLACE="$2"
-    FILE_EXTENSION="$3"
+    local SEARCH="$1"
+    local REPLACE="$2"
+    local FILE_EXTENSION="$3"
 
     if [[ $# -eq 4 ]]; then
-        DIRECTORY_PATH="$4"
+        local DIRECTORY_PATH="$4"
     else
-        DIRECTORY_PATH="."
+        local DIRECTORY_PATH="."
     fi
 
     find "$DIRECTPRY_PATH" -name "*.$FILE_EXTENSION" -type f -exec sed -i 's/'"$SEARCH"'/'"$REPLACE"'/g' {} \;
@@ -1407,12 +1409,12 @@ function net_bazzline_search_in_composer_files()
 {
     net_bazzline_record_function_usage "net_bazzline_search_in_composer_files"
 
-    LOCAL_SEARCH_PATTERN="$1"
+    local LOCAL_SEARCH_PATTERN="$1"
 
     if [[ $# -gt 1 ]]; then
-        LOCAL_MAXIUM_LEVELS_OF_DIRECTORY_DEPTH=$2
+        local LOCAL_MAXIUM_LEVELS_OF_DIRECTORY_DEPTH=$2
     else
-        LOCAL_MAXIUM_LEVELS_OF_DIRECTORY_DEPTH=2
+        local LOCAL_MAXIUM_LEVELS_OF_DIRECTORY_DEPTH=2
     fi
 
     for LOCAL_FILE_PATH in $(find . -maxdepth $LOCAL_MAXIUM_LEVELS_OF_DIRECTORY_DEPTH -name composer.json); do
@@ -1433,10 +1435,10 @@ function net_bazzline_scp_from_host()
     net_bazzline_record_function_usage "net_bazzline_scp_from_host"
 
     if [[ $# -eq 4 ]]; then
-        PATH_TO_SSH_KEY="$1"
-        SOURCE_HOST="$2"
-        SOURCE_PATH="$3"
-        DESTINATION_PATH="$4"
+        local PATH_TO_SSH_KEY="$1"
+        local SOURCE_HOST="$2"
+        local SOURCE_PATH="$3"
+        local DESTINATION_PATH="$4"
 
         scp -r -i $PATH_TO_SSH_KEY $SOURCE_HOST:$SOURCE_PATH $DESTINATION_PATH
     else
@@ -1457,10 +1459,10 @@ function net_bazzline_scp_to_host()
     net_bazzline_record_function_usage "net_bazzline_scp_to_host"
 
     if [[ $# -eq 4 ]]; then
-        PATH_TO_SSH_KEY="$1"
-        DESTINATION_HOST="$2"
-        SOURCE_PATH="$3"
-        DESTINATION_PATH="$4"
+        local PATH_TO_SSH_KEY="$1"
+        local DESTINATION_HOST="$2"
+        local SOURCE_PATH="$3"
+        local DESTINATION_PATH="$4"
 
         scp -r -i $PATH_TO_SSH_KEY $SOURCE_PATH $DESTINATION_HOST:$DESTINATION_PATH
     else
@@ -1483,9 +1485,9 @@ function net_bazzline_screenshot ()
     net_bazzline_record_function_usage "net_bazzline_screenshot"
 
     if [[ $# -eq 0 ]]; then
-        FILENAME='screenshot.jpg'
+        local FILENAME='screenshot.jpg'
     else
-        FILENAME="$1"
+        local FILENAME="$1"
     fi
 
     import -window root $FILENAME
@@ -1504,9 +1506,9 @@ function net_bazzline_set_optical_drive_speed ()
     net_bazzline_record_function_usage "net_bazzline_set_optical_drive_speed"
 
     if [[ $# -eq 1 ]]; then
-        SPEED="$1"
+        local SPEED="$1"
     else
-        SPEED="12"
+        local SPEED="12"
     fi
 
     eject -x $SPEED /dev/sr0
@@ -1552,13 +1554,13 @@ function net_bazzline_string_contains()
     net_bazzline_record_function_usage "net_bazzline_string_contains"
 
     if [[ $# -eq 2 ]]; then
-        CONTAINS=1
-        STRING="$1"
-        SEARCH="$2"
+        local CONTAINS=1
+        local STRING="$1"
+        local SEARCH="$2"
 
         case "$STRING" in 
            *"$SEARCH"*)
-             CONTAINS=0
+             local CONTAINS=0
             ;;
         esac   
 
@@ -1584,10 +1586,10 @@ function net_bazzline_string_starts_with ()
     net_bazzline_record_function_usage "net_bazzline_string_starts_with"
 
     if [[ $# -eq 2 ]]; then
-        STRING="$1"
-        SUB_STRING="$2"
-        LENGTH_OF_SUB_STRING=${#SUB_STRING}
-        STRING_WITH_SUB_STRING_ONLY=${STRING:0:$LENGTH_OF_SUB_STRING}
+        local STRING="$1"
+        local SUB_STRING="$2"
+        local LENGTH_OF_SUB_STRING=${#SUB_STRING}
+        local STRING_WITH_SUB_STRING_ONLY=${STRING:0:$LENGTH_OF_SUB_STRING}
 
         if [[ $STRING_WITH_SUB_STRING_ONLY = $SUB_STRING ]]; then
             return 0
@@ -1688,18 +1690,18 @@ function net_bazzline_sync_from_host ()
     net_bazzline_record_function_usage "net_bazzline_sync_from_host"
 
     if [[ $# -eq 4 ]]; then
-        USER="$1"
-        HOST="$2"
-        SOURCE="$3"
-        DESTINATION="$4"
+        local USER="$1"
+        local HOST="$2"
+        local SOURCE="$3"
+        local DESTINATION="$4"
 
         rsync -aqz -e ssh $USER@$HOST:$SOURCE $DESTINATION
     elif [[ $# -eq 5 ]]; then
-        USER="$1"
-        HOST="$2"
-        SOURCE="$3"
-        DESTINATION="$4"
-        KEY="$5"
+        local USER="$1"
+        local HOST="$2"
+        local SOURCE="$3"
+        local DESTINATION="$4"
+        local KEY="$5"
 
         rsync -aqz -e ssh -i $KEY $USER@$HOST:$SOURCE $DESTINATION
     else
@@ -1747,18 +1749,18 @@ function net_bazzline_sync_to_host ()
     net_bazzline_record_function_usage "net_bazzline_sync_to_host"
 
     if [[ $# -eq 4 ]]; then
-        USER="$1"
-        HOST="$2"
-        SOURCE="$3"
-        DESTINATION="$4"
+        local USER="$1"
+        local HOST="$2"
+        local SOURCE="$3"
+        local DESTINATION="$4"
 
         rsync -avz -e ssh $SOURCE $USER@$HOST:$DESTINATION
     elif [[ $# -eq 5 ]]; then
-        USER="$1"
-        HOST="$2"
-        SOURCE="$3"
-        DESTINATION="$4"
-        KEY="$5"
+        local USER="$1"
+        local HOST="$2"
+        local SOURCE="$3"
+        local DESTINATION="$4"
+        local KEY="$5"
 
         rsync -aqz -e ssh -i $KEY $SOURCE $USER@$HOST:$DESTINATION
     else
@@ -1790,7 +1792,7 @@ function net_bazzline_tar_create ()
         exit 1
     fi
 
-    FILENAME="$1"
+    local FILENAME="$1"
 
     # remove $1
     shift
@@ -1876,7 +1878,7 @@ function net_bazzline_unhide_file_system_object()
     net_bazzline_record_function_usage "net_bazzline_unhide_file_system_object"
 
     if [[ $# -eq 1 ]]; then
-        IDENTIFIER="$1";
+        local IDENTIFIER="$1";
 # @todo validate if identifier is file or directory and if first character is "."
 # @todo use net_bazzline_string_starts_with
         #if [[ net_bazzline_string_starts_with $IDENTIFIER "." ]]; then
@@ -1907,8 +1909,8 @@ function net_bazzline_unmount_luks_zpool ()
         echo "usage: <command> <zpool> <crypto name> <zpool>"
         return 1
     else
-        NAME="$2"
-        ZPOOL="$1"
+        local NAME="$2"
+        local ZPOOL="$1"
 
         sudo zpool export "$ZPOOL"
         sudo cryptsetup close "$NAME"
@@ -1932,7 +1934,7 @@ function net_bazzline_update_vim_bundles_and_plugins_with_vundle()
 {
     net_bazzline_record_function_usage "net_bazzline_update_vim_bundles_and_plugins_with_vundle"
 
-    LOCAL_PATH_TO_VUNDLE=$HOME'/.vim/bundle/Vundle.vim'
+    local LOCAL_PATH_TO_VUNDLE=$HOME'/.vim/bundle/Vundle.vim'
 
     #create directory if it does not exist
     if [[ ! -d "$LOCAL_PATH_TO_VUNDLE" ]]; then
