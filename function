@@ -386,20 +386,20 @@ function net_bazzline_count_number_of_items_in_path()
 
     if [[ $# -gt 0 ]]
     then
-        local LOCAL_PATH="$1"
+        local PATH="$1"
     else
-        local LOCAL_PATH="."
+        local PATH="."
     fi
 
     if [[ $# -gt 1 ]]
     then
-        local LOCAL_ITEM_NAME="$2"
-        local LOCAL_NUMBER_OF_ENTRIES_FOR_POSSIBLE_ITEM_NAME=$(find $LOCAL_PATH -maxdepth 1 -not -name ".*" -name "$LOCAL_ITEM_NAME" | wc -l)
+        local ITEM_NAME="$2"
+        local NUMBER_OF_ENTRIES_FOR_POSSIBLE_ITEM_NAME=$(find $PATH -maxdepth 1 -not -name ".*" -name "$ITEM_NAME" | wc -l)
     else
-        local LOCAL_NUMBER_OF_ENTRIES_FOR_POSSIBLE_ITEM_NAME=$(find $LOCAL_PATH -maxdepth 1 -not -name ".*" | wc -l)
+        local NUMBER_OF_ENTRIES_FOR_POSSIBLE_ITEM_NAME=$(find $PATH -maxdepth 1 -not -name ".*" | wc -l)
     fi
 
-    return $LOCAL_NUMBER_OF_ENTRIES_FOR_POSSIBLE_ITEM_NAME
+    return $NUMBER_OF_ENTRIES_FOR_POSSIBLE_ITEM_NAME
 }
 
 ####
@@ -415,13 +415,13 @@ function net_bazzline_create_path_or_return_error_if_path_exists_already()
         return 1
     fi
 
-    local LOCAL_PATH_TO_CREATE="$1"
+    local PATH_TO_CREATE="$1"
 
-    if [[ -d "$LOCAL_PATH_TO_CREATE" ]]; then
-        echo "path exist already: $LOCAL_PATH_TO_CREATE"
+    if [[ -d "$PATH_TO_CREATE" ]]; then
+        echo "path exist already: $PATH_TO_CREATE"
         return 1
     else
-        mkdir -p "$LOCAL_PATH_TO_CREATE"
+        mkdir -p "$PATH_TO_CREATE"
     fi
 }
 
@@ -755,15 +755,15 @@ function net_bazzline_is_directory_empty ()
         return 2;
     fi
 
-    local LOCAL_PATH_TO_THE_DIRECTORY="$1"
+    local PATH_TO_THE_DIRECTORY="$1"
 
-    if [[ "$(ls -A $LOCAL_PATH_TO_THE_DIRECTORY)" ]]; then
-        local LOCAL_DIRECTORY_IS_EMPTY=1;
+    if [[ "$(ls -A $PATH_TO_THE_DIRECTORY)" ]]; then
+        local DIRECTORY_IS_EMPTY=1;
     else
-        local LOCAL_DIRECTORY_IS_EMPTY=0;
+        local DIRECTORY_IS_EMPTY=0;
     fi
 
-    return $LOCAL_DIRECTORY_IS_EMPTY;
+    return $DIRECTORY_IS_EMPTY;
 }
 
 #l
@@ -892,11 +892,11 @@ function net_bazzline_make_picture_via_webcam()
     net_bazzline_record_function_usage "net_bazzline_make_picture_via_webcam"
 
     if [[ -f /usr/bin/fswebcam ]]; then
-        local LOCAL_CURRENT_DATE_TIME=$(date +'%Y_%m_%d_%H_%M_%S')
-        local LOCAL_FILE_NAME=$LOCAL_CURRENT_DATE_TIME'.jpg'
+        local CURRENT_DATE_TIME=$(date +'%Y_%m_%d_%H_%M_%S')
+        local FILE_NAME=$CURRENT_DATE_TIME'.jpg'
 
-        /usr/bin/fswebcam -r 1920x1920 $LOCAL_FILE_NAME
-        echo 'created '$LOCAL_FILE_NAME
+        /usr/bin/fswebcam -r 1920x1920 $FILE_NAME
+        echo 'created '$FILE_NAME
     else
         echo 'fswebcam is not installed'
 
@@ -1012,8 +1012,8 @@ function net_bazzline_move_in_chunks()
     #last argument is the target
     #begin foreach souce
     #
-    # LOCAL_NUMBER_OF_FILES_IN_SOURCE=$(ls | head -n $LOCAL_CHUNK_SIZE)
-    # LOCAL_IF_DIRECTORY_IS_EMPTY=$(net_bazzline_is_directory_empty )
+    # NUMBER_OF_FILES_IN_SOURCE=$(ls | head -n $CHUNK_SIZE)
+    # IF_DIRECTORY_IS_EMPTY=$(net_bazzline_is_directory_empty )
     # @see
     #   http://stackoverflow.com/questions/1853946/getting-the-last-argument-passed-to-a-shell-script
     #   https://duckduckgo.com/?q=bash+get+last+function+argument&ia=qa
@@ -1022,9 +1022,9 @@ function net_bazzline_move_in_chunks()
     #   http://bahmanm.com/blogs/command-line-options-how-to-parse-in-bash-using-getopt
     #   http://mywiki.wooledge.org/BashFAQ/035#getopts
     #   http://stackoverflow.com/questions/192249/how-do-i-parse-command-line-arguments-in-bash
-    # check if $LOCAL_NUMBER_OF_FILES_IN_SOURCE has entries
+    # check if $NUMBER_OF_FILES_IN_SOURCE has entries
     #
-    #   while $LOCAL_NUMBER_OF_FILES_IN_SOURCE -gt 0
+    #   while $NUMBER_OF_FILES_IN_SOURCE -gt 0
     #       move
     #       sleep
     #       set_number_of_files_
@@ -1138,60 +1138,60 @@ function net_bazzline_organize_directory_content()
 
     #begin of input validation
     if [[ $# -eq 0 ]]; then
-        declare -a local LOCAL_DIRECTORY_NAMES=("0" "1" "2" "3" "4" "5" "6" "7" "8" "9" "a" "b" "c" "d" "e" "f" "g" "h" "i" "j" "k" "l" "m" "n" "o" "p" "q" "r" "s" "t" "u" "v" "w" "x" "y" "z");
+        declare -a local DIRECTORY_NAMES=("0" "1" "2" "3" "4" "5" "6" "7" "8" "9" "a" "b" "c" "d" "e" "f" "g" "h" "i" "j" "k" "l" "m" "n" "o" "p" "q" "r" "s" "t" "u" "v" "w" "x" "y" "z");
     else
-        local LOCAL_DIRECTORY_NAMES=( "$@" )
+        local DIRECTORY_NAMES=( "$@" )
     fi
     #end of input validation
 
     #begin of declaration
-    local LOCAL_TEMPORARY_DIRECTORY_NAME="_net_bazzline_organize_directory_content_temporary"
+    local TEMPORARY_DIRECTORY_NAME="_net_bazzline_organize_directory_content_temporary"
     #end of declaration
 
     #begin of iteration over all provided arguments
-    for LOCAL_DIRECTORY_NAME in "${LOCAL_DIRECTORY_NAMES[@]}"
+    for DIRECTORY_NAME in "${DIRECTORY_NAMES[@]}"
     do 
         #@todo figure out why we have to implement this crazy workaround
-        local LOCAL_LENGHT_OF_DIRECTORY_NAME=${#LOCAL_DIRECTORY_NAME} 
-        if [[ $LOCAL_LENGHT_OF_DIRECTORY_NAME -gt 0 ]]
+        local LENGHT_OF_DIRECTORY_NAME=${#DIRECTORY_NAME} 
+        if [[ $LENGHT_OF_DIRECTORY_NAME -gt 0 ]]
         then
             #begin of declaration
-            local LOCAL_DIRECTORY_NAME_AS_LOWERCASE=$(echo "$LOCAL_DIRECTORY_NAME" | tr A-Z a-z)
-            local LOCAL_DIRECTORY_NAME_AS_UPPERCASE=$(echo "$LOCAL_DIRECTORY_NAME" | tr a-z A-Z)
-            declare -a local LOCAL_POSSIBLE_ITEM_NAMES=( "$LOCAL_DIRECTORY_NAME" )
+            local DIRECTORY_NAME_AS_LOWERCASE=$(echo "$DIRECTORY_NAME" | tr A-Z a-z)
+            local DIRECTORY_NAME_AS_UPPERCASE=$(echo "$DIRECTORY_NAME" | tr a-z A-Z)
+            declare -a local POSSIBLE_ITEM_NAMES=( "$DIRECTORY_NAME" )
 
-            if [[ "$LOCAL_DIRECTORY_NAME_AS_LOWERCASE" != "$LOCAL_DIRECTORY_NAME" ]]
+            if [[ "$DIRECTORY_NAME_AS_LOWERCASE" != "$DIRECTORY_NAME" ]]
             then
-                LOCAL_POSSIBLE_ITEM_NAMES+=( "$LOCAL_DIRECTORY_NAME_AS_LOWERCASE" )
+                POSSIBLE_ITEM_NAMES+=( "$DIRECTORY_NAME_AS_LOWERCASE" )
             fi
 
-            if [[ "$LOCAL_DIRECTORY_NAME_AS_UPPERCASE" != "$LOCAL_DIRECTORY_NAME" ]]
+            if [[ "$DIRECTORY_NAME_AS_UPPERCASE" != "$DIRECTORY_NAME" ]]
             then
-                LOCAL_POSSIBLE_ITEM_NAMES+=( "$LOCAL_DIRECTORY_NAME_AS_UPPERCASE" )
+                POSSIBLE_ITEM_NAMES+=( "$DIRECTORY_NAME_AS_UPPERCASE" )
             fi
             #end of declaration
 
             #begin of create temporary directory
-            if [[ ! -d "$LOCAL_TEMPORARY_DIRECTORY_NAME" ]]
+            if [[ ! -d "$TEMPORARY_DIRECTORY_NAME" ]]
             then
-                mkdir "$LOCAL_TEMPORARY_DIRECTORY_NAME"
+                mkdir "$TEMPORARY_DIRECTORY_NAME"
             fi
             #end of create temporary directory
 
             #begin of iteration over all possible argument names
-            for LOCAL_POSSIBLE_ITEM_NAME in "${LOCAL_POSSIBLE_ITEM_NAMES[@]}"
+            for POSSIBLE_ITEM_NAME in "${POSSIBLE_ITEM_NAMES[@]}"
             do 
                 #@todo figure out why we have to implement this crazy workaround
-                local LOCAL_LENGHT_OF_POSSIBLE_ITEM_NAME=${#LOCAL_POSSIBLE_ITEM_NAME} 
-                if [[ $LOCAL_LENGHT_OF_POSSIBLE_ITEM_NAME -gt 0 ]]
+                local LENGHT_OF_POSSIBLE_ITEM_NAME=${#POSSIBLE_ITEM_NAME} 
+                if [[ $LENGHT_OF_POSSIBLE_ITEM_NAME -gt 0 ]]
                 then
-                    local LOCAL_NUMBER_OF_ENTRIES_FOR_POSSIBLE_ITEM_NAME=$(find . -maxdepth 1 -not -name ".*" -name "$LOCAL_POSSIBLE_ITEM_NAME?*" | wc -l)
+                    local NUMBER_OF_ENTRIES_FOR_POSSIBLE_ITEM_NAME=$(find . -maxdepth 1 -not -name ".*" -name "$POSSIBLE_ITEM_NAME?*" | wc -l)
 
                     #begin of moving available files into temporary directory
-                    if [[ $LOCAL_NUMBER_OF_ENTRIES_FOR_POSSIBLE_ITEM_NAME -gt 0 ]]
+                    if [[ $NUMBER_OF_ENTRIES_FOR_POSSIBLE_ITEM_NAME -gt 0 ]]
                     then
                         #we found some files, so move it
-                        mv "$LOCAL_POSSIBLE_ITEM_NAME"?* "$LOCAL_TEMPORARY_DIRECTORY_NAME/"
+                        mv "$POSSIBLE_ITEM_NAME"?* "$TEMPORARY_DIRECTORY_NAME/"
                     fi
                     #end of moving available files into temporary directory
                 fi
@@ -1199,17 +1199,17 @@ function net_bazzline_organize_directory_content()
             #end of iteration over all possible argument names
 
             #begin of moving into real target directory
-            if [[ "$(ls -A $LOCAL_TEMPORARY_DIRECTORY_NAME)" ]]
+            if [[ "$(ls -A $TEMPORARY_DIRECTORY_NAME)" ]]
             then
                 #directory is not empty
-                if [[ ! -d "$LOCAL_DIRECTORY_NAME" ]]
+                if [[ ! -d "$DIRECTORY_NAME" ]]
                 then
                     #create directory if it does not exist
-                    mkdir "$LOCAL_DIRECTORY_NAME"
+                    mkdir "$DIRECTORY_NAME"
                 fi
 
                 #move files into it final directory
-                mv "$LOCAL_TEMPORARY_DIRECTORY_NAME"/* "$LOCAL_DIRECTORY_NAME"
+                mv "$TEMPORARY_DIRECTORY_NAME"/* "$DIRECTORY_NAME"
             fi
             #end of moving into real target directory
         fi
@@ -1217,10 +1217,10 @@ function net_bazzline_organize_directory_content()
     #end of iteration over all provided arguments
 
     #begin of clean up
-    if [[ -d "$LOCAL_TEMPORARY_DIRECTORY_NAME" ]]
+    if [[ -d "$TEMPORARY_DIRECTORY_NAME" ]]
     then
         #remove temporary directory
-        rmdir "$LOCAL_TEMPORARY_DIRECTORY_NAME"
+        rmdir "$TEMPORARY_DIRECTORY_NAME"
     fi
     #end of clean up
 }
@@ -1409,17 +1409,17 @@ function net_bazzline_search_in_composer_files()
 {
     net_bazzline_record_function_usage "net_bazzline_search_in_composer_files"
 
-    local LOCAL_SEARCH_PATTERN="$1"
+    local SEARCH_PATTERN="$1"
 
     if [[ $# -gt 1 ]]; then
-        local LOCAL_MAXIUM_LEVELS_OF_DIRECTORY_DEPTH=$2
+        local MAXIUM_LEVELS_OF_DIRECTORY_DEPTH=$2
     else
-        local LOCAL_MAXIUM_LEVELS_OF_DIRECTORY_DEPTH=2
+        local MAXIUM_LEVELS_OF_DIRECTORY_DEPTH=2
     fi
 
-    for LOCAL_FILE_PATH in $(find . -maxdepth $LOCAL_MAXIUM_LEVELS_OF_DIRECTORY_DEPTH -name composer.json); do
-        echo "$LOCAL_FILE_PATH"
-        cat "$LOCAL_FILE_PATH" | grep -i "$LOCAL_SEARCH_PATTERN"
+    for FILE_PATH in $(find . -maxdepth $MAXIUM_LEVELS_OF_DIRECTORY_DEPTH -name composer.json); do
+        echo "$FILE_PATH"
+        cat "$FILE_PATH" | grep -i "$SEARCH_PATTERN"
     done
 }
 
@@ -1934,16 +1934,16 @@ function net_bazzline_update_vim_bundles_and_plugins_with_vundle()
 {
     net_bazzline_record_function_usage "net_bazzline_update_vim_bundles_and_plugins_with_vundle"
 
-    local LOCAL_PATH_TO_VUNDLE=$HOME'/.vim/bundle/Vundle.vim'
+    local PATH_TO_VUNDLE=$HOME'/.vim/bundle/Vundle.vim'
 
     #create directory if it does not exist
-    if [[ ! -d "$LOCAL_PATH_TO_VUNDLE" ]]; then
-        mkdir -p $LOCAL_PATH_TO_VUNDLE
+    if [[ ! -d "$PATH_TO_VUNDLE" ]]; then
+        mkdir -p $PATH_TO_VUNDLE
     fi
 
     #clone vundle if directory is empty
     if [[ ! "$(ls -A $DIR_SELF)" ]]; then
-        git clone https://github.com/VundleVim/Vundle.vim.git $LOCAL_PATH_TO_VUNDLE
+        git clone https://github.com/VundleVim/Vundle.vim.git $PATH_TO_VUNDLE
     fi
 
     #install all available plugins
