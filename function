@@ -952,7 +952,7 @@ function net_bazzline_mkdir_prefix_with_current_date ()
     net_bazzline_record_function_usage ${FUNCNAME[0]}
 
     if [[ $# -eq 1 ]]; then
-        directoryName=`eval date +%y%m%d`"_$1"
+        directoryName=`eval date +%Y%m%d`"_$1"
 
         net_bazzline_mkdir "$directoryName"
     else
@@ -1857,7 +1857,7 @@ function net_bazzline_touch_with_prefix_of_current_date ()
     net_bazzline_record_function_usage ${FUNCNAME[0]}
 
     if [[ $# -eq 1 ]]; then
-        directoryName=`eval date +%y%m%d`"_$1"
+        directoryName=`eval date +%Y%m%d`"_$1"
 
         touch "$directoryName"
     else
