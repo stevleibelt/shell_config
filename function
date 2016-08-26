@@ -6,6 +6,7 @@
 # @todo 
 #   prefix all variables with "local "
 #   move fitting code into c++ code
+#   align output by using arch installation style ":: [A-Z"
 ####
 
 #b
@@ -21,8 +22,8 @@ function net_bazzline_backup_to ()
     net_bazzline_record_function_usage ${FUNCNAME[0]}
 
     if [[ $# -eq 0 ]]; then
-        echo 'invalid number of variables provided'
-        echo 'command [source one] [source ...] target'
+        echo ':: Invalid number of variables provided'
+        echo ':: Usage: command [source one] [source ...] target'
         return 1
     elif [[ $# -eq 1 ]]; then
         net_bazzline_rsync . "$1"
@@ -1938,11 +1939,13 @@ function net_bazzline_update_vim_bundles_and_plugins_with_vundle()
 
     #create directory if it does not exist
     if [[ ! -d "$PATH_TO_VUNDLE" ]]; then
+        echo ":: Vundle directory missing. Creating it ..."
         mkdir -p $PATH_TO_VUNDLE
     fi
 
     #clone vundle if directory is empty
     if [[ ! "$(ls -A $DIR_SELF)" ]]; then
+        echo ":: Vundle directory empty. Cloning git repository into it ..."
         git clone https://github.com/VundleVim/Vundle.vim.git $PATH_TO_VUNDLE
     fi
 
@@ -1967,8 +1970,9 @@ function net_bazzline_what_is_listening_on_that_port()
     if [[ $# -eq 1 ]]; then
         netstat -tulpn | grep --color :$1
     else
-        echo "invalid number of arguments supplied"
-        echo "portnumber"
+        echo ":: Invalid number of arguments supplied"
+        echo ""
+        echo "Usage: net_bazzline_what_is_listening_on_that_port <portnumber>"
         return 1
     fi
 }
