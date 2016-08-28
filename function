@@ -509,6 +509,32 @@ function net_bazzline_delete_zfs_snapshot()
 }
 
 ####
+# @param string <name of zfs pool>
+# @param string <initial snapshot number>
+# @param string <final snapshot number>
+# @todo idea add optional "grep for" to list_zfs_snapshot
+####
+function net_bazzline_delete_zfs_snapshots()
+{
+    net_bazzline_record_function_usage ${FUNCNAME[0]}
+
+    if [[ $# -lt 2 ]]; then
+        echo 'invalid number of arguments'
+        echo '    net_bazzline_delete_zfs_snapshot <name of the zfs pool> [<name of the snapshot>]'
+        return 1
+    fi
+
+    local NAME_OF_THE_POOL="$1"
+    local NAME_OF_THE_SNAPSHOT="$2"
+
+    if sudo zfs destroy -R $NAME_OF_THE_POOL@$NAME_OF_THE_SNAPSHOT; then
+        echo 'snapshot "'$NAME_OF_THE_SNAPSHOT'" deleted from pool "'$NAME_OF_THE_POOL'"'
+    fi
+
+    return $?
+}
+
+####
 # Show differences between two directories
 #
 # @param string $1 - path to first directory
