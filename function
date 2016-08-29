@@ -1014,24 +1014,12 @@ function net_bazzline_move_in_chunks()
 
     local DESTINATION="$2"
     local SOURCE="$1"
-
-    if [[ ! -d "$SOURCE" ]];
-    then
-        echo "invalid source path provided, must be a directory"
-        return 1
-    fi
-
-    if [[ ! -d "$DESTINATION" ]];
-    then
-        echo "invalid destination path provided, must be a directory"
-        return 1
-    fi
     #end of input validation
 
     #begin of runtime dependencies
     local BE_VERBOSE=0
     local CHUNK_SIZE=23
-    local CURRENT_NUMBER_OF_FILESYSTEM_ITEMS=$(ls -A $SOURCE | wc -l)
+    local CURRENT_NUMBER_OF_FILESYSTEM_ITEMS=$(ls -A ${SOURCE} | wc -l)
     local NUMBER_OF_SECONDS_TO_SLEEP_BETWEEN_CHUNKS=7
     #end of runtime dependencies
 
@@ -1057,35 +1045,35 @@ function net_bazzline_move_in_chunks()
     #       sleep
     #       set_number_of_files_
     #end foreach souce
-    if [[ $BE_VERBOSE -eq 1 ]];
+    if [[ ${BE_VERBOSE} -eq 1 ]];
     then
-        echo "moving filesystem items from $SOURCE to $DESTINATION with a chunk size of $CHUNK_SIZE"
+        echo "moving filesystem items from ${SOURCE} to ${DESTINATION} with a chunk size of ${CHUNK_SIZE}"
     fi
 
-    while [[ $CURRENT_NUMBER_OF_FILESYSTEM_ITEMS -gt 0 ]];
+    while [[ ${CURRENT_NUMBER_OF_FILESYSTEM_ITEMS} -gt 0 ]];
     do
         local NUMBER_OF_MOVED_FILESYSTEM_ITEMS=0
 
-        for FILESYSTEM_ITEM_TO_MOVE in $(ls -A "$SOURCE" | head -n $CHUNK_SIZE)
+        for FILESYSTEM_ITEM_TO_MOVE in $(ls -A "${SOURCE}" | head -n ${CHUNK_SIZE})
         do
             #mv -v "$SOURCE/$FILESYSTEM_ITEM_TO_MOVE" "$DESTINATION"
-            mv "$SOURCE/$FILESYSTEM_ITEM_TO_MOVE" "$DESTINATION"
+            mv "${SOURCE}/${FILESYSTEM_ITEM_TO_MOVE}" "${DESTINATION}"
 
-            if [[ $BE_VERBOSE -eq 1 ]];
+            if [[ ${BE_VERBOSE} -eq 1 ]];
             then
                 ((++NUMBER_OF_MOVED_FILESYSTEM_ITEMS))
             fi
         done
 
-        if [[ $BE_VERBOSE -eq 1 ]];
+        if [[ ${BE_VERBOSE} -eq 1 ]];
         then
-            echo "moved $NUMBER_OF_MOVED_FILESYSTEM_ITEMS filesystem items, now syncing and sleeping for $NUMBER_OF_SECONDS_TO_SLEEP_BETWEEN_CHUNKS"
+            echo "moved ${NUMBER_OF_MOVED_FILESYSTEM_ITEMS} filesystem items, now syncing and sleeping for ${NUMBER_OF_SECONDS_TO_SLEEP_BETWEEN_CHUNKS}"
         fi
 
         sync
-        sleep $NUMBER_OF_SECONDS_TO_SLEEP_BETWEEN_CHUNKS
+        sleep ${NUMBER_OF_SECONDS_TO_SLEEP_BETWEEN_CHUNKS}
 
-        local CURRENT_NUMBER_OF_FILESYSTEM_ITEMS=$(ls -A $SOURCE | wc -l)
+        local CURRENT_NUMBER_OF_FILESYSTEM_ITEMS=$(ls -A ${SOURCE} | wc -l)
     done
     #end of busniess logic
 }
