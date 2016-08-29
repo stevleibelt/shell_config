@@ -512,7 +512,6 @@ function net_bazzline_delete_zfs_snapshot()
 # @param string <name of zfs pool>
 # @param string <initial snapshot number>
 # @param string <final snapshot number>
-# @todo idea add optional "grep for" to list_zfs_snapshot
 ####
 function net_bazzline_delete_zfs_snapshots()
 {
@@ -890,7 +889,7 @@ function net_bazzline_list_zfs_snapshots()
     else
         local NAME_OF_THE_POOL="$1"
 
-        sudo zfs list -t snapshot | grep $NAME_OF_THE_POOL
+        sudo zfs list -t snapshot | grep --color ${NAME_OF_THE_POOL}
     fi
 }
 
