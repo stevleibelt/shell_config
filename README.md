@@ -29,6 +29,10 @@ You can overwrite or extend a logical part by creating a "local.<logical part fi
 * extend update.sh
     * removes existing adaption of the bashrc
     * recalls install.sh
+    * instead of adding more and more migration code (depending on the current installed version), why not do it this way:
+        * create a tag per version
+        * each tag has its migration section
+        * the update script itself is iterating over the tags, checking this tag out and executing the migration section (or the dedicated migration script) until the most up to date version is reached (and stored in .current_installed_version file)
 * create clean
     * removes local.\* files
 * try to implement some kind of statistic usage collection
