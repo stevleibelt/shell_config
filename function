@@ -491,13 +491,15 @@ function net_bazzline_decompress ()
 ####
 # @param string <name of zfs pool>
 # @param string <name of the snapshot>
+# @todo
+#   implement -q (quite) flag
 ####
 function net_bazzline_delete_zfs_snapshot()
 {
     net_bazzline_record_function_usage ${FUNCNAME[0]}
 
     if [[ $# -lt 2 ]]; then
-        echo 'invalid number of arguments'
+        echo ':: Invalid number of arguments'
         echo '    net_bazzline_delete_zfs_snapshot <name of the zfs pool> <name of the snapshot>'
         return 1
     fi
@@ -505,15 +507,15 @@ function net_bazzline_delete_zfs_snapshot()
     local NAME_OF_THE_POOL="$1"
     local NAME_OF_THE_SNAPSHOT="$2"
 
-    #@todo implement check if snapshot exists
-    #if $(sudo zfs list -t snapshot | grep -q '${NAME_OF_THE_POOL}@${NAME_OF_THE_SNAPSHOT}');
-    #then
+    if sudo zfs list -t snapshot | grep -q "${NAME_OF_THE_POOL}@${NAME_OF_THE_SNAPSHOT}";
+    then
         if sudo zfs destroy -R ${NAME_OF_THE_POOL}@${NAME_OF_THE_SNAPSHOT}; then
-            echo "snapshot \"${NAME_OF_THE_SNAPSHOT}\" deleted from pool \"${NAME_OF_THE_POOL}\""
+            echo ":: Snapshot \"${NAME_OF_THE_SNAPSHOT}\" deleted from pool \"${NAME_OF_THE_POOL}\""
         fi
-    #else
-    #    echo "No snapshot \"${NAME_OF_THE_SNAPSHOT}\" found for pool \"${NAME_OF_THE_POOL}\""
-    #fi
+    else
+        echo ":: Failure"
+        echo "   Snapshot \"${NAME_OF_THE_SNAPSHOT}\" does not exist on pool \"${NAME_OF_THE_POOL}\""
+    fi
 
     return $?
 }
