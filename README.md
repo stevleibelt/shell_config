@@ -33,6 +33,10 @@ You can overwrite or extend a logical part by creating a "local.<logical part fi
         * create a tag per version
         * each tag has its migration section
         * the update script itself is iterating over the tags, checking this tag out and executing the migration section (or the dedicated migration script) until the most up to date version is reached (and stored in .current_installed_version file)
+        * steps
+            * move migration code from update.sh to migrate.sh
+            * write the current tag into the .current_installed_version
+            * rewrite the update.sh to fetch all tags and iterate over them
 * create clean
     * removes local.\* files
 * try to implement some kind of statistic usage collection
