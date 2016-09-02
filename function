@@ -505,9 +505,15 @@ function net_bazzline_delete_zfs_snapshot()
     local NAME_OF_THE_POOL="$1"
     local NAME_OF_THE_SNAPSHOT="$2"
 
-    if sudo zfs destroy -R ${NAME_OF_THE_POOL}@${NAME_OF_THE_SNAPSHOT}; then
-        echo "snapshot \"${NAME_OF_THE_SNAPSHOT}\" deleted from pool \"${NAME_OF_THE_POOL}\""
-    fi
+    #@todo implement check if snapshot exists
+    #if $(sudo zfs list -t snapshot | grep -q '${NAME_OF_THE_POOL}@${NAME_OF_THE_SNAPSHOT}');
+    #then
+        if sudo zfs destroy -R ${NAME_OF_THE_POOL}@${NAME_OF_THE_SNAPSHOT}; then
+            echo "snapshot \"${NAME_OF_THE_SNAPSHOT}\" deleted from pool \"${NAME_OF_THE_POOL}\""
+        fi
+    #else
+    #    echo "No snapshot \"${NAME_OF_THE_SNAPSHOT}\" found for pool \"${NAME_OF_THE_POOL}\""
+    #fi
 
     return $?
 }
