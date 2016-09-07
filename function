@@ -581,7 +581,7 @@ function net_bazzline_filename_to_lower_batch_rename ()
     net_bazzline_record_function_usage ${FUNCNAME[0]}
 
     #rename 'y/A-Z/a-z/' *
-    find . -type f -execdir sh -c 'mv "'{}'" "$(echo '{}'|tr '[:upper:]' '[:lower:]')"' \;
+    find -type f -execdir sh -c 'mv "'{}'" "$(echo '{}'|tr '[:upper:]' '[:lower:]')"' \;
 }
 
 ####
@@ -598,7 +598,7 @@ function net_bazzline_find_directory ()
     net_bazzline_record_function_usage ${FUNCNAME[0]}
 
     if [[ $# -eq 1 ]]; then
-        find . -iname "$1" -type d 2>/dev/null
+        find -iname "$1" -type d 2>/dev/null
     elif [[ $# -eq 2 ]]; then
         find "$2" -iname "$1" -type d 2>/dev/null
     else
@@ -624,7 +624,7 @@ function net_bazzline_find_file ()
     net_bazzline_record_function_usage ${FUNCNAME[0]}
 
     if [[ $# -eq 1 ]]; then
-        find . -iname "$1" -not -path "*/.*/*" -not -name ".*" -type f 2>/dev/null
+        find -iname "$1" -not -path "*/.*/*" -not -name ".*" -type f 2>/dev/null
     elif [[ $# -eq 2 ]]; then
         find "$2"  -iname "$1" -not -path "*/.*/*" -not -name ".*" -type f 2>/dev/null
     elif [[ $# -eq 3 ]]; then
@@ -813,7 +813,7 @@ function net_bazzline_list_empty_directories ()
     net_bazzline_record_function_usage ${FUNCNAME[0]}
 
     #@todo
-    find . -empty -type d
+    find -empty -type d
     #@todo delete_empty_directories
     #find . -empty -delete
 }
@@ -1213,7 +1213,7 @@ function net_bazzline_organize_directory_content()
                 local LENGHT_OF_POSSIBLE_ITEM_NAME=${#POSSIBLE_ITEM_NAME} 
                 if [[ $LENGHT_OF_POSSIBLE_ITEM_NAME -gt 0 ]]
                 then
-                    local NUMBER_OF_ENTRIES_FOR_POSSIBLE_ITEM_NAME=$(find . -maxdepth 1 -not -name ".*" -name "$POSSIBLE_ITEM_NAME?*" | wc -l)
+                    local NUMBER_OF_ENTRIES_FOR_POSSIBLE_ITEM_NAME=$(find -maxdepth 1 -not -name ".*" -name "$POSSIBLE_ITEM_NAME?*" | wc -l)
 
                     #begin of moving available files into temporary directory
                     if [[ $NUMBER_OF_ENTRIES_FOR_POSSIBLE_ITEM_NAME -gt 0 ]]
@@ -1295,7 +1295,7 @@ function net_bazzline_psgrep ()
     net_bazzline_record_function_usage ${FUNCNAME[0]}
 
     if [[ $# -eq 1 ]]; then
-        ps aux | grep -i "$1"
+        ps aux | grep -i "$1" | grep -v "grep -i $1"
     fi
 }
 
@@ -1445,7 +1445,7 @@ function net_bazzline_search_in_composer_files()
         local MAXIUM_LEVELS_OF_DIRECTORY_DEPTH=2
     fi
 
-    for FILE_PATH in $(find . -maxdepth $MAXIUM_LEVELS_OF_DIRECTORY_DEPTH -name composer.json); do
+    for FILE_PATH in $(find -maxdepth $MAXIUM_LEVELS_OF_DIRECTORY_DEPTH -name composer.json); do
         echo "$FILE_PATH"
         cat "$FILE_PATH" | grep -i "$SEARCH_PATTERN"
     done
