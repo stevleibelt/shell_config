@@ -49,11 +49,11 @@ fi
 alias diffDirectories=net_bazzline_diff_directory
 
 #f
-alias findBrokenSymlinks='find . -type l -! -exec test -e {} \; -print'
+alias findBrokenSymlinks='find -type l -! -exec test -e {} \; -print'
 alias findDirectory=net_bazzline_find_directory
 alias findFile=net_bazzline_find_file
 alias findAllPacFiles='find / -regextype posix-extended -regex ".+\.pac(new|save|orig)" 2> /dev/null'
-alias findSymlinks='find . -type l'
+alias findSymlinks='find -type l'
 
 #g
 alias getExtensionFromFilename=net_bazzline_get_extension_from_filename
