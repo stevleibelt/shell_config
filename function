@@ -493,6 +493,8 @@ function net_bazzline_decompress ()
 # @param string <name of the snapshot>
 # @todo
 #   implement -q (quite) flag
+#   implement -r (recurisve) flag
+#   check why -R is not working as expected
 ####
 function net_bazzline_delete_zfs_snapshot()
 {
