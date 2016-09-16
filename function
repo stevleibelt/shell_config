@@ -185,11 +185,12 @@ function net_bazzline_cd ()
     elif [[ `expr $1 + 1 2> /dev/null` ]]; then
         local PATH_TO_GO_UP=""
 
-        for (( i=1; i <= $1; i++))
+        for (( ITERATOR=1; ITERATOR <= $1; ++ITERATOR ))
         do
             PATH_TO_GO_UP+="../"
         done
 
+        echo "${PATH_TO_GO_UP} ${ITERATOR}"
         \cd ${PATH_TO_GO_UP}
     else
         \cd "$1"
