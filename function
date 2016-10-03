@@ -190,7 +190,6 @@ function net_bazzline_cd ()
             PATH_TO_GO_UP+="../"
         done
 
-        echo "${PATH_TO_GO_UP} ${ITERATOR}"
         \cd ${PATH_TO_GO_UP}
     else
         \cd "$1"
