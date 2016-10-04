@@ -1984,6 +1984,20 @@ function net_bazzline_unmount_sshfs ()
     echo "rm -fr <mount point>"
 }
 
+function net_bazzline_update_shell_configuration ()
+{
+    #store current working directory
+    CURRENT_WORKING_DIRECTORY=$(pwd)
+    #change to the repostiory
+    cd ${PATH_SHELL_CONFIG}
+    #update repository
+    git pull
+    #reload bash environment
+    source ~/.bashrc && clear
+    #change back to the current working directory
+    cd ${CURRENT_WORKING_DIRECTORY}
+}
+
 #v
 
 function net_bazzline_update_vim_bundles_and_plugins_with_vundle()
