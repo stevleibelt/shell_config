@@ -231,7 +231,7 @@ alias v=vim
 #w
 alias watchSystemTemperatur="watch -n10 'sensors'"
 if [[ -f /usr/bin/zpool ]]; then
-    alias watchZpoolStatus="watch -n 60 'zpool status'"
+    alias watchZpoolStatus="sudo watch -n 60 'zpool status'"
 fi
 alias wgetWholeWebPage='wget -np -r -k'
 alias whatIsListeningOnPort=net_bazzline_what_is_listening_on_that_port
