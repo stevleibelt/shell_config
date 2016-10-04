@@ -570,6 +570,32 @@ function net_bazzline_diff_directory ()
     fi
 }
 
+#e
+
+####
+# Adds "sudo" before the provided command if you are not root
+#
+# @param string $command_to_execute
+####
+function net_bazzline_execute_as_super_user_when_not_beeing_root ()
+{
+    net_bazzline_record_function_usage ${FUNCNAME[0]}
+
+    if [[ $# -lt 1 ]];
+    then
+        echo "Invalid number of arguments provided"
+        echo "${FUNCNAME[0]} <command to execute>"
+        return 1
+    fi
+
+    if [[ $(whoami) == "root" ]];
+    then
+        $@
+    else
+        sudo $@
+    fi
+}
+
 #f
 
 ####
