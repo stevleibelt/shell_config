@@ -229,9 +229,9 @@ alias unloadVirtualBoxModules='sudo modprobe -r vboxdrv && sudo modprobe -r vbox
 alias v=vim
 
 #w
-alias watchSystemTemperatur="watch -n10 'sensors'"
+alias watchForSystemTemperatur="watch -n10 'sensors'"
 if [[ -f /usr/bin/zpool ]]; then
-    alias watchZpoolStatus="net_bazzline_execute_as_super_user_when_not_beeing_root watch -n 60 'zpool status'"
+    alias watchForZpoolStatus="net_bazzline_execute_as_super_user_when_not_beeing_root watch -n 60 'zpool status -v'"
 fi
 alias wgetWholeWebPage='wget -np -r -k'
 alias whatIsListeningOnPort=net_bazzline_what_is_listening_on_that_port
