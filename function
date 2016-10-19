@@ -1455,6 +1455,25 @@ function net_bazzline_rsync ()
     rsync -aq --delete $@
 }
 
+####
+# @param string - the command e.g. "sleep 4 && ls -halt"
+# @see: https://github.com/magicmonty/bash-git-prompt/blob/master/gitprompt.sh - function async_run()
+####
+function net_bazzline_run_command_in_the_background ()
+{
+    {
+        eval "$@"
+    }&
+}
+
+####
+# @param string - the command e.g. "sleep 4 && ls -halt"
+####
+function net_bazzline_run_command_quietly_in_the_background ()
+{
+    net_bazzline_run_command_in_the_background "$@" &> /dev/null
+}
+
 #s
 
 ####
@@ -2019,7 +2038,7 @@ function net_bazzline_update_vim_bundles_and_plugins_with_vundle()
     fi
 
     #install all available plugins
-    vim +PluginInstall +qall & vim +BundleInstall +qall
+    vim +PluginInstall +qall && vim +BundleInstall +qall
 }
 
 #w
