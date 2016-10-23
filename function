@@ -197,6 +197,32 @@ function net_bazzline_cd ()
 }
 
 ####
+# checks and defrags ext4 device
+#
+# @param string <path to the device>
+#
+# @author stev leibelt
+# @since 2016-10-22
+####
+function net_bazzline_check_ext4_device ()
+{
+    net_bazzline_record_function_usage ${FUNCNAME[0]}
+
+    if [[ $# -gt 0 ]];
+    then
+        DEVICE_PATH="$1"
+
+        sudo fsck.ext4 -yfD ${DEVICE_PATH}
+        sudo sync
+    else
+        echo ":: invalid number of arguments provided"
+        echo "    ${FUNCNAME[0]} <path to the device>"
+
+        return 1
+    fi
+}
+
+####
 # compress given directories into tar.gz
 #
 # @param string $1 - compressed tar.gz file name
@@ -212,7 +238,7 @@ function net_bazzline_compress ()
     if [[ $# -lt 1 ]]; then
         echo 'No valid arguments supplied.'
 
-        exit 1
+        return 1
     fi
 
     FILENAME_TAR="$1".tar.gz
