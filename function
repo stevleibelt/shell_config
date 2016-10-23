@@ -1055,6 +1055,49 @@ function net_bazzline_mkdir_prefix_with_current_date ()
 }
 
 ####
+# @param string <mount point>
+# @param string <zfs pool name>
+# @param string <uuid of device>
+# [@param string <uuid of device>]
+# [...]
+####
+function net_bazzline_mount_crypto_zfs_pool ()
+{
+    if [[ $# -ge 3 ]]; 
+    then
+        MOUNT_POINT="$1"
+        ZFS_POOL_NAME="$2"
+
+        shift 2
+
+        if [[ ! -d ${MOUNT_POINT} ]]; 
+        then
+            mkdir -p ${MOUNT_POINT}
+
+            for CURRENT_ARGUMENT_NUMBER in $(seq ${#});
+            do
+                UUID=${1}
+                echo ":: disk ${CURRENT_ARGUMENT_NUMBER}"
+                cryptsetup luksOpen /dev/disk/by-uuid/${UUID} crypt-${ZFS_POOL_NAME}-${CURRENT_ARGUMENT_NUMBER}
+                shift
+            done
+
+            zpool import ${ZFS_POOL_NAME}
+        else
+            echo ":: mount point ${MOUNT_POINT} exists."
+
+            return 2
+        fi
+    else
+        echo ":: called with invalid number of arguments."
+        echo "Usage:"
+        echo "    ${FUNCNAME[0]} <mount point> <zfs pool name> <uuid of device> [<uuid of device> [...]]"
+
+        return 1
+    fi 
+}
+
+####
 # @param - source one
 # [@param - source two]
 # @param destination
@@ -1967,6 +2010,58 @@ function net_bazzline_touch_with_prefix_of_current_date ()
 }
 
 #u
+
+####
+# @param string <mount point>
+# @param string <zfs pool name>
+# @param string <uuid of device>
+# [@param string <uuid of device>]
+# [...]
+####
+function net_bazzline_umount_crypto_zfs_pool ()
+{
+    if [[ $# -ge 3 ]]; 
+    then
+        MOUNT_POINT="$1"
+        ZFS_POOL_NAME="$2"
+
+        shift 2
+
+        if [[ -d ${MOUNT_POINT} ]]; 
+        then
+            if [[ "$(ls -A ${MOUNT_POINT})" ]]; 
+            then
+                zpool export ${ZFS_POOL_NAME}
+
+                for CURRENT_ARGUMENT_NUMBER in $(seq ${#});
+                do
+                    UUID=${1}
+                    echo ":: disk ${CURRENT_ARGUMENT_NUMBER}"
+                    cryptsetup luksClose crypt-${ZFS_POOL_NAME}-${CURRENT_ARGUMENT_NUMBER}
+                    shift
+                done
+
+                if [[ ! "$(ls -A ${MOUNT_POINT})" ]]; 
+                then
+                    rmdir ${MOUNT_POINT}
+                else
+                    echo ":: can not remove mount point, there is still content inside."
+                    ls -A ${MOUNT_POINT}
+                fi
+            else
+                echo ":: mountpoint ${MOUNT_POINT} exists but is empty"
+            fi
+        else
+            echo ":: mountpoint ${MOUNT_POINT} does not exist"
+        fi
+    else
+        echo ":: called with invalid number of arguments."
+        echo "Usage:"
+        echo "    ${FUNCNAME[0]} <mount point> <zfs pool name> <uuid of device> [<uuid of device> [...]]"
+
+        return 1
+    fi
+}
 
 ####
 # adds "." to the beginning of the directory or file name
