@@ -179,20 +179,28 @@ function net_bazzline_cd ()
 {
     net_bazzline_record_function_usage ${FUNCNAME[0]}
 
-    if [[ $# -eq 0 ]]; then 
+    if [[ $# -eq 0 ]];
+    then 
         cd "${HOME}"
     #is numeric value?
-    elif [[ `expr $1 + 1 2> /dev/null` ]]; then
-        local PATH_TO_GO_UP=""
+    elif [[ `expr ${1} + 1 2> /dev/null` ]];
+    then
+        #directory exist?
+        if [[ -d ${1} ]];
+        then
+            \cd "${1}"
+        else
+            local PATH_TO_GO_UP=""
 
-        for (( ITERATOR=1; ITERATOR <= $1; ++ITERATOR ))
-        do
-            PATH_TO_GO_UP+="../"
-        done
+            for (( ITERATOR=1; ITERATOR <= $1; ++ITERATOR ))
+            do
+                PATH_TO_GO_UP+="../"
+            done
 
-        \cd ${PATH_TO_GO_UP}
+            \cd ${PATH_TO_GO_UP}
+        fi
     else
-        \cd "$1"
+        \cd "${1}"
     fi
 }
 
@@ -1565,6 +1573,25 @@ function net_bazzline_search_in_composer_files()
         echo "$FILE_PATH"
         cat "$FILE_PATH" | grep -i "$SEARCH_PATTERN"
     done
+}
+
+####
+# @param string $SEARCH_TERM
+####
+function net_bazzline_search_in_journalctl_since_boot ()
+{
+    net_bazzline_record_function_usage ${FUNCNAME[0]}
+
+    if [[ $# -gt 1 ]];
+    then
+        SEARCH_TERM="${1}"
+
+        net_bazzline_execute_as_super_user_when_not_beeing_root "journalctl -b --no-pager | grep -i ${SEARCH_TERM}"
+    else
+        echo ":: Invalid number of arguments provided"
+        echo "Usage"
+        echo "    ${FUNCNAME[0]} <search term>"
+    fi
 }
 
 ####
