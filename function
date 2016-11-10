@@ -1500,6 +1500,88 @@ function net_bazzline_refresh_interface ()
 }
 
 ####
+# rename a git repository locally and remotly
+#
+# @param string <old branch name>
+# @param string <new branch name>
+# [@param string <path to the repository>]
+#
+# @author stev leibelt <artodeto@bazzline.net>
+# @since 2016-11-09
+####
+function net_bazzline_rename_git_branch ()
+{
+    net_bazzline_record_function_usage ${FUNCNAME[0]}
+
+    if [[ $# -eq 0 ]];
+    then
+        net_bazzline_handle_invalid_number_of_arguments_supplied "${FUNCNAME[0]} <old branch name> <new branch name> [<path to the repository>]"
+
+        return 1
+    else
+        NEW_BRANCH_NAME="${2}"
+        OLD_BRANCH_NAME="${1}"
+
+        if [[ $# -gt 2 ]];
+        then
+            PATH_TO_THE_REPOSITORY="${3}"
+        else
+            PATH_TO_THE_REPOSITORY="."
+        fi
+
+        CURRENT_WORKING_DIRECTORY=$(pwd)
+
+        cd "${PATH_TO_THE_REPOSITORY}"
+
+        git fetch origin
+
+        echo ":: Searching for local repository of ${OLD_BRANCH_NAME}."
+        FOUND_LOCAL_BRANCHES=($(git branch -l | grep -i ${OLD_BRANCH_NAME}))
+        NUMBER_OF_FOUND_LOCAL_BRANCHES=${#FOUND_LOCAL_BRANCHES[@]}
+
+        if [[ ${NUMBER_OF_FOUND_LOCAL_BRANCHES} -eq 0 ]];
+        then
+            echo ":: No local repository available. Doing a checkout." 
+            git checkout -b "${OLD_BRANCH_NAME}" "origin/${OLD_BRANCH_NAME}"
+        else
+            echo ":: Local repository available. Switching to that branch."
+            git checkout "${OLD_BRANCH_NAME}"
+        fi
+
+        echo ""
+        echo ":: Updating local repository with remote repository." 
+        git pull origin "${OLD_BRANCH_NAME}" 
+
+        echo ""
+        echo ":: Renaming local repository from ${OLD_BRANCH_NAME} to ${NEW_BRANCH_NAME}."
+        git branch -m "${OLD_BRANCH_NAME}" "${NEW_BRANCH_NAME}"
+
+        echo ""
+        echo ":: Creating new remote repository with the name ${NEW_BRANCH_NAME}."
+        git push --set-upstream origin "${NEW_BRANCH_NAME}"
+
+        echo ""
+        echo ":: Deleting old remote repository with the name ${OLD_BRANCH_NAME}." 
+        git push origin :"${OLD_BRANCH_NAME}"
+
+        echo ""
+        echo ":: Switching back to your current branch"
+        git checkout -  
+
+        echo ""
+        echo ":: Can I delete the local repository? (Y|n)" 
+        read -p "   " YES_OR_NO 
+        if [[ ${YES_OR_NO} != "n" ]];
+        then
+            echo ":: Deleting local repository."
+            git branch -D "${NEW_BRANCH_NAME}"
+        fi
+
+        cd "${CURRENT_WORKING_DIRECTORY}"
+    fi
+}
+
+####
 # Replaces a string in all files in given path and below
 # taken from: http://www.cyberciti.biz/faq/unix-linux-replace-string-words-in-many-files/
 # taken from: http://stackoverflow.com/questions/4437901/find-and-replace-string-in-a-file
@@ -1518,17 +1600,18 @@ function net_bazzline_replace_string_in_files ()
         return 1
     fi
 
-    local SEARCH="$1"
-    local REPLACE="$2"
-    local FILE_EXTENSION="$3"
+    local SEARCH="${1}"
+    local REPLACE="${2}"
+    local FILE_EXTENSION="${3}"
 
-    if [[ $# -eq 4 ]]; then
-        local DIRECTORY_PATH="$4"
+    if [[ $# -eq 4 ]];
+    then
+        local DIRECTORY_PATH="${4}"
     else
         local DIRECTORY_PATH="."
     fi
 
-    find "$DIRECTPRY_PATH" -name "*.$FILE_EXTENSION" -type f -exec sed -i 's/'"$SEARCH"'/'"$REPLACE"'/g' {} \;
+    find "${DIRECTPRY_PATH}" -name "*.${FILE_EXTENSION}" -type f -exec sed -i 's/'"${SEARCH}"'/'"${REPLACE}"'/g' {} \;
 }
 
 ####
@@ -2157,7 +2240,8 @@ function net_bazzline_unmount_luks_zpool ()
 {
     net_bazzline_record_function_usage ${FUNCNAME[0]}
 
-    if [[ $# -lt 3 ]]; then
+    if [[ $# -lt 3 ]];
+    then
         echo "usage: <command> <zpool> <crypto name> <zpool>"
         return 1
     else
