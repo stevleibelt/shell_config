@@ -21,12 +21,14 @@ function net_bazzline_backup_to ()
 {
     net_bazzline_record_function_usage ${FUNCNAME[0]}
 
-    if [[ $# -eq 0 ]]; then
-        echo ':: Invalid number of variables provided'
-        echo ':: Usage: command [source one] [source ...] target'
+    if [[ $# -eq 0 ]];
+    then
+        net_bazzline_handle_invalid_number_of_arguments_supplied "${FUNCNAME[0]} <source one> [<source ...>] <target>"
+
         return 1
-    elif [[ $# -eq 1 ]]; then
-        net_bazzline_rsync . "$1"
+    elif [[ $# -eq 1 ]];
+    then
+        net_bazzline_rsync . "${1}"
     else
         net_bazzline_rsync $@
     fi
@@ -63,6 +65,7 @@ function net_bazzline_image_batch_convert ()
 {
     net_bazzline_record_function_usage ${FUNCNAME[0]}
 
+#hook - implement usage and style
     if [[ $# -eq 2 ]]; then
         local DIRECTORY="$2";
     else
@@ -72,7 +75,7 @@ function net_bazzline_image_batch_convert ()
     #@todo implement check if directory exists
     mkdir $DIRECTORY
     for FILE in *.[jJ][pP][gG]; do
-        convert $FILE -verbose -geometry $1x$1 -quality 98% -comment "proud made with linux" $DIRECTORY/$FILE
+        convert $FILE -verbose -geometry $1x$1 -quality 98% -comment "made with linux" $DIRECTORY/$FILE
     done;
 }
 
@@ -179,20 +182,28 @@ function net_bazzline_cd ()
 {
     net_bazzline_record_function_usage ${FUNCNAME[0]}
 
-    if [[ $# -eq 0 ]]; then 
+    if [[ $# -eq 0 ]];
+    then 
         cd "${HOME}"
     #is numeric value?
-    elif [[ `expr $1 + 1 2> /dev/null` ]]; then
-        local PATH_TO_GO_UP=""
+    elif [[ `expr ${1} + 1 2> /dev/null` ]];
+    then
+        #directory exist?
+        if [[ -d ${1} ]];
+        then
+            \cd "${1}"
+        else
+            local PATH_TO_GO_UP=""
 
-        for (( ITERATOR=1; ITERATOR <= $1; ++ITERATOR ))
-        do
-            PATH_TO_GO_UP+="../"
-        done
+            for (( ITERATOR=1; ITERATOR <= $1; ++ITERATOR ))
+            do
+                PATH_TO_GO_UP+="../"
+            done
 
-        \cd ${PATH_TO_GO_UP}
+            \cd ${PATH_TO_GO_UP}
+        fi
     else
-        \cd "$1"
+        \cd "${1}"
     fi
 }
 
@@ -811,6 +822,24 @@ function net_bazzline_git_update_all_repositories()
 }
 
 #h
+
+####
+# @param string usage
+####
+function net_bazzline_handle_invalid_number_of_arguments_supplied ()
+{
+    #no usage recording
+    if [[ $# -lt 1 ]];
+    then
+        net_bazzline_handle_invalid_number_of_arguments_supplied "${FUNCNAME[0]} <usage>"
+    else
+        local USAGE="${1}"
+
+        echo ":: Invalid number of arguments supplied."
+        echo "Usage:"
+        echo "   ${USAGE}"
+    fi
+}
 
 ####
 # adds "." to the beginning of the directory or file name
@@ -1472,6 +1501,88 @@ function net_bazzline_refresh_interface ()
 }
 
 ####
+# rename a git repository locally and remotly
+#
+# @param string <old branch name>
+# @param string <new branch name>
+# [@param string <path to the repository>]
+#
+# @author stev leibelt <artodeto@bazzline.net>
+# @since 2016-11-09
+####
+function net_bazzline_rename_git_branch ()
+{
+    net_bazzline_record_function_usage ${FUNCNAME[0]}
+
+    if [[ $# -eq 0 ]];
+    then
+        net_bazzline_handle_invalid_number_of_arguments_supplied "${FUNCNAME[0]} <old branch name> <new branch name> [<path to the repository>]"
+
+        return 1
+    else
+        NEW_BRANCH_NAME="${2}"
+        OLD_BRANCH_NAME="${1}"
+
+        if [[ $# -gt 2 ]];
+        then
+            PATH_TO_THE_REPOSITORY="${3}"
+        else
+            PATH_TO_THE_REPOSITORY="."
+        fi
+
+        CURRENT_WORKING_DIRECTORY=$(pwd)
+
+        cd "${PATH_TO_THE_REPOSITORY}"
+
+        git fetch origin
+
+        echo ":: Searching for local repository of ${OLD_BRANCH_NAME}."
+        FOUND_LOCAL_BRANCHES=($(git branch -l | grep -i ${OLD_BRANCH_NAME}))
+        NUMBER_OF_FOUND_LOCAL_BRANCHES=${#FOUND_LOCAL_BRANCHES[@]}
+
+        if [[ ${NUMBER_OF_FOUND_LOCAL_BRANCHES} -eq 0 ]];
+        then
+            echo ":: No local repository available. Doing a checkout." 
+            git checkout -b "${OLD_BRANCH_NAME}" "origin/${OLD_BRANCH_NAME}"
+        else
+            echo ":: Local repository available. Switching to that branch."
+            git checkout "${OLD_BRANCH_NAME}"
+        fi
+
+        echo ""
+        echo ":: Updating local repository with remote repository." 
+        git pull origin "${OLD_BRANCH_NAME}" 
+
+        echo ""
+        echo ":: Renaming local repository from ${OLD_BRANCH_NAME} to ${NEW_BRANCH_NAME}."
+        git branch -m "${OLD_BRANCH_NAME}" "${NEW_BRANCH_NAME}"
+
+        echo ""
+        echo ":: Creating new remote repository with the name ${NEW_BRANCH_NAME}."
+        git push --set-upstream origin "${NEW_BRANCH_NAME}"
+
+        echo ""
+        echo ":: Deleting old remote repository with the name ${OLD_BRANCH_NAME}." 
+        git push origin :"${OLD_BRANCH_NAME}"
+
+        echo ""
+        echo ":: Switching back to your current branch"
+        git checkout -  
+
+        echo ""
+        echo ":: Can I delete the local repository? (Y|n)" 
+        read -p "   " YES_OR_NO 
+        if [[ ${YES_OR_NO} != "n" ]];
+        then
+            echo ":: Deleting local repository."
+            git branch -D "${NEW_BRANCH_NAME}"
+        fi
+
+        cd "${CURRENT_WORKING_DIRECTORY}"
+    fi
+}
+
+####
 # Replaces a string in all files in given path and below
 # taken from: http://www.cyberciti.biz/faq/unix-linux-replace-string-words-in-many-files/
 # taken from: http://stackoverflow.com/questions/4437901/find-and-replace-string-in-a-file
@@ -1490,17 +1601,18 @@ function net_bazzline_replace_string_in_files ()
         return 1
     fi
 
-    local SEARCH="$1"
-    local REPLACE="$2"
-    local FILE_EXTENSION="$3"
+    local SEARCH="${1}"
+    local REPLACE="${2}"
+    local FILE_EXTENSION="${3}"
 
-    if [[ $# -eq 4 ]]; then
-        local DIRECTORY_PATH="$4"
+    if [[ $# -eq 4 ]];
+    then
+        local DIRECTORY_PATH="${4}"
     else
         local DIRECTORY_PATH="."
     fi
 
-    find "$DIRECTPRY_PATH" -name "*.$FILE_EXTENSION" -type f -exec sed -i 's/'"$SEARCH"'/'"$REPLACE"'/g' {} \;
+    find "${DIRECTPRY_PATH}" -name "*.${FILE_EXTENSION}" -type f -exec sed -i 's/'"${SEARCH}"'/'"${REPLACE}"'/g' {} \;
 }
 
 ####
@@ -1566,6 +1678,25 @@ function net_bazzline_search_in_composer_files()
         echo "$FILE_PATH"
         cat "$FILE_PATH" | grep -i "$SEARCH_PATTERN"
     done
+}
+
+####
+# @param string $SEARCH_TERM
+####
+function net_bazzline_search_in_journalctl_since_boot ()
+{
+    net_bazzline_record_function_usage ${FUNCNAME[0]}
+
+    if [[ $# -gt 1 ]];
+    then
+        SEARCH_TERM="${1}"
+
+        net_bazzline_execute_as_super_user_when_not_beeing_root "journalctl -b --no-pager | grep -i ${SEARCH_TERM}"
+    else
+        echo ":: Invalid number of arguments provided"
+        echo "Usage"
+        echo "    ${FUNCNAME[0]} <search term>"
+    fi
 }
 
 ####
@@ -1698,21 +1829,22 @@ function net_bazzline_string_contains()
 {
     net_bazzline_record_function_usage ${FUNCNAME[0]}
 
-    if [[ $# -eq 2 ]]; then
+    if [[ $# -eq 2 ]];
+    then
         local CONTAINS=1
         local STRING="$1"
         local SEARCH="$2"
 
-        case "$STRING" in 
-           *"$SEARCH"*)
+        case "${STRING}" in 
+           *"${SEARCH}"*)
              local CONTAINS=0
             ;;
         esac   
 
-        return $CONTAINS
+        return ${CONTAINS}
     else
-        echo 'invalid number of arguments'
-        echo '    net_bazzline_string_contains <string> <search>'
+        echo "invalid number of arguments"
+        echo "    net_bazzline_string_contains <string> <search>"
         return 1
     fi
 }
@@ -1730,20 +1862,22 @@ function net_bazzline_string_starts_with ()
 {
     net_bazzline_record_function_usage ${FUNCNAME[0]}
 
-    if [[ $# -eq 2 ]]; then
+    if [[ $# -eq 2 ]];
+    then
         local STRING="$1"
         local SUB_STRING="$2"
         local LENGTH_OF_SUB_STRING=${#SUB_STRING}
         local STRING_WITH_SUB_STRING_ONLY=${STRING:0:$LENGTH_OF_SUB_STRING}
 
-        if [[ $STRING_WITH_SUB_STRING_ONLY = $SUB_STRING ]]; then
+        if [[ "${STRING_WITH_SUB_STRING_ONLY}" = "${SUB_STRING}" ]];
+        then
             return 0
         else
             return 1
         fi
     else
-        echo "Usage: net_bazzline_stringStartsWitch <string> <needle>"
-        return 1
+        echo "Usage: net_bazzline_string_starts_with <string> <needle>"
+        return 2
     fi
 }
 
@@ -1760,7 +1894,8 @@ function net_bazzline_svn_diff ()
 {
     net_bazzline_record_function_usage ${FUNCNAME[0]}
 
-    if [[ -x "/usr/bin/colordiff" ]]; then
+    if [[ -x "/usr/bin/colordiff" ]];
+    then
         svn diff "${@}" | /usr/bin/colordiff
     else
         svn diff "${@}"
@@ -1780,14 +1915,16 @@ function net_bazzline_svn_log_grep ()
 {
     net_bazzline_record_function_usage ${FUNCNAME[0]}
 
-    if [[ $# -eq 1 ]]; then
-        svn log --limit 1000 | grep -B2 "$1"
-    elif [[ $# -eq 2 ]]; then
-        svn log --limit "$2" | grep -B2 "$1"
+    if [[ $# -eq 1 ]];
+    then
+        svn log --limit 1000 | grep -B2 "${1}"
+    elif [[ $# -eq 2 ]];
+    then
+        svn log --limit "${2}" | grep -B2 "${1}"
     else
-        echo 'invalid number of arguments supplied.'
-        echo 'Usage:'
-        echo 'net_bazzline_svn_log_grep <pattern:string> [<limit:int>]'
+        echo "invalid number of arguments supplied."
+        echo "Usage:"
+        echo "    net_bazzline_svn_log_grep <pattern:string> [<limit:int>]"
     fi
 }
 
@@ -1808,10 +1945,12 @@ function net_bazzline_svn_repository_diff ()
 {
     net_bazzline_record_function_usage ${FUNCNAME[0]}
 
-    if [[ $# -eq 3 ]]; then
-        svn diff --summarize "$1""/""$3" "$2""/""$3"
-    elif [[ $# -eq 4 ]]; then
-        svn diff "$1""/""$3" "$2""/""$3"
+    if [[ $# -eq 3 ]];
+    then
+        svn diff --summarize "${1}/${3}" "${2}/${3}"
+    elif [[ $# -eq 4 ]];
+    then
+        svn diff "${1}/${3}" "${2}/${3}"
     else
         echo 'No valid arguments supplied'
         echo 'repositoryUrlOne repositoryUrlTwo filePath [disableSummerize]'
@@ -2111,7 +2250,8 @@ function net_bazzline_unmount_luks_zpool ()
 {
     net_bazzline_record_function_usage ${FUNCNAME[0]}
 
-    if [[ $# -lt 3 ]]; then
+    if [[ $# -lt 3 ]];
+    then
         echo "usage: <command> <zpool> <crypto name> <zpool>"
         return 1
     else
