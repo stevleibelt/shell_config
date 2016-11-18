@@ -527,8 +527,9 @@ function net_bazzline_delete_zfs_snapshot()
     net_bazzline_record_function_usage ${FUNCNAME[0]}
 
     if [[ $# -lt 2 ]]; then
-        echo ':: Invalid number of arguments'
-        echo '    net_bazzline_delete_zfs_snapshot <name of the zfs pool> <name of the snapshot>'
+        echo ":: Invalid number of arguments"
+        echo ":: Usage"
+        echo "   net_bazzline_delete_zfs_snapshot <name of the zfs pool> <name of the snapshot>"
         return 1
     fi
 
@@ -2031,6 +2032,15 @@ function net_bazzline_umount_crypto_zfs_pool ()
         then
             if [[ "$(ls -A ${MOUNT_POINT})" ]]; 
             then
+                CURRENT_WORKING_DIRECTORY=$(pwd)
+                SUB_STRING="${CURRENT_WORKING_DIRECTORY:0:${#CURRENT_WORKING_DIRECTORY}}"
+
+                #change to home if user is a sub directory of the mount point
+                if [[ "${SUB_STRING}" == "${MOUNT_POINT}" ]];
+                then
+                    cd ${HOME}
+                fi
+
                 zpool export ${ZFS_POOL_NAME}
 
                 for CURRENT_ARGUMENT_NUMBER in $(seq ${#});
