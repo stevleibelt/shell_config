@@ -1595,15 +1595,27 @@ function net_bazzline_replace_string_in_files ()
 {
     net_bazzline_record_function_usage ${FUNCNAME[0]}
 
-    if [[ $# -lt 3 ]]; then
-        echo 'invalid number of arguments provided'
-        echo 'command search replace fileextension [path]'
+    if [[ $# -lt 2 ]]; then
+        net_bazzline_handle_invalid_number_of_arguments_supplied "${FUNCNAME[0]} <search pattern> <replace with> [<path to search in> [<file extension>]]"
+
         return 1
     fi
 
-    local SEARCH="${1}"
-    local REPLACE="${2}"
-    local FILE_EXTENSION="${3}"
+    local FILTER_BY_FILE_EXTENSION=0
+    local REPLACE_WITH="${2}"
+    local SEARCH_PATTERHN="${1}"
+
+    if [[ $# -gt 2 ]];
+        local PATH_TO_SERCH_IN="${3}"
+
+        if [[ $# -gt 2 ]];
+        then
+            local FILE_EXTENSION="${4}"
+            local FILTER_BY_FILE_EXTENSION=1
+        fi
+    else
+        local PATH_TO_SERCH_IN="."
+    fi
 
     if [[ $# -eq 4 ]];
     then
@@ -1612,7 +1624,12 @@ function net_bazzline_replace_string_in_files ()
         local DIRECTORY_PATH="."
     fi
 
-    find "${DIRECTPRY_PATH}" -name "*.${FILE_EXTENSION}" -type f -exec sed -i 's/'"${SEARCH}"'/'"${REPLACE}"'/g' {} \;
+    if [[ ${FILE_EXTENSION} -eq 1 ]];
+    then
+        find "${DIRECTPRY_PATH}" -name "*.${FILE_EXTENSION}" -type f -exec sed -i "s/${SEARCH_PATTERN}/${REPLACE_WITH}/g" {} \;
+    else
+        find "${DIRECTPRY_PATH}" -type f -exec sed -i "s/${SEARCH_PATTERN}/${REPLACE_WITH}/g" {} \;
+    fi
 }
 
 ####
