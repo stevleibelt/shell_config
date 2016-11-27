@@ -1821,7 +1821,7 @@ function net_bazzline_silent_grep ()
     if [[ $# -lt 1 ]]; then
         grep
     else
-        grep -irI --color=auto --exclude=\*.svn\* --exclude=\*.git\* "$@" 2>/dev/null
+        grep -irI --color=auto --exclude=\*.svn\* --exclude=\*.git\* --exclude=\*.idea\* "$@" 2>/dev/null
     fi
 }
 
