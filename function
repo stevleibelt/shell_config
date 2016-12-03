@@ -153,10 +153,7 @@ function net_bazzline_burn ()
     net_bazzline_record_function_usage ${FUNCNAME[0]}
 
     if [[ $# -lt 1 ]]; then
-        echo 'No valid argument supplied.'
-        echo 'Try net_bazzline_burn $isoFile [$opticalDevice]'
-
-        exit 1
+        net_bazzline_handle_invalid_number_of_arguments_supplied "${FUNCNAME[0]} <path to the iso file> [<device to burn>]"
     fi
 
     if [[ $# -eq 1 ]]; then
