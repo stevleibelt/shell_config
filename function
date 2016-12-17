@@ -223,10 +223,7 @@ function net_bazzline_check_ext4_device ()
         sudo fsck.ext4 -yfD ${DEVICE_PATH}
         sudo sync
     else
-        echo ":: invalid number of arguments provided"
-        echo "    ${FUNCNAME[0]} <path to the device>"
-
-        return 1
+        net_bazzline_handle_invalid_number_of_arguments_supplied "${FUNCNAME[0]} <path to the device>"
     fi
 }
 
