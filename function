@@ -674,6 +674,33 @@ function net_bazzline_find_directory ()
 }
 
 ####
+# [@param string $ROOT_PATH]
+# [@param int $MAX_DEPTH]
+#
+# @author stev leibelt
+# @since 2016-12-01
+####
+function net_bazzline_find_empty_directories ()
+{
+    net_bazzline_record_function_usage ${FUNCNAME[0]}
+
+    if [[ $# -ge 1 ]];
+    then
+        if [[ $# -ge 2 ]];
+        then
+            MAX_DEPTH="${2}"
+        else
+            MAX_DEPTH="0"
+        fi
+        ROOT_PATH="${1}"
+    else
+        ROOT_PATH="."
+    fi
+
+    find ${ROOT_PATH} -maxdepth ${MAX_DEPTH} -type d -empty
+}
+
+####
 # calles find with given param and type f
 #
 # @param string $1 - pattern you are searching for
