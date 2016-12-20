@@ -154,6 +154,8 @@ function net_bazzline_burn ()
 
     if [[ $# -lt 1 ]]; then
         net_bazzline_handle_invalid_number_of_arguments_supplied "${FUNCNAME[0]} <path to the iso file> [<device to burn>]"
+
+        return 1
     fi
 
     if [[ $# -eq 1 ]]; then
@@ -224,6 +226,8 @@ function net_bazzline_check_ext4_device ()
         sudo sync
     else
         net_bazzline_handle_invalid_number_of_arguments_supplied "${FUNCNAME[0]} <path to the device>"
+
+        return 1
     fi
 }
 
@@ -853,6 +857,8 @@ function net_bazzline_handle_invalid_number_of_arguments_supplied ()
     if [[ $# -lt 1 ]];
     then
         net_bazzline_handle_invalid_number_of_arguments_supplied "${FUNCNAME[0]} <usage>"
+
+         return 1
     else
         local USAGE="${1}"
 
