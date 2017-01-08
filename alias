@@ -47,6 +47,7 @@ if [[ -f /usr/bin/zpool ]]; then
     alias deleteZfsSnapshot=net_bazzline_delete_zfs_snapshot
     alias deleteZfsSnapshots=net_bazzline_delete_zfs_snapshots
 fi
+alias deleteEmptyDirectories=net_bazzline_delete_empty_directories
 alias diffDirectories=net_bazzline_diff_directory
 
 #f
@@ -75,8 +76,9 @@ alias killSkype='killall -u $USER skype'
 #l
 alias l='ls -hAlt'
 alias lh='ls -hAlt | head'
-alias listInterfaces=net_bazzline_list_interfaces
+alias listEmptyDirectories=net_bazzline_list_empty_directories
 alias listGroups=net_bazzline_list_groups
+alias listInterfaces=net_bazzline_list_interfaces
 alias listSymbolicLinks=net_bazzline_list_symbolic_links
 alias listUsers=net_bazzline_list_users
 if [[ -f /usr/bin/zpool ]]; then
@@ -188,7 +190,7 @@ elif [[ $NET_BAZZLINE_PACKAGE_MANAGER = 'apt' ]]; then
     alias software-list='sudo dpkg -l'
     alias software-remove='sudo apt-get remove'
     alias software-search='sudo apt-cache search'
-    alias software-search-installed='echo "todo"'
+    #alias software-search-installed='echo "todo"'
     #alias software-update='sudo apt-get update'
     alias software-upgrade='sudo apt-get update && sudo apt-get upgrade --assume-yes'
     #alias software-repository-info='echo "todo"'
