@@ -524,6 +524,38 @@ function net_bazzline_decompress ()
 }
 
 ####
+# [@param string $ROOT_PATH]
+# [@param int $MAX_DEPTH]
+#
+# @author stev leibelt
+# @since 2016-12-27
+####
+function net_bazzline_delete_empty_directories ()
+{
+    net_bazzline_record_function_usage ${FUNCNAME[0]}
+
+    #begin of default settings
+    MAX_DEPTH=1
+    ROOT_PATH="."
+    #end of default settings
+
+    #begin of user settings
+    if [[ $# -ge 1 ]];
+    then
+        ROOT_PATH="${1}"
+
+        if [[ $# -ge 2 ]];
+        then
+            MAX_DEPTH="${2}"
+        fi
+    fi
+    #end of user settings
+
+    find ${ROOT_PATH} -maxdepth ${MAX_DEPTH} -type d -empty -delete
+}
+
+
+####
 # @param string <name of zfs pool>
 # @param string <name of the snapshot>
 # @todo
@@ -579,7 +611,17 @@ function net_bazzline_delete_zfs_snapshots()
 
     for CURRENT_SNAPSHOT_NUMBER in $(seq ${INITIAL_SNAPSHOT_NUMBER} 1 ${FINAL_SNAPSHOT_NUMBER});
     do
-        net_bazzline_delete_zfs_snapshot ${NAME_OF_THE_POOL} ${CURRENT_SNAPSHOT_NUMBER}
+        #expected date for CURRENT_SNAPSHOT_NUMBER is yyyymmdd
+        #@see http://stackoverflow.com/questions/10759162/check-if-argument-is-a-valid-date-in-bash-shell
+        local DAY=${CURRENT_SNAPSHOT_NUMBER:6:4}
+        local MONTH=${CURRENT_SNAPSHOT_NUMBER:4:2}
+        local YEAR=${CURRENT_SNAPSHOT_NUMBER:0:4}
+
+        #check if the date is valid
+        if date -d "${YEAR}-${MONTH}-${DAY}" &> /dev/null;
+        then
+            net_bazzline_delete_zfs_snapshot ${NAME_OF_THE_POOL} ${CURRENT_SNAPSHOT_NUMBER}
+        fi
     done
 
     return $?
@@ -669,33 +711,6 @@ function net_bazzline_find_directory ()
         echo 'No valid argument supplied.'
         return 1
     fi
-}
-
-####
-# [@param string $ROOT_PATH]
-# [@param int $MAX_DEPTH]
-#
-# @author stev leibelt
-# @since 2016-12-01
-####
-function net_bazzline_find_empty_directories ()
-{
-    net_bazzline_record_function_usage ${FUNCNAME[0]}
-
-    if [[ $# -ge 1 ]];
-    then
-        if [[ $# -ge 2 ]];
-        then
-            MAX_DEPTH="${2}"
-        else
-            MAX_DEPTH="0"
-        fi
-        ROOT_PATH="${1}"
-    else
-        ROOT_PATH="."
-    fi
-
-    find ${ROOT_PATH} -maxdepth ${MAX_DEPTH} -type d -empty
 }
 
 ####
@@ -919,14 +934,35 @@ function net_bazzline_is_directory_empty ()
 
 #l
 
+####
+# [@param string $ROOT_PATH]
+# [@param int $MAX_DEPTH]
+#
+# @author stev leibelt
+# @since 2016-12-01
+####
 function net_bazzline_list_empty_directories ()
 {
     net_bazzline_record_function_usage ${FUNCNAME[0]}
 
-    #@todo
-    find -empty -type d
-    #@todo delete_empty_directories
-    #find . -empty -delete
+    #begin of default settings
+    MAX_DEPTH=1
+    ROOT_PATH="."
+    #end of default settings
+
+    #begin of user settings
+    if [[ $# -ge 1 ]];
+    then
+        ROOT_PATH="${1}"
+
+        if [[ $# -ge 2 ]];
+        then
+            MAX_DEPTH="${2}"
+        fi
+    fi
+    #end of user settings
+
+    find ${ROOT_PATH} -maxdepth ${MAX_DEPTH} -type d -empty
 }
 
 ####
