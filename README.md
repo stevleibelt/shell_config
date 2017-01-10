@@ -5,6 +5,7 @@ This repostiry devides shell configuration into logical parts to gain overview a
 The code comes with a predefined set of configuration settings.
 
 The logical parts are:
+
 * setting
 * variable
 * source
@@ -39,4 +40,8 @@ You can overwrite or extend a logical part by creating a "local.<logical part fi
             * rewrite the update.sh to fetch all tags and iterate over them
 * create clean
     * removes local.\* files
-* try to implement some kind of statistic usage collection
+* create configuration to enable or disable things like zfs aliases
+* statistic data
+    * enable/disable (disable is default)
+    * analyze statistic data
+    * delete statistic data

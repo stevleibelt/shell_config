@@ -45,7 +45,7 @@ alias createPathOrReturnErrorIfPathExistsAlready=net_bazzline_create_path_or_ret
 alias decompress=net_bazzline_decompress
 if [[ -f /usr/bin/zpool ]]; then
     alias deleteZfsSnapshot=net_bazzline_delete_zfs_snapshot
-    alias deleteZfsSnapshots=net_bazzline_delete_zfs_snapshots
+    alias deleteListOfDatedZfsSnapshots=net_bazzline_delete_list_of_dated_zfs_snapshots
 fi
 alias deleteEmptyDirectories=net_bazzline_delete_empty_directories
 alias diffDirectories=net_bazzline_diff_directory
