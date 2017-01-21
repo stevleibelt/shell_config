@@ -19,7 +19,8 @@ alias burn=net_bazzline_burn
 
 #c
 alias c=clear
-if [[ $NET_BAZZLINE_PACKAGE_MANAGER = 'apt' ]]; then
+if [[ $NET_BAZZLINE_PACKAGE_MANAGER = 'apt' ]];
+then
     alias cal='ncal -w3 -m'
 else
     alias cal='cal -w3 -m'
@@ -36,14 +37,16 @@ alias convertMp3ToWav=net_bazzline_convert_mp3_to_wav
 alias convertMkvToAvi=net_bazzline_convert_mkv_to_avi
 alias convertVideoToScreenSize=net_bazzline_convert_video_to_screen_size
 alias convertWavToMp3=net_bazzline_convert_wav_to_mp3
-if [[ -f /usr/bin/zpool ]]; then
+if [[ -f /usr/bin/zpool ]];
+then
     alias createZfsSnapshot=net_bazzline_create_zfs_snapshot
 fi
 alias createPathOrReturnErrorIfPathExistsAlready=net_bazzline_create_path_or_return_error_if_path_exists_already
 
 #d
 alias decompress=net_bazzline_decompress
-if [[ -f /usr/bin/zpool ]]; then
+if [[ -f /usr/bin/zpool ]];
+then
     alias deleteZfsSnapshot=net_bazzline_delete_zfs_snapshot
     alias deleteListOfDatedZfsSnapshots=net_bazzline_delete_list_of_dated_zfs_snapshots
 fi
@@ -79,9 +82,11 @@ alias lh='ls -hAlt | head'
 alias listEmptyDirectories=net_bazzline_list_empty_directories
 alias listGroups=net_bazzline_list_groups
 alias listInterfaces=net_bazzline_list_interfaces
+alias listProcessEnvironment=net_bazzline_list_process_environment
 alias listSymbolicLinks=net_bazzline_list_symbolic_links
 alias listUsers=net_bazzline_list_users
-if [[ -f /usr/bin/zpool ]]; then
+if [[ -f /usr/bin/zpool ]];
+then
     alias listZfsSnapshots=net_bazzline_list_zfs_snapshots
 fi
 alias loadVirtualBoxModules='sudo modprobe -a vboxdrv vboxnetadp vboxnetflt vboxpci'
@@ -118,17 +123,20 @@ alias runJar='java -jar '
 #s
 alias searchInComposerFiles=net_bazzline_search_in_composer_files
 alias setOpticalDriveSpeed=net_bazzline_set_optical_drive_speed
-if [ -f $HOME'/code/sh/local/displayBatteryStatus.sh' ]; then
+if [ -f $HOME'/code/sh/local/displayBatteryStatus.sh' ];
+then
   alias statusBattery='sh '$HOME'/code/sh/local/displayBatteryStatus.sh'
 fi
-if [ -f $HOME'/code/sh/local/sensorsRefresh.sh' ]; then
+if [ -f $HOME'/code/sh/local/sensorsRefresh.sh' ];
+then
   alias statusSensor='sh '$HOME'/code/sh/local/sensorsRefresh.sh'
 fi
 alias showBatteryStatus='clear & acpi -i'
 alias silentGrep=net_bazzline_silent_grep
 alias skype='xhost +local: && sudo -u skype /usr/bin/skype'
 #@todo: validate against https://wiki.archlinux.org/index.php/Pacman/Rosetta
-if [[ $NET_BAZZLINE_PACKAGE_MANAGER = 'pacaur' ]]; then
+if [[ $NET_BAZZLINE_PACKAGE_MANAGER = 'pacaur' ]];
+then
     alias software-check-unneeded-dependencies='pacaur -Qqdt'
     alias software-clean-cache='pacaur -Scc && echo "" && echo "removing ~/.cache/pacaur" && sudo rm -fr ~/.cache/pacaur'
     alias software-fetch='pacaur -G'
@@ -145,7 +153,8 @@ if [[ $NET_BAZZLINE_PACKAGE_MANAGER = 'pacaur' ]]; then
     #alias software-update='pacaur -Sy'
     alias software-upgrade='pacaur -Syu'
     alias software-repository-info='pacaur -Si'
-elif [[ $NET_BAZZLINE_PACKAGE_MANAGER = 'yaourt' ]]; then
+elif [[ $NET_BAZZLINE_PACKAGE_MANAGER = 'yaourt' ]];
+then
     alias software-check-unneeded-dependencies='yaourt -Qqdt'
     alias software-clean-cache='yaourt -Scc'
     alias software-fetch='yaourt -G'
@@ -162,7 +171,8 @@ elif [[ $NET_BAZZLINE_PACKAGE_MANAGER = 'yaourt' ]]; then
     #alias software-update='yaourt -Sy'
     alias software-upgrade='yaourt -Syua'
     alias software-repository-info='yaourt -Si'
-elif [[ $NET_BAZZLINE_PACKAGE_MANAGER = 'pacman' ]]; then
+elif [[ $NET_BAZZLINE_PACKAGE_MANAGER = 'pacman' ]];
+then
     alias software-check-unneeded-dependencies='sudo pacman -Qqdt'
     alias software-clean-cache='sudo pacman -Scc'
     alias software-fetch='sudo pacman -G'
@@ -179,7 +189,8 @@ elif [[ $NET_BAZZLINE_PACKAGE_MANAGER = 'pacman' ]]; then
     #alias software-update='sudo pacman -Sy'
     alias software-upgrade='sudo pacman -Syu'
     alias software-repository-info='sudo pacman -Si'
-elif [[ $NET_BAZZLINE_PACKAGE_MANAGER = 'apt' ]]; then
+elif [[ $NET_BAZZLINE_PACKAGE_MANAGER = 'apt' ]];
+then
     #alias software-check-unneeded-dependencies='echo "todo"'
     alias software-clean-cache='sudo apt-get autoclean && sudo apt-get autoremove'
     alias software-dist-upgrade='sudo apt-get dist-upgrade'
@@ -204,7 +215,8 @@ alias startSshAgent='eval $(ssh-agent)'
 alias startXorg='startx; exit'
 alias sshKeygen='ssh-keygen -b 4096 -t rsa'
 alias startPhpWebserver=net_bazzline_php_start_internal_webserver
-if [[ -x '/usr/bin/svn' ]]; then
+if [[ -x '/usr/bin/svn' ]];
+then
     alias svnDiff=net_bazzline_svn_diff
     alias svnRepositoryDiff=net_bazzline_svn_repository_diff
     alias svnLogGrep=net_bazzline_svn_log_grep
@@ -235,7 +247,8 @@ alias v=vim
 
 #w
 alias watchForSystemTemperatur="watch -n10 'sensors'"
-if [[ -f /usr/bin/zpool ]]; then
+if [[ -f /usr/bin/zpool ]];
+then
     alias watchForZpoolStatus="net_bazzline_execute_as_super_user_when_not_beeing_root watch -n 60 'zpool status -v'"
 fi
 alias wgetWholeWebPage='wget -np -r -k'

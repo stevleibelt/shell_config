@@ -708,7 +708,8 @@ function net_bazzline_find_directory ()
     elif [[ $# -eq 2 ]]; then
         find "$2" -iname "$1" -type d 2>/dev/null
     else
-        echo 'No valid argument supplied.'
+        net_bazzline_handle_invalid_number_of_arguments_supplied "${FUNCNAME[0]} <search pattern> [<path>"
+
         return 1
     fi
 }
@@ -736,7 +737,8 @@ function net_bazzline_find_file ()
     elif [[ $# -eq 3 ]]; then
         find "$2" -iname "$1" -type f 2>/dev/null
     else
-        echo 'No valid argument supplied.'
+        net_bazzline_handle_invalid_number_of_arguments_supplied "${FUNCNAME[0]} <search pattern> [<path> [<do not ignore dot files>]]"
+
         return 1
     fi
 }
@@ -991,6 +993,38 @@ function net_bazzline_list_interfaces ()
     # also possible
     # ls /sys/class/net
     ip a | grep ':\ '
+}
+
+####
+# list process environment
+#
+# @see https://ma.ttias.be/show-the-environment-variables-of-a-running-process-in-linux/
+# @author stev leibelt <artodeto@bazzline.net>
+# @since 2017-01-11
+####
+function net_bazzline_list_process_environment ()
+{
+    net_bazzline_record_function_usage ${FUNCNAME[0]}
+
+    if [[ $# -lt 1 ]];
+    then
+        net_bazzline_handle_invalid_number_of_arguments_supplied "${FUNCNAME[0]} <process id>"
+
+        return 1
+    fi
+
+    local PROCESS_ID="${1}"
+
+    local ENVIRONMENT_FILE_PATH="/proc/${PROCESS_ID}/environ"
+
+    if [[ -f "${ENVIRONMENT_FILE_PATH}" ]];
+    then
+        cat "${ENVIRONMENT_FILE_PATH}" | tr '\0' '\n'
+    else
+        echo "${ENVIRONMENT_FILE_PATH} not found."
+
+        return 2
+    fi
 }
 
 ####
@@ -1484,8 +1518,12 @@ function net_bazzline_psgrep ()
 {
     net_bazzline_record_function_usage ${FUNCNAME[0]}
 
-    if [[ $# -eq 1 ]]; then
-        ps aux | grep -i "$1" | grep -v "grep -i $1"
+    if [[ $# -eq 1 ]];
+    then
+        ps aux | \grep -i "${1}" | \grep -v "grep -i ${1}"
+        #ps aux | \grep -i "${1}" | \grep -v "grep"
+    else
+        net_bazzline_handle_invalid_number_of_arguments_supplied "${FUNCNAME[0]} <search term>"
     fi
 }
 
