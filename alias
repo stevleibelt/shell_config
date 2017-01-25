@@ -147,10 +147,10 @@ then
     alias software-list-foreign='pacaur -Qmq'
     alias software-list-installed='pacaur -Qen' #use pacman -Qqen to create a list you can use to install like "pacman -Qqen > installed && pacman -S < installed
     alias software-list-unofficial-installed='pacaur -Qem'
+    alias software-prepare-for-upgrade='pacaur -Swyu'
     alias software-remove="sudo pacman -Rsu"
     alias software-search='pacaur -Ss'
     alias software-search-installed='pacaur -Qs'
-    #alias software-update='pacaur -Sy'
     alias software-upgrade='pacaur -Syu'
     alias software-repository-info='pacaur -Si'
 elif [[ $NET_BAZZLINE_PACKAGE_MANAGER = 'yaourt' ]];
@@ -165,10 +165,10 @@ then
     alias software-list-foreign='yaourt -Qmq'
     alias software-list-installed='yaourt -Qen'
     alias software-list-unofficial-installed='yaourt -Qemq'
+    alias software-prepare-for-upgrade='yaourt -Swyua'
     alias software-remove='yaourt -Rsu'
     alias software-search='yaourt -Ss'
     alias software-search-installed='yaourt -Qs'
-    #alias software-update='yaourt -Sy'
     alias software-upgrade='yaourt -Syua'
     alias software-repository-info='yaourt -Si'
 elif [[ $NET_BAZZLINE_PACKAGE_MANAGER = 'pacman' ]];
@@ -183,6 +183,7 @@ then
     alias software-list-foreign='sudo pacman -Qmq'
     alias software-list-installed='sudo pacman -Qen'
     alias software-list-unofficial-installed='sudo pacman -Qemq'
+    alias software-prepare-for-upgrade='sudo pacman -Swyu'
     alias software-remove='sudo pacman -Rsu'
     alias software-search='sudo pacman -Ss'
     alias software-search-installed='sudo pacman -Qs'
