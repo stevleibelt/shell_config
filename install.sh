@@ -16,6 +16,7 @@ if [[ ! -f "${PATH_TO_THE_BASH_RC}" ]];
 then
     echo "No .bashrc file found."
     echo "Bash is currently the only supported shell"
+
     exit 1
 fi
 
