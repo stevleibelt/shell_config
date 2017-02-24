@@ -1199,17 +1199,17 @@ function net_bazzline_mount_crypto_zfs_pool ()
 
         if [[ ! -d ${MOUNT_POINT} ]]; 
         then
-            mkdir -p ${MOUNT_POINT}
+            net_bazzline_execute_as_super_user_when_not_beeing_root mkdir -p ${MOUNT_POINT}
 
             for CURRENT_ARGUMENT_NUMBER in $(seq ${#});
             do
                 UUID=${1}
                 echo ":: disk ${CURRENT_ARGUMENT_NUMBER}"
-                cryptsetup luksOpen /dev/disk/by-uuid/${UUID} crypt-${ZFS_POOL_NAME}-${CURRENT_ARGUMENT_NUMBER}
+                net_bazzline_execute_as_super_user_when_not_beeing_root cryptsetup luksOpen /dev/disk/by-uuid/${UUID} crypt-${ZFS_POOL_NAME}-${CURRENT_ARGUMENT_NUMBER}
                 shift
             done
 
-            zpool import ${ZFS_POOL_NAME}
+            net_bazzline_execute_as_super_user_when_not_beeing_root zpool import ${ZFS_POOL_NAME}
         else
             echo ":: mount point ${MOUNT_POINT} exists."
 
