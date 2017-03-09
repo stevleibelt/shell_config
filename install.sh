@@ -60,7 +60,7 @@ for FILE_TO_CREATE in ${FILES_TO_CREATE[@]}; do
 done;
 ##end of creating local user files
 
-##begin of adating xínitrc
+##begin of adapting xínitrc
 echo ""
 echo "Creating .xinitrc.temporary"
 
@@ -97,9 +97,9 @@ echo "Replacing .xinitrc with .xinitrc.temporary"
 
 mv "${PATH_TO_THE_TEMPORARY_XINIT}" "${PATH_TO_THE_XINIT}"
 rm "${PATH_TO_THE_TEMPORARY_XINIT}"
-##begin of adating xínitrc
+##end of adapting xínitrc
 
 ##begin of finish
 echo ""
 echo "Finished"
-##begin of finish
+##end of finish
