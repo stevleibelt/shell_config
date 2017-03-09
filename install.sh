@@ -44,7 +44,7 @@ for FILE_TO_CREATE in ${FILES_TO_CREATE[@]}; do
     echo "#!/bin/bash" > "${PATH_TO_THE_BASH_RC}"
 done;
 
-PATH_TO_THE_XINIT="${HOME}/.xinitrc.temp"
+PATH_TO_THE_XINIT="${HOME}/.xinitrc"
 PATH_TO_THE_TEMPORARY_XINIT="${PATH_TO_THE_XINIT}.temporary"
 
 echo ""
