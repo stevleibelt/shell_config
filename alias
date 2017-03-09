@@ -78,7 +78,7 @@ alias killSkype='killall -u $USER skype'
 
 #l
 alias l='ls -hAlt'
-alias lh='ls -hAlt | head'
+alias lh=net_bazzline_list_filesystem_items_head
 alias listEmptyDirectories=net_bazzline_list_empty_directories
 alias listGroups=net_bazzline_list_groups
 alias listInterfaces=net_bazzline_list_interfaces
@@ -90,7 +90,7 @@ then
     alias listZfsSnapshots=net_bazzline_list_zfs_snapshots
 fi
 alias loadVirtualBoxModules='sudo modprobe -a vboxdrv vboxnetadp vboxnetflt vboxpci'
-alias lt='ls -hAlt | tail'
+alias lt=net_bazzline_list_filesystem_items_tail
 
 #m
 alias makePictureViaWebcam=net_bazzline_make_picture_via_webcam

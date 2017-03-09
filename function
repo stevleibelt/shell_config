@@ -968,6 +968,42 @@ function net_bazzline_list_empty_directories ()
 }
 
 ####
+# [@param list of filesystem items (directories, files ...)]
+#
+# @author stev leibelt
+# @since 2017-02-05
+####
+function net_bazzline_list_filesystem_items_head ()
+{
+    net_bazzline_record_function_usage ${FUNCNAME[0]}
+
+    if [[ $# -eq 0 ]];
+    then
+        ls -hAlt | head
+    else
+        ls -hAlt $@ | head
+    fi
+}
+
+####
+# [@param list of filesystem items (directories, files ...)]
+#
+# @author stev leibelt
+# @since 2017-02-05
+####
+function net_bazzline_list_filesystem_items_tail ()
+{
+    net_bazzline_record_function_usage ${FUNCNAME[0]}
+
+    if [[ $# -eq 0 ]];
+    then
+        ls -hAlt | tail
+    else
+        ls -hAlt $@ | tail
+    fi
+}
+
+####
 # list groups
 # 
 # @author stev leibelt <artodeto@bazzline.net>
