@@ -60,13 +60,13 @@ for FILE_TO_CREATE in ${FILES_TO_CREATE[@]}; do
 done;
 ##end of creating local user files
 
-##begin of adapting xínitrc
+##begin of adapting xinitrc
 echo ""
 echo "Creating .xinitrc.temporary"
 
 touch "${PATH_TO_THE_TEMPORARY_XINIT}"
 
-echo "Adding content to "basename(${PATH_TO_THE_TEMPORARY_XINIT})
+echo "Adding content to ${PATH_TO_THE_TEMPORARY_XINIT}"
 
 cat >> "${PATH_TO_THE_TEMPORARY_XINIT}" <<DELIM
 #begin of net_bazzline_config_shell"
@@ -88,16 +88,15 @@ fi
 DELIM
 
 echo ""
-echo "Copying content of .xinitrc to .xinitrc.temporary"
+echo "Copy content of ${PATH_TO_THE_XINIT} into ${PATH_TO_THE_TEMPORARY_XINIT}"
 
 cat "${PATH_TO_THE_XINIT}" >> "${PATH_TO_THE_TEMPORARY_XINIT}"
 
 echo ""
-echo "Replacing .xinitrc with .xinitrc.temporary"
+echo "Replacing ${PATH_TO_THE_XINIT} with ${PATH_TO_THE_TEMPORARY_XINIT}"
 
 mv "${PATH_TO_THE_TEMPORARY_XINIT}" "${PATH_TO_THE_XINIT}"
-rm "${PATH_TO_THE_TEMPORARY_XINIT}"
-##end of adapting xínitrc
+##end of adapting xinitrc
 
 ##begin of finish
 echo ""
