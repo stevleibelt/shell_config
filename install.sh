@@ -74,13 +74,13 @@ cat >> "${PATH_TO_THE_TEMPORARY_XINIT}" <<DELIM
 
 PATH_SHELL_CONFIG="\${PATH_TO_THIS_SCRIPT}"
 
-if [[ -f "${PATH_SHELL_CONFIG}/color" ]];
+if [[ -f "\${PATH_SHELL_CONFIG}/color" ]];
 then
-  xrdb -merge "${PATH_SHELL_CONFIG}/color"
+  xrdb -merge "\${PATH_SHELL_CONFIG}/color"
 fi
-if [[ -f "${PATH_SHELL_CONFIG}/color.local" ]];
+if [[ -f "\${PATH_SHELL_CONFIG}/color.local" ]];
 then
-  xrdb -merge "${PATH_SHELL_CONFIG}/color.local"
+  xrdb -merge "\${PATH_SHELL_CONFIG}/color.local"
 fi
 
 #end of net_bazzline_config_shell"
