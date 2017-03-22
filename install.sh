@@ -72,7 +72,7 @@ cat >> "${PATH_TO_THE_TEMPORARY_XINIT}" <<DELIM
 #begin of net_bazzline_config_shell"
 #date: "${DATETIME}
 
-PATH_SHELL_CONFIG="\${PATH_TO_THIS_SCRIPT}"
+PATH_SHELL_CONFIG="${PATH_TO_THIS_SCRIPT}"
 
 if [[ -f "\${PATH_SHELL_CONFIG}/color" ]];
 then
