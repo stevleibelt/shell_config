@@ -138,7 +138,7 @@ alias skype='xhost +local: && sudo -u skype /usr/bin/skype'
 if [[ $NET_BAZZLINE_PACKAGE_MANAGER = 'pacaur' ]];
 then
     alias software-check-unneeded-dependencies='pacaur -Qqdt'
-    alias software-clean-cache='pacaur -Scc && echo "" && echo "removing ~/.cache/pacaur" && sudo rm -fr ~/.cache/pacaur'
+    alias software-clean-cache='pacaur -Scc --noconfirm && echo "" && echo "removing ~/.cache/pacaur" && sudo rm -fr ~/.cache/pacaur'
     alias software-fetch='pacaur -G'
     alias software-info='pacaur -Qi'
     alias software-install='pacaur -S'
@@ -156,7 +156,7 @@ then
 elif [[ $NET_BAZZLINE_PACKAGE_MANAGER = 'yaourt' ]];
 then
     alias software-check-unneeded-dependencies='yaourt -Qqdt'
-    alias software-clean-cache='yaourt -Scc'
+    alias software-clean-cache='yaourt -Scc --noconfirm'
     alias software-fetch='yaourt -G'
     alias software-info='yaourt -Qi'
     alias software-install='yaourt -S'
@@ -174,7 +174,7 @@ then
 elif [[ $NET_BAZZLINE_PACKAGE_MANAGER = 'pacman' ]];
 then
     alias software-check-unneeded-dependencies='sudo pacman -Qqdt'
-    alias software-clean-cache='sudo pacman -Scc'
+    alias software-clean-cache='sudo pacman -Scc --noconfirm'
     alias software-fetch='sudo pacman -G'
     alias software-info='sudo pacman -Qi'
     alias software-install='sudo pacman -S'
