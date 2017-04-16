@@ -1855,6 +1855,23 @@ function net_bazzline_search_in_journalctl_since_boot ()
 }
 
 ####
+# @param string: <ip address/range>
+####
+function net_bazzline_scan_network ()
+{
+    net_bazzline_record_function_usage ${FUNCNAME[0]}
+
+    if [[ $# -lt 1 ]];
+    then
+        net_bazzline_handle_invalid_number_of_arguments_supplied "${FUNCNAME[0]} <ip address/range - 192.168.0.0/24>"
+
+        return 1
+    fi
+
+    nmap -v -sT ${1} | grep -v "host down"
+}
+
+####
 # @param string $PATH_TO_SSH_KEY
 # @param string $SOURCE_HOST
 # @param string $SOURCE_PATH
