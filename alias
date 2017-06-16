@@ -19,7 +19,7 @@ alias burn=net_bazzline_burn
 
 #c
 alias c=clear
-if [[ $NET_BAZZLINE_PACKAGE_MANAGER = 'apt' ]];
+if [[ ${NET_BAZZLINE_PACKAGE_MANAGER} = 'apt' ]];
 then
     alias cal='ncal -w3 -m'
 else
@@ -123,19 +123,19 @@ alias runJar='java -jar '
 #s
 alias searchInComposerFiles=net_bazzline_search_in_composer_files
 alias setOpticalDriveSpeed=net_bazzline_set_optical_drive_speed
-if [ -f $HOME'/code/sh/local/displayBatteryStatus.sh' ];
+if [ -f ${HOME}'/code/sh/local/displayBatteryStatus.sh' ];
 then
-  alias statusBattery='sh '$HOME'/code/sh/local/displayBatteryStatus.sh'
+  alias statusBattery='sh '${HOME}'/code/sh/local/displayBatteryStatus.sh'
 fi
-if [ -f $HOME'/code/sh/local/sensorsRefresh.sh' ];
+if [ -f ${HOME}'/code/sh/local/sensorsRefresh.sh' ];
 then
-  alias statusSensor='sh '$HOME'/code/sh/local/sensorsRefresh.sh'
+  alias statusSensor='sh '${HOME}'/code/sh/local/sensorsRefresh.sh'
 fi
 alias showBatteryStatus='clear & acpi -i'
 alias silentGrep=net_bazzline_silent_grep
 alias skype='xhost +local: && sudo -u skype /usr/bin/skype'
 #@todo: validate against https://wiki.archlinux.org/index.php/Pacman/Rosetta
-if [[ $NET_BAZZLINE_PACKAGE_MANAGER = 'pacaur' ]];
+if [[ ${NET_BAZZLINE_PACKAGE_MANAGER} = 'pacaur' ]];
 then
     alias software-check-unneeded-dependencies='pacaur -Qqdt'
     alias software-clean-cache='pacaur -Scc && echo "" && echo "removing ~/.cache/pacaur" && sudo rm -fr ~/.cache/pacaur'
@@ -151,27 +151,9 @@ then
     alias software-remove="sudo pacman -Rsu"
     alias software-search='pacaur -Ss'
     alias software-search-installed='pacaur -Qs'
-    alias software-upgrade='pacaur -Syu'
+    alias software-upgrade='pacaur -Syyu'
     alias software-repository-info='pacaur -Si'
-elif [[ $NET_BAZZLINE_PACKAGE_MANAGER = 'yaourt' ]];
-then
-    alias software-check-unneeded-dependencies='yaourt -Qqdt'
-    alias software-clean-cache='yaourt -Scc'
-    alias software-fetch='yaourt -G'
-    alias software-info='yaourt -Qi'
-    alias software-install='yaourt -S'
-    alias software-install-local='pacman -U'
-    alias software-list='yaourt -Qlm'
-    alias software-list-foreign='yaourt -Qmq'
-    alias software-list-installed='yaourt -Qen'
-    alias software-list-unofficial-installed='yaourt -Qemq'
-    alias software-prepare-for-upgrade='yaourt -Swyua'
-    alias software-remove='yaourt -Rsu'
-    alias software-search='yaourt -Ss'
-    alias software-search-installed='yaourt -Qs'
-    alias software-upgrade='yaourt -Syua'
-    alias software-repository-info='yaourt -Si'
-elif [[ $NET_BAZZLINE_PACKAGE_MANAGER = 'pacman' ]];
+elif [[ ${NET_BAZZLINE_PACKAGE_MANAGER} = 'pacman' ]];
 then
     alias software-check-unneeded-dependencies='sudo pacman -Qqdt'
     alias software-clean-cache='sudo pacman -Scc'
@@ -190,7 +172,7 @@ then
     #alias software-update='sudo pacman -Sy'
     alias software-upgrade='sudo pacman -Syu'
     alias software-repository-info='sudo pacman -Si'
-elif [[ $NET_BAZZLINE_PACKAGE_MANAGER = 'apt' ]];
+elif [[ ${NET_BAZZLINE_PACKAGE_MANAGER} = 'apt' ]];
 then
     #alias software-check-unneeded-dependencies='echo "todo"'
     alias software-clean-cache='sudo apt-get autoclean && sudo apt-get autoremove'
