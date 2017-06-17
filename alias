@@ -151,7 +151,8 @@ then
     alias software-remove="sudo pacman -Rsu"
     alias software-search='pacaur -Ss'
     alias software-search-installed='pacaur -Qs'
-    alias software-upgrade='pacaur -Syyu'
+    alias software-upgrade='pacaur -Syuu'
+    alias software-upgrade-without-lts-kernel='pacaur -Syuu --ignore=linux-lts,linux-lts-headers'
     alias software-repository-info='pacaur -Si'
 elif [[ ${NET_BAZZLINE_PACKAGE_MANAGER} = 'pacman' ]];
 then
