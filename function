@@ -52,6 +52,26 @@ function net_bazzline_bash_grep ()
     grep -rI –-color=auto –-exclude-dir=\.bzr –-exclude-dir=\.git –-exclude-dir=\.hg –-exclude-dir=\.svn –-exclude-dir=build –-exclude-dir=dist –-exclude=tags $*
 }
 
+#c
+
+####
+# creates a mp3 file for each mpc file in the current working directory
+####
+function net_bazzline_create_a_mp3_file_for_each_mpc_file_in_the_current_directory()
+{
+    if [[ -f /usr/bin/mpcdec ]];
+    then
+        #@link https://odoepner.wordpress.com/2017/01/01/convert-mpc-to-mp3-on-linux/
+        for x in *.mpc; do mpcdec "${x}" - | lame -r - "${x%.mpc}.mp3"; done
+    else
+        echo ":: Caution"
+        echo "   Nothing has been done, mpcdec is missing."
+        echo "   Please install the musepack-tools."
+    fi
+}
+
+#i
+
 ####
 # Converts images in directory with given size
 #
