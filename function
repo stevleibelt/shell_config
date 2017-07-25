@@ -417,6 +417,43 @@ function net_bazzline_convert_video_to_screen_size ()
 }
 
 ####
+# @param string $1 - source file path
+# @param string $2 - destination file path
+####
+function net_bazzline_convert_video_to_libx264 ()
+{
+    net_bazzline_record_function_usage ${FUNCNAME[0]}
+
+    if [[ $# -lt 2]];
+    then
+        net_bazzline_handle_invalid_number_of_arguments_supplied "${FUNCNAME[0]} <source> <destination>"
+
+        return 1
+    fi
+
+    ffmpeg -i "${1}" -acodec copy -scodec copy -vcodec libx264 -pass 1 "${2}"
+}
+
+####
+# @param string $1 - source file path
+# @param string $2 - destination file path
+####
+function net_bazzline_convert_video_to_libx265 ()
+{
+    net_bazzline_record_function_usage ${FUNCNAME[0]}
+
+    if [[ $# -lt 2]];
+    then
+        net_bazzline_handle_invalid_number_of_arguments_supplied "${FUNCNAME[0]} <source> <destination>"
+
+        return 1
+    fi
+
+    ffmpeg -i "${1}" -acodec copy -scodec copy -vcodec libx265 -pass 1 "${2}"
+}
+
+
+####
 # Converts all wavs to mp3s in current directory
 # taken from: https://www.linuxquestions.org/questions/linux-general-1/converting-m4a-to-mp3-170553/
 #
