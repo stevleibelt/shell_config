@@ -424,7 +424,7 @@ function net_bazzline_convert_video_to_libx264 ()
 {
     net_bazzline_record_function_usage ${FUNCNAME[0]}
 
-    if [[ $# -lt 2]];
+    if [[ $# -lt 2 ]];
     then
         net_bazzline_handle_invalid_number_of_arguments_supplied "${FUNCNAME[0]} <source> <destination>"
 
@@ -442,7 +442,7 @@ function net_bazzline_convert_video_to_libx265 ()
 {
     net_bazzline_record_function_usage ${FUNCNAME[0]}
 
-    if [[ $# -lt 2]];
+    if [[ $# -lt 2 ]];
     then
         net_bazzline_handle_invalid_number_of_arguments_supplied "${FUNCNAME[0]} <source> <destination>"
 
