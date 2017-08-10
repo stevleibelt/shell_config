@@ -155,7 +155,7 @@ then
     alias software-search='pacaur -Ss'
     alias software-search-installed='pacaur -Qs'
     alias software-upgrade='pacaur -Syuu'
-    alias software-upgrade-without-lts-kernel='pacaur -Syuu --ignore=linux-lts,linux-lts-headers'
+    alias software-upgrade-without-lts-kernel='pacaur -Syuu --ignore=linux-lts,linux-lts-headers,zfs-linux-lts,zfs-utils-common,spl-linux-lts,spl-utils-common'
     alias software-repository-info='pacaur -Si'
 elif [[ ${NET_BAZZLINE_PACKAGE_MANAGER} = 'pacman' ]];
 then
