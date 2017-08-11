@@ -187,7 +187,7 @@ then
     alias software-dist-upgrade='sudo apt-get dist-upgrade'
     #alias software-fetch='echo "todo"'
     alias software-info='sudo apt-cache show'
-    alias software-install='sudo apt-get install"'
+    alias software-install='sudo apt-get install'
     alias software-install-local='sudo dpkg -i'
     alias software-list='sudo dpkg -l'
     alias software-remove='sudo apt-get remove'
