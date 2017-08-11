@@ -154,7 +154,9 @@ then
     alias software-remove="sudo pacman -Rsu"
     alias software-search='pacaur -Ss'
     alias software-search-installed='pacaur -Qs'
+    alias software-update='pacaur -Sy'
     alias software-upgrade='pacaur -Syuu'
+    alias software-upgrade-from-cache='pacaur -uu'
     alias software-upgrade-without-lts-kernel='pacaur -Syuu --ignore=linux-lts,linux-lts-headers,zfs-linux-lts,zfs-utils-common,spl-linux-lts,spl-utils-common'
     alias software-repository-info='pacaur -Si'
 elif [[ ${NET_BAZZLINE_PACKAGE_MANAGER} = 'pacman' ]];
@@ -173,8 +175,10 @@ then
     alias software-remove='sudo pacman -Rsu'
     alias software-search='sudo pacman -Ss'
     alias software-search-installed='sudo pacman -Qs'
-    #alias software-update='sudo pacman -Sy'
+    alias software-update='sudo pacman -Sy'
     alias software-upgrade='sudo pacman -Syu'
+    alias software-upgrade-from-cache='sudo pacman -u'
+    alias software-upgrade-without-lts-kernel='pacman -Syuu --ignore=linux-lts,linux-lts-headers,zfs-linux-lts,zfs-utils-common,spl-linux-lts,spl-utils-common'
     alias software-repository-info='sudo pacman -Si'
 elif [[ ${NET_BAZZLINE_PACKAGE_MANAGER} = 'apt' ]];
 then
