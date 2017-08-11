@@ -1301,7 +1301,7 @@ function net_bazzline_monitor_process ()
         REFRESH_INTERVALL_IN_SECONDS=0.5
     fi
 
-    watch -n ${REFRESH_INTERVALL_IN_SECONDS} "pidstat -rl -C ${PROCESS_NAME}"
+    watch -n ${REFRESH_INTERVALL_IN_SECONDS} "pidstat -rl -C ${PROCESS_NAME} | grep -v 'pidstat'"
 }
 
 ####
