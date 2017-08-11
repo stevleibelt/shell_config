@@ -1275,6 +1275,36 @@ function net_bazzline_mkdir_prefix_with_current_date ()
 }
 
 ####
+# @param string <process name>
+# [@param float <refresh intervall in seconds>
+#
+# @author stev leibelt - inspired by luke adamczwski
+# @since 2013-03-08
+####
+function net_bazzline_monitor_process ()
+{
+    net_bazzline_record_function_usage ${FUNCNAME[0]}
+
+    if [[ $# -lt 1 ]];
+    then
+        net_bazzline_handle_invalid_number_of_arguments_supplied "${FUNCNAME[0]} <source one> [<source ...>] <target>"
+
+        return 1
+    fi
+
+    PROCESS_NAME="${1}"
+
+    if [[ $# -gt 1 ]];
+    then
+        REFRESH_INTERVALL_IN_SECONDS="${2}"
+    else
+        REFRESH_INTERVALL_IN_SECONDS=0.5
+    fi
+
+    watch -n ${REFRESH_INTERVALL_IN_SECONDS} "pidstat -rl -C ${PROCESS_NAME}"
+}
+
+####
 # @param string <mount point>
 # @param string <zfs pool name>
 # @param string <uuid of device>
