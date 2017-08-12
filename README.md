@@ -38,7 +38,10 @@ You can overwrite or extend a logical part by creating a "local.<logical part fi
             * move migration code from update.sh to migrate.sh
             * write the current tag into the .current_installed_version
             * rewrite the update.sh to fetch all tags and iterate over them
-* create script to manage local settings
+* create script to manage local settings (configure.sh)
+    * check system status (is sysstat, zfs, pacman, pacaur, etc.) installed
+    * creates a system dependend alias file from (alias.source, alias/zfs.source, alias/software-pacaur.source, alias/software-pacman.source etc.)
+    * creates a system dependend function file from (function.source, function/zfs.source, function/software-pacaur.source, function/software-pacman.source etc.)
 * create clean
     * removes local.\* files
 * create configuration to enable or disable things like zfs aliases
