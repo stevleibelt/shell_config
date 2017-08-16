@@ -144,6 +144,7 @@ then
     alias software-check-unneeded-dependencies='pacaur -Qqdt'
     alias software-clean-cache='pacaur -Scc && echo "" && echo "removing ~/.cache/pacaur" && sudo rm -fr ~/.cache/pacaur'
     alias software-fetch='pacaur -G'
+    alias software-fill-the-cache='pacaur -Sy'
     alias software-info='pacaur -Qi'
     alias software-install='pacaur -S'
     alias software-install-local='sudo pacman -U'
@@ -155,7 +156,6 @@ then
     alias software-remove="sudo pacman -Rsu"
     alias software-search='pacaur -Ss'
     alias software-search-installed='pacaur -Qs'
-    alias software-update='pacaur -Sy'
     alias software-upgrade='pacaur -Syuu'
     alias software-upgrade-from-cache='pacaur -uu'
     alias software-upgrade-without-lts-kernel='pacaur -Syuu --ignore=linux-lts,linux-lts-headers,zfs-linux-lts,zfs-utils-common,spl-linux-lts,spl-utils-common'
