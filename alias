@@ -181,6 +181,27 @@ then
     alias software-upgrade-from-cache='sudo pacman -u'
     alias software-upgrade-without-lts-kernel='pacman -Syuu --ignore=linux-lts,linux-lts-headers,zfs-linux-lts,zfs-utils-common,spl-linux-lts,spl-utils-common'
     alias software-repository-info='sudo pacman -Si'
+elif [[ ${NET_BAZZLINE_PACKAGE_MANAGER} = 'apk' ]];
+then
+    #alias software-check-unneeded-dependencies='pacaur -Qqdt'
+    alias software-clean-cache='apk cache -v sync'
+    #alias software-fetch='pacaur -G'
+    #alias software-fill-the-cache='pacaur -Sy'
+    #alias software-info='pacaur -Qi'
+    alias software-install='apk add '
+    #alias software-install-local='sudo pacman -U'
+    #alias software-list='pacaur -Qlm'
+    #alias software-list-foreign='pacaur -Qmq'
+    #alias software-list-installed='pacaur -Qen' #use pacman -Qqen to create a list you can use to install like "pacman -Qqen > installed && pacman -S < installed
+    #alias software-list-unofficial-installed='pacaur -Qem'
+    #alias software-prepare-for-upgrade='pacaur -Swyu'
+    alias software-remove="apk del "
+    alias software-search='apk search -v '
+    #alias software-search-installed='pacaur -Qs'
+    alias software-upgrade='apk update && apk upgrade -U -a'
+    #alias software-upgrade-from-cache='pacaur -uu'
+    #alias software-upgrade-without-lts-kernel='pacaur -Syuu --ignore=linux-lts,linux-lts-headers,zfs-linux-lts,zfs-utils-common,spl-linux-lts,spl-utils-common'
+    #alias software-repository-info='pacaur -Si'
 elif [[ ${NET_BAZZLINE_PACKAGE_MANAGER} = 'apt' ]];
 then
     #alias software-check-unneeded-dependencies='echo "todo"'
