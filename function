@@ -994,6 +994,51 @@ function net_bazzline_is_directory_empty ()
 #l
 
 ####
+# @param string $URL
+#
+####
+# Collection of calls to display information about a given domain
+#
+# @author stev leibelt
+# @since 2017-08-22
+####
+function net_bazzline_list_domain_information ()
+{
+    net_bazzline_record_function_usage ${FUNCNAME[0]}
+
+    if [[ $# -ne 1 ]];
+    then
+        net_bazzline_handle_invalid_number_of_arguments_supplied "${FUNCNAME[0]} <url>"
+
+        return 1
+    fi
+
+    #@todo
+    #check if the url is prefixed with https or http
+    local URL="${1}"
+
+    #just show verbose curl output
+    #@link https://serverfault.com/questions/129503/save-remote-ssl-certificate-via-linux-command-line#129505
+    curl -vvI ${URL}
+
+    #show whole ssl information
+    #@link https://serverfault.com/questions/661978/displaying-a-remote-ssl-certificate-details-using-cli-tools
+    #@todo only do this if https is provided
+    echo ""
+    echo | openssl s_client -showcerts -servername ${URL} -connect ${URL}:443 2>/dev/null | openssl x509 -inform pem -noout -text
+
+    REMHOST="${URL}"
+    REMPORT=${2:-443}
+
+    #get certificate
+    #@link https://www.madboa.com/geek/openssl/#cert-retrieve
+    echo ""
+    echo |\
+    openssl s_client -connect ${REMHOST}:${REMPORT} 2>&1 |\
+    sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p'
+}
+
+####
 # [@param string $ROOT_PATH]
 # [@param int $MAX_DEPTH]
 #
