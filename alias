@@ -36,8 +36,8 @@ alias convertM4aToWav=net_bazzline_convert_m4a_to_wav
 alias convertMp3ToWav=net_bazzline_convert_mp3_to_wav
 alias convertMkvToAvi=net_bazzline_convert_mkv_to_avi
 alias convertVideoToScreenSize=net_bazzline_convert_video_to_screen_size
-alias convertVideoToToLibx264=net_bazzline_convert_video_to_libx264
-alias convertVideoToToLibx265=net_bazzline_convert_video_to_libx265
+alias convertVideoToLibx264=net_bazzline_convert_video_to_libx264
+alias convertVideoToLibx265=net_bazzline_convert_video_to_libx265
 alias convertWavToMp3=net_bazzline_convert_wav_to_mp3
 alias createAMp3FileForEachMpcFileInTheCurrentWorkingDirectory=net_bazzline_create_a_mp3_file_for_each_mpc_file_in_the_current_directory
 if [[ -f /usr/bin/zpool ]];
@@ -198,7 +198,7 @@ then
     alias software-remove="apk del "
     alias software-search='apk search -v '
     #alias software-search-installed='pacaur -Qs'
-    alias software-upgrade='apk update && apk upgrade -U -a'
+    alias software-upgrade='apk upgrade --update-cache --available'
     #alias software-upgrade-from-cache='pacaur -uu'
     #alias software-upgrade-without-lts-kernel='pacaur -Syuu --ignore=linux-lts,linux-lts-headers,zfs-linux-lts,zfs-utils-common,spl-linux-lts,spl-utils-common'
     #alias software-repository-info='pacaur -Si'
