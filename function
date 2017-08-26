@@ -1393,6 +1393,37 @@ function net_bazzline_mount_crypto_zfs_pool ()
 }
 
 ####
+# @param string <mount point>
+# @param string <zfs pool name>
+####
+function net_bazzline_mount_zfs_pool ()
+{
+    if [[ $# -eq 2 ]]; 
+    then
+        MOUNT_POINT="${1}"
+        ZFS_POOL_NAME="${2}"
+
+        if [[ ! -d ${MOUNT_POINT} ]]; 
+        then
+            net_bazzline_execute_as_super_user_when_not_beeing_root mkdir -p ${MOUNT_POINT}
+
+            net_bazzline_execute_as_super_user_when_not_beeing_root zpool import ${ZFS_POOL_NAME}
+        else
+            echo ":: mount point ${MOUNT_POINT} exists."
+
+            return 2
+        fi
+    else
+        echo ":: called with invalid number of arguments."
+        echo "Usage:"
+        echo "    ${FUNCNAME[0]} <mount point> <zfs pool name>"
+
+        return 1
+    fi 
+}
+
+
+####
 # @param - source one
 # [@param - source two]
 # @param destination
@@ -2512,6 +2543,54 @@ function net_bazzline_umount_crypto_zfs_pool ()
         echo ":: called with invalid number of arguments."
         echo "Usage:"
         echo "    ${FUNCNAME[0]} <mount point> <zfs pool name> <uuid of device> [<uuid of device> [...]]"
+
+        return 1
+    fi
+}
+
+####
+# @param string <mount point>
+# @param string <zfs pool name>
+####
+function net_bazzline_umount_zfs_pool ()
+{
+    if [[ $# -eq 2 ]]; 
+    then
+        MOUNT_POINT="$1"
+        ZFS_POOL_NAME="$2"
+
+        if [[ -d ${MOUNT_POINT} ]]; 
+        then
+            if [[ "$(ls -A ${MOUNT_POINT})" ]]; 
+            then
+                CURRENT_WORKING_DIRECTORY=$(pwd)
+                SUB_STRING="${CURRENT_WORKING_DIRECTORY:0:${#CURRENT_WORKING_DIRECTORY}}"
+
+                #change to home if user is a sub directory of the mount point
+                if [[ "${SUB_STRING}" == "${MOUNT_POINT}" ]];
+                then
+                    cd ${HOME}
+                fi
+
+                zpool export ${ZFS_POOL_NAME}
+
+                if [[ ! "$(ls -A ${MOUNT_POINT})" ]]; 
+                then
+                    rmdir ${MOUNT_POINT}
+                else
+                    echo ":: can not remove mount point, there is still content inside."
+                    ls -A ${MOUNT_POINT}
+                fi
+            else
+                echo ":: mountpoint ${MOUNT_POINT} exists but is empty"
+            fi
+        else
+            echo ":: mountpoint ${MOUNT_POINT} does not exist"
+        fi
+    else
+        echo ":: called with invalid number of arguments."
+        echo "Usage:"
+        echo "    ${FUNCNAME[0]} <mount point> <zfs pool name> <uuid of device>"
 
         return 1
     fi
