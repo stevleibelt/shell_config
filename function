@@ -354,22 +354,24 @@ function net_bazzline_convert_mkv_to_avi ()
 {
     net_bazzline_record_function_usage ${FUNCNAME[0]}
 
-    if [[ $# -eq 1 ]]; then
+    if [[ $# -eq 1 ]];
+    then
         #export -f net_bazzline_get_name_from_filename
         local NAME_FROM_FILENAME=net_bazzline_get_name_from_filename
-        local INPUT_FILE="$1";
+        local INPUT_FILE="${1}";
         local OUTPUT_FILE=$($NAME_FROM_FILENAME $INPUT_FILE)
-        local OUTPUT_FILE=$OUTPUT_FILE".avi"
-    elif [[ $# -eq 2 ]]; then
-        local INPUT_FILE="$1";
-        local OUTPUT_FILE="$2";
+        local OUTPUT_FILE="${OUTPUT_FILE}.avi"
+    elif [[ $# -eq 2 ]];
+    then
+        local INPUT_FILE="${1}";
+        local OUTPUT_FILE="${2}";
     else
         echo "invalid number of arguments supplied"
         echo "inputfile [outputfile]"
         return 1
     fi
 
-    ffmpeg -i "$INPUT_FILE" -c:v copy -c:a copy "$OUTPUT_FILE"
+    ffmpeg -i "${INPUT_FILE}" -map 0 -c:v copy -c:a copy "${OUTPUT_FILE}"
 }
 
 ####
@@ -398,22 +400,24 @@ function net_bazzline_convert_video_to_screen_size ()
 {
     net_bazzline_record_function_usage ${FUNCNAME[0]}
 
-    if [[ $# -lt 2 ]]; then
+    if [[ $# -lt 2 ]];
+    then
         echo "invalid number of arguments supplied"
         echo "<path to source file> <path to destination file> [<screen size>]"
         return 1
     else
-        if [[ $# -gt 2 ]]; then
-            local SCREEN_SIZE="$3"
+        if [[ $# -gt 2 ]];
+        then
+            local SCREEN_SIZE="${3}"
         else
             local SCREEN_SIZE="1024x768"
         fi
 
-        local PATH_TO_DESTINATION_FILE="$2"
-        local PATH_TO_SOURCE_FILE="$1"
+        local PATH_TO_DESTINATION_FILE="${2}"
+        local PATH_TO_SOURCE_FILE="${1}"
     fi
 
-    ffmpeg -i "$PATH_TO_SOURCE_FILE" -acodec copy -scodec copy -s "$SCREEN_SIZE" -vcodec libx264 -pass 1 "$PATH_TO_DESTINATION_FILE"
+    ffmpeg -i "${PATH_TO_SOURCE_FILE}" -map 0 -acodec copy -scodec copy -s "${SCREEN_SIZE}" -vcodec libx264 -pass 1 "${PATH_TO_DESTINATION_FILE}"
 }
 
 ####
@@ -431,7 +435,7 @@ function net_bazzline_convert_video_to_libx264 ()
         return 1
     fi
 
-    ffmpeg -i "${1}" -acodec copy -scodec copy -vcodec libx264 -pass 1 "${2}"
+    ffmpeg -i "${1}" -map 0 -acodec copy -scodec copy -vcodec libx264 -pass 1 "${2}"
 }
 
 ####
@@ -449,7 +453,7 @@ function net_bazzline_convert_video_to_libx265 ()
         return 1
     fi
 
-    ffmpeg -i "${1}" -acodec copy -scodec copy -vcodec libx265 -pass 1 "${2}"
+    ffmpeg -i "${1}" -map 0 -acodec copy -scodec copy -vcodec libx265 -pass 1 "${2}"
 }
 
 
