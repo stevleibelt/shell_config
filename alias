@@ -150,6 +150,7 @@ then
     alias software-install='pacaur -S'
     alias software-install-local='sudo pacman -U'
     alias software-list='pacaur -Qlm'
+    alias software-list-depends-on='pactree -r'
     alias software-list-foreign='pacaur -Qmq'
     alias software-list-installed='pacaur -Qen' #use pacman -Qqen to create a list you can use to install like "pacman -Qqen > installed && pacman -S < installed
     alias software-list-unofficial-installed='pacaur -Qem'
@@ -170,6 +171,7 @@ then
     alias software-install='sudo pacman -S'
     alias software-install-local='sudo pacman -U'
     alias software-list='sudo pacman -Ql'
+    alias software-list-depends-on='pactree -r'
     alias software-list-foreign='sudo pacman -Qmq'
     alias software-list-installed='sudo pacman -Qen'
     alias software-list-unofficial-installed='sudo pacman -Qemq'
