@@ -1281,25 +1281,29 @@ function net_bazzline_mkdir ()
     net_bazzline_record_function_usage ${FUNCNAME[0]}
 
     #check if at least one argument is supplied
-    if [[ $# -eq 0 ]]; then
+    if [[ $# -eq 0 ]];
+    then
         echo "No arguments supplied"
+
         return 1
     fi
 
     #if one argument is supplied, create dir and
     # change to it
-    if [[ $# -eq 1 ]]; then
-        mkdir -p "$1" 
-        cd "$1"
-        return 0
+    if [[ $# -eq 1 ]];
+    then
+        mkdir -p "${1}" 
+        cd "${1}"
     fi
 
     #if more then one argument is supplied
     # execute default mkdir
-    if [[ $# -gt 1 ]]; then
+    if [[ $# -gt 1 ]];
+    then
         mkdir $@
-        return 0
     fi
+
+    return 0
 }
 
 ####
@@ -1315,12 +1319,27 @@ function net_bazzline_mkdir_prefix_with_current_date ()
     net_bazzline_record_function_usage ${FUNCNAME[0]}
 
     if [[ $# -eq 1 ]]; then
-        directoryName=`eval date +%Y%m%d`"_$1"
+        NAME_OF_THE_DIRECTORY=`eval date +%Y%m%d`"_${1}"
 
-        net_bazzline_mkdir "$directoryName"
+        net_bazzline_mkdir "${NAME_OF_THE_DIRECTORY}"
     else
         echo 'Should be called with exactly one parameter'
     fi
+}
+
+####
+# create a directory with the name of the current date (Ymd)
+#
+# @author stev leibelt
+# @since 2017-09-08
+####
+function net_bazzline_mkdir_with_the_name_of_the_current_date ()
+{
+    net_bazzline_record_function_usage ${FUNCNAME[0]}
+
+    NAME_OF_THE_DIRECTORY=`eval date +%Y%m%d`
+
+    net_bazzline_mkdir "${NAME_OF_THE_DIRECTORY}"
 }
 
 ####
