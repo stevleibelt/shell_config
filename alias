@@ -54,6 +54,7 @@ then
     alias deleteListOfDatedZfsSnapshots=net_bazzline_delete_list_of_dated_zfs_snapshots
 fi
 alias deleteEmptyDirectories=net_bazzline_delete_empty_directories
+alias deleteFilesOlderThan=net_bazzline_delete_files_older_than
 alias diffDirectories=net_bazzline_diff_directory
 
 #f
@@ -84,6 +85,7 @@ alias l='ls -hAlt'
 alias lh=net_bazzline_list_filesystem_items_head
 alias listDomainInformation=net_bazzline_list_domain_information
 alias listEmptyDirectories=net_bazzline_list_empty_directories
+alias listFilesOlderThan=net_bazzline_list_files_older_than
 alias listGroups=net_bazzline_list_groups
 alias listInterfaces=net_bazzline_list_interfaces
 alias listProcessEnvironment=net_bazzline_list_process_environment

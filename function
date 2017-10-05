@@ -615,6 +615,55 @@ function net_bazzline_delete_empty_directories ()
     find ${ROOT_PATH} -maxdepth ${MAX_DEPTH} -type d -empty -delete
 }
 
+####
+# [@param string $NAME - default is empty]
+# [@param string $ROOT_PATH - default is cwd]
+# [@param int $MINUTES - default is 60]
+# [@param int $MAX_DEPTH - default is 1]
+#
+# @author stev leibelt
+# @since 2016-12-27
+####
+function net_bazzline_delete_files_older_than ()
+{
+    net_bazzline_record_function_usage ${FUNCNAME[0]}
+
+    #begin of default settings
+    local NAME=""
+    local MAX_DEPTH=1
+    local MINUTES=60
+    local ROOT_PATH="."
+    #end of default settings
+
+    #begin of user settings
+    if [[ $# -ge 1 ]];
+    then
+        NAME="${1}"
+
+        if [[ $# -ge 2 ]];
+        then
+            ROOT_PATH="${2}"
+
+            if [[ $# -ge 3 ]];
+            then
+                MINUTES=$3
+
+                if [[ $# -ge 4 ]];
+                then
+                    MAX_DEPTH=$4
+                fi
+            fi
+        fi
+    fi
+    #end of user settings
+
+    if [[ ${NAME} == "" ]];
+    then
+        find ${ROOT_PATH} -maxdepth ${MAX_DEPTH} -type f -mmin +${MINUTES} -delete
+    else
+        find ${ROOT_PATH} -maxdepth ${MAX_DEPTH} -name "${NAME}" -type f -mmin +${MINUTES} -delete
+    fi
+}
 
 ####
 # @param string <name of zfs pool>
@@ -1071,6 +1120,55 @@ function net_bazzline_list_empty_directories ()
     #end of user settings
 
     find ${ROOT_PATH} -maxdepth ${MAX_DEPTH} -type d -empty
+}
+####
+# [@param string $NAME - default is empty]
+# [@param string $ROOT_PATH - default is cwd]
+# [@param int $MINUTES - default is 60]
+# [@param int $MAX_DEPTH - default is 1]
+#
+# @author stev leibelt
+# @since 2016-12-27
+####
+function net_bazzline_list_files_older_than ()
+{
+    net_bazzline_record_function_usage ${FUNCNAME[0]}
+
+    #begin of default settings
+    local NAME=""
+    local MAX_DEPTH=1
+    local MINUTES=60
+    local ROOT_PATH="."
+    #end of default settings
+
+    #begin of user settings
+    if [[ $# -ge 1 ]];
+    then
+        local NAME="${1}"
+
+        if [[ $# -ge 2 ]];
+        then
+            local ROOT_PATH="${2}"
+
+            if [[ $# -ge 3 ]];
+            then
+                local MINUTES=$3
+
+                if [[ $# -ge 4 ]];
+                then
+                    local MAX_DEPTH=$4
+                fi
+            fi
+        fi
+    fi
+    #end of user settings
+
+    if [[ ${NAME} == "" ]];
+    then
+        find ${ROOT_PATH} -maxdepth ${MAX_DEPTH} -type f -mmin +${MINUTES}
+    else
+        find ${ROOT_PATH} -maxdepth ${MAX_DEPTH} -name "${NAME}" -type f -mmin +${MINUTES}
+    fi
 }
 
 ####
