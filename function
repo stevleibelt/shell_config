@@ -2637,19 +2637,19 @@ function net_bazzline_umount_crypto_zfs_pool ()
                     cd ${HOME}
                 fi
 
-                zpool export ${ZFS_POOL_NAME}
+                net_bazzline_execute_as_super_user_when_not_beeing_root zpool export ${ZFS_POOL_NAME}
 
                 for CURRENT_ARGUMENT_NUMBER in $(seq ${#});
                 do
                     UUID=${1}
                     echo ":: disk ${CURRENT_ARGUMENT_NUMBER}"
-                    cryptsetup luksClose crypt-${ZFS_POOL_NAME}-${CURRENT_ARGUMENT_NUMBER}
+                    net_bazzline_execute_as_super_user_when_not_beeing_root cryptsetup luksClose crypt-${ZFS_POOL_NAME}-${CURRENT_ARGUMENT_NUMBER}
                     shift
                 done
 
                 if [[ ! "$(ls -A ${MOUNT_POINT})" ]]; 
                 then
-                    rmdir ${MOUNT_POINT}
+                    net_bazzline_execute_as_super_user_when_not_beeing_root rmdir ${MOUNT_POINT}
                 else
                     echo ":: can not remove mount point, there is still content inside."
                     ls -A ${MOUNT_POINT}
