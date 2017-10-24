@@ -252,6 +252,28 @@ function net_bazzline_check_ext4_device ()
 }
 
 ####
+# checks and defrags ext4 device
+#
+# @param string <path to the device>
+#
+# @author stev leibelt
+# @since 2017-10-24
+function net_bazzline_check_fat_device ()
+{
+    if [[ $# -gt 0 ]];
+    then
+        DEVICE_PATH="$1"
+
+        sudo fsck.fat -aV ${DEVICE_PATH}
+        sudo sync
+    else
+        net_bazzline_handle_invalid_number_of_arguments_supplied "${FUNCNAME[0]} <path to the device>"
+
+        return 1
+    fi
+}
+
+####
 # compress given directories into tar.gz
 #
 # @param string $1 - compressed tar.gz file name

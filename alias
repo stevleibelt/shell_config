@@ -28,6 +28,7 @@ fi
 alias cd=net_bazzline_cd
 alias cdToTheShellConfiguration="cd ${PATH_SHELL_CONFIG}"
 alias checkExt4Device=net_bazzline_check_ext4_device
+alias checkFatDevice=net_bazzline_check_fat_device
 alias compileC++11='c++ -std=c++11'
 alias compileC++14='c++ -std=c++14'
 alias compress=net_bazzline_compress
