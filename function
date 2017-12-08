@@ -2799,22 +2799,25 @@ function net_bazzline_update_vim_bundles_and_plugins_with_vundle()
 {
     net_bazzline_record_function_usage ${FUNCNAME[0]}
 
-    local PATH_TO_VUNDLE=$HOME'/.vim/bundle/Vundle.vim'
+    CURRENT_WORKING_DIRECTORY=$(pwd)
+    local PATH_TO_VUNDLE="${HOME}/.vim/bundle/Vundle.vim"
 
     #create directory if it does not exist
-    if [[ ! -d "$PATH_TO_VUNDLE" ]]; then
+    if [[ ! -d "${PATH_TO_VUNDLE}" ]]; then
         echo ":: Vundle directory missing. Creating it ..."
-        mkdir -p $PATH_TO_VUNDLE
+        mkdir -p "${PATH_TO_VUNDLE}"
     fi
 
     #clone vundle if directory is empty
-    if [[ ! "$(ls -A $DIR_SELF)" ]]; then
+    if [[ ! "$(ls -A ${DIR_SELF})" ]]; then
         echo ":: Vundle directory empty. Cloning git repository into it ..."
-        git clone https://github.com/VundleVim/Vundle.vim.git $PATH_TO_VUNDLE
+        git clone https://github.com/VundleVim/Vundle.vim.git "${PATH_TO_VUNDLE}"
     fi
 
     #install all available plugins
     vim +PluginInstall +qall && vim +BundleInstall +qall
+
+    cd ${CURRENT_WORKING_DIRECTORY}
 }
 
 #w
