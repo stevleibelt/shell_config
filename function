@@ -2832,7 +2832,8 @@ function net_bazzline_update_vim_bundles_and_plugins_with_vundle()
     fi
 
     #clone vundle if directory is empty
-    if [[ ! "$(ls -A ${DIR_SELF})" ]]; then
+    if [[ ! "$(ls -A ${PATH_TO_VUNDLE})" ]];
+    then
         echo ":: Vundle directory empty. Cloning git repository into it ..."
         git clone https://github.com/VundleVim/Vundle.vim.git "${PATH_TO_VUNDLE}"
     fi
