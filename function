@@ -2828,7 +2828,7 @@ function net_bazzline_update_vim_bundles_and_plugins_with_vundle()
     if [[ ! -d "${PATH_TO_VUNDLE}" ]]; then
         echo ":: Vundle directory missing. Creating it ..."
         echo "   ${PATH_TO_VUNDLE}"
-        mkdir -p "${PATH_TO_VUNDLE}"
+        /bin/mkdir -p "${PATH_TO_VUNDLE}"
     fi
 
     #clone vundle if directory is empty
