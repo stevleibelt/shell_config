@@ -2827,6 +2827,7 @@ function net_bazzline_update_vim_bundles_and_plugins_with_vundle()
     #create directory if it does not exist
     if [[ ! -d "${PATH_TO_VUNDLE}" ]]; then
         echo ":: Vundle directory missing. Creating it ..."
+        echo "   ${PATH_TO_VUNDLE}"
         mkdir -p "${PATH_TO_VUNDLE}"
     fi
 
