@@ -252,6 +252,28 @@ function net_bazzline_check_ext4_device ()
 }
 
 ####
+# checks and defrags ext4 device
+#
+# @param string <path to the device>
+#
+# @author stev leibelt
+# @since 2017-10-24
+function net_bazzline_check_fat_device ()
+{
+    if [[ $# -gt 0 ]];
+    then
+        DEVICE_PATH="$1"
+
+        sudo fsck.fat -aV ${DEVICE_PATH}
+        sudo sync
+    else
+        net_bazzline_handle_invalid_number_of_arguments_supplied "${FUNCNAME[0]} <path to the device>"
+
+        return 1
+    fi
+}
+
+####
 # compress given directories into tar.gz
 #
 # @param string $1 - compressed tar.gz file name
@@ -2799,22 +2821,27 @@ function net_bazzline_update_vim_bundles_and_plugins_with_vundle()
 {
     net_bazzline_record_function_usage ${FUNCNAME[0]}
 
-    local PATH_TO_VUNDLE=$HOME'/.vim/bundle/Vundle.vim'
+    CURRENT_WORKING_DIRECTORY=$(pwd)
+    local PATH_TO_VUNDLE="${HOME}/.vim/bundle/Vundle.vim"
 
     #create directory if it does not exist
-    if [[ ! -d "$PATH_TO_VUNDLE" ]]; then
+    if [[ ! -d "${PATH_TO_VUNDLE}" ]]; then
         echo ":: Vundle directory missing. Creating it ..."
-        mkdir -p $PATH_TO_VUNDLE
+        echo "   ${PATH_TO_VUNDLE}"
+        /bin/mkdir -p "${PATH_TO_VUNDLE}"
     fi
 
     #clone vundle if directory is empty
-    if [[ ! "$(ls -A $DIR_SELF)" ]]; then
+    if [[ ! "$(ls -A ${PATH_TO_VUNDLE})" ]];
+    then
         echo ":: Vundle directory empty. Cloning git repository into it ..."
-        git clone https://github.com/VundleVim/Vundle.vim.git $PATH_TO_VUNDLE
+        git clone https://github.com/VundleVim/Vundle.vim.git "${PATH_TO_VUNDLE}"
     fi
 
     #install all available plugins
     vim +PluginInstall +qall && vim +BundleInstall +qall
+
+    cd ${CURRENT_WORKING_DIRECTORY}
 }
 
 #w
