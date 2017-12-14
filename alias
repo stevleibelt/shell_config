@@ -28,6 +28,7 @@ fi
 alias cd=net_bazzline_cd
 alias cdToTheShellConfiguration="cd ${PATH_SHELL_CONFIG}"
 alias checkExt4Device=net_bazzline_check_ext4_device
+alias checkFatDevice=net_bazzline_check_fat_device
 alias compileC++11='c++ -std=c++11'
 alias compileC++14='c++ -std=c++14'
 alias compress=net_bazzline_compress
@@ -54,6 +55,7 @@ then
     alias deleteListOfDatedZfsSnapshots=net_bazzline_delete_list_of_dated_zfs_snapshots
 fi
 alias deleteEmptyDirectories=net_bazzline_delete_empty_directories
+alias deleteFilesOlderThan=net_bazzline_delete_files_older_than
 alias diffDirectories=net_bazzline_diff_directory
 
 #f
@@ -84,6 +86,7 @@ alias l='ls -hAlt'
 alias lh=net_bazzline_list_filesystem_items_head
 alias listDomainInformation=net_bazzline_list_domain_information
 alias listEmptyDirectories=net_bazzline_list_empty_directories
+alias listFilesOlderThan=net_bazzline_list_files_older_than
 alias listGroups=net_bazzline_list_groups
 alias listInterfaces=net_bazzline_list_interfaces
 alias listProcessEnvironment=net_bazzline_list_process_environment
@@ -118,7 +121,7 @@ alias psGrep=net_bazzline_psgrep
 alias r='rm -fr';
 alias refreshInterface='net_bazzline_refresh_interface'
 alias relogin='bash -l'
-alias reloadBashEnvironment='source ~/.bashrc && clear'
+alias reloadBashEnvironment='source ~/.bashrc; clear;'
 alias removeAllDockerImages='docker ps -a -q | xargs docker rm'
 alias renameAllToLower=net_bazzline_filename_to_lower_batch_rename
 alias renameGitBranch=net_bazzline_rename_git_branch
@@ -129,15 +132,12 @@ alias runJar='java -jar '
 #s
 alias searchInComposerFiles=net_bazzline_search_in_composer_files
 alias setOpticalDriveSpeed=net_bazzline_set_optical_drive_speed
-if [ -f ${HOME}'/code/sh/local/displayBatteryStatus.sh' ];
-then
-  alias statusBattery='sh '${HOME}'/code/sh/local/displayBatteryStatus.sh'
-fi
 if [ -f ${HOME}'/code/sh/local/sensorsRefresh.sh' ];
 then
   alias statusSensor='sh '${HOME}'/code/sh/local/sensorsRefresh.sh'
 fi
-alias showBatteryStatus='clear & acpi -i'
+alias showBatteryStatusWithoutAcpi='for BATTERY_FILE_PATH in $(find /sys/class/power_supply/ -iname "BAT*");do echo ${BATTERY_FILE_PATH}; cat ${BATTERY_FILE_PATH}/capacity; cat ${BATTERY_FILE_PATH}/status; done;'
+alias showBatteryStatusWithAcpi='acpi -i'
 alias silentGrep=net_bazzline_silent_grep
 alias skype='xhost +local: && sudo -u skype /usr/bin/skype'
 #@todo: validate against https://wiki.archlinux.org/index.php/Pacman/Rosetta
@@ -188,20 +188,22 @@ then
 elif [[ ${NET_BAZZLINE_PACKAGE_MANAGER} = 'apk' ]];
 then
     #alias software-check-unneeded-dependencies='pacaur -Qqdt'
-    alias software-clean-cache='apk cache -v sync'
+    alias software-clean-cache='apk cache clean'
     #alias software-fetch='pacaur -G'
     #alias software-fill-the-cache='pacaur -Sy'
     #alias software-info='pacaur -Qi'
     alias software-install='apk add '
     #alias software-install-local='sudo pacman -U'
-    #alias software-list='pacaur -Qlm'
+    alias software-list='apk search -v'
     #alias software-list-foreign='pacaur -Qmq'
-    #alias software-list-installed='pacaur -Qen' #use pacman -Qqen to create a list you can use to install like "pacman -Qqen > installed && pacman -S < installed
+    alias software-list-installed='apk -vv info|sort'
     #alias software-list-unofficial-installed='pacaur -Qem'
     #alias software-prepare-for-upgrade='pacaur -Swyu'
     alias software-remove="apk del "
     alias software-search='apk search -v '
     #alias software-search-installed='pacaur -Qs'
+    alias software-update='apk update'
+    alias software-update-cache='apk cache -v sync'
     alias software-upgrade='apk upgrade --update-cache --available'
     #alias software-upgrade-from-cache='pacaur -uu'
     #alias software-upgrade-without-lts-kernel='pacaur -Syuu --ignore=linux-lts,linux-lts-headers,zfs-linux-lts,zfs-utils-common,spl-linux-lts,spl-utils-common'
