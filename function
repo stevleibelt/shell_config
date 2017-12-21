@@ -731,10 +731,17 @@ function net_bazzline_delete_list_of_dated_zfs_snapshots()
 {
     net_bazzline_record_function_usage ${FUNCNAME[0]}
 
-    if [[ $# -lt 3 ]]; then
-        echo 'invalid number of arguments'
-        echo '    net_bazzline_delete_zfs_snapshots <name of the zfs pool> <name of inital snapshot number> <name of the final snapshot number>'
+    if [[ $# -lt 3 ]];
+    then
+        echo ":: Invalid number of arguments"
+        echo "   net_bazzline_delete_zfs_snapshots <name of the zfs pool> <name of inital snapshot number> <name of the final snapshot number>"
         return 1
+    fi
+
+    if [[ ${INITIAL_SNAPSHOT_NUMBER} -gt ${FINAL_SNAPSHOT_NUMBER} ]];
+    then
+	echo ":: Invalid arguments"
+	echo "   ${INITIAL_SNAPSHOT_NUMBER} greater than ${FINAL_SNAPSHOT_NUMBER}"
     fi
 
     local NAME_OF_THE_POOL="$1"
