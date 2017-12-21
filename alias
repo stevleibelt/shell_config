@@ -59,6 +59,7 @@ alias deleteFilesOlderThan=net_bazzline_delete_files_older_than
 alias diffDirectories=net_bazzline_diff_directory
 
 #f
+alias filenameToLowerBatchRename=net_bazzline_filename_to_lower_batch_rename
 alias findBrokenSymlinks='find -type l -! -exec test -e {} \; -print'
 alias findDirectory=net_bazzline_find_directory
 alias findFile=net_bazzline_find_file

@@ -811,6 +811,8 @@ function net_bazzline_execute_as_super_user_when_not_beeing_root ()
 ####
 # Renames all existing directory content to lower case
 #
+# [@param int $1 - max depth - default is 1]
+# [@param string $1 - search path - default is .]
 # @author stev leibelt <artodeto@bazzline.net>
 # @since 2013-11-21
 ####
@@ -818,8 +820,38 @@ function net_bazzline_filename_to_lower_batch_rename ()
 {
     net_bazzline_record_function_usage ${FUNCNAME[0]}
 
+    if [[ $# -gt 0 ]];
+    then
+        local MAX_DEPTH=${1}
+        if [[ $# -gt 1 ]];
+        then
+            SEARCH_PATH="${2}"
+        else
+            SEARCH_PATH="."
+        fi
+    else
+        local MAX_DEPTH=1
+    fi
+
     #rename 'y/A-Z/a-z/' *
-    find -type f -execdir sh -c 'mv "'{}'" "$(echo '{}'|tr '[:upper:]' '[:lower:]')"' \;
+    #@see:
+    #   https://stackoverflow.com/questions/23816264/remove-all-special-characters-and-case-from-string-in-bash#23816607
+    #   https://stackoverflow.com/a/15347915
+    #   https://www.linuxquestions.org/questions/programming-9/bash-replace-all-spaces-in-file-folder-names-635821/
+    find ${SEARCH_PATH} -maxdepth ${MAX_DEPTH} -type f -print0 | while read -d $'\0' FILE_PATH;
+    do
+        FILE_PATH="${FILE_PATH:2}"
+        if [[ -f "${FILE_PATH}" ]];
+        then
+            FILE_PATH_CLEANED=$(echo "${FILE_PATH}" | tr -c '[:graph:]\n\r' '_' | tr '\?|!|&' '_' | tr -d '(|)|#|[|]' | tr -d "'" | tr '[:upper:]' '[:lower:]');
+
+            if [[ "${FILE_PATH}" != "${FILE_PATH_CLEANED}" ]];
+            then
+                #echo "mv ${FILE_PATH} ${FILE_PATH_CLEANED}"
+                mv "${FILE_PATH}" "${FILE_PATH_CLEANED}"
+            fi
+        fi
+    done
 }
 
 ####
