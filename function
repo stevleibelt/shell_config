@@ -588,8 +588,9 @@ function net_bazzline_convert_video_to_libx264 ()
         echo "   Skipping file path >>${DESTINATION}<<. Exists already."
     else
         #@see
+        #   https://unix.stackexchange.com/questions/36310/strange-errors-when-using-ffmpeg-in-a-loop#36411
         #   https://superuser.com/questions/555289/is-there-a-way-to-disable-or-hide-output-thrown-by-ffmpeg#555326
-        ffmpeg -i "${SOURCE}" -map 0 -acodec copy -scodec copy -vcodec libx264 -nostats -hide_banner -pass 1 "${DESTINATION}"
+        ffmpeg -i "${SOURCE}" -map 0 -acodec copy -scodec copy -vcodec libx264 -nostats -hide_banner -pass 1 "${DESTINATION}" < /dev/null
     fi
 }
 
@@ -616,8 +617,9 @@ function net_bazzline_convert_video_to_libx265 ()
         echo "   Skipping file path >>${DESTINATION}<<. Exists already."
     else
         #@see
+        #   https://unix.stackexchange.com/questions/36310/strange-errors-when-using-ffmpeg-in-a-loop#36411
         #   https://superuser.com/questions/555289/is-there-a-way-to-disable-or-hide-output-thrown-by-ffmpeg#555326
-        ffmpeg -i "${SOURCE}" -map 0 -acodec copy -scodec copy -vcodec libx265 -nostats -hide_banner -pass 1 "${DESTINATION}"
+        ffmpeg -i "${SOURCE}" -map 0 -acodec copy -scodec copy -vcodec libx265 -nostats -hide_banner -pass 1 "${DESTINATION}" < /dev/null
     fi
 }
 
