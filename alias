@@ -15,6 +15,9 @@ alias ant='ant -logger org.apache.tools.ant.listener.AnsiColorLogger'
 alias batchConvertImageTo640=net_bazzline_image_batch_convert_640
 alias batchConvertImageTo1024=net_bazzline_image_batch_convert_1024
 alias batchConvertImageTo1920=net_bazzline_image_batch_convert_1920
+alias batchDirectoryPathToLower=net_bazzline_batch_directory_path_to_lower
+alias batchFilesPathToLower=net_bazzline_batch_file_path_to_lower
+alias batchFilesystemPathToLower=net_bazzline_batch_filesystem_path_to_lower
 alias burn=net_bazzline_burn
 
 #c
@@ -59,7 +62,7 @@ alias deleteFilesOlderThan=net_bazzline_delete_files_older_than
 alias diffDirectories=net_bazzline_diff_directory
 
 #f
-alias filenameToLowerBatchRename=net_bazzline_filename_to_lower_batch_rename
+alias filesystemPathToLower=net_bazzline_filesystem_path_to_lower
 alias findBrokenSymlinks='find -type l -! -exec test -e {} \; -print'
 alias findDirectory=net_bazzline_find_directory
 alias findFile=net_bazzline_find_file

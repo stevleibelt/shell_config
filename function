@@ -35,6 +35,74 @@ function net_bazzline_backup_to ()
 }
 
 ####
+# Renames all existing directory content to lower case
+#
+# [@param int $1 - max depth - default is 1]
+# [@param string $1 - search path - default is .]
+# @author stev leibelt <artodeto@bazzline.net>
+# @since 2013-11-21
+####
+function net_bazzline_batch_directory_path_to_lower ()
+{
+    net_bazzline_record_function_usage ${FUNCNAME[0]}
+
+    local MAX_DEPTH="${1:-'1'}"
+    local SEARCH_PATH="${2:-'.'}"
+
+    net_bazzline_batch_filesystem_path_to_lower "${MAX_DEPTH}" "${SEARCH_PATH}" "d"
+}
+
+####
+# Renames all existing directory content to lower case
+#
+# [@param int $1 - max depth - default is 1]
+# [@param string $1 - search path - default is .]
+# @author stev leibelt <artodeto@bazzline.net>
+# @since 2013-11-21
+####
+function net_bazzline_batch_file_path_to_lower ()
+{
+    net_bazzline_record_function_usage ${FUNCNAME[0]}
+
+    local MAX_DEPTH="${1:-'1'}"
+    local SEARCH_PATH="${2:-'.'}"
+
+    net_bazzline_batch_filesystem_path_to_lower "${MAX_DEPTH}" "${SEARCH_PATH}" "f"
+}
+
+####
+# Renames all existing directory content to lower case
+#
+# [@param int $1 - max depth - default is 1]
+# [@param string $1 - search path - default is .]
+# [@param string $1 - type - default is no type - must be something find does support]
+# @author stev leibelt <artodeto@bazzline.net>
+# @since 2013-11-21
+####
+function net_bazzline_batch_filesystem_path_to_lower ()
+{
+    net_bazzline_record_function_usage ${FUNCNAME[0]}
+
+    local FILE_TYPE="${3:-''}"
+    local MAX_DEPTH="${1:-'1'}"
+    local SEARCH_PATH="${2:-'.'}"
+
+    if [[ "${FILE_TYPE}" != "" ]];
+    then
+        local FILE_TYPE_OPTION=" -type ${FILE_TYPE}"
+    else
+        local FILE_TYPE_OPTION=""
+    fi
+
+    find ${SEARCH_PATH} -maxdepth ${MAX_DEPTH}${FILE_TYPE_OPTION} -print0 | while read -d $'\0' FILE_PATH;
+    do
+        FILE_PATH="${FILE_PATH:2}"
+
+        net_bazzline_filesystem_path_to_lower "${FILE_PATH}"
+    done
+}
+
+####
 # Uses grep to prevent using ack-grep on different machines
 # Influenced by: http://developmentality.wordpress.com/2010/12/28/ack-better-than-grep/
 #
@@ -816,49 +884,36 @@ function net_bazzline_execute_as_super_user_when_not_beeing_root ()
 #f
 
 ####
-# Renames all existing directory content to lower case
+# Renames and cleans a provided path to lower case
 #
-# [@param int $1 - max depth - default is 1]
-# [@param string $1 - search path - default is .]
+# @param string $1 - path to the file system object
 # @author stev leibelt <artodeto@bazzline.net>
-# @since 2013-11-21
+# @since 2017-12-22
 ####
-function net_bazzline_filename_to_lower_batch_rename ()
+function net_bazzline_filesystem_path_to_lower ()
 {
     net_bazzline_record_function_usage ${FUNCNAME[0]}
 
-    if [[ $# -gt 0 ]];
+    if [[ $# -lt 1 ]];
     then
-        local MAX_DEPTH=${1}
-        if [[ $# -gt 1 ]];
-        then
-            SEARCH_PATH="${2}"
-        else
-            SEARCH_PATH="."
-        fi
-    else
-        local MAX_DEPTH=1
+        net_bazzline_handle_invalid_number_of_arguments_supplied "${FUNCNAME[0]} <file path>"
+
+        return 1
     fi
+
+    FILE_PATH="${1}"
 
     #rename 'y/A-Z/a-z/' *
     #@see:
     #   https://stackoverflow.com/questions/23816264/remove-all-special-characters-and-case-from-string-in-bash#23816607
     #   https://stackoverflow.com/a/15347915
     #   https://www.linuxquestions.org/questions/programming-9/bash-replace-all-spaces-in-file-folder-names-635821/
-    find ${SEARCH_PATH} -maxdepth ${MAX_DEPTH} -type f -print0 | while read -d $'\0' FILE_PATH;
-    do
-        FILE_PATH="${FILE_PATH:2}"
-        if [[ -f "${FILE_PATH}" ]];
-        then
-            FILE_PATH_CLEANED=$(echo "${FILE_PATH}" | tr -c '[:graph:]\n\r' '_' | tr '\?|!|&' '_' | tr -d '(|)|#|[|]' | tr -d "'" | tr '[:upper:]' '[:lower:]');
+    FILE_PATH_CLEANED=$(echo "${FILE_PATH}" | tr -c '[:graph:]\n\r' '_' | tr '\?|!|&' '_' | tr -d '(|)|#|[|]' | tr -d "'" | tr '[:upper:]' '[:lower:]');
 
-            if [[ "${FILE_PATH}" != "${FILE_PATH_CLEANED}" ]];
-            then
-                #echo "mv ${FILE_PATH} ${FILE_PATH_CLEANED}"
-                mv "${FILE_PATH}" "${FILE_PATH_CLEANED}"
-            fi
-        fi
-    done
+    if [[ "${FILE_PATH}" != "${FILE_PATH_CLEANED}" ]];
+    then
+        mv "${FILE_PATH}" "${FILE_PATH_CLEANED}"
+    fi
 }
 
 ####
