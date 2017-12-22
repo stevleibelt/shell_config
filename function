@@ -40,16 +40,68 @@ function net_bazzline_backup_to ()
 # [@param int $1 - max depth - default is 1]
 # [@param string $1 - search path - default is .]
 # @author stev leibelt <artodeto@bazzline.net>
-# @since 2013-11-21
+# @since 2017-12-22
 ####
 function net_bazzline_batch_directory_path_to_lower ()
 {
     net_bazzline_record_function_usage ${FUNCNAME[0]}
 
-    local MAX_DEPTH="${1:-'1'}"
-    local SEARCH_PATH="${2:-'.'}"
+    local MAX_DEPTH=${1:-1}
+    local SEARCH_PATH="${2:-.}"
 
     net_bazzline_batch_filesystem_path_to_lower "${MAX_DEPTH}" "${SEARCH_PATH}" "d"
+}
+
+####
+# Convertes all files within the given path
+#
+# [@param string $1 - search path - default is .]
+# [@param int $1 - max depth - default is 1]
+# @author stev leibelt <artodeto@bazzline.net>
+# @since 2017-12-22
+####
+function net_bazzline_batch_convert_video_to_libx264 ()
+{
+    net_bazzline_record_function_usage ${FUNCNAME[0]}
+
+    local MAX_DEPTH=${2:-1}
+    local SEARCH_PATH="${2:-.}"
+
+    find ${SEARCH_PATH} -maxdepth ${MAX_DEPTH} -type f -print0 | while read -d $'\0' FILE_PATH;
+    do
+        if [[ "${SEARCH_PATH}" == "." ]];
+        then
+            FILE_PATH="${FILE_PATH:2}"
+        fi
+
+        net_bazzline_convert_video_to_libx264 "${FILE_PATH}" "${FILE_PATH}.converted264.mkv"
+    done;
+}
+
+####
+# Convertes all files within the given path
+#
+# [@param string $1 - search path - default is .]
+# [@param int $1 - max depth - default is 1]
+# @author stev leibelt <artodeto@bazzline.net>
+# @since 2017-12-22
+####
+function net_bazzline_batch_convert_video_to_libx265 ()
+{
+    net_bazzline_record_function_usage ${FUNCNAME[0]}
+
+    local MAX_DEPTH=${2:-1}
+    local SEARCH_PATH="${1:-.}"
+
+    find ${SEARCH_PATH} -maxdepth ${MAX_DEPTH} -type f -print0 | while read -d $'\0' FILE_PATH;
+    do
+        if [[ "${SEARCH_PATH}" == "." ]];
+        then
+            FILE_PATH="${FILE_PATH:2}"
+        fi
+
+        net_bazzline_convert_video_to_libx265 "${FILE_PATH}" "${FILE_PATH}.converted265.mkv"
+    done;
 }
 
 ####
@@ -58,14 +110,14 @@ function net_bazzline_batch_directory_path_to_lower ()
 # [@param int $1 - max depth - default is 1]
 # [@param string $1 - search path - default is .]
 # @author stev leibelt <artodeto@bazzline.net>
-# @since 2013-11-21
+# @since 2017-12-22
 ####
 function net_bazzline_batch_file_path_to_lower ()
 {
     net_bazzline_record_function_usage ${FUNCNAME[0]}
 
-    local MAX_DEPTH="${1:-'1'}"
-    local SEARCH_PATH="${2:-'.'}"
+    local MAX_DEPTH=${1:-1}
+    local SEARCH_PATH="${2:-.}"
 
     net_bazzline_batch_filesystem_path_to_lower "${MAX_DEPTH}" "${SEARCH_PATH}" "f"
 }
@@ -77,15 +129,15 @@ function net_bazzline_batch_file_path_to_lower ()
 # [@param string $1 - search path - default is .]
 # [@param string $1 - type - default is no type - must be something find does support]
 # @author stev leibelt <artodeto@bazzline.net>
-# @since 2013-11-21
+# @since 2017-12-22
 ####
 function net_bazzline_batch_filesystem_path_to_lower ()
 {
     net_bazzline_record_function_usage ${FUNCNAME[0]}
 
     local FILE_TYPE="${3:-''}"
-    local MAX_DEPTH="${1:-'1'}"
-    local SEARCH_PATH="${2:-'.'}"
+    local MAX_DEPTH=${1:-1}
+    local SEARCH_PATH="${2:-.}"
 
     if [[ "${FILE_TYPE}" != "" ]];
     then
@@ -96,7 +148,10 @@ function net_bazzline_batch_filesystem_path_to_lower ()
 
     find ${SEARCH_PATH} -maxdepth ${MAX_DEPTH}${FILE_TYPE_OPTION} -print0 | while read -d $'\0' FILE_PATH;
     do
-        FILE_PATH="${FILE_PATH:2}"
+        if [[ "${SEARCH_PATH}" == "." ]];
+        then
+            FILE_PATH="${FILE_PATH:2}"
+        fi
 
         net_bazzline_filesystem_path_to_lower "${FILE_PATH}"
     done
@@ -525,7 +580,9 @@ function net_bazzline_convert_video_to_libx264 ()
         return 1
     fi
 
-    ffmpeg -i "${1}" -map 0 -acodec copy -scodec copy -vcodec libx264 -pass 1 "${2}"
+    #@see
+    #   https://superuser.com/questions/555289/is-there-a-way-to-disable-or-hide-output-thrown-by-ffmpeg#555326
+    ffmpeg -i "${1}" -map 0 -acodec copy -scodec copy -vcodec libx264 -nostats -hide_banner -pass 1 "${2}"
 }
 
 ####
@@ -543,7 +600,7 @@ function net_bazzline_convert_video_to_libx265 ()
         return 1
     fi
 
-    ffmpeg -i "${1}" -map 0 -acodec copy -scodec copy -vcodec libx265 -pass 1 "${2}"
+    ffmpeg -i "${1}" -map 0 -acodec copy -scodec copy -vcodec libx265 -nostats -hide_banner -pass 1 "${2}"
 }
 
 
@@ -697,7 +754,7 @@ function net_bazzline_delete_empty_directories ()
 
         if [[ $# -ge 2 ]];
         then
-            MAX_DEPTH="${2}"
+            MAX_DEPTH=${2}
         fi
     fi
     #end of user settings
@@ -1230,7 +1287,7 @@ function net_bazzline_list_empty_directories ()
 
         if [[ $# -ge 2 ]];
         then
-            MAX_DEPTH="${2}"
+            MAX_DEPTH=${2}
         fi
     fi
     #end of user settings
