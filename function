@@ -580,9 +580,17 @@ function net_bazzline_convert_video_to_libx264 ()
         return 1
     fi
 
-    #@see
-    #   https://superuser.com/questions/555289/is-there-a-way-to-disable-or-hide-output-thrown-by-ffmpeg#555326
-    ffmpeg -i "${1}" -map 0 -acodec copy -scodec copy -vcodec libx264 -nostats -hide_banner -pass 1 "${2}"
+    local DESTINATION="${2}"
+    local SOURCE="${1}"
+
+    if [[ -f "${DESTINATION}" ]];
+    then
+        echo "   Skipping file path >>${DESTINATION}<<. Exists already."
+    else
+        #@see
+        #   https://superuser.com/questions/555289/is-there-a-way-to-disable-or-hide-output-thrown-by-ffmpeg#555326
+        ffmpeg -i "${SOURCE}" -map 0 -acodec copy -scodec copy -vcodec libx264 -nostats -hide_banner -pass 1 "${DESTINATION}"
+    fi
 }
 
 ####
@@ -600,7 +608,17 @@ function net_bazzline_convert_video_to_libx265 ()
         return 1
     fi
 
-    ffmpeg -i "${1}" -map 0 -acodec copy -scodec copy -vcodec libx265 -nostats -hide_banner -pass 1 "${2}"
+    local DESTINATION="${2}"
+    local SOURCE="${1}"
+
+    if [[ -f "${DESTINATION}" ]];
+    then
+        echo "   Skipping file path >>${DESTINATION}<<. Exists already."
+    else
+        #@see
+        #   https://superuser.com/questions/555289/is-there-a-way-to-disable-or-hide-output-thrown-by-ffmpeg#555326
+        ffmpeg -i "${SOURCE}" -map 0 -acodec copy -scodec copy -vcodec libx265 -nostats -hide_banner -pass 1 "${DESTINATION}"
+    fi
 }
 
 
