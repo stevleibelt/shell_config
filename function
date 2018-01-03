@@ -69,12 +69,16 @@ function net_bazzline_batch_convert_video_to_libx264 ()
 
     find ${SEARCH_PATH} -maxdepth ${MAX_DEPTH} -type f -print0 | while read -d $'\0' FILE_PATH;
     do
-        if [[ "${SEARCH_PATH}" == "." ]];
+        #@see: https://stackoverflow.com/a/25535717
+        if [[ $string != *"converted264"* ]];
         then
-            FILE_PATH="${FILE_PATH:2}"
-        fi
+            if [[ "${SEARCH_PATH}" == "." ]];
+            then
+                FILE_PATH="${FILE_PATH:2}"
+            fi
 
-        net_bazzline_convert_video_to_libx264 "${FILE_PATH}" "${FILE_PATH}.converted264.mkv"
+            net_bazzline_convert_video_to_libx264 "${FILE_PATH}" "${FILE_PATH}.converted264.mkv"
+        fi
     done;
 }
 
@@ -95,12 +99,16 @@ function net_bazzline_batch_convert_video_to_libx265 ()
 
     find ${SEARCH_PATH} -maxdepth ${MAX_DEPTH} -type f -print0 | while read -d $'\0' FILE_PATH;
     do
-        if [[ "${SEARCH_PATH}" == "." ]];
+        #@see: https://stackoverflow.com/a/25535717
+        if [[ $string != *"converted265"* ]];
         then
-            FILE_PATH="${FILE_PATH:2}"
-        fi
+            if [[ "${SEARCH_PATH}" == "." ]];
+            then
+                FILE_PATH="${FILE_PATH:2}"
+            fi
 
-        net_bazzline_convert_video_to_libx265 "${FILE_PATH}" "${FILE_PATH}.converted265.mkv"
+            net_bazzline_convert_video_to_libx265 "${FILE_PATH}" "${FILE_PATH}.converted265.mkv"
+        fi
     done;
 }
 
@@ -2470,6 +2478,7 @@ function net_bazzline_silent_grep ()
 #   fi
 #
 # @see:
+#   https://stackoverflow.com/a/25535717
 #   http://stackoverflow.com/questions/229551/string-contains-in-bash
 #   http://stackoverflow.com/questions/6241256/what-is-proper-way-to-test-a-bash-function-return-value
 # @author stev leibelt <artodeto@bazzline.net>
