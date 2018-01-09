@@ -943,6 +943,36 @@ function net_bazzline_diff_directory ()
 #e
 
 ####
+# validates if string ends with given string or not
+# 
+# @param string $1 - string
+# @param string $2 - needle
+# 
+# @author stev leibelt <artodeto@bazzline.net>
+# @since 2018-01-09
+####
+function net_bazzline_ends_with ()
+{
+    if [[ $# -eq 2 ]]; 
+    then
+        local STRING="$1"
+        local SUB_STRING="$2"
+        local LENGTH_OF_SUB_STRING=${#SUB_STRING}
+        local STRING_WITH_SUB_STRING_ONLY=${STRING: -$LENGTH_OF_SUB_STRING}
+
+        if [[ ${STRING_WITH_SUB_STRING_ONLY} == ${SUB_STRING} ]]; 
+        then
+            return 0
+        else
+            return 1
+        fi
+    else
+        echo "Usage: net_bazzline_string_starts_with <string> <needle>"
+        return 2
+    fi
+}
+
+####
 # Adds "sudo" before the provided command if you are not root
 #
 # @param string $command_to_execute
