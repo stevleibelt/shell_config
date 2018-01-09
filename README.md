@@ -27,6 +27,11 @@ You can overwrite or extend a logical part by creating a "local.<logical part fi
 
 # To Do
 
+* create README.d
+* create caching 
+    * that puts all files into one merged file below .config/net_bazzline/shell_config/merged_config
+    * cache is cleared on "reloadBashEnvironment" and "clearCache"
+    * can be enabled or disabled via setting
 * extend update.sh
     * removes existing adaption of the bashrc
     * recalls install.sh
