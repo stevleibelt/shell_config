@@ -216,6 +216,8 @@ then
     #alias software-repository-info='pacaur -Si'
 elif [[ ${NET_BAZZLINE_PACKAGE_MANAGER} = 'apt' ]];
 then
+    alias poweroff='sudo poweroff'
+    alias reboot='sudo reboot'
     #alias software-check-unneeded-dependencies='echo "todo"'
     alias software-clean-cache='sudo apt-get autoclean && sudo apt-get autoremove'
     alias software-dist-upgrade='sudo apt-get dist-upgrade'
@@ -229,9 +231,10 @@ then
     #alias software-search-installed='echo "todo"'
     #alias software-update='sudo apt-get update'
     alias software-upgrade='sudo apt-get update && sudo apt-get upgrade --assume-yes'
+    #@see: https://debian-administration.org/article/69/Some_upgrades_show_packages_being_kept_back
     alias software-upgrade-with-new='sudo apt-get --with-new-pkgs upgrade --assume-yes'
+    alias software-upgrade-to-new-version='sudo apt-get dist-upgrade --assume-yes'
     #alias software-repository-info='echo "todo"'
-    alias poweroff='sudo poweroff'
 fi
 alias searchAndReplaceInFiles=net_bazzline_replace_string_in_files
 alias scanNetworkForIpAddressRange=net_bazzline_scan_network
