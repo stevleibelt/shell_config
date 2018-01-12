@@ -229,6 +229,7 @@ then
     #alias software-search-installed='echo "todo"'
     #alias software-update='sudo apt-get update'
     alias software-upgrade='sudo apt-get update && sudo apt-get upgrade --assume-yes'
+    alias software-upgrade-with-new='sudo apt-get --with-new-pkgs upgrade --assume-yes'
     #alias software-repository-info='echo "todo"'
     alias poweroff='sudo poweroff'
 fi
