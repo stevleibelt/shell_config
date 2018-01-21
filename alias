@@ -104,6 +104,9 @@ then
 fi
 alias loadVirtualBoxModules='sudo modprobe -a vboxdrv vboxnetadp vboxnetflt vboxpci'
 alias lt=net_bazzline_list_filesystem_items_tail
+alias luksDumpInformation=net_bazzline_luks_dump_information
+alias luksHeaderBackup=net_bazzline_luks_header_backup
+alias luksHeaderRestore=net_bazzline_luks_header_restore
 
 #m
 alias makePictureViaWebcam=net_bazzline_make_picture_via_webcam

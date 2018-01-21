@@ -1574,6 +1574,70 @@ function net_bazzline_load_ssh_keys_in_keychain()
     fi
 }
 
+####
+# @param string <path to the luks device>
+#
+# @since 2018-01-13
+# @author stev leibelt <artodeto@bazzline.net>
+####
+function net_bazzline_luks_dump_information()
+{
+    if [[ $# -lt 1 ]];
+    then
+        net_bazzline_handle_invalid_number_of_arguments_supplied "${FUNCNAME[0]} <path to the lukes device>"
+
+        return 1
+    fi
+
+    local PATH_TO_THE_LUKS_DEVICE="${1}"
+
+    net_bazzline_execute_as_super_user_when_not_beeing_root cryptsetup luksDump ${PATH_TO_THE_LUKS_DEVICE}
+}
+
+####
+# @param string <path to the luks device>
+# @param string <path to the backup file>
+#
+# @since 2018-01-13
+# @author stev leibelt <artodeto@bazzline.net>
+####
+function net_bazzline_luks_header_backup()
+{
+    if [[ $# -lt 2 ]];
+    then
+        net_bazzline_handle_invalid_number_of_arguments_supplied "${FUNCNAME[0]} <path to the lukes device> <path to the backup file>"
+
+        return 1
+    fi
+
+    local BACKUP_FILE_PATH="${2}"
+    local PATH_TO_THE_LUKS_DEVICE="${1}"
+
+    net_bazzline_execute_as_super_user_when_not_beeing_root cryptsetup luksHeaderBackup ${PATH_TO_THE_LUKS_DEVICE} --header-backup-file "${BACKUP_FILE_PATH}.img"
+}
+
+####
+# @param string <path to the luks device>
+# @param string <path to the backup file>
+#
+# @since 2018-01-13
+# @author stev leibelt <artodeto@bazzline.net>
+####
+function net_bazzline_luks_header_restore()
+{
+    if [[ $# -lt 2 ]];
+    then
+        net_bazzline_handle_invalid_number_of_arguments_supplied "${FUNCNAME[0]} <path to the lukes device> <path to the backup file>"
+
+        return 1
+    fi
+
+    local BACKUP_FILE_PATH="${2}"
+    local PATH_TO_THE_LUKS_DEVICE="${1}"
+
+    net_bazzline_execute_as_super_user_when_not_beeing_root cryptsetup luksHeaderRestore ${PATH_TO_THE_LUKS_DEVICE} --header-backup-file "${BACKUP_FILE_PATH}"
+}
+
 #m
 
 ####
