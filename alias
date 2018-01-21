@@ -219,8 +219,8 @@ then
     #alias software-repository-info='pacaur -Si'
 elif [[ ${NET_BAZZLINE_PACKAGE_MANAGER} = 'apt' ]];
 then
-    alias poweroff='sudo poweroff'
-    alias reboot='sudo reboot'
+    alias poweroff='net_bazzline_execute_as_super_user_when_not_beeing_root poweroff'
+    alias reboot='net_bazzline_execute_as_super_user_when_not_beeing_root reboot'
     #alias software-check-unneeded-dependencies='echo "todo"'
     alias software-clean-cache='sudo apt-get autoclean && sudo apt-get autoremove'
     alias software-dist-upgrade='sudo apt-get dist-upgrade'
