@@ -19,7 +19,7 @@ echo ":: Please insert the maximum number of used servers."
 echo "   A good value is something between 50 and 200."
 read MAXIMUM_NUBERS_OF_SERVERS_TO_USE
 
-if [[ ! - d /etc/pacman.d/hooks ]];
+if [[ ! -d /etc/pacman.d/hooks ]];
 then
     sudo /usr/bin/mkdir -p /etc/pacman.d/hooks
 fi
