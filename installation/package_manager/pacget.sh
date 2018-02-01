@@ -1,6 +1,8 @@
 #!/bin/bash
 ####
 # @see: https://github.com/neurobin/pacget
+# @since 2018-02-01
+# @author stev leibelt <artodeto@bazzline.net>
 ####
 
 CURRENT_WORKING_DIRECTORY=$(pwd)
@@ -28,6 +30,6 @@ chmod +x install.sh
 ##end of preparation and installation
 
 ##begin of clean up
-cd -
+cd ${CURRENT_WORKING_DIRECTORY}
 rm -fr ${TEMPORARY_DIRECTORY_PATH}
 ##end of clean up

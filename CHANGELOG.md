@@ -51,6 +51,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 * CHANGELOG.md
 * creation of .bash_profile during the installation
 * dedicated installation script for pacget
+* dedicated installation script for reflector
 
 ### Changed
 
