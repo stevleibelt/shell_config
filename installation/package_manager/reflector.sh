@@ -9,15 +9,29 @@
 if [[ -f /etc/pacman.d/hooks/trigger_reflector_on_mirrorlist_update.hook ]];
 then
     echo ":: Reflector already configured."
-    echo "   If you want to rerun this script, remove following file:"
-    echo "   /etc/pacman.d/hooks/trigger_reflector_on_mirrorlist_update.hook"
+    echo ""
+    echo ":: Do you want to remove the configuration file? (y|n)"
+    read YES_OR_NO
 
-    exit 1
+    if [[ ${YES_OR_NO} == "y" ]];
+    then
+        sudo rm /etc/pacman.d/hooks/trigger_reflector_on_mirrorlist_update.hook
+    else
+        echo "   If you want to rerun this script, remove following file:"
+        echo "   /etc/pacman.d/hooks/trigger_reflector_on_mirrorlist_update.hook"
+
+        exit 1
+    fi
 fi
 ##end of test
 
 ##begin of installation
-sudo pacman -S reflector --noconfirm
+#@todo only install if not installed
+if [[ ! -f /usr/bin/reflector ]];
+then
+    echo ":: Installing reflector"
+    sudo pacman -S reflector --noconfirm
+fi
 ##end of installation
 
 ##begin of setup
