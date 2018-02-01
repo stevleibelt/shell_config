@@ -13,13 +13,16 @@ sudo pacman -S reflector
 echo ":: Please insert one of the following listed country names."
 echo ""
 cat /etc/pacman.d/mirrorlist | grep '## ' | tr '#' ' ' | sort | uniq | grep -v 'Arch\|Filtered\|Generated'
-echo ""
 read COUNTRY_NAME
 
 echo ":: Please insert the maximum number of used servers."
 echo "   A good value is something between 50 and 200."
-echo ""
 read MAXIMUM_NUBERS_OF_SERVERS_TO_USE
+
+if [[ ! - d /etc/pacman.d/hooks ]];
+then
+    sudo /usr/bin/mkdir -p /etc/pacman.d/hooks
+fi
 
 sudo cat > /etc/pacman.d/hooks/trigger_reflector_on_mirrorlist_update.hook <<DELIM
 [Trigger]
