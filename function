@@ -919,6 +919,11 @@ function net_bazzline_delete_list_of_dated_zfs_snapshots()
     return $?
 }
 
+function net_bazzline_determine_filesystem_path_age ()
+{
+    age () { stat=$(stat --printf="%Y %F\n" "$1"); echo "The ${stat#* } '$1' is $((($(date +%s) - ${stat%% *})/60)) minutes old."; }
+}
+
 ####
 # Show differences between two directories
 #
