@@ -13,9 +13,10 @@ clear
 #begin of setup
 DATETIME=$(date +%y%m%d_+%T)
 
+PATH_TO_THE_BASH_PROFILE="${HOME}/.bash_profile"
 PATH_TO_THE_BASH_RC="${HOME}/.bashrc"
-PATH_TO_THIS_SCRIPT=$(cd $(dirname "$0"); pwd)
 PATH_TO_THE_XINIT="${HOME}/.xinitrc"
+PATH_TO_THIS_SCRIPT=$(cd $(dirname "$0"); pwd)
 
 PATH_TO_THE_TEMPORARY_XINIT="${PATH_TO_THE_XINIT}.temporary"
 #end of setup
@@ -29,6 +30,29 @@ then
     exit 1
 fi
 ##end of validation
+
+##begin of adapting bash_profile
+if [[ ! -f "${PATH_TO_THE_BASH_PROFILE}" ]];
+then
+    echo ":: No .bash_profile file found."
+    echo "   Creating on ..."
+
+    touch ${PATH_TO_THE_BASH_PROFILE}
+    cat > ${PATH_TO_THE_BASH_PROFILE} <<DELIM
+#begin of created net_bazzline_config_shell"
+#created at date: "${DATETIME}
+#
+# ~/.bash_profile
+#
+
+[[ -f ~/.bashrc ]] && . ~/.bashrc
+#end of created net_bazzline_config_shell"
+DELIM
+else
+    echo ":: .bash_profile file found."
+    echo "   Nothing to do."
+fi
+##end of adapting bash_profile
 
 ##begin of adapting bashrc
 echo "Adapting .bashrc"

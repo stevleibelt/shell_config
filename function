@@ -201,6 +201,11 @@ function net_bazzline_create_a_mp3_file_for_each_mpc_file_in_the_current_directo
     fi
 }
 
+function not_working:net_bazzline_convert_dvd_to_mkv()
+{
+    cat /mnt/VIDEO_TS/V*.VOB | ffmpeg -i - -acodec copy -scodec copy -vcodec libx264 -nostats -hide_banner -pass 2 file.x265.mkv
+}
+
 #i
 
 ####
