@@ -122,6 +122,10 @@ echo "Replacing ${PATH_TO_THE_XINIT} with ${PATH_TO_THE_TEMPORARY_XINIT}"
 mv "${PATH_TO_THE_TEMPORARY_XINIT}" "${PATH_TO_THE_XINIT}"
 ##end of adapting xinitrc
 
+##begin of creating cache directory
+mkdir -p ~/.cache/net_bazzline/shell_config
+##end of creating cache directory
+
 ##begin of finish
 echo ""
 echo "Finished"
