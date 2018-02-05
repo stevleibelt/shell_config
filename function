@@ -1528,6 +1528,47 @@ function net_bazzline_list_symbolic_links ()
 }
 
 ####
+# list information of virtual box machine
+
+# @param: string $1 <virtual box name or id>
+# @author stev leibelt <artodeto@bazzline.net>
+# @since 2018-02-03
+####
+function net_bazzline_virtual_box_list_information_of_machine ()
+{
+    if [[ $# -lt 1 ]];
+    then
+        net_bazzline_handle_invalid_number_of_arguments_supplied "${FUNCNAME[0]} <virtual box name or id>"
+
+        return 1
+    fi
+
+    VBoxManage showvminfo ${1}
+}
+
+####
+# list all bridged interfaces of virtual box machine
+
+# @author stev leibelt <artodeto@bazzline.net>
+# @since 2018-02-03
+####
+function net_bazzline_virtual_box_list_briged_interfaces ()
+{
+    VBoxManage list bridgedifs
+}
+
+####
+# list all running virtual box machines
+
+# @author stev leibelt <artodeto@bazzline.net>
+# @since 2018-02-03
+####
+function net_bazzline_virtual_box_list_running_machines ()
+{
+    VBoxManage list runningvms
+}
+
+####
 # list system users
 # 
 # @author stev leibelt <artodeto@bazzline.net>

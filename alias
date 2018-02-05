@@ -299,6 +299,12 @@ alias unhideFileSystemObject=net_bazzline_unhide_file_system_object
 alias unloadVirtualBoxModules='sudo modprobe -r vboxdrv && sudo modprobe -r vboxnetadp && sudo modprobe -r vboxnetflt && sudo modprobe -r vboxpci'
 
 #v
+if [[ -f /usr/bin/virtualbox ]];
+then
+    alias virtualBoxListInfromationOfmachine=net_bazzline_virtual_box_list_information_of_machine
+    alias virtualBoxListBridgedInterface=net_bazzline_virtual_box_list_briged_interfaces
+    alias virtualBoxListRunningMachines=net_bazzline_virtual_box_list_running_machines
+fi
 alias v=vim
 
 #w
