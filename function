@@ -2206,27 +2206,30 @@ function net_bazzline_psgrep ()
 ####
 function net_bazzline_record_function_usage ()
 {
-    #begin of input validation
-    if [[ $# -lt 1 ]];
+    if [[ ${NET_BAZZLINE_RECORD_FUNCTION_USAGE} -eq 1 ]];
     then
-        echo "invalid number of arguments provided"
-        echo "usage: net_bazzline_record_function_usage <function name>"
-        return 1
+        #begin of input validation
+        if [[ $# -lt 1 ]];
+        then
+            echo "invalid number of arguments provided"
+            echo "usage: net_bazzline_record_function_usage <function name>"
+            return 1
+        fi
+        #end of input validation
+
+        #begin of business logic
+        local CURRENT_DATE=$(date +"%Y-%m-%d")
+        local DIRECTORY_PATH_TO_THE_STATISTICS="${HOME}/.cache/net_bazzline/shell_config"
+        local FUNCTION_NAME="${1}"
+
+        if [[ ! -d "${DIRECTORY_PATH_TO_THE_STATISTICS}" ]];
+        then
+            /usr/bin/mkdir -p "${DIRECTORY_PATH_TO_THE_STATISTICS}"
+        fi
+
+        echo "${FUNCTION_NAME}    #${CURRENT_DATE}" >> "${DIRECTORY_PATH_TO_THE_STATISTICS}/statistics"
+        #end of business logic
     fi
-    #end of input validation
-
-    #begin of business logic
-    local CURRENT_DATE=$(date +"%Y-%m-%d")
-    local DIRECTORY_PATH_TO_THE_STATISTICS="$HOME/.cache/net_bazzline/shell_config"
-    local FUNCTION_NAME="$1"
-
-    if [[ ! -d "${DIRECTORY_PATH_TO_THE_STATISTICS}" ]];
-    then
-        /usr/bin/mkdir -p "${DIRECTORY_PATH_TO_THE_STATISTICS}"
-    fi
-
-    echo "${FUNCTION_NAME}    #${CURRENT_DATE}" >> "${DIRECTORY_PATH_TO_THE_STATISTICS}/statistics"
-    #end of business logic
 }
 
 ####

@@ -20,10 +20,13 @@ export LESS_TERMCAP_so=$(printf '\e[1;44;1m')
 
 #start ssh agent (if available), valid values are 0 and 1
 NET_BAZZLINE_AUTOSTART_SSH_AGENT=0
-#allowed are [apk, apt, none, pacman, pacaur, pacget]
-NET_BAZZLINE_PACKAGE_MANAGER='none'
 #add all you known interfaces in here
 NET_BAZZLINE_INTERFACES=()
+#allowed are [apk, apt, none, pacman, pacaur, pacget]
+NET_BAZZLINE_PACKAGE_MANAGER='none'
+#either write statistics of function usage or not
+#1 turns it on, all other values disables it
+NET_BAZZLINE_RECORD_FUNCTION_USAGE=0
 #timeout in minutes to forget ssh password
 NET_BAZZLINE_REMEMBER_SSH_PASSWORD_TIMEOUT_IN_MINUTES=30
 #add port where your secure connection is listen on (via ssh -D)
