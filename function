@@ -2220,9 +2220,9 @@ function net_bazzline_record_function_usage ()
     local DIRECTORY_PATH_TO_THE_STATISTICS="$HOME/.cache/net_bazzline/shell_config"
     local FUNCTION_NAME="$1"
 
-    if [[ ! -d "$DIRECTORY_PATH_TO_THE_STATISTICS" ]];
+    if [[ ! -d "${DIRECTORY_PATH_TO_THE_STATISTICS}" ]];
     then
-        mkdir -p "$DIRECTORY_PATH_TO_THE_STATISTICS"
+        /usr/bin/mkdir -p "${DIRECTORY_PATH_TO_THE_STATISTICS}"
     fi
 
     echo "${FUNCTION_NAME}    #${CURRENT_DATE}" >> "${DIRECTORY_PATH_TO_THE_STATISTICS}/statistics"
