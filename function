@@ -1736,7 +1736,7 @@ function net_bazzline_mkdir ()
     # change to it
     if [[ $# -eq 1 ]];
     then
-        mkdir -p "${1}" 
+        /usr/bin/mkdir -p "${1}" 
         cd "${1}"
     fi
 
@@ -1744,7 +1744,7 @@ function net_bazzline_mkdir ()
     # execute default mkdir
     if [[ $# -gt 1 ]];
     then
-        mkdir $@
+        /usr/bin/mkdir $@
     fi
 
     return 0
