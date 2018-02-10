@@ -20,6 +20,8 @@ export LESS_TERMCAP_so=$(printf '\e[1;44;1m')
 
 #start ssh agent (if available), valid values are 0 and 1
 NET_BAZZLINE_AUTOSTART_SSH_AGENT=0
+#either you are using an lts kernel or not: uname -a | grep -i lts
+NET_BAZZLINE_IS_LTS_KERNEL=1
 #add all you known interfaces in here
 NET_BAZZLINE_INTERFACES=()
 #allowed are [apk, apt, none, pacman, pacaur, pacget]

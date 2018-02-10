@@ -170,8 +170,12 @@ then
     alias software-search-installed='pacaur -Qs'
     alias software-upgrade='pacaur -Syuu'
     alias software-upgrade-from-cache='pacaur -uu'
-    alias software-upgrade-without-kernel='pacaur -Syuu --ignore=linux,linux-headers,zfs-linux,zfs-utils-common,spl-linux,spl-utils-common'
-    alias software-upgrade-without-lts-kernel='pacaur -Syuu --ignore=linux-lts,linux-lts-headers,zfs-linux-lts,zfs-utils-common,spl-linux-lts,spl-utils-common'
+    if [[ ${NET_BAZZLINE_IS_LTS_KERNEL} -eq 1 ]];
+    then
+        alias software-upgrade-without-lts-kernel='pacaur -Syuu --ignore=linux-lts,linux-lts-headers,zfs-linux-lts,zfs-utils-common,spl-linux-lts,spl-utils-common'
+    else
+        alias software-upgrade-without-kernel='pacaur -Syuu --ignore=linux,linux-headers,zfs-linux,zfs-utils-common,spl-linux,spl-utils-common'
+    fi
     alias software-repository-info='pacaur -Si'
 elif [[ ${NET_BAZZLINE_PACKAGE_MANAGER} = 'pacget' ]];
 then
@@ -193,8 +197,12 @@ then
     alias software-search-installed='pacget -Qs'
     alias software-upgrade='pacget -Syuu'
     alias software-upgrade-from-cache='pacget -uu'
-    alias software-upgrade-without-kernel='pacaur -Syuu --ignore=linux,linux-headers,zfs-linux,zfs-utils-common,spl-linux,spl-utils-common'
-    alias software-upgrade-without-lts-kernel='pacget -Syuu --ignore=linux-lts,linux-lts-headers,zfs-linux-lts,zfs-utils-common,spl-linux-lts,spl-utils-common'
+    if [[ ${NET_BAZZLINE_IS_LTS_KERNEL} -eq 1 ]];
+    then
+        alias software-upgrade-without-lts-kernel='pacget -Syuu --ignore=linux-lts,linux-lts-headers,zfs-linux-lts,zfs-utils-common,spl-linux-lts,spl-utils-common'
+    else
+        alias software-upgrade-without-kernel='pacaur -Syuu --ignore=linux,linux-headers,zfs-linux,zfs-utils-common,spl-linux,spl-utils-common'
+    fi
     alias software-repository-info='pacget -Si'
 elif [[ ${NET_BAZZLINE_PACKAGE_MANAGER} = 'pacman' ]];
 then
@@ -216,8 +224,12 @@ then
     alias software-update='sudo pacman -Sy'
     alias software-upgrade='sudo pacman -Syu'
     alias software-upgrade-from-cache='sudo pacman -u'
-    alias software-upgrade-without-kernel='pacaur -Syuu --ignore=linux,linux-headers,zfs-linux,zfs-utils-common,spl-linux,spl-utils-common'
-    alias software-upgrade-without-lts-kernel='pacman -Syuu --ignore=linux-lts,linux-lts-headers,zfs-linux-lts,zfs-utils-common,spl-linux-lts,spl-utils-common'
+    if [[ ${NET_BAZZLINE_IS_LTS_KERNEL} -eq 1 ]];
+    then
+        alias software-upgrade-without-lts-kernel='pacman -Syuu --ignore=linux-lts,linux-lts-headers,zfs-linux-lts,zfs-utils-common,spl-linux-lts,spl-utils-common'
+    else
+        alias software-upgrade-without-kernel='pacaur -Syuu --ignore=linux,linux-headers,zfs-linux,zfs-utils-common,spl-linux,spl-utils-common'
+    fi
     alias software-repository-info='sudo pacman -Si'
 elif [[ ${NET_BAZZLINE_PACKAGE_MANAGER} = 'apk' ]];
 then
