@@ -7,6 +7,16 @@
 # @author stev leibelt <artodeto@bazzline.net>
 ####
 
+#begin of testing if we are on the right system
+if [[ ! -f /usr/bin/pacman ]];
+then
+    echo ":: Can not install on your system."
+    echo "   Sorry dude, I can only install things on a arch linux."
+
+    exit 1
+fi
+#end of testing if we are on the right system
+
 #begin of installation
 if [[ ! -f /usr/bin/dnsmasq ]];
 then
@@ -38,7 +48,7 @@ then
     echo "   I won't do anything else now."
     echo "   Please remove the file mentioned above."
 
-    exit 1
+    exit 2
 else
     sudo cp /etc/dnsmasq.conf /etc/dnsmasq.conf.dist
 
