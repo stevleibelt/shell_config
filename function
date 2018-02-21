@@ -398,9 +398,17 @@ function net_bazzline_check_fat_device ()
 {
     if [[ $# -gt 0 ]];
     then
-        DEVICE_PATH="$1"
+        local DEVICE_PATH="${1}"
 
-        sudo fsck.fat -aV ${DEVICE_PATH}
+        read -p ":: Take the long road? [y/N]" YES_OR_NO
+
+        case ${YES_OR_NO} in
+            [Yy]* )
+                #@see: https://duckduckgo.com/?q=fsck.fat&t=hf&ia=qa
+                sudo dosfsck -w -r -l -a -v -t ${DEVICE_PATH};
+                break;;
+            * ) sudo fsck.fat -aV ${DEVICE_PATH};;
+        esac
         sudo sync
     else
         net_bazzline_handle_invalid_number_of_arguments_supplied "${FUNCNAME[0]} <path to the device>"
