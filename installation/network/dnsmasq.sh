@@ -112,9 +112,7 @@ then
     drill archlinux.org | grep "Query time"
     drill bazzline.net | grep "Query time"
 
-    echo ""
     echo "   And retry, this time, the Query time should be way smaller"
-    echo ""
 
     drill archlinux.org | grep "Query time"
     drill bazzline.net | grep "Query time"
