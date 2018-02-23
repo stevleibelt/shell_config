@@ -5,6 +5,16 @@
 # @author stev leibelt <artodeto@bazzline.net>
 ####
 
+#begin of testing if we are on the right system
+if [[ ! -f /usr/bin/pacman ]];
+then
+    echo ":: Can not install on your system."
+    echo "   Sorry dude, I can only install things on a arch linux."
+
+    exit 1
+fi
+#end of testing if we are on the right system
+
 CURRENT_WORKING_DIRECTORY=$(pwd)
 PATH_TO_CURL=/usr/bin/curl
 
