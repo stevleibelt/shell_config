@@ -20,9 +20,10 @@ PATH_TO_CURL=/usr/bin/curl
 
 if [[ ! -f ${PATH_TO_CURL} ]];
 then
-    echo ":: Curl is missing but mandatory"
+    echo ":: Curl is missing but mandatory."
+    echo ":: Installing curl."
 
-    exit 1
+    sudo pacman -S curl
 fi
 
 ##begin of temporary path creation
