@@ -24,8 +24,8 @@ PATH_TO_THE_TEMPORARY_XINIT="${PATH_TO_THE_XINIT}.temporary"
 ##begin of validation
 if [[ ! -f "${PATH_TO_THE_BASH_RC}" ]];
 then
-    echo "No .bashrc file found."
-    echo "Bash is currently the only supported shell"
+    echo ":: No .bashrc file found."
+    echo "   Bash is currently the only supported shell"
 
     exit 1
 fi
@@ -55,7 +55,7 @@ fi
 ##end of adapting bash_profile
 
 ##begin of adapting bashrc
-echo "Adapting .bashrc"
+echo ":: Adapting .bashrc"
 
 cat >> "${PATH_TO_THE_BASH_RC}" <<DELIM
 #begin of net_bazzline_config_shell"
@@ -73,7 +73,7 @@ DELIM
 
 ##begin of creating local user files
 echo ""
-echo "Creating local files"
+echo ":: Creating local files"
 
 declare -a FILES_TO_CREATE=("setting" "variable" "source" "export" "function" "alias" "automatic_start")
 
@@ -86,11 +86,11 @@ done;
 
 ##begin of adapting xinitrc
 echo ""
-echo "Creating .xinitrc.temporary"
+echo ":: Creating .xinitrc.temporary"
 
 touch "${PATH_TO_THE_TEMPORARY_XINIT}"
 
-echo "Adding content to ${PATH_TO_THE_TEMPORARY_XINIT}"
+echo ":: Adding content to ${PATH_TO_THE_TEMPORARY_XINIT}"
 
 cat >> "${PATH_TO_THE_TEMPORARY_XINIT}" <<DELIM
 #begin of net_bazzline_config_shell"
@@ -112,12 +112,12 @@ fi
 DELIM
 
 echo ""
-echo "Copy content of ${PATH_TO_THE_XINIT} into ${PATH_TO_THE_TEMPORARY_XINIT}"
+echo ":: Copy content of ${PATH_TO_THE_XINIT} into ${PATH_TO_THE_TEMPORARY_XINIT}"
 
 cat "${PATH_TO_THE_XINIT}" >> "${PATH_TO_THE_TEMPORARY_XINIT}"
 
 echo ""
-echo "Replacing ${PATH_TO_THE_XINIT} with ${PATH_TO_THE_TEMPORARY_XINIT}"
+echo ":: Replacing ${PATH_TO_THE_XINIT} with ${PATH_TO_THE_TEMPORARY_XINIT}"
 
 mv "${PATH_TO_THE_TEMPORARY_XINIT}" "${PATH_TO_THE_XINIT}"
 ##end of adapting xinitrc
@@ -128,5 +128,5 @@ mkdir -p ~/.cache/net_bazzline/shell_config
 
 ##begin of finish
 echo ""
-echo "Finished"
+echo ":: Finished"
 ##end of finish
