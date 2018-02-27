@@ -17,7 +17,12 @@ cd ${PATH_TO_THIS_SCRIPT}
 
 ## begin of fetch available option
 echo ":: Listing available options."
-cat ${PATH_TO_THIS_SCRIPT}/setting | grep NET_BAZZLINE_
+#@todo
+#cat ${PATH_TO_THIS_SCRIPT}/setting | grep NET_BAZZLINE_
+INDEX_OF_EQUAL_SIGN=$(expr index "${CURRENT_FULL_OPTION}" "=")
+#remove NET_BAZZLINE_ (13) and all starting at =
+LENGTH_WE_WANT_TO_CUT_OUT=$(expr 13 - ${INDEX_OF_EQUAL_SIGN})
+CURRENT_OPTION="${CURRENT_FULL_OPTION:13:}"
 ## end of fetch available option
 
 #sed -i -e 's/abc/XYZ/g' /tmp/file.txt
