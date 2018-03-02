@@ -4,14 +4,14 @@
 ####
 
 #starts ssh-agent if not running already
-if [[ $NET_BAZZLINE_AUTOSTART_SSH_AGENT -eq 1 ]]; then
+if [[ ${NET_BAZZLINE_AUTOSTART_SSH_AGENT} -eq 1 ]]; then
     if [[ -f /usr/bin/ssh-agent ]]; then
         #taken from: https://wiki.archlinux.org/index.php/SSH_keys#SSH_agents
-        if ! pgrep -u $USER ssh-agent > /dev/null; then
+        if ! pgrep -u ${USER} ssh-agent > /dev/null; then
             ssh-agent > ~/.ssh-agent-thing
         fi
         
-        if [[ "$SSH_AGENT_PID" == "" ]]; then
+        if [[ "${SSH_AGENT_PID}" == "" ]]; then
             eval $(<~/.ssh-agent-thing)
         fi
         ssh-add -l >/dev/null || alias ssh='ssh-add -l >/dev/null || ssh-add && unalias ssh; ssh'
