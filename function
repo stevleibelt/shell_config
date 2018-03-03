@@ -2255,18 +2255,22 @@ function net_bazzline_refresh_interface ()
 
     local LENGTH=${#NET_BAZZLINE_INTERFACES[@]}
 
-    if [[ $LENGTH -eq 0 ]]; then
+    if [[ ${LENGTH} -eq 0 ]];
+    then
         echo 'Environment variable NET_BAZZLINE_INTERFACES not defined or empty'
+
         return 1
     fi
 
-    if [[ $# -eq 0 ]]; then
+    if [[ $# -eq 0 ]];
+    then
         local INTERFACE=${NET_BAZZLINE_INTERFACES[0]}
     else
         for NET_BAZZLINE_INTERFACE in "${NET_BAZZLINE_INTERFACES[@]}"
         do
-            if [[ "$1" -eq $NET_BAZZLINE_INTERFACE ]]; then
-                local INTERFACE=$1
+            if [[ "${1}" -eq ${NET_BAZZLINE_INTERFACE} ]];
+            then
+                local INTERFACE=${1}
             fi
         done
 
@@ -2274,9 +2278,9 @@ function net_bazzline_refresh_interface ()
         local INTERFACE=${INTERFACE:-$NET_BAZZLINE_INTERFACES[0]}
     fi
 
-    sudo ip link set $INTERFACE down
-    sudo ip link set $INTERFACE up
-    sudo dhcpcd $INTERFACE
+    sudo ip link set ${INTERFACE} down
+    sudo ip link set ${INTERFACE} up
+    sudo dhcpcd ${INTERFACE}
 }
 
 ####
