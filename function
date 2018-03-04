@@ -222,16 +222,19 @@ function net_bazzline_image_batch_convert ()
     net_bazzline_record_function_usage ${FUNCNAME[0]}
 
 #hook - implement usage and style
-    if [[ $# -eq 2 ]]; then
-        local DIRECTORY="$2";
+    if [[ $# -eq 2 ]];
+    then
+        local DIRECTORY="${2}";
     else
-        local DIRECTORY="resized_"$1;
+        local DIRECTORY="resized_${1}";
     fi
 
     #@todo implement check if directory exists
-    mkdir $DIRECTORY
-    for FILE in *.[jJ][pP][gG]; do
-        convert $FILE -verbose -geometry $1x$1 -quality 98% -comment "made with linux" $DIRECTORY/$FILE
+    mkdir "${DIRECTORY}"
+
+    for FILE in *.[jJ][pP][gG];
+    do
+        convert ${FILE} -verbose -geometry ${1}x${1} -quality 98% -comment "made with linux" "${DIRECTORY}/${FILE}"
     done;
 }
 
@@ -247,8 +250,9 @@ function net_bazzline_image_batch_convert_1024 ()
 {
     net_bazzline_record_function_usage ${FUNCNAME[0]}
 
-    if [[ $# -eq 1 ]]; then
-        net_bazzline_image_batch_convert 1024 "$1"
+    if [[ $# -eq 1 ]];
+    then
+        net_bazzline_image_batch_convert 1024 "${1}"
     else
         net_bazzline_image_batch_convert 1024
     fi
@@ -266,8 +270,9 @@ function net_bazzline_image_batch_convert_1920 ()
 {
     net_bazzline_record_function_usage ${FUNCNAME[0]}
 
-    if [[ $# -eq 1 ]]; then
-        net_bazzline_image_batch_convert 1920 "$1"
+    if [[ $# -eq 1 ]];
+    then
+        net_bazzline_image_batch_convert 1920 "${1}"
     else
         net_bazzline_image_batch_convert 1920
     fi
@@ -285,8 +290,9 @@ function net_bazzline_image_batch_convert_640 ()
 {
     net_bazzline_record_function_usage ${FUNCNAME[0]}
 
-    if [[ $# -eq 1 ]]; then
-        net_bazzline_image_batch_convert 640 "$1"
+    if [[ $# -eq 1 ]];
+    then
+        net_bazzline_image_batch_convert 640 "${1}"
     else
         net_bazzline_image_batch_convert 640
     fi
@@ -308,16 +314,18 @@ function net_bazzline_burn ()
 {
     net_bazzline_record_function_usage ${FUNCNAME[0]}
 
-    if [[ $# -lt 1 ]]; then
+    if [[ $# -lt 1 ]];
+    then
         net_bazzline_handle_invalid_number_of_arguments_supplied "${FUNCNAME[0]} <path to the iso file> [<device to burn>]"
 
         return 1
     fi
 
-    if [[ $# -eq 1 ]]; then
-        sudo cdrecord -v -sao dev=/dev/sr0 "$1"
+    if [[ $# -eq 1 ]];
+    then
+        sudo cdrecord -v -sao dev=/dev/sr0 "${1}"
     else
-        sudo cdrecord -v -sao dev=/dev/"$2" "$1"
+        sudo cdrecord -v -sao dev=/dev/"${2}" "${1}"
     fi
 }
 
@@ -350,7 +358,7 @@ function net_bazzline_cd ()
         else
             local PATH_TO_GO_UP=""
 
-            for (( ITERATOR=1; ITERATOR <= $1; ++ITERATOR ))
+            for (( ITERATOR=1; ITERATOR <= ${1}; ++ITERATOR ))
             do
                 PATH_TO_GO_UP+="../"
             done
@@ -376,7 +384,7 @@ function net_bazzline_check_ext4_device ()
 
     if [[ $# -gt 0 ]];
     then
-        DEVICE_PATH="$1"
+        DEVICE_PATH="${1}"
 
         sudo fsck.ext4 -yfD ${DEVICE_PATH}
         sudo sync
@@ -430,19 +438,21 @@ function net_bazzline_compress ()
 {
     net_bazzline_record_function_usage ${FUNCNAME[0]}
 
-    if [[ $# -lt 1 ]]; then
+    if [[ $# -lt 1 ]];
+    then
         echo 'No valid arguments supplied.'
 
         return 1
     fi
 
-    FILENAME_TAR="$1".tar.gz
+    FILENAME_TAR="${1}".tar.gz
 
-    if [[ $# -gt 1 ]]; then
+    if [[ $# -gt 1 ]];
+    then
         shift
     fi
 
-    tar --ignore-failed-read -zcf "$FILENAME_TAR" "$@"
+    tar --ignore-failed-read -zcf "${FILENAME_TAR}" "$@"
 }
 
 ####
@@ -456,14 +466,17 @@ function net_bazzline_convert_file_names_to_utf_8 ()
 {
     net_bazzline_record_function_usage ${FUNCNAME[0]}
 
-    if [[ $# -lt 1 ]]; then
+    if [[ $# -lt 1 ]];
+    then
         echo 'usage: <command> <path> [dry-run|d]'
+
         return 1
     else
-        local DIRECTORY_PATH="$1"
+        local DIRECTORY_PATH="${1}"
 
-        if [[ $# -eq 2 ]]; then
-            case "$2" in 
+        if [[ $# -eq 2 ]];
+        then
+            case "${2}" in 
                 "d")
                     local DRY_RUN=1;;
                 "dry-run")
@@ -473,18 +486,22 @@ function net_bazzline_convert_file_names_to_utf_8 ()
             esac
         fi
 
-        for name in `find $DIRECTORY_PATH -depth `; do 
-            local NEW_NAME=`echo $NAME | iconv -f ISO-8859-1 -t UTF-8` 
+        for name in `find ${DIRECTORY_PATH} -depth `;
+        do 
+            local NEW_NAME=`echo ${NAME} | iconv -f ISO-8859-1 -t UTF-8` 
 
-            if [[ $DRY_RUN -eq 1 ]]; then
-                `echo $NAME | iconv -f UTF-8 -t ISO-8859-1` 
+            if [[ ${DRY_RUN} -eq 1 ]];
+            then
+                `echo ${NAME} | iconv -f UTF-8 -t ISO-8859-1` 
             fi
 
-            if [[ "$NEW_NAME" != "$NAME" ]]; then 
-                if [[ $DRY_RUN -eq 1 ]]; then
-                    echo "$NAME => $NEW_NAME" 
+            if [[ "${NEW_NAME}" != "${NAME}" ]];
+            then 
+                if [[ ${DRY_RUN} -eq 1 ]];
+                then
+                    echo "${NAME} => ${NEW_NAME}" 
                 else
-                    mv "$NAME" "$NEW_NAME" 
+                    mv "${NAME}" "${NEW_NAME}" 
                 fi
             fi 
         done 
