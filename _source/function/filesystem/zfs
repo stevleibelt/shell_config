@@ -1,0 +1,354 @@
+#!/bin/bash
+
+####
+# @param string <name of the zfs pool>
+# [@param string <name of the snapshot>, default is current date
+####
+function net_bazzline_create_zfs_snapshot()
+{
+    net_bazzline_record_function_usage ${FUNCNAME[0]}
+
+    if [[ $# -lt 1 ]]; then
+        echo 'invalid number of arguments'
+        echo '    net_bazzline_create_zfs_snapshot <name of the zfs pool> [<name of the snapshot>]'
+        return 1
+    fi
+
+    local NAME_OF_THE_POOL="$1"
+
+    if [[ $# -gt 1 ]]; then
+        local NAME_OF_THE_SNAPSHOT="$2"
+    else
+        local NAME_OF_THE_SNAPSHOT=$(date +'%Y-%m-%d_%H-%M-%S')
+    fi
+
+    if sudo zfs snapshot -r $NAME_OF_THE_POOL@$NAME_OF_THE_SNAPSHOT; then
+        echo 'snapshot "'$NAME_OF_THE_SNAPSHOT'" created for pool "'$NAME_OF_THE_POOL'"'
+    fi
+
+    return $?
+}
+
+####
+# @param string <name of zfs pool>
+# @param string <name of the snapshot>
+# @todo
+#   implement -q (quite) flag
+#   implement -r (recurisve) flag
+####
+# @todo
+#   * implement usage of "zfs list -t snapshot" to evaluate first if the snapshot exists or not
+#   * check why -R is not working as expected
+####
+function net_bazzline_delete_zfs_snapshot()
+{
+    net_bazzline_record_function_usage ${FUNCNAME[0]}
+
+    if [[ $# -lt 2 ]]; then
+        echo ":: Invalid number of arguments"
+        echo ":: Usage"
+        echo "   net_bazzline_delete_zfs_snapshot <name of the zfs pool> <name of the snapshot>"
+        return 1
+    fi
+
+    local NAME_OF_THE_POOL="$1"
+    local NAME_OF_THE_SNAPSHOT="$2"
+
+    if sudo zfs list -t snapshot | grep -q "${NAME_OF_THE_POOL}@${NAME_OF_THE_SNAPSHOT}";
+    then
+        if sudo zfs destroy -R ${NAME_OF_THE_POOL}@${NAME_OF_THE_SNAPSHOT}; then
+            echo ":: Snapshot \"${NAME_OF_THE_SNAPSHOT}\" deleted from pool \"${NAME_OF_THE_POOL}\""
+        fi
+    else
+        echo ":: Failure"
+        echo "   Snapshot \"${NAME_OF_THE_SNAPSHOT}\" does not exist on pool \"${NAME_OF_THE_POOL}\""
+    fi
+
+    return $?
+}
+
+####
+# @param string <name of zfs pool>
+# @param string <initial snapshot number>
+# @param string <final snapshot number>
+####
+function net_bazzline_delete_list_of_dated_zfs_snapshots()
+{
+    net_bazzline_record_function_usage ${FUNCNAME[0]}
+
+    if [[ $# -lt 3 ]];
+    then
+        echo ":: Invalid number of arguments"
+        echo "   net_bazzline_delete_zfs_snapshots <name of the zfs pool> <name of inital snapshot number> <name of the final snapshot number>"
+        return 1
+    fi
+
+    if [[ ${INITIAL_SNAPSHOT_NUMBER} -gt ${FINAL_SNAPSHOT_NUMBER} ]];
+    then
+    echo ":: Invalid arguments"
+    echo "   ${INITIAL_SNAPSHOT_NUMBER} greater than ${FINAL_SNAPSHOT_NUMBER}"
+    fi
+
+    local NAME_OF_THE_POOL="$1"
+    local INITIAL_SNAPSHOT_NUMBER="$2"
+    local FINAL_SNAPSHOT_NUMBER="$3"
+
+    for CURRENT_SNAPSHOT_NUMBER in $(seq ${INITIAL_SNAPSHOT_NUMBER} 1 ${FINAL_SNAPSHOT_NUMBER});
+    do
+        #expected date for CURRENT_SNAPSHOT_NUMBER is yyyymmdd
+        #@see http://stackoverflow.com/questions/10759162/check-if-argument-is-a-valid-date-in-bash-shell
+        local DAY=${CURRENT_SNAPSHOT_NUMBER:6:4}
+        local MONTH=${CURRENT_SNAPSHOT_NUMBER:4:2}
+        local YEAR=${CURRENT_SNAPSHOT_NUMBER:0:4}
+
+        #check if the date is valid
+        if date -d "${YEAR}-${MONTH}-${DAY}" &> /dev/null;
+        then
+            net_bazzline_delete_zfs_snapshot ${NAME_OF_THE_POOL} ${CURRENT_SNAPSHOT_NUMBER}
+        fi
+    done
+
+    return $?
+}
+
+####
+# [@param string <path to zfs pool>]
+####
+function net_bazzline_list_zfs_snapshots()
+{
+    net_bazzline_record_function_usage ${FUNCNAME[0]}
+
+    if [[ $# -lt 1 ]]; then
+        sudo zfs list -t snapshot
+    else
+        local NAME_OF_THE_POOL="$1"
+
+        sudo zfs list -t snapshot | grep --color ${NAME_OF_THE_POOL}
+    fi
+}
+
+####
+# @param string <mount point>
+# @param string <zfs pool name>
+# @param string <uuid of device>
+# [@param string <uuid of device>]
+# [...]
+####
+function net_bazzline_mount_crypto_zfs_pool ()
+{
+    net_bazzline_record_function_usage ${FUNCNAME[0]}
+
+    if [[ $# -ge 3 ]];
+    then
+        local MOUNT_POINT="$1"
+        local ZFS_POOL_NAME="$2"
+
+        shift 2
+
+        #begin of duplicated code - remove empty path if possible
+        if [[ -d ${MOUNT_POINT} ]];
+        then
+            #check if directory is not empty
+            if [[ $(ls -A "${MOUNT_POINT}") ]];
+            then
+                echo ":: Mount point exists and is not empty."
+                echo "   ${MOUNT_POINT}"
+
+                return 2
+            else
+                echo ":: Mount point exists but is empty."
+                echo "   Removing ${MOUNT_POINT}"
+
+                net_bazzline_execute_as_super_user_when_not_beeing_root rmdir ${MOUNT_POINT}
+            fi
+        fi
+        #end of duplicated code - remove empty path if possible
+
+        net_bazzline_execute_as_super_user_when_not_beeing_root mkdir -p ${MOUNT_POINT}
+
+        for CURRENT_ARGUMENT_NUMBER in $(seq ${#});
+        do
+            UUID=${1}
+            echo ":: disk ${CURRENT_ARGUMENT_NUMBER}"
+            net_bazzline_execute_as_super_user_when_not_beeing_root cryptsetup luksOpen /dev/disk/by-uuid/${UUID} crypt-${ZFS_POOL_NAME}-${CURRENT_ARGUMENT_NUMBER}
+            shift
+        done
+
+        net_bazzline_execute_as_super_user_when_not_beeing_root zpool import ${ZFS_POOL_NAME}
+    else
+        echo ":: called with invalid number of arguments."
+        echo "Usage:"
+        echo "    ${FUNCNAME[0]} <mount point> <zfs pool name> <uuid of device> [<uuid of device> [...]]"
+
+        return 1
+    fi
+}
+
+####
+# @param string <mount point>
+# @param string <zfs pool name>
+####
+function net_bazzline_mount_zfs_pool ()
+{
+    net_bazzline_record_function_usage ${FUNCNAME[0]}
+
+    if [[ $# -eq 2 ]];
+    then
+        local MOUNT_POINT="${1}"
+        local ZFS_POOL_NAME="${2}"
+
+        #begin of duplicated code - remove empty path if possible
+        if [[ -d ${MOUNT_POINT} ]];
+        then
+            #check if directory is not empty
+            if [[ $(ls -A "${MOUNT_POINT}") ]];
+            then
+                echo ":: Mount point exists and is not empty."
+                echo "   ${MOUNT_POINT}"
+
+                return 2
+            else
+                echo ":: Mount point exists but is empty."
+                echo "   Removing ${MOUNT_POINT}"
+
+                net_bazzline_execute_as_super_user_when_not_beeing_root rmdir ${MOUNT_POINT}
+            fi
+        fi
+        #end of duplicated code - remove empty path if possible
+
+        net_bazzline_execute_as_super_user_when_not_beeing_root mkdir -p ${MOUNT_POINT}
+
+        net_bazzline_execute_as_super_user_when_not_beeing_root zpool import ${ZFS_POOL_NAME}
+    else
+        echo ":: called with invalid number of arguments."
+        echo "Usage:"
+        echo "    ${FUNCNAME[0]} <mount point> <zfs pool name>"
+
+        return 1
+    fi
+}
+
+####
+# @param string <path to zfs pool>
+# [@param int number of snapshots to keep, default is 1]
+# @todo
+####
+function net_bazzline_rotate_zfs_snapshot()
+{
+    net_bazzline_record_function_usage ${FUNCNAME[0]}
+
+    echo 'work in progress'
+}
+####
+# @param string <mount point>
+# @param string <zfs pool name>
+# @param string <uuid of device>
+# [@param string <uuid of device>]
+# [...]
+####
+function net_bazzline_umount_crypto_zfs_pool ()
+{
+    net_bazzline_record_function_usage ${FUNCNAME[0]}
+
+    if [[ $# -ge 3 ]];
+    then
+        MOUNT_POINT="$1"
+        ZFS_POOL_NAME="$2"
+
+        shift 2
+
+        if [[ -d ${MOUNT_POINT} ]];
+        then
+            if [[ "$(ls -A ${MOUNT_POINT})" ]];
+            then
+                CURRENT_WORKING_DIRECTORY=$(pwd)
+                SUB_STRING="${CURRENT_WORKING_DIRECTORY:0:${#CURRENT_WORKING_DIRECTORY}}"
+
+                #change to home if user is a sub directory of the mount point
+                if [[ "${SUB_STRING}" == "${MOUNT_POINT}" ]];
+                then
+                    cd ${HOME}
+                fi
+
+                net_bazzline_execute_as_super_user_when_not_beeing_root zpool export ${ZFS_POOL_NAME}
+
+                for CURRENT_ARGUMENT_NUMBER in $(seq ${#});
+                do
+                    UUID=${1}
+                    echo ":: disk ${CURRENT_ARGUMENT_NUMBER}"
+                    net_bazzline_execute_as_super_user_when_not_beeing_root cryptsetup luksClose crypt-${ZFS_POOL_NAME}-${CURRENT_ARGUMENT_NUMBER}
+                    shift
+                done
+
+                if [[ ! "$(ls -A ${MOUNT_POINT})" ]];
+                then
+                    net_bazzline_execute_as_super_user_when_not_beeing_root rmdir ${MOUNT_POINT}
+                else
+                    echo ":: can not remove mount point, there is still content inside."
+                    ls -A ${MOUNT_POINT}
+                fi
+            else
+                echo ":: mountpoint ${MOUNT_POINT} exists but is empty"
+            fi
+        else
+            echo ":: mountpoint ${MOUNT_POINT} does not exist"
+        fi
+    else
+    else
+        echo ":: called with invalid number of arguments."
+        echo "Usage:"
+        echo "    ${FUNCNAME[0]} <mount point> <zfs pool name> <uuid of device> [<uuid of device> [...]]"
+
+        return 1
+    fi
+}
+
+####
+# @param string <mount point>
+# @param string <zfs pool name>
+####
+function net_bazzline_umount_zfs_pool ()
+{
+    net_bazzline_record_function_usage ${FUNCNAME[0]}
+
+    if [[ $# -eq 2 ]];
+    then
+        MOUNT_POINT="$1"
+        ZFS_POOL_NAME="$2"
+
+        if [[ -d ${MOUNT_POINT} ]];
+        then
+            if [[ "$(ls -A ${MOUNT_POINT})" ]];
+            then
+                CURRENT_WORKING_DIRECTORY=$(pwd)
+                SUB_STRING="${CURRENT_WORKING_DIRECTORY:0:${#CURRENT_WORKING_DIRECTORY}}"
+
+                #change to home if user is a sub directory of the mount point
+                if [[ "${SUB_STRING}" == "${MOUNT_POINT}" ]];
+                then
+                    cd ${HOME}
+                fi
+
+                zpool export ${ZFS_POOL_NAME}
+
+                if [[ ! "$(ls -A ${MOUNT_POINT})" ]];
+                then
+                    rmdir ${MOUNT_POINT}
+                else
+                    echo ":: can not remove mount point, there is still content inside."
+                    ls -A ${MOUNT_POINT}
+                fi
+            else
+                echo ":: mountpoint ${MOUNT_POINT} exists but is empty"
+            fi
+        else
+            echo ":: mountpoint ${MOUNT_POINT} does not exist"
+        fi
+    else
+        echo ":: called with invalid number of arguments."
+        echo "Usage:"
+        echo "    ${FUNCNAME[0]} <mount point> <zfs pool name> <uuid of device>"
+
+        return 1
+    fi
+}
