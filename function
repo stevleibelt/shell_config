@@ -1438,7 +1438,7 @@ function net_bazzline_list_files_older_than ()
 }
 
 ####
-# [@param list of filesystem items (directories, files ...)]
+# [@param int $1 - number of entries to show]
 #
 # @author stev leibelt
 # @since 2017-02-05
@@ -1451,12 +1451,12 @@ function net_bazzline_list_filesystem_items_head ()
     then
         ls -hAlt | head
     else
-        ls -hAlt $@ | head
+        ls -hAlt | head -n ${1}
     fi
 }
 
 ####
-# [@param list of filesystem items (directories, files ...)]
+# [@param int $1 - number of entries to show]
 #
 # @author stev leibelt
 # @since 2017-02-05
@@ -1469,7 +1469,7 @@ function net_bazzline_list_filesystem_items_tail ()
     then
         ls -hAlt | tail
     else
-        ls -hAlt $@ | tail
+        ls -hAlt | tail -n ${1}
     fi
 }
 
