@@ -147,6 +147,8 @@ function net_bazzline_batch_filesystem_path_to_lower ()
     local MAX_DEPTH=${1:-1}
     local SEARCH_PATH="${2:-.}"
 
+    #@todo check not working. When called without any argument, following error is displayed
+    #find: Arguments to -type should contain only one letter
     if [[ "${FILE_TYPE}" != "" ]];
     then
         local FILE_TYPE_OPTION=" -type ${FILE_TYPE}"
