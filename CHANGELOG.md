@@ -41,6 +41,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 * installation
     * ask if .bash_profile should be created
     * ask if .bashrc should be created
+* create a value ZFS_DEFAULT_POOL which is used in the delete[List]ZfsSnapshot functions
 
 ### To Change
 
