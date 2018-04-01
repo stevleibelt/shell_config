@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### To Add
 
+* read each line in source or local.source and load them via source
 * create caching 
     * that puts all files into one merged file below .config/net_bazzline/shell_config/merged_config
     * cache is cleared on "reloadBashEnvironment" and "clearCache"
