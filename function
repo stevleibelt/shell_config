@@ -87,6 +87,7 @@ function net_bazzline_batch_convert_video_to_libx264 ()
 #
 # [@param string $1 - search path - default is .]
 # [@param int $1 - max depth - default is 1]
+# @todo change order of parameters everywhere
 # @author stev leibelt <artodeto@bazzline.net>
 # @since 2017-12-22
 ####
@@ -878,7 +879,10 @@ function net_bazzline_delete_files_older_than ()
 # @todo
 #   implement -q (quite) flag
 #   implement -r (recurisve) flag
-#   check why -R is not working as expected
+####
+# @todo
+#   * implement usage of "zfs list -t snapshot" to evaluate first if the snapshot exists or not
+#   * check why -R is not working as expected
 ####
 function net_bazzline_delete_zfs_snapshot()
 {
