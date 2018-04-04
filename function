@@ -630,8 +630,6 @@ function net_bazzline_convert_video_to_libx264 ()
         local DESTINATION_FILE_PATH="${SOURCE_FILE_PATH}.converted264.mkv"
     fi
 
-    if [[ $# -lt 2 ]];
-
     if [[ -f "${DESTINATION_FILE_PATH}" ]];
     then
         echo "   Skipping file path >>${DESTINATION_FILE_PATH}<<. Exists already."
