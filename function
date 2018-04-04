@@ -77,7 +77,7 @@ function net_bazzline_batch_convert_video_to_libx264 ()
                 FILE_PATH="${FILE_PATH:2}"
             fi
 
-            net_bazzline_convert_video_to_libx264 "${FILE_PATH}" "${FILE_PATH}.converted264.mkv"
+            net_bazzline_convert_video_to_libx264 "${FILE_PATH}"
         fi
     done;
 }
@@ -108,7 +108,7 @@ function net_bazzline_batch_convert_video_to_libx265 ()
                 FILE_PATH="${FILE_PATH:2}"
             fi
 
-            net_bazzline_convert_video_to_libx265 "${FILE_PATH}" "${FILE_PATH}.converted265.mkv"
+            net_bazzline_convert_video_to_libx265 "${FILE_PATH}"
         fi
     done;
 }
@@ -608,59 +608,73 @@ function net_bazzline_convert_video_to_screen_size ()
 
 ####
 # @param string $1 - source file path
-# @param string $2 - destination file path
+# [@param string $2 - destination file path] - if not provided, default name is source.converted264.mkv
 ####
 function net_bazzline_convert_video_to_libx264 ()
 {
     net_bazzline_record_function_usage ${FUNCNAME[0]}
 
-    if [[ $# -lt 2 ]];
+    if [[ $# -lt 1 ]];
     then
-        net_bazzline_handle_invalid_number_of_arguments_supplied "${FUNCNAME[0]} <source> <destination>"
+        net_bazzline_handle_invalid_number_of_arguments_supplied "${FUNCNAME[0]} <source> [<destination>]"
 
         return 1
     fi
 
-    local DESTINATION="${2}"
-    local SOURCE="${1}"
+    local SOURCE_FILE_PATH="${1}"
 
-    if [[ -f "${DESTINATION}" ]];
+    if [[ $# -gt 1 ]];
     then
-        echo "   Skipping file path >>${DESTINATION}<<. Exists already."
+        local DESTINATION_FILE_PATH="${2}"
+    else
+        local DESTINATION_FILE_PATH="${SOURCE_FILE_PATH}.converted264.mkv"
+    fi
+
+    if [[ $# -lt 2 ]];
+
+    if [[ -f "${DESTINATION_FILE_PATH}" ]];
+    then
+        echo "   Skipping file path >>${DESTINATION_FILE_PATH}<<. Exists already."
     else
         #@see
         #   https://unix.stackexchange.com/questions/36310/strange-errors-when-using-ffmpeg-in-a-loop#36411
         #   https://superuser.com/questions/555289/is-there-a-way-to-disable-or-hide-output-thrown-by-ffmpeg#555326
-        ffmpeg -i "${SOURCE}" -map 0 -acodec copy -scodec copy -vcodec libx264 -nostats -hide_banner -pass 1 "${DESTINATION}" < /dev/null
+        ffmpeg -i "${SOURCE_FILE_PATH}" -map 0 -acodec copy -scodec copy -vcodec libx264 -nostats -hide_banner -pass 1 "${DESTINATION_FILE_PATH}" < /dev/null
     fi
 }
 
 ####
 # @param string $1 - source file path
-# @param string $2 - destination file path
+# [@param string $2 - destination file path] - if not provided, default name is source.converted265.mkv
 ####
 function net_bazzline_convert_video_to_libx265 ()
 {
     net_bazzline_record_function_usage ${FUNCNAME[0]}
 
-    if [[ $# -lt 2 ]];
+    if [[ $# -lt 1 ]];
     then
-        net_bazzline_handle_invalid_number_of_arguments_supplied "${FUNCNAME[0]} <source> <destination>"
+        net_bazzline_handle_invalid_number_of_arguments_supplied "${FUNCNAME[0]} <source> [<destination>]"
 
         return 1
     fi
 
-    local DESTINATION="${2}"
-    local SOURCE="${1}"
+    local SOURCE_FILE_PATH="${1}"
 
-    if [[ -f "${DESTINATION}" ]];
+    if [[ $# -gt 1 ]];
     then
-        echo "   Skipping file path >>${DESTINATION}<<. Exists already."
+        local DESTINATION_FILE_PATH="${2}"
+    else
+        local DESTINATION_FILE_PATH="${SOURCE_FILE_PATH}.converted265.mkv"
+    fi
+
+    if [[ -f "${DESTINATION_FILE_PATH}" ]];
+    then
+        echo "   Skipping file path >>${DESTINATION_FILE_PATH}<<. Exists already."
     else
         #@see
         #   https://unix.stackexchange.com/questions/36310/strange-errors-when-using-ffmpeg-in-a-loop#36411
         #   https://superuser.com/questions/555289/is-there-a-way-to-disable-or-hide-output-thrown-by-ffmpeg#555326
-        ffmpeg -i "${SOURCE}" -map 0 -acodec copy -scodec copy -vcodec libx265 -nostats -hide_banner -pass 1 "${DESTINATION}" < /dev/null
+        ffmpeg -i "${SOURCE_FILE_PATH}" -map 0 -acodec copy -scodec copy -vcodec libx265 -nostats -hide_banner -pass 1 "${DESTINATION_FILE_PATH}" < /dev/null
     fi
 }
 
