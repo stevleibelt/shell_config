@@ -1057,6 +1057,8 @@ function net_bazzline_execute_as_super_user_when_not_beeing_root ()
 # @param string $1 - path to the file system object
 # @author stev leibelt <artodeto@bazzline.net>
 # @since 2017-12-22
+# @todo
+#   * replaced the replaced & with and not with _
 ####
 function net_bazzline_filesystem_path_to_lower ()
 {
