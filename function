@@ -70,11 +70,14 @@ function net_bazzline_batch_convert_video_to_libx264 ()
     find ${SEARCH_PATH} -maxdepth ${MAX_DEPTH} -type f -print0 | while read -d $'\0' FILE_PATH;
     do
         #@see: https://stackoverflow.com/a/25535717
-        if [[ $string != *"converted264"* ]];
+        #if [[ ${FILE_PATH} != *"converted264"* ]];
+        #skip all files ending with ".converted264.mkv"
+        if [[ ${FILE_PATH: -17} != ".converted264.mkv" ]];
         then
             if [[ "${SEARCH_PATH}" == "." ]];
             then
-                FILE_PATH="${FILE_PATH:2}"
+                #remove ./ from the file path
+                FILE_PATH="${FILE_PATH: 2}"
             fi
 
             net_bazzline_convert_video_to_libx264 "${FILE_PATH}"
@@ -101,10 +104,13 @@ function net_bazzline_batch_convert_video_to_libx265 ()
     find ${SEARCH_PATH} -maxdepth ${MAX_DEPTH} -type f -print0 | while read -d $'\0' FILE_PATH;
     do
         #@see: https://stackoverflow.com/a/25535717
-        if [[ $string != *"converted265"* ]];
+        #if [[ ${FILE_PATH} != *"converted265"* ]];
+        #skip all files ending with ".converted265.mkv"
+        if [[ ${FILE_PATH: -17} != ".converted265.mkv" ]];
         then
             if [[ "${SEARCH_PATH}" == "." ]];
             then
+                #remove ./ from the file path
                 FILE_PATH="${FILE_PATH:2}"
             fi
 
