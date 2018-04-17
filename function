@@ -4,6 +4,9 @@
 # @since 2013-04-24
 # @see https://www.gnu.org/software/bash/manual/bash.html
 # @todo 
+#   split this file up into logical units (source/function/filesystem/{luks, zfs}, source/function/media/image ...)
+#   create bash script that glues them all together to the known function file
+#   based on the configuration value, comment out or comment in the net_bazzline_record_function_usage
 #   prefix all variables with "local "
 #   move fitting code into c++ code
 #   align output by using arch installation style ":: [A-Z"
@@ -199,6 +202,8 @@ function net_bazzline_bash_grep ()
 ####
 function net_bazzline_create_a_mp3_file_for_each_mpc_file_in_the_current_directory()
 {
+    net_bazzline_record_function_usage ${FUNCNAME[0]}
+
     if [[ -f /usr/bin/mpcdec ]];
     then
         #@link https://odoepner.wordpress.com/2017/01/01/convert-mpc-to-mp3-on-linux/
@@ -413,6 +418,8 @@ function net_bazzline_check_ext4_device ()
 # @since 2017-10-24
 function net_bazzline_check_fat_device ()
 {
+    net_bazzline_record_function_usage ${FUNCNAME[0]}
+
     if [[ $# -gt 0 ]];
     then
         local DEVICE_PATH="${1}"
@@ -975,6 +982,8 @@ function net_bazzline_delete_list_of_dated_zfs_snapshots()
 
 function net_bazzline_determine_filesystem_path_age ()
 {
+    net_bazzline_record_function_usage ${FUNCNAME[0]}
+
     age () { stat=$(stat --printf="%Y %F\n" "$1"); echo "The ${stat#* } '$1' is $((($(date +%s) - ${stat%% *})/60)) minutes old."; }
 }
 
@@ -1012,6 +1021,8 @@ function net_bazzline_diff_directory ()
 ####
 function net_bazzline_ends_with ()
 {
+    net_bazzline_record_function_usage ${FUNCNAME[0]}
+
     if [[ $# -eq 2 ]]; 
     then
         local STRING="$1"
@@ -1587,6 +1598,8 @@ function net_bazzline_list_symbolic_links ()
 ####
 function net_bazzline_virtual_box_list_information_of_machine ()
 {
+    net_bazzline_record_function_usage ${FUNCNAME[0]}
+
     if [[ $# -lt 1 ]];
     then
         net_bazzline_handle_invalid_number_of_arguments_supplied "${FUNCNAME[0]} <virtual box name or id>"
@@ -1605,6 +1618,8 @@ function net_bazzline_virtual_box_list_information_of_machine ()
 ####
 function net_bazzline_virtual_box_list_briged_interfaces ()
 {
+    net_bazzline_record_function_usage ${FUNCNAME[0]}
+
     VBoxManage list bridgedifs
 }
 
@@ -1616,6 +1631,8 @@ function net_bazzline_virtual_box_list_briged_interfaces ()
 ####
 function net_bazzline_virtual_box_list_running_machines ()
 {
+    net_bazzline_record_function_usage ${FUNCNAME[0]}
+
     VBoxManage list runningvms
 }
 
@@ -1684,6 +1701,8 @@ function net_bazzline_load_ssh_keys_in_keychain()
 ####
 function net_bazzline_luks_dump_information()
 {
+    net_bazzline_record_function_usage ${FUNCNAME[0]}
+
     if [[ $# -lt 1 ]];
     then
         net_bazzline_handle_invalid_number_of_arguments_supplied "${FUNCNAME[0]} <path to the lukes device>"
@@ -1705,6 +1724,8 @@ function net_bazzline_luks_dump_information()
 ####
 function net_bazzline_luks_header_backup()
 {
+    net_bazzline_record_function_usage ${FUNCNAME[0]}
+
     if [[ $# -lt 2 ]];
     then
         net_bazzline_handle_invalid_number_of_arguments_supplied "${FUNCNAME[0]} <path to the lukes device> <path to the backup file>"
@@ -1727,6 +1748,8 @@ function net_bazzline_luks_header_backup()
 ####
 function net_bazzline_luks_header_restore()
 {
+    net_bazzline_record_function_usage ${FUNCNAME[0]}
+
     if [[ $# -lt 2 ]];
     then
         net_bazzline_handle_invalid_number_of_arguments_supplied "${FUNCNAME[0]} <path to the lukes device> <path to the backup file>"
@@ -1876,6 +1899,8 @@ function net_bazzline_monitor_process ()
 ####
 function net_bazzline_mount_crypto_zfs_pool ()
 {
+    net_bazzline_record_function_usage ${FUNCNAME[0]}
+
     if [[ $# -ge 3 ]]; 
     then
         MOUNT_POINT="$1"
@@ -1916,6 +1941,8 @@ function net_bazzline_mount_crypto_zfs_pool ()
 ####
 function net_bazzline_mount_zfs_pool ()
 {
+    net_bazzline_record_function_usage ${FUNCNAME[0]}
+
     if [[ $# -eq 2 ]]; 
     then
         MOUNT_POINT="${1}"
@@ -2487,6 +2514,8 @@ function net_bazzline_rsync ()
 ####
 function net_bazzline_run_command_in_the_background ()
 {
+    net_bazzline_record_function_usage ${FUNCNAME[0]}
+
     {
         eval "$@"
     }&
@@ -2497,6 +2526,8 @@ function net_bazzline_run_command_in_the_background ()
 ####
 function net_bazzline_run_command_quietly_in_the_background ()
 {
+    net_bazzline_record_function_usage ${FUNCNAME[0]}
+
     net_bazzline_run_command_in_the_background "$@" &> /dev/null
 }
 
@@ -2529,6 +2560,8 @@ function net_bazzline_search_in_composer_files()
 ####
 function net_bazzline_search_in_journalctl_since_boot ()
 {
+    net_bazzline_record_function_usage ${FUNCNAME[0]}
+
     net_bazzline_record_function_usage ${FUNCNAME[0]}
 
     if [[ $# -gt 1 ]];
@@ -3022,6 +3055,8 @@ function net_bazzline_touch_with_prefix_of_current_date ()
 ####
 function net_bazzline_umount_crypto_zfs_pool ()
 {
+    net_bazzline_record_function_usage ${FUNCNAME[0]}
+
     if [[ $# -ge 3 ]]; 
     then
         MOUNT_POINT="$1"
@@ -3080,6 +3115,8 @@ function net_bazzline_umount_crypto_zfs_pool ()
 ####
 function net_bazzline_umount_zfs_pool ()
 {
+    net_bazzline_record_function_usage ${FUNCNAME[0]}
+
     if [[ $# -eq 2 ]]; 
     then
         MOUNT_POINT="$1"
@@ -3186,6 +3223,8 @@ function net_bazzline_unmount_sshfs ()
 
 function net_bazzline_update_shell_configuration ()
 {
+    net_bazzline_record_function_usage ${FUNCNAME[0]}
+
     #store current working directory
     CURRENT_WORKING_DIRECTORY=$(pwd)
     #change to the repostiory
