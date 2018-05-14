@@ -220,7 +220,6 @@ then
     alias software-remove='sudo pacman -Rsu'
     alias software-search='sudo pacman -Ss'
     alias software-search-installed='sudo pacman -Qs'
-    alias software-update='sudo pacman -Sy'
     alias software-upgrade='sudo pacman -Syu'
     alias software-upgrade-from-cache='sudo pacman -u'
     if [[ ${NET_BAZZLINE_IS_LTS_KERNEL} -eq 1 ]];
