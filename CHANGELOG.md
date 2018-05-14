@@ -9,6 +9,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### To Add
 
+* for the function file as test
+    * split this file up into logical units (source/function/filesystem/{luks, zfs}, source/function/media/image ...)
+    * create bash script that glues them all together to the known function file
+    * based on the configuration value, comment out or comment in the net_bazzline_record_function_usage
+    * prefix all variables with "local "
+    * move fitting code into c++ code
+    * align output by using arch installation style ":: [A-Z"
+    * implement bash auto completion support like "net_bazzline filesystem zfs list-available-snapshots" :O
 * read each line in source or local.source and load them via source
 * create caching 
     * that puts all files into one merged file below .config/net_bazzline/shell_config/merged_config
