@@ -16,7 +16,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
     * prefix all variables with "local "
     * move fitting code into c++ code
     * align output by using arch installation style ":: [A-Z"
-    * implement bash auto completion support like "net_bazzline filesystem zfs list-available-snapshots" :O
+    * implement bash auto completion (tricky part -> per user to support individual settings!)  support like "net_bazzline filesystem zfs list-available-snapshots" :O
 * read each line in source or local.source and load them via source
 * create caching 
     * that puts all files into one merged file below .config/net_bazzline/shell_config/merged_config
