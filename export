@@ -13,5 +13,9 @@ export HISTIGNORE="ls:cd:top:ps:exit:date"
 export HISTSIZE=20
 export HISTFILESIZE=$HISTSIZE
 
+#l
+#@see: https://opensource.com/article/18/5/advanced-use-less-text-file-viewer
+export LESS='-C -M -I -j 10'
+
 #t
 export TERM=xterm-256color
