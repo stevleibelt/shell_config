@@ -1899,29 +1899,41 @@ function net_bazzline_mount_crypto_zfs_pool ()
 
     if [[ $# -ge 3 ]]; 
     then
-        MOUNT_POINT="$1"
-        ZFS_POOL_NAME="$2"
+        local MOUNT_POINT="$1"
+        local ZFS_POOL_NAME="$2"
 
         shift 2
 
-        if [[ ! -d ${MOUNT_POINT} ]]; 
+        #begin of duplicated code - remove empty path if possible
+        if [[ -d ${MOUNT_POINT} ]]; 
         then
-            net_bazzline_execute_as_super_user_when_not_beeing_root mkdir -p ${MOUNT_POINT}
+            #check if directory is not empty
+            if [[ $(ls -A "${MOUNT_POINT}") ]];
+            then
+                echo ":: Mount point exists and is not empty."
+                echo "   ${MOUNT_POINT}"
 
-            for CURRENT_ARGUMENT_NUMBER in $(seq ${#});
-            do
-                UUID=${1}
-                echo ":: disk ${CURRENT_ARGUMENT_NUMBER}"
-                net_bazzline_execute_as_super_user_when_not_beeing_root cryptsetup luksOpen /dev/disk/by-uuid/${UUID} crypt-${ZFS_POOL_NAME}-${CURRENT_ARGUMENT_NUMBER}
-                shift
-            done
+                return 2
+            else
+                echo ":: Mount point exists but is empty."
+                echo "   Removing ${MOUNT_POINT}"
 
-            net_bazzline_execute_as_super_user_when_not_beeing_root zpool import ${ZFS_POOL_NAME}
-        else
-            echo ":: mount point ${MOUNT_POINT} exists."
-
-            return 2
+                net_bazzline_execute_as_super_user_when_not_beeing_root rmdir ${MOUNT_POINT}
+            fi
         fi
+        #end of duplicated code - remove empty path if possible
+
+        net_bazzline_execute_as_super_user_when_not_beeing_root mkdir -p ${MOUNT_POINT}
+
+        for CURRENT_ARGUMENT_NUMBER in $(seq ${#});
+        do
+            UUID=${1}
+            echo ":: disk ${CURRENT_ARGUMENT_NUMBER}"
+            net_bazzline_execute_as_super_user_when_not_beeing_root cryptsetup luksOpen /dev/disk/by-uuid/${UUID} crypt-${ZFS_POOL_NAME}-${CURRENT_ARGUMENT_NUMBER}
+            shift
+        done
+
+        net_bazzline_execute_as_super_user_when_not_beeing_root zpool import ${ZFS_POOL_NAME}
     else
         echo ":: called with invalid number of arguments."
         echo "Usage:"
@@ -1944,6 +1956,7 @@ function net_bazzline_mount_zfs_pool ()
         local MOUNT_POINT="${1}"
         local ZFS_POOL_NAME="${2}"
 
+        #begin of duplicated code - remove empty path if possible
         if [[ -d ${MOUNT_POINT} ]]; 
         then
             #check if directory is not empty
@@ -1960,6 +1973,7 @@ function net_bazzline_mount_zfs_pool ()
                 net_bazzline_execute_as_super_user_when_not_beeing_root rmdir ${MOUNT_POINT}
             fi
         fi
+        #end of duplicated code - remove empty path if possible
 
         net_bazzline_execute_as_super_user_when_not_beeing_root mkdir -p ${MOUNT_POINT}
 
@@ -2078,7 +2092,8 @@ function net_bazzline_mount_luks_zpool ()
 {
     net_bazzline_record_function_usage ${FUNCNAME[0]}
 
-    if [[ $# -lt 4 ]]; then
+    if [[ $# -lt 4 ]];
+    then
         echo 'usage: <command> <zpool> <disk uuid> <crypto name> [<disk uuid> <crypto name>[...]]'
         return 1
     else
@@ -2086,8 +2101,8 @@ function net_bazzline_mount_luks_zpool ()
         local NAME="$3"
         local ZPOOL="$1"
 
-        sudo cryptsetup luksOpen /dev/disk/by-uuid/"$UUID" "$NAME"
-        sudo zpool import "$ZPOOL"
+        sudo cryptsetup luksOpen "/dev/disk/by-uuid/${UUID}" "${NAME}"
+        sudo zpool import "${ZPOOL}"
     fi
 }
 
@@ -2101,7 +2116,8 @@ function net_bazzline_mount_sshfs ()
 {
     net_bazzline_record_function_usage ${FUNCNAME[0]}
 
-    if [[ $# -lt 4 ]]; then
+    if [[ $# -lt 4 ]];
+    then
         echo "usage: <command> <mount point> <name> <host> [<path to identity file>]"
         return 1
     else
@@ -2109,19 +2125,34 @@ function net_bazzline_mount_sshfs ()
         local NAME="$3"
         local HOST="$4"
 
-        if [[ -d "$MOUNT_POINT" ]]; then
-            echo 'mount point "'"$MOUNT_POINT"'" exists, remove and retry'
-            return 1
+        #begin of duplicated code - remove empty path if possible
+        if [[ -d ${MOUNT_POINT} ]]; 
+        then
+            #check if directory is not empty
+            if [[ $(ls -A "${MOUNT_POINT}") ]];
+            then
+                echo ":: Mount point exists and is not empty."
+                echo "   ${MOUNT_POINT}"
+
+                return 2
+            else
+                echo ":: Mount point exists but is empty."
+                echo "   Removing ${MOUNT_POINT}"
+
+                rmdir ${MOUNT_POINT}
+            fi
         fi
+        #end of duplicated code - remove empty path if possible
 
-        mkdir -p "$MOUNT_POINT"
+        mkdir -p "${MOUNT_POINT}"
 
-        if [[ $# -eq 5 ]]; then
+        if [[ $# -eq 5 ]];
+        then
             local KEY="$5"
 
-            sshfs -o IdentitiyFile="$KEY" "$NAME"@"$HOST" "$MOUNT_POINT"
+            sshfs -o IdentitiyFile="${KEY}" "${NAME}"@"${HOST}" "${MOUNT_POINT}"
         else
-            sshfs "$NAME"@"$HOST" "$MOUNT_POINT"
+            sshfs "${NAME}"@"${HOST}" "${MOUNT_POINT}"
         fi
     fi
 }
@@ -3211,8 +3242,8 @@ function net_bazzline_unmount_luks_zpool ()
         local NAME="$2"
         local ZPOOL="$1"
 
-        sudo zpool export "$ZPOOL"
-        sudo cryptsetup close "$NAME"
+        sudo zpool export "${ZPOOL}"
+        sudo cryptsetup close "${NAME}"
     fi
 }
 
