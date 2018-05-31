@@ -1941,19 +1941,29 @@ function net_bazzline_mount_zfs_pool ()
 
     if [[ $# -eq 2 ]]; 
     then
-        MOUNT_POINT="${1}"
-        ZFS_POOL_NAME="${2}"
+        local MOUNT_POINT="${1}"
+        local ZFS_POOL_NAME="${2}"
 
-        if [[ ! -d ${MOUNT_POINT} ]]; 
+        if [[ -d ${MOUNT_POINT} ]]; 
         then
-            net_bazzline_execute_as_super_user_when_not_beeing_root mkdir -p ${MOUNT_POINT}
+            #check if directory is not empty
+            if [[ $(ls -A "${MOUNT_POINT}") ]];
+            then
+                echo ":: Mount point exists and is not empty."
+                echo "   ${MOUNT_POINT}"
 
-            net_bazzline_execute_as_super_user_when_not_beeing_root zpool import ${ZFS_POOL_NAME}
-        else
-            echo ":: mount point ${MOUNT_POINT} exists."
+                return 2
+            else
+                echo ":: Mount point exists but is empty."
+                echo "   Removing ${MOUNT_POINT}"
 
-            return 2
+                net_bazzline_execute_as_super_user_when_not_beeing_root rmdir ${MOUNT_POINT}
+            fi
         fi
+
+        net_bazzline_execute_as_super_user_when_not_beeing_root mkdir -p ${MOUNT_POINT}
+
+        net_bazzline_execute_as_super_user_when_not_beeing_root zpool import ${ZFS_POOL_NAME}
     else
         echo ":: called with invalid number of arguments."
         echo "Usage:"
