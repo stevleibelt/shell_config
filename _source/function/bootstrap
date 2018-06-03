@@ -1,0 +1,17 @@
+#!/bin/bash
+####
+#
+####
+# @since 2018-06-03
+# @author stev leibelt
+####
+
+PATH_OF_THE_CURRENT_SCRIPT=$(cd $(dirname "${BASH_SOURCE[0]}"); pwd)
+
+# order is important
+declare -a FILES_TO_LOAD=('function' 'filesystem/generic' 'filesystem/luks' 'filesystem/zfs' 'media/audio' 'media/generic' 'media/image' 'media/video' 'network/generic' 'process/generic' 'string/generic')
+
+for FILE_TO_LOAD in ${FILES_TO_LOAD[@]};
+do
+    source "${PATH_OF_THE_CURRENT_SCRIPT}/${FILE_TO_LOAD}"
+done;

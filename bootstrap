@@ -1,12 +1,19 @@
 #!/bin/bash
 
 # order is important
-declare -a FILES_TO_LOAD=('setting' 'variable' 'source' 'export' 'function' 'alias' 'automatic_start')
+declare -a FILES_TO_LOAD=('setting' 'variable' 'source' 'export' '_source/function' 'alias' 'automatic_start')
 
 for FILE_TO_LOAD in ${FILES_TO_LOAD[@]}; do
-    source "${PATH_SHELL_CONFIG}/${FILE_TO_LOAD}"
+    if [[ "${FILE_TO_LOAD}" == "_source/function" ]];
+    then
+        #rename FILE_TO_LOAD to ENVIRONMENT_TO_LOAD
 
-    LOCAL_LEGACY_FILE_TO_LOAD="${FILE_TO_LOAD}.local"
+        source "${PATH_SHELL_CONFIG}/${FILE_TO_LOAD}/bootstrap"
+        LOCAL_LEGACY_FILE_TO_LOAD="function.local"
+    else
+        source "${PATH_SHELL_CONFIG}/${FILE_TO_LOAD}"
+        LOCAL_LEGACY_FILE_TO_LOAD="${FILE_TO_LOAD}.local"
+    fi
 
     if [[ -f "${PATH_SHELL_CONFIG}/${LOCAL_LEGACY_FILE_TO_LOAD}" ]];
     then
