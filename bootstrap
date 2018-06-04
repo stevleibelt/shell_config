@@ -10,17 +10,17 @@ for FILE_TO_LOAD in ${FILES_TO_LOAD[@]}; do
 
         source "${PATH_SHELL_CONFIG}/${FILE_TO_LOAD}/bootstrap"
         LOCAL_LEGACY_FILE_TO_LOAD="function.local"
+        LOCAL_FILE_TO_LOAD="local.${FILE_TO_LOAD}"
     else
         source "${PATH_SHELL_CONFIG}/${FILE_TO_LOAD}"
         LOCAL_LEGACY_FILE_TO_LOAD="${FILE_TO_LOAD}.local"
+        LOCAL_FILE_TO_LOAD="local.function"
     fi
 
     if [[ -f "${PATH_SHELL_CONFIG}/${LOCAL_LEGACY_FILE_TO_LOAD}" ]];
     then
         echo "legacy local file name detected, please rename it to local.${FILE_TO_LOAD}"
     fi
-
-    LOCAL_FILE_TO_LOAD="local.${FILE_TO_LOAD}"
 
     if [[ -f "${PATH_SHELL_CONFIG}/${LOCAL_FILE_TO_LOAD}" ]];
     then
