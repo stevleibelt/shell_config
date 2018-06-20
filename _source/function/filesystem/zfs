@@ -294,7 +294,6 @@ function net_bazzline_umount_crypto_zfs_pool ()
             echo ":: mountpoint ${MOUNT_POINT} does not exist"
         fi
     else
-    else
         echo ":: called with invalid number of arguments."
         echo "Usage:"
         echo "    ${FUNCNAME[0]} <mount point> <zfs pool name> <uuid of device> [<uuid of device> [...]]"
