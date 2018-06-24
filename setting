@@ -39,6 +39,10 @@ NET_BAZZLINE_SECURE_CONNECTION_PORT=0
 set show-all-if-ambiguous on
 set show-all-if-unmodified on
 
-# Arrow keys in 8 bit ANSI mode
+#arrow keys in 8 bit ANSI mode
 #bind "\e[C": forward-word
 #bind "\e[D": backward-word
+
+#allow bash history for multiple users
+#@see: https://opensource.com/article/18/5/bash-tricks
+shopt -s histappend
