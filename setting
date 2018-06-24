@@ -43,9 +43,12 @@ set show-all-if-unmodified on
 #bind "\e[C": forward-word
 #bind "\e[D": backward-word
 
+####
 #@see: https://opensource.com/article/18/5/bash-tricks
 #allow bash history for multiple users
 shopt -s histappend
-
 #enable spell support to guess/correct "/tpm" to "/tmp"
 shopt -s cdspell
+#enable colors
+eval "`dircolors -b`"
+####
