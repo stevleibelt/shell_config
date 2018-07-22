@@ -37,5 +37,5 @@ makepkg -si
 
 ##begin of clean up
 cd ${CURRENT_WORKING_DIRECTORY}
-rm -fr /tmp/yay
+rm -fr {TEMPORARY_DIRECTORY_PATH}
 ##end of clean up
