@@ -8,10 +8,14 @@
 export EDITOR="vim"
 
 #h
-export HISTCONTROL=ignoredups
+#@see: https://opensource.com/article/18/7/admin-guide-bash
+#ignore command starting with a space and only keep a command in once
+export HISTCONTROL=ignorespace:erasedups
 export HISTIGNORE="ls:cd:top:ps:exit:date"
 export HISTSIZE=20
-export HISTFILESIZE=$HISTSIZE
+export HISTFILESIZE=${HISTSIZE}
+#prepend all entries with a timestamp YYYY-MM-DD\ HH:MM:SS
+export HISTTIMEFORMAT="%F %T  "
 
 #l
 #@see: https://opensource.com/article/18/5/advanced-use-less-text-file-viewer
