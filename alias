@@ -83,9 +83,6 @@ alias hideFileSystemObject=net_bazzline_hide_file_system_object
 alias iftop='iftop -P -B'
 alias iostat='iostat -x 2'
 
-#k
-alias killSkype='killall -u $USER skype'
-
 #l
 alias l='ls -hAlt'
 alias lh=net_bazzline_list_filesystem_items_head
@@ -147,7 +144,6 @@ fi
 alias showBatteryStatusWithoutAcpi='for BATTERY_FILE_PATH in $(find /sys/class/power_supply/ -iname "BAT*");do echo ${BATTERY_FILE_PATH}; cat ${BATTERY_FILE_PATH}/capacity; cat ${BATTERY_FILE_PATH}/status; done;'
 alias showBatteryStatusWithAcpi='acpi -i'
 alias silentGrep=net_bazzline_silent_grep
-alias skype='xhost +local: && sudo -u skype /usr/bin/skype'
 #@todo: validate against https://wiki.archlinux.org/index.php/Pacman/Rosetta
 if [[ ${NET_BAZZLINE_PACKAGE_MANAGER} = 'yay' ]];
 then
