@@ -17,6 +17,7 @@ fi
 
 CURRENT_WORKING_DIRECTORY=$(pwd)
 PATH_TO_CURL=/usr/bin/curl
+PATH_TO_PACTREE=/usr/bin/pactree
 
 if [[ ! -f ${PATH_TO_CURL} ]];
 then
@@ -24,6 +25,14 @@ then
     echo ":: Installing curl."
 
     sudo pacman -S curl
+fi
+
+if [[ ! -f ${PATH_TO_PACTREE} ]];
+then
+    echo ":: Pactree is missing but mandatory."
+    echo ":: Installing pactre."
+
+    sudo pacman -S pacman-contrig
 fi
 
 ##begin of temporary path creation
