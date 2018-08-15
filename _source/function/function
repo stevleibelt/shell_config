@@ -1495,7 +1495,7 @@ function net_bazzline_virtual_box_list_information_of_machine ()
 
 ####
 # list all bridged interfaces of virtual box machine
-
+#
 # @author stev leibelt <artodeto@bazzline.net>
 # @since 2018-02-03
 ####
@@ -1507,8 +1507,21 @@ function net_bazzline_virtual_box_list_briged_interfaces ()
 }
 
 ####
-# list all running virtual box machines
+# list all virtual box machines
+#
+# @author stev leibelt <artodeto@bazzline.net>
+# @since 2018-08-17
+####
+function net_bazzline_virtual_box_list_all_machines ()
+{
+    net_bazzline_record_function_usage ${FUNCNAME[0]}
 
+    VBoxManage list vms
+}
+
+####
+# list all running virtual box machines
+#
 # @author stev leibelt <artodeto@bazzline.net>
 # @since 2018-02-03
 ####
@@ -1517,6 +1530,26 @@ function net_bazzline_virtual_box_list_running_machines ()
     net_bazzline_record_function_usage ${FUNCNAME[0]}
 
     VBoxManage list runningvms
+}
+
+####
+# poweroff virtual box machine
+#
+# @author stev leibelt <artodeto@bazzline.net>
+# @since 2018-08-15
+####
+function net_bazzline_virtual_box_power_off_machine ()
+{
+    net_bazzline_record_function_usage ${FUNCNAME[0]}
+
+    if [[ $# -lt 1 ]];
+    then
+        net_bazzline_handle_invalid_number_of_arguments_supplied "${FUNCNAME[0]} <virtual box name or id>"
+
+        return 1
+    fi
+
+    VBoxManage controlvm ${1} poweroff
 }
 
 ####

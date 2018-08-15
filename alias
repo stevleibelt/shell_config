@@ -337,9 +337,11 @@ alias unloadVirtualBoxModules='sudo modprobe -r vboxdrv && sudo modprobe -r vbox
 #v
 if [[ -f /usr/bin/virtualbox ]];
 then
-    alias virtualBoxListInfromationOfmachine=net_bazzline_virtual_box_list_information_of_machine
     alias virtualBoxListBridgedInterface=net_bazzline_virtual_box_list_briged_interfaces
+    alias virtualBoxListInfromationOfmachine=net_bazzline_virtual_box_list_information_of_machine
+    alias virtualBoxListAllMachines=net_bazzline_virtual_box_list_all_machines
     alias virtualBoxListRunningMachines=net_bazzline_virtual_box_list_running_machines
+    alias virtualBoxPowerOffMachine=net_bazzline_virtual_box_power_off_machine
 fi
 alias v=vim
 
