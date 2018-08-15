@@ -22,6 +22,14 @@ then
     exit 2
 fi
 
+if [[ ! -f /usr/bin/pactree ]];
+then
+    echo ":: Pactree is missing but mandatory."
+    echo ":: Installing pactre."
+
+    sudo pacman -S pacman-contrig
+fi
+
 CURRENT_WORKING_DIRECTORY=$(pwd)
 
 ##begin of temporary path creation
