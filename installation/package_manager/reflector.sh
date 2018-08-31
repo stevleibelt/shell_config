@@ -56,7 +56,7 @@ read MAXIMUM_NUBERS_OF_SERVERS_TO_USE
 
 if [[ ! -d /etc/pacman.d/hooks ]];
 then
-    sudo /usr/bin/mkdir -p /etc/pacman.d/hooks
+    sudo /usr/bin/env mkdir -p /etc/pacman.d/hooks
 fi
 
 sudo touch /etc/pacman.d/hooks/trigger_reflector_on_mirrorlist_update.hook

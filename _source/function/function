@@ -240,7 +240,7 @@ function net_bazzline_image_batch_convert ()
     fi
 
     #@todo implement check if directory exists
-    mkdir "${DIRECTORY}"
+    net_bazzline_mkdir "${DIRECTORY}"
 
     for FILE in *.[jJ][pP][gG];
     do
@@ -751,7 +751,7 @@ function net_bazzline_create_path_or_return_error_if_path_exists_already()
         echo "path exist already: $PATH_TO_CREATE"
         return 1
     else
-        mkdir -p "$PATH_TO_CREATE"
+        net_bazzline_mkdir -p "$PATH_TO_CREATE"
     fi
 }
 
@@ -1712,7 +1712,7 @@ function net_bazzline_mkdir ()
     # change to it
     if [[ $# -eq 1 ]];
     then
-        /usr/bin/mkdir -p "${1}" 
+        /usr/bin/env mkdir -p "${1}" 
         cd "${1}"
     fi
 
@@ -1720,7 +1720,7 @@ function net_bazzline_mkdir ()
     # execute default mkdir
     if [[ $# -gt 1 ]];
     then
-        /usr/bin/mkdir $@
+        /usr/bin/env mkdir $@
     fi
 
     return 0
@@ -1948,7 +1948,7 @@ function net_bazzline_mount_sshfs ()
         fi
         #end of duplicated code - remove empty path if possible
 
-        mkdir -p "${MOUNT_POINT}"
+        net_bazzline_mkdir -p "${MOUNT_POINT}"
 
         if [[ $# -eq 5 ]];
         then
@@ -2011,7 +2011,7 @@ function net_bazzline_organize_directory_content()
             #begin of create temporary directory
             if [[ ! -d "$TEMPORARY_DIRECTORY_NAME" ]]
             then
-                mkdir "$TEMPORARY_DIRECTORY_NAME"
+                net_bazzline_mkdir "$TEMPORARY_DIRECTORY_NAME"
             fi
             #end of create temporary directory
 
@@ -2042,7 +2042,7 @@ function net_bazzline_organize_directory_content()
                 if [[ ! -d "$DIRECTORY_NAME" ]]
                 then
                     #create directory if it does not exist
-                    mkdir "$DIRECTORY_NAME"
+                    net_bazzline_mkdir "$DIRECTORY_NAME"
                 fi
 
                 #move files into it final directory
@@ -2143,7 +2143,7 @@ function net_bazzline_record_function_usage ()
 
         if [[ ! -d "${DIRECTORY_PATH_TO_THE_STATISTICS}" ]];
         then
-            /usr/bin/mkdir -p "${DIRECTORY_PATH_TO_THE_STATISTICS}"
+            net_bazzline_mkdir -p "${DIRECTORY_PATH_TO_THE_STATISTICS}"
         fi
 
         echo "${FUNCTION_NAME}    #${CURRENT_DATE}" >> "${DIRECTORY_PATH_TO_THE_STATISTICS}/statistics"
@@ -2966,7 +2966,7 @@ function net_bazzline_update_vim_bundles_and_plugins_with_vundle()
     if [[ ! -d "${PATH_TO_VUNDLE}" ]]; then
         echo ":: Vundle directory missing. Creating it ..."
         echo "   ${PATH_TO_VUNDLE}"
-        /bin/mkdir -p "${PATH_TO_VUNDLE}"
+        net_bazzline_mkdir -p "${PATH_TO_VUNDLE}"
     fi
 
     #clone vundle if directory is empty
