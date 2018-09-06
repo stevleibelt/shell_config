@@ -12,5 +12,5 @@ function net_bazzline_list_biggest_directories ()
     local NUMBER_OF_DIRECTORIES_TO_OUTPUT=${1:-20}
     local MAX_DEPTH=${2:-1}
 
-    du --max-depth=${MAX_DEPTH} 2> /dev/null | sort -n -r | head -n${NUMBER_OF_DIRECTORIES_TO_OUTPUT}
+    du -h --max-depth=${MAX_DEPTH} 2> /dev/null | sort -n -r | head -n${NUMBER_OF_DIRECTORIES_TO_OUTPUT}
 }
