@@ -339,6 +339,7 @@ if [[ -f /usr/bin/virtualbox ]];
 then
     alias virtualBoxListBridgedInterface=net_bazzline_virtual_box_list_briged_interfaces
     alias virtualBoxListInfromationOfmachine=net_bazzline_virtual_box_list_information_of_machine
+    alias virtualBoxListIpAddressOfMachine=net_bazzline_virtual_box_list_ip_address_of_machine
     alias virtualBoxListAllMachines=net_bazzline_virtual_box_list_all_machines
     alias virtualBoxListRunningMachines=net_bazzline_virtual_box_list_running_machines
     alias virtualBoxPowerOffMachine=net_bazzline_virtual_box_power_off_machine
