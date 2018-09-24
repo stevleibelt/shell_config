@@ -960,6 +960,7 @@ function net_bazzline_execute_as_super_user_when_not_beeing_root ()
 # @author stev leibelt <artodeto@bazzline.net>
 # @since 2017-12-22
 # @todo
+#   * avoid creating files like "foo_bar..sh" (should be "foo_bar.sh")
 #   * replaced the replaced & with and not with _
 ####
 function net_bazzline_filesystem_path_to_lower ()
