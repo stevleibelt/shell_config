@@ -118,6 +118,7 @@ alias moveInChunks=net_bazzline_move_in_chunks
 alias netstatListRunningServices='netstat -tulpen'
 
 #o
+alias obay=sudo
 alias organizeDirectoryContent=net_bazzline_organize_directory_content
 
 #p
