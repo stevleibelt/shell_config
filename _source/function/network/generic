@@ -1,0 +1,22 @@
+#!/bin/bash
+#l
+
+####
+# list available local ip address
+#
+# @author stev leibelt <artodeto@bazzline.net>
+# @since 2018-10-01
+####
+function net_bazzline_list_local_ip_address ()
+{
+    net_bazzline_record_function_usage ${FUNCNAME[0]}
+
+    if [[ -f /bin/ip ]];
+    then    
+        ip addr | grep 'inet' | awk '{print $2}' | cut -f1 -d'/'
+    else
+        echo ":: Error"
+        echo "   File >>/bin/ip<< not found."
+    fi
+}
+
