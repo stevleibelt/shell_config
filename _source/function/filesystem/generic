@@ -55,6 +55,11 @@ function net_bazzline_cleanup_after_converting_files ()
         echo "File name pattern >>${FILE_NAME_PATTERN}<<."
     fi
 
+    if [[ -f ffmpeg2pass-0.log ]];
+    then
+        rm ffmpeg2pass-0.log
+    fi
+
     find "${WORKING_DIRECTORY_PATH}" -iname "${FILE_NAME_PATTERN}" -type f -print0 | while read -d $'\0' FOUND_FILE_PATH;
     do
         if [[ ${LEVEL_OF_VERBOSITY} -gt 1 ]];
