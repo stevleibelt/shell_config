@@ -2455,13 +2455,14 @@ function net_bazzline_scp_from_host()
 {
     net_bazzline_record_function_usage ${FUNCNAME[0]}
 
-    if [[ $# -eq 4 ]]; then
-        local PATH_TO_SSH_KEY="$1"
-        local SOURCE_HOST="$2"
-        local SOURCE_PATH="$3"
-        local DESTINATION_PATH="$4"
+    if [[ $# -eq 4 ]];
+    then
+        local DESTINATION_PATH="${4}"
+        local PATH_TO_SSH_KEY="${1}"
+        local SOURCE_HOST="${2}"
+        local SOURCE_PATH="${3}"
 
-        scp -r -i $PATH_TO_SSH_KEY $SOURCE_HOST:$SOURCE_PATH $DESTINATION_PATH
+        scp -r -i ${PATH_TO_SSH_KEY} ${SOURCE_HOST}:${SOURCE_PATH} ${DESTINATION_PATH}
     else
         echo 'invalid number of arguments'
         echo '    net_bazzline_scp_from_host <path to ssh key> <source host> <source path> <destination path>'
@@ -2479,13 +2480,14 @@ function net_bazzline_scp_to_host()
 {
     net_bazzline_record_function_usage ${FUNCNAME[0]}
 
-    if [[ $# -eq 4 ]]; then
-        local PATH_TO_SSH_KEY="$1"
-        local DESTINATION_HOST="$2"
-        local SOURCE_PATH="$3"
-        local DESTINATION_PATH="$4"
+    if [[ $# -eq 4 ]];
+    then
+        local PATH_TO_SSH_KEY="${1}"
+        local DESTINATION_HOST="${2}"
+        local SOURCE_PATH="${3}"
+        local DESTINATION_PATH="${4}"
 
-        scp -r -i $PATH_TO_SSH_KEY $SOURCE_PATH $DESTINATION_HOST:$DESTINATION_PATH
+        scp -r -i ${PATH_TO_SSH_KEY} ${SOURCE_PATH} ${DESTINATION_HOST}:${DESTINATION_PATH}
     else
         echo 'invalid number of arguments'
         echo '    net_bazzline_scp_to_host <path to ssh key> <source host> <source path> <destination path>'
