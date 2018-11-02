@@ -2507,34 +2507,14 @@ function net_bazzline_screenshot ()
 {
     net_bazzline_record_function_usage ${FUNCNAME[0]}
 
-    if [[ $# -eq 0 ]]; then
+    if [[ $# -eq 0 ]];
+    then
         local FILENAME='screenshot.jpg'
     else
-        local FILENAME="$1"
+        local FILENAME="${1}"
     fi
 
-    import -window root $FILENAME
-}
-
-####
-# sets the provided optical drive speed
-# 
-# @param int $1 - speed (default is 12)
-# 
-# @author stev leibelt <artodeto@bazzline.net>
-# @since 2014-12-02
-####
-function net_bazzline_set_optical_drive_speed ()
-{
-    net_bazzline_record_function_usage ${FUNCNAME[0]}
-
-    if [[ $# -eq 1 ]]; then
-        local SPEED="$1"
-    else
-        local SPEED="12"
-    fi
-
-    eject -x $SPEED /dev/sr0
+    import -window root "${FILENAME}"
 }
 
 ####
@@ -2547,7 +2527,8 @@ function net_bazzline_silent_grep ()
 {
     net_bazzline_record_function_usage ${FUNCNAME[0]}
 
-    if [[ $# -lt 1 ]]; then
+    if [[ $# -lt 1 ]];
+    then
         grep
     else
         grep -irI --color=auto --exclude=\*.svn\* --exclude=\*.git\* --exclude=\*.idea\* "$@" 2>/dev/null

@@ -1,0 +1,20 @@
+#!/bin/bash
+
+####
+# sets the provided optical drive speed
+# 
+# @param int $1 - speed (default is 12)
+# @param string $2 - path the device (default is /dev/sr0)
+# 
+# @author stev leibelt <artodeto@bazzline.net>
+# @since 2014-12-02
+####
+function net_bazzline_set_optical_drive_speed ()
+{
+    net_bazzline_record_function_usage ${FUNCNAME[0]}
+
+    local PATH_TO_THE_DEVICE=${2:-'/dev/sr0'}
+    local SPEED=${1:-12}
+
+    eject -x ${SPEED} ${PATH_TO_THE_DEVICE}
+}
