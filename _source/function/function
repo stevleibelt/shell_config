@@ -2356,6 +2356,13 @@ function net_bazzline_rsync ()
 {
     net_bazzline_record_function_usage ${FUNCNAME[0]}
 
+    if [[ $# -lt 1 ]];
+    then
+        net_bazzline_handle_invalid_number_of_arguments_supplied "${FUNCNAME[0]} <source> [<destination>]"
+
+        return 1
+    fi
+
     rsync -aq --delete $@
 }
 
