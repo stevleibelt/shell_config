@@ -68,6 +68,7 @@ function net_bazzline_cleanup_after_converting_files ()
         fi
 
         #index always starts with 0
+        #@todo index is just using first character
         local INDEX_OF_THE_FILE_NAME_PATTERN=$(expr index "${FOUND_FILE_PATH}" "${FILE_NAME_PATTERN}")
         if [[ ${LEVEL_OF_VERBOSITY} -gt 2 ]];
         then
