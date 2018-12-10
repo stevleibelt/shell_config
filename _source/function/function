@@ -586,6 +586,23 @@ function net_bazzline_convert_mp3_to_wav ()
     done
 }
 
+function net_bazzline_convert_mp4_to_mp3 ()
+{
+    local SOURCE_FILE_PATH='';
+
+    if [[ ! -f /usr/bin/ffmpeg ]];
+    then
+        echo ":: /usr/bin/ffmpeg does not exist."
+
+        return 1
+    fi
+
+    for SOURCE_FILE_PATH in *.mp4;
+    do
+        ffmpeg -i "${SOURCE_FILE_PATH}" -b:a 192K -vn "${SOURCE_FILE_PATH}.mp3"
+    done
+}
+
 ####
 # @param string $1 - path to the source file
 # @param string $2 - path to the destination file
