@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### To Add
 
+* create function "regular_start" with dedicated processing steps (function calls defined via local.settings) to do, as example
+    * disable touchpad
+    * start wifi (if configured by using netctl configuration file via shell configuration)
+    * update system
 * for the function file as test
     * split this file up into logical units (source/function/filesystem/{luks, zfs}, source/function/media/image ...)
     * create bash script that glues them all together to the known function file
