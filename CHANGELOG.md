@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### To Add
 
+* *if* zfs is installed and root pool configured
+    * make a snapshot before the upgrade and delete previous one
 * create a way to easily change settings based on the environment (like "work" and "home")
 * create function "regular_start" with dedicated processing steps (function calls defined via local.settings) to do, as example
     * disable touchpad
