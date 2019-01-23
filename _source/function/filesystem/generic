@@ -124,17 +124,17 @@ function net_bazzline_cleanup_after_converting_files ()
 
 ####
 # [@param int $NUMBER_OF_DIRECTORIES_TO_OUTPUT=20]
-# [@param int $MAX_DEPTH=1]
 ####
-# @see https://opensource.com/article/18/9/shell-dotfile
+# @see
+#   https://opensource.com/article/18/9/shell-dotfile
+#   https://www.cyberciti.biz/faq/how-do-i-find-the-largest-filesdirectories-on-a-linuxunixbsd-filesystem/
 # @since 2018-09-06
 # @author stev leibelt
 function net_bazzline_list_biggest_directories ()
 {
     local NUMBER_OF_DIRECTORIES_TO_OUTPUT=${1:-20}
-    local MAX_DEPTH=${2:-1}
 
-    du -h --max-depth=${MAX_DEPTH} 2> /dev/null | sort -n -r | head -n${NUMBER_OF_DIRECTORIES_TO_OUTPUT}
+    du -hsx -- * | sort -rh | head -n${NUMBER_OF_DIRECTORIES_TO_OUTPUT}
 }
 
 ####
