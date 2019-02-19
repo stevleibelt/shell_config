@@ -223,12 +223,13 @@ then
     alias software-remove="sudo pacman -Rsu"
     alias software-search='pacget -Ss'
     alias software-search-installed='pacget -Qs'
-    alias software-upgrade='pacget -Syuu'
     alias software-upgrade-from-cache='pacget -uu'
     if [[ ${NET_BAZZLINE_IS_LTS_KERNEL} -eq 1 ]];
     then
+        alias software-upgrade='pacget -Syuu; if [[ $? -gt 0]]; then pacget -Syuu --ignore=linux-lts,linux-lts-headers,zfs-linux-lts,zfs-utils-common,spl-linux-lts,spl-utils-common;'
         alias software-upgrade-without-lts-kernel='pacget -Syuu --ignore=linux-lts,linux-lts-headers,zfs-linux-lts,zfs-utils-common,spl-linux-lts,spl-utils-common'
     else
+        alias software-upgrade='pacget -Syuu; if [[ $? -gt 0]]; then pacget -Syuu --ignore=linux,linux-headers,zfs-linux,zfs-utils-common,spl-linux,spl-utils-common;'
         alias software-upgrade-without-kernel='pacaur -Syuu --ignore=linux,linux-headers,zfs-linux,zfs-utils-common,spl-linux,spl-utils-common'
     fi
     alias software-repository-info='pacget -Si'
@@ -249,12 +250,13 @@ then
     alias software-remove='sudo pacman -Rsu'
     alias software-search='sudo pacman -Ss'
     alias software-search-installed='sudo pacman -Qs'
-    alias software-upgrade='sudo pacman -Syu'
     alias software-upgrade-from-cache='sudo pacman -u'
     if [[ ${NET_BAZZLINE_IS_LTS_KERNEL} -eq 1 ]];
     then
+        alias software-upgrade='pacman -Syuu; if [[ $? -gt 0]]; then pacman -Syuu --ignore=linux-lts,linux-lts-headers,zfs-linux-lts,zfs-utils-common,spl-linux-lts,spl-utils-common;'
         alias software-upgrade-without-lts-kernel='pacman -Syuu --ignore=linux-lts,linux-lts-headers,zfs-linux-lts,zfs-utils-common,spl-linux-lts,spl-utils-common'
     else
+        alias software-upgrade='pacman -Syuu; if [[ $? -gt 0]]; then pacman -Syuu --ignore=linux,linux-headers,zfs-linux,zfs-utils-common,spl-linux,spl-utils-common;'
         alias software-upgrade-without-kernel='pacaur -Syuu --ignore=linux,linux-headers,zfs-linux,zfs-utils-common,spl-linux,spl-utils-common'
     fi
     alias software-repository-info='sudo pacman -Si'
