@@ -24,7 +24,7 @@ NET_BAZZLINE_AUTOSTART_SSH_AGENT=0
 NET_BAZZLINE_IS_LTS_KERNEL=1
 #add all you known interfaces in here
 NET_BAZZLINE_INTERFACES=()
-#allowed are [apk, apt, none, pacman, pacaur, pacget. yay]
+#allowed are [apk, apt, none, pacman, pacget]
 NET_BAZZLINE_PACKAGE_MANAGER='none'
 #either write statistics of function usage or not
 #1 turns it on, all other values disables it

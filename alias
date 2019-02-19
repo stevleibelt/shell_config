@@ -169,70 +169,16 @@ then
     alias software-remove="sudo pacman -Rsu"
     alias software-search='yay -Ss'
     alias software-search-installed='yay -Qs'
-    alias software-upgrade='yay -Syuu'
     alias software-upgrade-from-cache='yay -uu'
     if [[ ${NET_BAZZLINE_IS_LTS_KERNEL} -eq 1 ]];
     then
+        alias software-upgrade='yay -Syuu; if [[ $? -gt 0]]; then yay -Syuu --ignore=linux-lts,linux-lts-headers,zfs-linux-lts,zfs-utils-common,spl-linux-lts,spl-utils-common;'
         alias software-upgrade-without-lts-kernel='yay -Syuu --ignore=linux-lts,linux-lts-headers,zfs-linux-lts,zfs-utils-common,spl-linux-lts,spl-utils-common'
     else
-        alias software-upgrade-without-kernel='yay -Syuu --ignore=linux,linux-headers,zfs-linux,zfs-utils-common,spl-linux,spl-utils-common'
+        alias software-upgrade='yay -Syuu; if [[ $? -gt 0]]; then yay -Syuu --ignore=linux,linux-headers,zfs-linux,zfs-utils-common,spl-linux,spl-utils-common;'
+        alias software-upgrade-without-kernel='pacaur -Syuu --ignore=linux,linux-headers,zfs-linux,zfs-utils-common,spl-linux,spl-utils-common'
     fi
     alias software-repository-info='yay -Si'
-elif [[ ${NET_BAZZLINE_PACKAGE_MANAGER} = 'pacaur' ]];
-then
-    alias software-check-unneeded-dependencies='pacaur -Qqdt'
-    alias software-clean-cache='pacaur -Scc && echo "" && echo "removing ~/.cache/pacaur" && sudo rm -fr ~/.cache/pacaur'
-    alias software-fetch='pacaur -G'
-    alias software-fill-the-cache='pacaur -Sy'
-    alias software-info='pacaur -Qi'
-    alias software-install='pacaur -S'
-    alias software-install-local='sudo pacman -U'
-    alias software-list='pacaur -Qlm'
-    alias software-list-depends-on='pactree -r'
-    alias software-list-foreign='pacaur -Qmq'
-    alias software-list-installed='pacaur -Qen' #use pacman -Qqen to create a list you can use to install like "pacman -Qqen > installed && pacman -S < installed
-    alias software-list-unofficial-installed='pacaur -Qem'
-    alias software-prepare-for-upgrade='pacaur -Swyu'
-    alias software-remove="sudo pacman -Rsu"
-    alias software-search='pacaur -Ss'
-    alias software-search-installed='pacaur -Qs'
-    alias software-upgrade='pacaur -Syuu'
-    alias software-upgrade-from-cache='pacaur -uu'
-    if [[ ${NET_BAZZLINE_IS_LTS_KERNEL} -eq 1 ]];
-    then
-        alias software-upgrade-without-lts-kernel='pacaur -Syuu --ignore=linux-lts,linux-lts-headers,zfs-linux-lts,zfs-utils-common,spl-linux-lts,spl-utils-common'
-    else
-        alias software-upgrade-without-kernel='pacaur -Syuu --ignore=linux,linux-headers,zfs-linux,zfs-utils-common,spl-linux,spl-utils-common'
-    fi
-    alias software-repository-info='pacaur -Si'
-elif [[ ${NET_BAZZLINE_PACKAGE_MANAGER} = 'pacget' ]];
-then
-    alias software-check-unneeded-dependencies='pacget -Qqdt'
-    alias software-clean-cache='pacget -Scc && echo "" && echo "removing ~/.cache/pacget" && sudo rm -fr ~/.cache/pacget'
-    alias software-fetch='pacget -G'
-    alias software-fill-the-cache='pacget -Sy'
-    alias software-info='pacget -Qi'
-    alias software-install='pacget -S'
-    alias software-install-local='sudo pacman -U'
-    alias software-list='pacget -Qlm'
-    alias software-list-depends-on='pactree -r'
-    alias software-list-foreign='pacget -Qmq'
-    alias software-list-installed='pacget -Qen' #use pacman -Qqen to create a list you can use to install like "pacman -Qqen > installed && pacman -S < installed
-    alias software-list-unofficial-installed='pacget -Qem'
-    alias software-prepare-for-upgrade='pacget -Swyu'
-    alias software-remove="sudo pacman -Rsu"
-    alias software-search='pacget -Ss'
-    alias software-search-installed='pacget -Qs'
-    alias software-upgrade-from-cache='pacget -uu'
-    if [[ ${NET_BAZZLINE_IS_LTS_KERNEL} -eq 1 ]];
-    then
-        alias software-upgrade='pacget -Syuu; if [[ $? -gt 0]]; then pacget -Syuu --ignore=linux-lts,linux-lts-headers,zfs-linux-lts,zfs-utils-common,spl-linux-lts,spl-utils-common;'
-        alias software-upgrade-without-lts-kernel='pacget -Syuu --ignore=linux-lts,linux-lts-headers,zfs-linux-lts,zfs-utils-common,spl-linux-lts,spl-utils-common'
-    else
-        alias software-upgrade='pacget -Syuu; if [[ $? -gt 0]]; then pacget -Syuu --ignore=linux,linux-headers,zfs-linux,zfs-utils-common,spl-linux,spl-utils-common;'
-        alias software-upgrade-without-kernel='pacaur -Syuu --ignore=linux,linux-headers,zfs-linux,zfs-utils-common,spl-linux,spl-utils-common'
-    fi
-    alias software-repository-info='pacget -Si'
 elif [[ ${NET_BAZZLINE_PACKAGE_MANAGER} = 'pacman' ]];
 then
     alias software-check-unneeded-dependencies='sudo pacman -Qqdt'
