@@ -199,11 +199,11 @@ then
     alias software-upgrade-from-cache='sudo pacman -u'
     if [[ ${NET_BAZZLINE_IS_LTS_KERNEL} -eq 1 ]];
     then
-        alias software-upgrade='pacman -Syuu || pacman -Syuu --ignore=linux-lts,linux-lts-headers,zfs-linux-lts,zfs-utils-common,spl-linux-lts,spl-utils-common'
-        alias software-upgrade-without-lts-kernel='pacman -Syuu --ignore=linux-lts,linux-lts-headers,zfs-linux-lts,zfs-utils-common,spl-linux-lts,spl-utils-common'
+        alias software-upgrade='sudo pacman -Syuu || sudo pacman -Syuu --ignore=linux-lts,linux-lts-headers,zfs-linux-lts,zfs-utils-common,spl-linux-lts,spl-utils-common'
+        alias software-upgrade-without-lts-kernel='sudo pacman -Syuu --ignore=linux-lts,linux-lts-headers,zfs-linux-lts,zfs-utils-common,spl-linux-lts,spl-utils-common'
     else
-        alias software-upgrade='pacman -Syuu || pacman -Syuu --ignore=linux,linux-headers,zfs-linux,zfs-utils-common,spl-linux,spl-utils-common'
-        alias software-upgrade-without-kernel='pacaur -Syuu --ignore=linux,linux-headers,zfs-linux,zfs-utils-common,spl-linux,spl-utils-common'
+        alias software-upgrade='sudo pacman -Syuu || sudo pacman -Syuu --ignore=linux,linux-headers,zfs-linux,zfs-utils-common,spl-linux,spl-utils-common'
+        alias software-upgrade-without-kernel='sudo pacman -Syuu --ignore=linux,linux-headers,zfs-linux,zfs-utils-common,spl-linux,spl-utils-common'
     fi
     alias software-repository-info='sudo pacman -Si'
 elif [[ ${NET_BAZZLINE_PACKAGE_MANAGER} = 'apk' ]];
