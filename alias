@@ -178,7 +178,7 @@ then
         alias software-upgrade-without-lts-kernel='yay -Syuu --ignore=linux-lts,linux-lts-headers,zfs-linux-lts,zfs-utils-common,spl-linux-lts,spl-utils-common'
     else
         alias software-upgrade='yay -Syuu || yay -Syuu --ignore=linux,linux-headers,zfs-linux,zfs-utils-common,spl-linux,spl-utils-common'
-        alias software-upgrade-without-kernel='pacaur -Syuu --ignore=linux,linux-headers,zfs-linux,zfs-utils-common,spl-linux,spl-utils-common'
+        alias software-upgrade-without-kernel='yay -Syuu --ignore=linux,linux-headers,zfs-linux,zfs-utils-common,spl-linux,spl-utils-common'
     fi
     alias software-repository-info='yay -Si'
 elif [[ ${NET_BAZZLINE_PACKAGE_MANAGER} = 'pacman' ]];
