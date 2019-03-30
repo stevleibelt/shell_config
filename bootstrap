@@ -1,4 +1,10 @@
 #!/bin/bash
+####
+# Central file containing logic when to source what file how
+####
+# @author stev leibelt <artodeto@bazzline.net>
+# @since 2013-04-24
+####
 
 # order is important
 declare -a FILES_TO_LOAD=('setting' 'variable' 'source' 'export' '_source/function' 'alias' 'automatic_start')

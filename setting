@@ -1,5 +1,12 @@
 #!/bin/bash
 ####
+# Used to configure used software like
+#   * this project
+#   * bash
+#   * grep
+#   * ssh
+#   * vim
+####
 # @author stev leibelt <artodeto@bazzline.net>
 # @since 2013-04-24
 ####
