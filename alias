@@ -97,6 +97,7 @@ alias listFilesOlderThan=net_bazzline_list_files_older_than
 alias listGroups=net_bazzline_list_groups
 alias listInterfaces=net_bazzline_list_interfaces
 alias listLocalIpAddress=net_bazzline_list_local_ip_address
+alias listOpenNetworkPorts='lsof +M -i4 -i6'
 alias listProcessEnvironment=net_bazzline_list_process_environment
 alias listSymbolicLinks=net_bazzline_list_symbolic_links
 alias listUsers=net_bazzline_list_users
