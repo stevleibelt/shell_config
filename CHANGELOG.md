@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### To Add
 
+* extend "cd"
+    * if you cd to a file, use the base path to cd into that directory
 * *if* zfs is installed and root pool configured
     * make a snapshot before the upgrade and delete previous one
 * create a way to easily change settings based on the environment (like "work" and "home")
