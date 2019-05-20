@@ -1,25 +1,21 @@
 #!/bin/bash
 
 ####
-# @param string <name of the zfs pool>
 # [@param string <name of the snapshot>, default is current date
+# [@param string <name of the zfs pool>]
 ####
 function net_bazzline_create_zfs_snapshot()
 {
     net_bazzline_record_function_usage ${FUNCNAME[0]}
 
-    if [[ $# -lt 1 ]]; then
-        echo 'invalid number of arguments'
-        echo '    net_bazzline_create_zfs_snapshot <name of the zfs pool> [<name of the snapshot>]'
-        return 1
-    fi
+    local NAME_OF_THE_POOL="${NET_BAZZLINE_ZFS_DEFAULT_POOL}"
+    local NAME_OF_THE_SNAPSHOT=$(date +'%Y-%m-%d_%H-%M-%S')
 
-    local NAME_OF_THE_POOL="$1"
-
-    if [[ $# -gt 1 ]]; then
-        local NAME_OF_THE_SNAPSHOT="$2"
-    else
-        local NAME_OF_THE_SNAPSHOT=$(date +'%Y-%m-%d_%H-%M-%S')
+    if [[ $# -gt 0 ]]; then
+        local NAME_OF_THE_SNAPSHOT="${1}"
+    elif [[ $# -gt 1 ]]; then
+        local NAME_OF_THE_SNAPSHOT="${1}"
+        local NAME_OF_THE_POOL="${2}"
     fi
 
     if sudo zfs snapshot -r $NAME_OF_THE_POOL@$NAME_OF_THE_SNAPSHOT; then
@@ -30,8 +26,8 @@ function net_bazzline_create_zfs_snapshot()
 }
 
 ####
-# @param string <name of zfs pool>
 # @param string <name of the snapshot>
+# @param string <name of the zfs pool>
 # @todo
 #   implement -q (quite) flag
 #   implement -r (recurisve) flag
@@ -44,15 +40,16 @@ function net_bazzline_delete_zfs_snapshot()
 {
     net_bazzline_record_function_usage ${FUNCNAME[0]}
 
-    if [[ $# -lt 2 ]]; then
+    if [[ $# -lt 1 ]]; then
         echo ":: Invalid number of arguments"
         echo ":: Usage"
-        echo "   net_bazzline_delete_zfs_snapshot <name of the zfs pool> <name of the snapshot>"
+        echo "   net_bazzline_delete_zfs_snapshot <name of the snapshot> [<name of the zfs pool>]"
+
         return 1
     fi
 
-    local NAME_OF_THE_POOL="$1"
-    local NAME_OF_THE_SNAPSHOT="$2"
+    local NAME_OF_THE_POOL="${2:-${NET_BAZZLINE_ZFS_DEFAULT_POOL}}"
+    local NAME_OF_THE_SNAPSHOT="${1}"
 
     if sudo zfs list -t snapshot | grep -q "${NAME_OF_THE_POOL}@${NAME_OF_THE_SNAPSHOT}";
     then
@@ -68,18 +65,19 @@ function net_bazzline_delete_zfs_snapshot()
 }
 
 ####
-# @param string <name of zfs pool>
 # @param string <initial snapshot number>
 # @param string <final snapshot number>
+# [@param string <name of zfs pool>]
 ####
 function net_bazzline_delete_list_of_dated_zfs_snapshots()
 {
     net_bazzline_record_function_usage ${FUNCNAME[0]}
 
-    if [[ $# -lt 3 ]];
+    if [[ $# -lt 2 ]];
     then
         echo ":: Invalid number of arguments"
-        echo "   net_bazzline_delete_zfs_snapshots <name of the zfs pool> <name of inital snapshot number> <name of the final snapshot number>"
+        echo "   net_bazzline_delete_zfs_snapshots <name of inital snapshot number> <name of the final snapshot number> [<name of the zfs pool>]"
+
         return 1
     fi
 
@@ -89,9 +87,9 @@ function net_bazzline_delete_list_of_dated_zfs_snapshots()
     echo "   ${INITIAL_SNAPSHOT_NUMBER} greater than ${FINAL_SNAPSHOT_NUMBER}"
     fi
 
-    local NAME_OF_THE_POOL="$1"
-    local INITIAL_SNAPSHOT_NUMBER="$2"
-    local FINAL_SNAPSHOT_NUMBER="$3"
+    local NAME_OF_THE_POOL="${3:-${NET_BAZZLINE_ZFS_DEFAULT_POOL}}"
+    local INITIAL_SNAPSHOT_NUMBER="${1}"
+    local FINAL_SNAPSHOT_NUMBER="${2}"
 
     for CURRENT_SNAPSHOT_NUMBER in $(seq ${INITIAL_SNAPSHOT_NUMBER} 1 ${FINAL_SNAPSHOT_NUMBER});
     do
@@ -104,7 +102,7 @@ function net_bazzline_delete_list_of_dated_zfs_snapshots()
         #check if the date is valid
         if date -d "${YEAR}-${MONTH}-${DAY}" &> /dev/null;
         then
-            net_bazzline_delete_zfs_snapshot ${NAME_OF_THE_POOL} ${CURRENT_SNAPSHOT_NUMBER}
+            net_bazzline_delete_zfs_snapshot ${CURRENT_SNAPSHOT_NUMBER} ${NAME_OF_THE_POOL}
         fi
     done
 
@@ -112,16 +110,17 @@ function net_bazzline_delete_list_of_dated_zfs_snapshots()
 }
 
 ####
-# [@param string <path to zfs pool>]
+# [@param string <name of the zfs pool>]
 ####
 function net_bazzline_list_zfs_snapshots()
 {
     net_bazzline_record_function_usage ${FUNCNAME[0]}
 
-    if [[ $# -lt 1 ]]; then
+    if [[ $# -lt 1 ]];
+    then
         sudo zfs list -t snapshot
     else
-        local NAME_OF_THE_POOL="$1"
+        local NAME_OF_THE_POOL="${1}"
 
         sudo zfs list -t snapshot | grep --color ${NAME_OF_THE_POOL}
     fi
@@ -140,8 +139,8 @@ function net_bazzline_mount_crypto_zfs_pool ()
 
     if [[ $# -ge 3 ]];
     then
-        local MOUNT_POINT="$1"
-        local ZFS_POOL_NAME="$2"
+        local MOUNT_POINT="${1}"
+        local ZFS_POOL_NAME="${2}"
 
         shift 2
 
@@ -252,8 +251,8 @@ function net_bazzline_umount_crypto_zfs_pool ()
 
     if [[ $# -ge 3 ]];
     then
-        MOUNT_POINT="$1"
-        ZFS_POOL_NAME="$2"
+        MOUNT_POINT="${1}"
+        ZFS_POOL_NAME="${2}"
 
         shift 2
 
@@ -312,8 +311,8 @@ function net_bazzline_umount_zfs_pool ()
 
     if [[ $# -eq 2 ]];
     then
-        MOUNT_POINT="$1"
-        ZFS_POOL_NAME="$2"
+        MOUNT_POINT="${1}"
+        ZFS_POOL_NAME="${2}"
 
         if [[ -d ${MOUNT_POINT} ]];
         then

@@ -59,7 +59,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 * installation
     * ask if .bash_profile should be created
     * ask if .bashrc should be created
-* create a value ZFS_DEFAULT_POOL which is used in the delete[List]ZfsSnapshot functions
 
 ### To Change
 
@@ -68,11 +67,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 * CHANGELOG.md
+* created setting values NET_BAZZLINE_ZFS_DEFAULT_POOL and NET_BAZZLINE_ZFS_AVAILABLE (NET_BAZZLINE_ZFS_AVAILABLE is set automatically be default)
 * creation of .bash_profile during the installation
 * dedicated installation script for pacget
 * dedicated installation script for reflector
 
 ### Changed
+
+* refactored zfs filesystem functions and moved zfs pool value from mandatory to optional everywhere
 
 ## [1.0.0](https://github.com/stevleibelt/shell_config/tree/1.0.0) - released at 23.04.2016
 
