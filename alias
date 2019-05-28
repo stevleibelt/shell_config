@@ -155,7 +155,12 @@ then
     alias software-install='yay -S'
     alias software-install-local='sudo pacman -U'
     alias software-list='yay -Qlm'
-    alias software-list-depends-on='pactree -r'
+    if [[ -f /usr/bin/pactree ]];
+    then
+        alias software-list-depends-on='pactree -r'
+    else
+        alias software-list-depends-on='echo "pactree is missing, please install pacman-contrib!"'
+    fi
     alias software-list-foreign='yay -Qmq'
     alias software-list-installed='yay -Qen' #use pacman -Qqen to create a list you can use to install like "pacman -Qqen > installed && pacman -S < installed
     alias software-list-unofficial-installed='yay -Qem'
@@ -183,7 +188,12 @@ then
     alias software-install='sudo pacman -S'
     alias software-install-local='sudo pacman -U'
     alias software-list='sudo pacman -Ql'
-    alias software-list-depends-on='pactree -r'
+    if [[ -f /usr/bin/pactree ]];
+    then
+        alias software-list-depends-on='pactree -r'
+    else
+        alias software-list-depends-on='echo "pactree is missing, please install pacman-contrib!"'
+    fi
     alias software-list-foreign='sudo pacman -Qmq'
     alias software-list-installed='sudo pacman -Qen'
     alias software-list-unofficial-installed='sudo pacman -Qemq'
