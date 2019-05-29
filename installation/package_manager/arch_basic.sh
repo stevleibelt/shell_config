@@ -12,6 +12,8 @@ then
 
     exit 1
 fi
+
+sudo pacman -Syy
 #end of testing if we are on the right system
 
 CURRENT_WORKING_DIRECTORY=$(pwd)

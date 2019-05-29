@@ -13,6 +13,8 @@ then
 
     exit 1
 fi
+
+sudo pacman -Syy
 #end of testing if we are on the right system
 
 if [[ ! -f /usr/bin/git ]];
@@ -27,7 +29,7 @@ then
     echo ":: Pactree is missing but mandatory."
     echo ":: Installing pactre."
 
-    sudo pacman -S pacman-contrig
+    sudo pacman -S pacman-contrib
 fi
 
 CURRENT_WORKING_DIRECTORY=$(pwd)
