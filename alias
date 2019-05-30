@@ -1,5 +1,7 @@
 #!/bin/bash
 ####
+# Contains general aliases in alphabetically order
+####
 # @author stev leibelt <artodeto@bazzline.net>
 # @since 2013-04-24
 ####
@@ -47,19 +49,10 @@ alias convertVideoToLibx264=net_bazzline_convert_video_to_libx264
 alias convertVideoToLibx265=net_bazzline_convert_video_to_libx265
 alias convertWavToMp3=net_bazzline_convert_wav_to_mp3
 alias createAMp3FileForEachMpcFileInTheCurrentWorkingDirectory=net_bazzline_create_a_mp3_file_for_each_mpc_file_in_the_current_directory
-if [[ -f /usr/bin/zpool ]];
-then
-    alias createZfsSnapshot=net_bazzline_create_zfs_snapshot
-fi
 alias createPathOrReturnErrorIfPathExistsAlready=net_bazzline_create_path_or_return_error_if_path_exists_already
 
 #d
 alias decompress=net_bazzline_decompress
-if [[ -f /usr/bin/zpool ]];
-then
-    alias deleteZfsSnapshot=net_bazzline_delete_zfs_snapshot
-    alias deleteListOfDatedZfsSnapshots=net_bazzline_delete_list_of_dated_zfs_snapshots
-fi
 alias deleteEmptyDirectories=net_bazzline_delete_empty_directories
 alias deleteFilesOlderThan=net_bazzline_delete_files_older_than
 alias diffDirectories=net_bazzline_diff_directory
@@ -95,13 +88,10 @@ alias listFilesOlderThan=net_bazzline_list_files_older_than
 alias listGroups=net_bazzline_list_groups
 alias listInterfaces=net_bazzline_list_interfaces
 alias listLocalIpAddress=net_bazzline_list_local_ip_address
+alias listOpenNetworkPorts='lsof +M -i4 -i6'
 alias listProcessEnvironment=net_bazzline_list_process_environment
 alias listSymbolicLinks=net_bazzline_list_symbolic_links
 alias listUsers=net_bazzline_list_users
-if [[ -f /usr/bin/zpool ]];
-then
-    alias listZfsSnapshots=net_bazzline_list_zfs_snapshots
-fi
 alias loadVirtualBoxModules='sudo modprobe -a vboxdrv vboxnetadp vboxnetflt vboxpci'
 alias lt=net_bazzline_list_filesystem_items_tail
 alias luksDumpInformation=net_bazzline_luks_dump_information
@@ -125,6 +115,10 @@ alias obay=sudo
 alias organizeDirectoryContent=net_bazzline_organize_directory_content
 
 #p
+if [[ -f /usr/bin/pulseaudio ]];
+then
+    alias pulseaudio-equalizer=qpaeq
+fi
 alias psGrep=net_bazzline_psgrep
 
 #r
@@ -147,8 +141,11 @@ if [ -f ${HOME}'/code/sh/local/sensorsRefresh.sh' ];
 then
   alias statusSensor='sh '${HOME}'/code/sh/local/sensorsRefresh.sh'
 fi
-alias showBatteryStatusWithoutAcpi='for BATTERY_FILE_PATH in $(find /sys/class/power_supply/ -iname "BAT*");do echo ${BATTERY_FILE_PATH}; cat ${BATTERY_FILE_PATH}/capacity; cat ${BATTERY_FILE_PATH}/status; done;'
-alias showBatteryStatusWithAcpi='acpi -i'
+if [[ -f /usr/bin/acpi ]];
+then
+    alias showBatteryStatusWithoutAcpi='for BATTERY_FILE_PATH in $(find /sys/class/power_supply/ -iname "BAT*");do echo ${BATTERY_FILE_PATH}; cat ${BATTERY_FILE_PATH}/capacity; cat ${BATTERY_FILE_PATH}/status; done;'
+    alias showBatteryStatusWithAcpi='acpi -i'
+fi
 alias silentGrep=net_bazzline_silent_grep
 #@todo: validate against https://wiki.archlinux.org/index.php/Pacman/Rosetta
 if [[ ${NET_BAZZLINE_PACKAGE_MANAGER} = 'yay' ]];
@@ -161,7 +158,12 @@ then
     alias software-install='yay -S'
     alias software-install-local='sudo pacman -U'
     alias software-list='yay -Qlm'
-    alias software-list-depends-on='pactree -r'
+    if [[ -f /usr/bin/pactree ]];
+    then
+        alias software-list-depends-on='pactree -r'
+    else
+        alias software-list-depends-on='echo "pactree is missing, please install pacman-contrib!"'
+    fi
     alias software-list-foreign='yay -Qmq'
     alias software-list-installed='yay -Qen' #use pacman -Qqen to create a list you can use to install like "pacman -Qqen > installed && pacman -S < installed
     alias software-list-unofficial-installed='yay -Qem'
@@ -172,11 +174,12 @@ then
     alias software-upgrade-from-cache='yay -uu'
     if [[ ${NET_BAZZLINE_IS_LTS_KERNEL} -eq 1 ]];
     then
+        #@todo implement zfs enable/disable handling
         alias software-upgrade='yay -Syuu || yay -Syuu --ignore=linux-lts,linux-lts-headers,zfs-linux-lts,zfs-utils-common,spl-linux-lts,spl-utils-common'
         alias software-upgrade-without-lts-kernel='yay -Syuu --ignore=linux-lts,linux-lts-headers,zfs-linux-lts,zfs-utils-common,spl-linux-lts,spl-utils-common'
     else
         alias software-upgrade='yay -Syuu || yay -Syuu --ignore=linux,linux-headers,zfs-linux,zfs-utils-common,spl-linux,spl-utils-common'
-        alias software-upgrade-without-kernel='pacaur -Syuu --ignore=linux,linux-headers,zfs-linux,zfs-utils-common,spl-linux,spl-utils-common'
+        alias software-upgrade-without-kernel='yay -Syuu --ignore=linux,linux-headers,zfs-linux,zfs-utils-common,spl-linux,spl-utils-common'
     fi
     alias software-repository-info='yay -Si'
 elif [[ ${NET_BAZZLINE_PACKAGE_MANAGER} = 'pacman' ]];
@@ -188,7 +191,12 @@ then
     alias software-install='sudo pacman -S'
     alias software-install-local='sudo pacman -U'
     alias software-list='sudo pacman -Ql'
-    alias software-list-depends-on='pactree -r'
+    if [[ -f /usr/bin/pactree ]];
+    then
+        alias software-list-depends-on='pactree -r'
+    else
+        alias software-list-depends-on='echo "pactree is missing, please install pacman-contrib!"'
+    fi
     alias software-list-foreign='sudo pacman -Qmq'
     alias software-list-installed='sudo pacman -Qen'
     alias software-list-unofficial-installed='sudo pacman -Qemq'
@@ -312,3 +320,16 @@ alias whatIsListeningOnPort=net_bazzline_what_is_listening_on_that_port
 #x
 alias x=exit
 alias xinit='startx; exit'
+
+#bo zfs section
+if [[ ${NET_BAZZLINE_ZFS_AVAILABLE} -eq 1 ]]
+then
+    #c
+    alias createZfsSnapshot=net_bazzline_create_zfs_snapshot
+    #d
+    alias deleteZfsSnapshot=net_bazzline_delete_zfs_snapshot
+    alias deleteListOfDatedZfsSnapshots=net_bazzline_delete_list_of_dated_zfs_snapshots
+    #l
+    alias listZfsSnapshots=net_bazzline_list_zfs_snapshots
+fi
+#eo zfs section

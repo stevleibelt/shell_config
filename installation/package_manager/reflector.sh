@@ -13,13 +13,14 @@ then
 
     exit 1
 fi
+
+sudo pacman -Syy
 #end of testing if we are on the right system
 
 ##begin of test
 if [[ -f /etc/pacman.d/hooks/trigger_reflector_on_mirrorlist_update.hook ]];
 then
     echo ":: Reflector already configured."
-    echo ""
     echo ":: Do you want to remove the configuration file? (y|n)"
     read YES_OR_NO
 
@@ -56,8 +57,11 @@ read MAXIMUM_NUBERS_OF_SERVERS_TO_USE
 
 if [[ ! -d /etc/pacman.d/hooks ]];
 then
+    echo "   Creating path >>/etc/pacman.d/hooks<<"
     sudo /usr/bin/env mkdir -p /etc/pacman.d/hooks
 fi
+
+echo "   Creating file >>/etc/pacman.d/hooks/trigger_reflector_on_mirrorlist_update.hook<<"
 
 sudo touch /etc/pacman.d/hooks/trigger_reflector_on_mirrorlist_update.hook
 
@@ -73,4 +77,6 @@ When = PostTransaction
 Depends = reflector
 Exec = /usr/bin/bash -c \"reflector --country '$(echo ${COUNTRY_NAME})' -l $(echo ${MAXIMUM_NUBERS_OF_SERVERS_TO_USE}) --sort rate --save /etc/pacman.d/mirrorlist && [[ -f /etc/pacman.d/mirrorlist.pacnew ]] && rm /etc/pacman.d/mirrorlist.pacnew\"
 DELIM"
+
+echo ":: Done."
 ##end of setup

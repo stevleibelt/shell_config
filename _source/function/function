@@ -999,7 +999,7 @@ function net_bazzline_filesystem_path_to_lower ()
     #   https://stackoverflow.com/questions/23816264/remove-all-special-characters-and-case-from-string-in-bash#23816607
     #   https://stackoverflow.com/a/15347915
     #   https://www.linuxquestions.org/questions/programming-9/bash-replace-all-spaces-in-file-folder-names-635821/
-    FILE_PATH_CLEANED=$(echo "${FILE_PATH}" | tr -c '[:graph:]\n\r' '_' | tr '\?|!|&' '_' | tr -d '(|)|#|[|]' | tr -d "'" | tr '[:upper:]' '[:lower:]');
+    FILE_PATH_CLEANED=$(echo "${FILE_PATH}" | tr -c '[:graph:]\n\r' '_' | tr '\?|!|&' '_' | tr -d '(|)|#|[|]|:|;' | tr -d "'" | tr '[:upper:]' '[:lower:]');
 
     if [[ "${FILE_PATH}" != "${FILE_PATH_CLEANED}" ]];
     then

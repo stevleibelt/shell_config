@@ -151,5 +151,7 @@ function net_bazzline_rsync ()
         return 1
     fi
 
-    rsync -aq --delete $@
+    #@see:
+    #   https://opensource.com/article/19/5/advanced-rsync
+    rsync -caq --delete $@
 }

@@ -1,5 +1,7 @@
 #!/bin/bash
 ####
+# Contains list of files to source where ordering does not matter
+####
 # @author stev leibelt <artodeto@bazzline.net>
 # @since 2013-04-24
 ####

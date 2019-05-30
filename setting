@@ -1,5 +1,12 @@
 #!/bin/bash
 ####
+# Used to configure used software like
+#   * this project
+#   * bash
+#   * grep
+#   * ssh
+#   * vim
+####
 # @author stev leibelt <artodeto@bazzline.net>
 # @since 2013-04-24
 ####
@@ -33,6 +40,15 @@ NET_BAZZLINE_RECORD_FUNCTION_USAGE=0
 NET_BAZZLINE_REMEMBER_SSH_PASSWORD_TIMEOUT_IN_MINUTES=30
 #add port where your secure connection is listen on (via ssh -D)
 NET_BAZZLINE_SECURE_CONNECTION_PORT=0
+#enables (1) or disabled (0) zfs support
+if [[ -f /usr/bin/zpool ]];
+then
+    NET_BAZZLINE_ZFS_AVAILABLE=1
+else
+    NET_BAZZLINE_ZFS_AVAILABLE=0
+fi
+#default zfs pool if non is provided
+NET_BAZZLINE_ZFS_DEFAULT_POOL='zpool'
 
 #https://wiki.archlinux.org/index.php/Bash
 # faster completion
