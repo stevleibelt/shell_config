@@ -11,7 +11,7 @@ PATH_TO_THIS_SCRIPT=$(cd $(dirname "$0"); pwd)
 PATH_TO_CURRENT_VERSION_FILE=${PATH_TO_THIS_SCRIPT}"/.current_version"
 PATH_TO_CURRENT_INSTALLED_VERSION_FILE=${PATH_TO_THIS_SCRIPT}"/.current_installed_version"
 
-cd ${PATH_TO_THIS_SCRIPT}
+cd "${PATH_TO_THIS_SCRIPT}"
 
 echo ":: Updating repository."
 git pull --quiet
