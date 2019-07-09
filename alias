@@ -268,7 +268,10 @@ alias showSystemUsers=net_bazzline_show_system_users
 alias startSshAgent='eval $(ssh-agent)'
 alias startXorg='startx; exit'
 alias sshKeygen='ssh-keygen -b 4096 -t rsa'
-alias startPhpWebserver=net_bazzline_php_start_internal_webserver
+if [[ -x '/usr/bin/php' ]];
+then
+    alias startPhpWebserver=net_bazzline_php_start_internal_webserver
+fi
 if [[ -x '/usr/bin/svn' ]];
 then
     alias svnDiff=net_bazzline_svn_diff
