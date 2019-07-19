@@ -757,19 +757,24 @@ function net_bazzline_create_path_or_return_error_if_path_exists_already()
 {
     net_bazzline_record_function_usage ${FUNCNAME[0]}
 
-    if [[ $# -lt 1 ]]; then
-        echo "invalid number of arguments"
+    if [[ $# -lt 1 ]];
+    then
+        echo "Invalid number of arguments:"
         echo "    net_bazzline_create_path_or_return_error_if_path_exists_already <path to create>";
         return 1
     fi
 
-    local PATH_TO_CREATE="$1"
+    local PATH_TO_CREATE="${1}"
 
-    if [[ -d "$PATH_TO_CREATE" ]]; then
-        echo "path exist already: $PATH_TO_CREATE"
+    net_bazzline_delete_empty_directories "${PATH_TO_CREATE}"
+
+    if [[ -d "${PATH_TO_CREATE}" ]];
+    then
+        echo "Path exist already: ${PATH_TO_CREATE}"
+
         return 1
     else
-        net_bazzline_mkdir -p "$PATH_TO_CREATE"
+        net_bazzline_mkdir -p "${PATH_TO_CREATE}"
     fi
 }
 
@@ -814,8 +819,8 @@ function net_bazzline_delete_empty_directories ()
     net_bazzline_record_function_usage ${FUNCNAME[0]}
 
     #begin of default settings
-    MAX_DEPTH=1
-    ROOT_PATH="."
+    local MAX_DEPTH=1
+    local ROOT_PATH="."
     #end of default settings
 
     #begin of user settings
@@ -830,7 +835,10 @@ function net_bazzline_delete_empty_directories ()
     fi
     #end of user settings
 
-    find ${ROOT_PATH} -maxdepth ${MAX_DEPTH} -type d -empty -delete
+    if [[ -d "${ROOT_PATH}" ]];
+    then
+        find ${ROOT_PATH} -maxdepth ${MAX_DEPTH} -type d -empty -delete
+    fi
 }
 
 ####
