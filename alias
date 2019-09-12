@@ -82,6 +82,7 @@ alias iostat='iostat -x 2'
 alias l='ls -hAlt'
 alias lh=net_bazzline_list_filesystem_items_head
 alias listBiggestDirectories=net_bazzline_list_biggest_directories
+alias listBiggestSwapSpaceConsumers=net_bazzline_list_biggest_swap_space_consumers
 alias listDomainInformation=net_bazzline_list_domain_information
 alias listEmptyDirectories=net_bazzline_list_empty_directories
 alias listFilesOlderThan=net_bazzline_list_files_older_than
