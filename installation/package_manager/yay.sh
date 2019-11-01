@@ -41,7 +41,8 @@ cd ${TEMPORARY_DIRECTORY_PATH}
 
 ##begin of building and installing
 cd ${TEMPORARY_DIRECTORY_PATH}
-git clone https://aur.archlinux.org/yay.git .
+#git clone https://aur.archlinux.org/yay.git .
+git clone https://aur.archlinux.org/yay-bin.git .
 makepkg -si
 ##end of building and installing
 
