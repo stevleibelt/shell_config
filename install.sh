@@ -11,7 +11,7 @@
 clear
 
 #begin of setup
-DATETIME=$(date +%y%m%d_+%T)
+printf -v DATETIME "%(%F-%T)T" -1
 
 PATH_TO_THE_BASH_PROFILE="${HOME}/.bash_profile"
 PATH_TO_THE_BASH_RC="${HOME}/.bashrc"
