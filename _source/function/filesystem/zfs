@@ -11,18 +11,19 @@ function net_bazzline_create_zfs_snapshot()
     local NAME_OF_THE_POOL="${NET_BAZZLINE_ZFS_DEFAULT_POOL}"
     local NAME_OF_THE_SNAPSHOT=$(date +'%Y-%m-%d_%H-%M-%S')
 
-    if [[ $# -gt 0 ]]; then
+    if [[ $# -gt 0 ]];
+    then
         local NAME_OF_THE_SNAPSHOT="${1}"
     elif [[ $# -gt 1 ]]; then
         local NAME_OF_THE_SNAPSHOT="${1}"
         local NAME_OF_THE_POOL="${2}"
     fi
 
-    if sudo zfs snapshot -r $NAME_OF_THE_POOL@$NAME_OF_THE_SNAPSHOT; then
-        echo 'snapshot "'$NAME_OF_THE_SNAPSHOT'" created for pool "'$NAME_OF_THE_POOL'"'
-    fi
+    echo "Trying to create snapshot >>${NAME_OF_THE_SNAPSHOT}<< for pool >>${NAME_OF_THE_POOL}<<"
 
-    return $?
+    local RESULT_OF_SNAPSHOT_CREATION=$(sudo zfs snapshot -r ${NAME_OF_THE_POOL}@${NAME_OF_THE_SNAPSHOT});
+
+    return ${RESULT_OF_SNAPSHOT_CREATION}
 }
 
 ####
@@ -40,7 +41,8 @@ function net_bazzline_delete_zfs_snapshot()
 {
     net_bazzline_record_function_usage ${FUNCNAME[0]}
 
-    if [[ $# -lt 1 ]]; then
+    if [[ $# -lt 1 ]];
+    then
         echo ":: Invalid number of arguments"
         echo ":: Usage"
         echo "   net_bazzline_delete_zfs_snapshot <name of the snapshot> [<name of the zfs pool>]"
