@@ -49,7 +49,7 @@ function net_bazzline_cleanup_after_converting_files ()
 
     local LENGTH_OF_THE_FILE_NAME_PATTERN=${#FILE_NAME_PATTERN}
 
-    if [[ ${LEVEL_OF_VERBOSITY} -gt 2 ]];
+    if [[ ${LEVEL_OF_VERBOSITY} -gt 0 ]];
     then
         echo "Working directory path >>${WORKING_DIRECTORY_PATH}<<."
         echo "File name pattern >>${FILE_NAME_PATTERN}<<."
@@ -135,6 +135,19 @@ function net_bazzline_list_biggest_directories ()
     local NUMBER_OF_DIRECTORIES_TO_OUTPUT=${1:-20}
 
     du -hsx -- * | sort -rh | head -n${NUMBER_OF_DIRECTORIES_TO_OUTPUT}
+}
+
+####
+# [@param string $CURRENT_PATH=.]
+####
+# @since 2019-12-19
+# @author stev leibelt
+####
+function net_bazzline_list_softlinks ()
+{
+    local CURRENT_PATH=${1:-'.'}
+
+    find -L "${CURRENT_PATH}" -xtype l
 }
 
 ####
