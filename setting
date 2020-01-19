@@ -44,11 +44,12 @@ NET_BAZZLINE_SECURE_CONNECTION_PORT=0
 if [[ -f /usr/bin/zpool ]];
 then
     NET_BAZZLINE_ZFS_AVAILABLE=1
+    #default zfs pool if non is provided
+    NET_BAZZLINE_ZFS_DEFAULT_POOL='zpool'
+    declare -a NET_BAZZLINE_ZFS_LIST_OF_POOLS_TO_SCRUB=("zpool");
 else
     NET_BAZZLINE_ZFS_AVAILABLE=0
 fi
-#default zfs pool if non is provided
-NET_BAZZLINE_ZFS_DEFAULT_POOL='zpool'
 
 #https://wiki.archlinux.org/index.php/Bash
 # faster completion

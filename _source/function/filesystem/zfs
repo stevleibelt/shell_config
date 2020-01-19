@@ -240,6 +240,34 @@ function net_bazzline_rotate_zfs_snapshot()
 
     echo 'work in progress'
 }
+
+####
+# [@param string <zfs pool name>] - If no argument is provided, the content of NET_BAZZLINE_ZFS_LIST_OF_POOLS_TO_SCRUB will be used
+# [@param string <zfs pool name>]
+# ...
+####
+function net_bazzline_scrub_list_of_zfs_pools()
+{
+    net_bazzline_record_function_usage ${FUNCNAME[0]}
+
+    if [[ ${#} -eq 0 ]];
+    then
+        local LIST_OF_ZFS_POOLS_TO_SCRUB=${NET_BAZZLINE_ZFS_LIST_OF_POOLS_TO_SCRUB}
+    else
+        declare -a local LIST_OF_ZFS_POOLS_TO_SCRUB=( "${@}" )
+    fi
+
+    for ZFS_POOL_TO_SCRUB in "${LIST_OF_ZFS_POOLS_TO_SCRUB[@]}";
+    do
+        if [[ ${UID} -eq 0 ]];
+        then
+            zpool scrub ${ZFS_POOL_TO_SCRUB}
+        else
+            sudo zpool scrub ${ZFS_POOL_TO_SCRUB}
+        fi
+    done;
+}
+
 ####
 # @param string <mount point>
 # @param string <zfs pool name>

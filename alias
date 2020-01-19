@@ -336,5 +336,7 @@ then
     alias deleteListOfDatedZfsSnapshots=net_bazzline_delete_list_of_dated_zfs_snapshots
     #l
     alias listZfsSnapshots=net_bazzline_list_zfs_snapshots
+    #s
+    alias scrubListOfZfsPools=net_bazzline_scrub_list_of_zfs_pools
 fi
 #eo zfs section
