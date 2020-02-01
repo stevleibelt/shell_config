@@ -204,7 +204,7 @@ then
     alias software-list-unofficial-installed='sudo pacman -Qemq'
     alias software-prepare-for-upgrade='sudo pacman -Swyu'
     alias software-remove='sudo pacman -Rsu'
-    alias software-search='sudo pacman -Ss'
+    alias software-search='pacman -Ss'
     alias software-search-installed='sudo pacman -Qs'
     alias software-upgrade-from-cache='sudo pacman -u'
     if [[ ${NET_BAZZLINE_IS_LTS_KERNEL} -eq 1 ]];
