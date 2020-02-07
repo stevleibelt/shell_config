@@ -13,6 +13,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
     * if you cd to a file, use the base path to cd into that directory
 * *if* zfs is installed and root pool configured
     * make a snapshot before the upgrade and delete previous one
+* create a function called "organize_dcim" which
+    * loops starting from $(current_year - 10) until $(current_year) (if no argument provided)
+    * checks if there are files matching the pattern "*_201910_*
+    * if there is at least one file (grep -c)
+    * check if there is a directory called "2019_10" and creates if it does not exist
+    * moves all files for the pattern into this path
 * create a way to easily change settings based on the environment (like "work" and "home")
 * create function "regular_start" with dedicated processing steps (function calls defined via local.settings) to do, as example
     * disable touchpad
