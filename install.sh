@@ -111,10 +111,13 @@ fi
 
 DELIM
 
-echo ""
-echo ":: Copy content of ${PATH_TO_THE_XINIT} into ${PATH_TO_THE_TEMPORARY_XINIT}"
+if [[ -f "${PATH_TO_THE_XINIT}" ]];
+then
+    echo ""
+    echo ":: Copy content of ${PATH_TO_THE_XINIT} into ${PATH_TO_THE_TEMPORARY_XINIT}"
 
-cat "${PATH_TO_THE_XINIT}" >> "${PATH_TO_THE_TEMPORARY_XINIT}"
+    cat "${PATH_TO_THE_XINIT}" >> "${PATH_TO_THE_TEMPORARY_XINIT}"
+fi
 
 echo ""
 echo ":: Replacing ${PATH_TO_THE_XINIT} with ${PATH_TO_THE_TEMPORARY_XINIT}"
