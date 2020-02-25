@@ -26,7 +26,7 @@ then
     local CURRENT_DATETIME=$(date +'%Y%m%d.%H%M%S')
 
     echo ":: Moving existing file to /etc/pacoloco.yaml.${CURRENT_DATETIME}."
-    sudo mv /etc/pacoloco.yaml /etc/pacoloco.yaml.${CURRENT_DATETIME}
+    sudo mv /etc/pacoloco.yaml "/etc/pacoloco.yaml.${CURRENT_DATETIME}"
 fi
 
 if [[ ! -d /var/cache/pacoloco ]];
