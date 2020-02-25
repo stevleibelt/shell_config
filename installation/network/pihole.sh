@@ -36,8 +36,8 @@ function install_or_update_pi_hole_ftl()
     echo ":: Building package."
     makepkg -sri
 
-    echo ":: Installing package."
-    sudo pacman -U $.tar.xz
+    #echo ":: Installing package."
+    #sudo pacman -U $.tar.xz
 
     if [[ ${STOP_RUNNING_PROCESS} -eq 1 ]];
     then
@@ -50,6 +50,9 @@ function install_or_update_pi_hole_ftl()
 
     echo ":: Updating gravity."
     sudo pihole -g
+
+    echo ":: Take a look into the path to clean things up from time to time."
+    echo "   ${PATH_TO_THE_PI_HOLE_FTL_SOURCE}"
 }
 
 install_or_update_pi_hole_ftl
