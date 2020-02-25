@@ -26,17 +26,17 @@ then
     local CURRENT_DATETIME=$(date +'%Y%m%d.%H%M%S')
 
     echo ":: Moving existing file to /etc/pacoloco.yaml.${CURRENT_DATETIME}."
-    mv /etc/pacoloco.yaml /etc/pacoloco.yaml.${CURRENT_DATETIME}
+    sudo mv /etc/pacoloco.yaml /etc/pacoloco.yaml.${CURRENT_DATETIME}
 fi
 
 if [[ ! -d /var/cache/pacoloco ]];
 then
     echo ":: Creating cache path /var/cache/pacoloco."
 
-    /usr/bin/mkdir -p /var/cache/pacoloco
+    sudo /usr/bin/mkdir -p /var/cache/pacoloco
 fi
 
-cat >/etc/pacoloco.yaml<<DELIM
+sudo bash -c "cat >/etc/pacoloco.yaml<<DELIM
 echo cache_dir: /var/cache/pacoloco
 port: 9129
 repos:
@@ -59,7 +59,7 @@ repos:
     urls:
     ## Geo-IP based mirror selection and load balancing
       - http://mirror.archlinuxarm.org//
-DELIM
+DELIM"
 
 echo ":: Do not forget to add the url of this server to the pacman mirror list."
 echo "   http://myserver:9129/repo/archlinux_\$arch"
