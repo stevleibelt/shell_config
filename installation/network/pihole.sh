@@ -53,6 +53,9 @@ function install_or_update_pi_hole_ftl()
 
     echo ":: Take a look into the path to clean things up from time to time."
     echo "   ${PATH_TO_THE_PI_HOLE_FTL_SOURCE}"
+
+    echo ":: Removing *.pkg.tar.xz files in ${PATH_TO_THE_PI_HOLE_FTL_SOURCE}."
+    rm -v ${PATH_TO_THE_PI_HOLE_FTL_SOURCE}/*.pkg.tar.xz
 }
 
 install_or_update_pi_hole_ftl
