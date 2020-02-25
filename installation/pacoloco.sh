@@ -63,6 +63,9 @@ repos:
       - http://mirror.archlinuxarm.org/
 DELIM"
 
+    sudo systemctl enable pacoloco.service
+    sudo systemctl restart pacoloco.service
+
     echo ":: Do not forget to add the url of this server to the pacman mirror list."
     echo "   1.) for arm6vh"
     echo "   http://myserver:9129/repo/archlinux_\$arch/\$arch/\$repo"
