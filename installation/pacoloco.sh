@@ -37,29 +37,33 @@ then
 fi
 
 sudo bash -c "cat >/etc/pacoloco.yaml<<DELIM
+---
 echo cache_dir: /var/cache/pacoloco
 port: 9129
 repos:
   archlinux_x86_64:
     urls:
-      #german based
-      - https://packages.oth-regensburg.de/archlinux//os/
-      - https://arch.eckner.net/archlinux//os/
-      - https://mirror.mikrogravitation.org/archlinux//os/
-      - https://mirror.23media.com/archlinux//os/
-      - https://mirror.f4st.host/archlinux//os/
-      - http://archlinux.mirror.iphh.net//os/
-      - https://ftp.spline.inf.fu-berlin.de/mirrors/archlinux//os/
-      - https://arch.jensgutermuth.de//os/
-      - https://mirror.ubrco.de/archlinux//os/
-      - https://mirror.netcologne.de/archlinux//os/
-      - https://ftp.halifax.rwth-aachen.de/archlinux//os/
-      - https://mirror.metalgamer.eu/archlinux//os/
- archlinux_arm:
+      # german based
+      - https://packages.oth-regensburg.de/archlinux/
+      - https://arch.eckner.net/archlinux/
+      - https://mirror.mikrogravitation.org/archlinux/
+      - https://mirror.23media.com/archlinux/
+      - https://mirror.f4st.host/archlinux/
+      - http://archlinux.mirror.iphh.net/
+      - https://ftp.spline.inf.fu-berlin.de/mirrors/archlinux/
+      - https://arch.jensgutermuth.de/
+      - https://mirror.ubrco.de/archlinux/
+      - https://mirror.netcologne.de/archlinux/
+      - https://ftp.halifax.rwth-aachen.de/archlinux/
+      - https://mirror.metalgamer.eu/archlinux/
+  archlinux_armv6h:
     urls:
-    ## Geo-IP based mirror selection and load balancing
-      - http://mirror.archlinuxarm.org//
+      # Geo-IP based mirror selection and load balancing
+      - http://mirror.archlinuxarm.org/
 DELIM"
 
 echo ":: Do not forget to add the url of this server to the pacman mirror list."
-echo "   http://myserver:9129/repo/archlinux_\$arch"
+echo "   1.) for arm6vh"
+echo "   http://myserver:9129/repo/archlinux_\$arch/\$arch/\$repo"
+echo "   2.) for x86_64"
+echo "   http://myserver:9129/repo/archlinux_\$arch/\$repo/os\$arch"
