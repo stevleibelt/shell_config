@@ -13,6 +13,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
     * if you cd to a file, use the base path to cd into that directory
 * *if* zfs is installed and root pool configured
     * make a snapshot before the upgrade and delete previous one
+* create a unified backup function
+    * creates a file ~/.config/net_bazzline/last_backup_to_$hostname
+    * expectes following list of arguments
+        * target\_hostname
+        * target\_path
+        * target\_ssh_key_path
+        * target\_username
+        * source\_path [source\_path[...]]
+    * handles the synchronisation by using rsync
 * create a function called "organize_dcim" which
     * loops starting from $(current_year - 10) until $(current_year) (if no argument provided)
     * checks if there are files matching the pattern "*_201910_*
