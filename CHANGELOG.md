@@ -13,9 +13,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
     * if you cd to a file, use the base path to cd into that directory
 * *if* zfs is installed and root pool configured
     * make a snapshot before the upgrade and delete previous one
-* refactore deleteListOfDatedZfsSnapshots
-    * list all snapshots fitting for this pool and store it in an array
-    * use this array to check if this dated snapshot exists
 * create a unified backup function
     * creates a file ~/.config/net_bazzline/last_backup_to_$hostname
     * expectes following list of arguments
@@ -93,6 +90,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 
 * refactored zfs filesystem functions and moved zfs pool value from mandatory to optional everywhere
+* refactored deleteListOfDatedZfsSnapshots
+    * list all snapshots fitting for this pool and store it in an array
+    * use this array to check if this dated snapshot exists
 
 ## [1.0.0](https://github.com/stevleibelt/shell_config/tree/1.0.0) - released at 23.04.2016
 

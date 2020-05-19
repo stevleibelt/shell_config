@@ -93,6 +93,12 @@ function net_bazzline_delete_list_of_dated_zfs_snapshots()
     local INITIAL_SNAPSHOT_NUMBER="${1}"
     local FINAL_SNAPSHOT_NUMBER="${2}"
 
+    #fetch all available snapshots into an array
+    #-o name - only display the name like zfspool/dataset@my_snapshot
+    #@see: https://stackoverflow.com/q/18884992
+    local ARRAY_OF_AVAILABLE_SNAPSHOTS=$(zfs list -t snapshot -o name | grep -i ${NAME_OF_THE_POOL})
+    #echo "Available snapshots: ${ARRAY_OF_AVAILABLE_SNAPSHOTS[@]}"
+
     for CURRENT_SNAPSHOT_NUMBER in $(seq ${INITIAL_SNAPSHOT_NUMBER} 1 ${FINAL_SNAPSHOT_NUMBER});
     do
         #expected date for CURRENT_SNAPSHOT_NUMBER is yyyymmdd
@@ -104,7 +110,12 @@ function net_bazzline_delete_list_of_dated_zfs_snapshots()
         #check if the date is valid
         if date -d "${YEAR}-${MONTH}-${DAY}" &> /dev/null;
         then
-            net_bazzline_delete_zfs_snapshot ${CURRENT_SNAPSHOT_NUMBER} ${NAME_OF_THE_POOL}
+            #check if snapshot exists
+            #@see: https://stackoverflow.com/a/47541882
+            if printf '%s\n' ${ARRAY_OF_AVAILABLE_SNAPSHOTS[@]} | grep -q -P "^${NAME_OF_THE_POOL}@${CURRENT_SNAPSHOT_NUMBER}$";
+            then
+                net_bazzline_delete_zfs_snapshot ${CURRENT_SNAPSHOT_NUMBER} ${NAME_OF_THE_POOL}
+            fi
         fi
     done
 
