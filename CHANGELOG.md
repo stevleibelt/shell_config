@@ -77,6 +77,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### To Change
 
+* change detection for libx256 or libx254 movies
+    * instead of checking the filename, implement a dependency (or check if it exists) and use mediainfo
+    * `mediainfo <filepath> | grep x265`
+
 ## [Unreleased]
 
 ### Added
