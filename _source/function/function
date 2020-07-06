@@ -90,6 +90,42 @@ function net_bazzline_batch_convert_video_to_libx264 ()
 # [@param int $1 - max depth - default is 1]
 # @todo change order of parameters everywhere
 # @author stev leibelt <artodeto@bazzline.net>
+# @since 2020-07-06
+####
+function net_bazzline_batch_convert_video_to_librav1e ()
+{
+    net_bazzline_record_function_usage ${FUNCNAME[0]}
+
+    local MAX_DEPTH=${2:-1}
+    local SEARCH_PATH="${1:-.}"
+
+    #@todo use parallel if available
+    #find ${SEARCH_PATH} -maxdepth ${MAX_DEPTH} -type f -print0 | while read -d $'\0' FILE_PATH;
+    find ${SEARCH_PATH} -maxdepth ${MAX_DEPTH} -type f -iregex '.*\.\(mp4\|mov\|flv|avi\)$' -print0 | while read -d $'\0' FILE_PATH;
+    do
+        #@see: https://stackoverflow.com/a/25535717
+        #if [[ ${FILE_PATH} != *"converted265"* ]];
+        #skip all files ending with ".converted265.mkv"
+        if [[ ${FILE_PATH: -17} != ".convertedRav1e.mkv" ]];
+        then
+            if [[ "${SEARCH_PATH}" == "." ]];
+            then
+                #remove ./ from the file path
+                FILE_PATH="${FILE_PATH:2}"
+            fi
+
+            net_bazzline_convert_video_to_librav1e "${FILE_PATH}"
+        fi
+    done;
+}
+
+####
+# Convertes all files within the given path
+#
+# [@param string $1 - search path - default is .]
+# [@param int $1 - max depth - default is 1]
+# @todo change order of parameters everywhere
+# @author stev leibelt <artodeto@bazzline.net>
 # @since 2017-12-22
 ####
 function net_bazzline_batch_convert_video_to_libx265 ()
@@ -214,7 +250,7 @@ function net_bazzline_create_a_mp3_file_for_each_mpc_file_in_the_current_directo
 
 function not_working:net_bazzline_convert_dvd_to_mkv()
 {
-    cat /mnt/VIDEO_TS/V*.VOB | ffmpeg -i - -acodec copy -scodec copy -vcodec libx264 -nostats -hide_banner -pass 2 file.x265.mkv
+    cat /mnt/VIDEO_TS/V*.VOB | ffmpeg -i - -acodec copy -scodec copy -vcodec libx264 -nostats -hide_banner -pass 2 file.x264.mkv
 }
 
 #i
@@ -672,6 +708,40 @@ function net_bazzline_convert_video_to_libx264 ()
 
 ####
 # @param string $1 - source file path
+# [@param string $2 - destination file path] - if not provided, default name is source.convertedRav1e.mkv
+####
+function net_bazzline_convert_video_to_librav1e ()
+{
+    net_bazzline_record_function_usage ${FUNCNAME[0]}
+
+    if [[ $# -lt 1 ]];
+    then
+        net_bazzline_handle_invalid_number_of_arguments_supplied "${FUNCNAME[0]} <source> [<destination>]"
+
+        return 1
+    fi
+
+    local SOURCE_FILE_PATH="${1}"
+
+    if [[ $# -gt 1 ]];
+    then
+        local DESTINATION_FILE_PATH="${2}"
+    else
+        local DESTINATION_FILE_PATH="${SOURCE_FILE_PATH}.convertedRav1e.mkv"
+    fi
+
+    if [[ -f "${DESTINATION_FILE_PATH}" ]];
+    then
+        echo "   Skipping file path >>${DESTINATION_FILE_PATH}<<. Exists already."
+    else
+        #@see
+        #   https://askubuntu.com/questions/1189174/how-do-i-use-ffmpeg-and-rav1e-to-create-high-quality-av1-files
+        ffmpeg -i "${SOURCE_FILE_PATH}" -map 0 -acodec copy -scodec copy -vcodec librav1e -nostats -hide_banner -qp 80 -speed 4 -tile-columns 2 -tile-rows 2 -pass 1 "${DESTINATION_FILE_PATH}" < /dev/null
+    fi
+}
+
+####
+# @param string $1 - source file path
 # [@param string $2 - destination file path] - if not provided, default name is source.converted265.mkv
 ####
 function net_bazzline_convert_video_to_libx265 ()
@@ -704,7 +774,6 @@ function net_bazzline_convert_video_to_libx265 ()
         ffmpeg -i "${SOURCE_FILE_PATH}" -map 0 -acodec copy -scodec copy -vcodec libx265 -nostats -hide_banner -pass 1 "${DESTINATION_FILE_PATH}" < /dev/null
     fi
 }
-
 
 ####
 # Converts all wavs to mp3s in current directory

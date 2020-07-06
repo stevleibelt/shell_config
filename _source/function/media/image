@@ -1,0 +1,40 @@
+#!/bin/bash
+
+#c
+####
+# Creates thumbnails in the current path
+#
+# [@paramOne: string] - path to use, default is current working directory
+####
+# @see https://www.cyberciti.biz/tips/howto-linux-creating-a-image-thumbnails-from-shell-prompt.html
+# @author stev leibelt <artodeto@bazzline.net>
+# @since 2020-04-24
+####
+function net_bazzline_create_thumbnails()
+{
+    net_bazzline_record_function_usage ${FUNCNAME[0]}
+
+    if [[ $# -eq 0 ]];
+    then
+        local CURRENT_WORKING_DIRECTORY=$(pwd)
+    else
+        local CURRENT_WORKING_DIRECTORY=${1}
+    fi
+
+    if [[ ! -d ${CURRENT_WORKING_DIRECTORY} ]];
+    then
+        echo ":: Invalid argument provided."
+        echo "   Path >>${CURRENT_WORKING_DIRECTORY}<< is not a directory."
+
+        return 1
+    fi
+
+    find . -name *.jpg -exec convert {} -resize 25% th_{} ;
+    ls *.png | xargs -I {} convert -thumbnail 200 {} thumb.{}
+    FILES="$@"
+    for i in $FILES
+    do
+    echo "Prcoessing image $i ..."
+    /usr/bin/convert -thumbnail 200 $i thumb.$i
+    done
+}
