@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### To Add
 
+* add `gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/ebook -dNOPAUSE -dBATCH -dColorImageResolution=150 -sOutputFile=output.pdf someBigFile.pdf` as `net_bazzline_compress_pdf` (@see: https://opensource.com/article/20/8/reduce-pdf)
 * extend "cd"
     * if you cd to a file, use the base path to cd into that directory
 * *if* zfs is installed and root pool configured
