@@ -2614,11 +2614,16 @@ function net_bazzline_silent_grep ()
 {
     net_bazzline_record_function_usage ${FUNCNAME[0]}
 
-    if [[ $# -lt 1 ]];
+    if [[ -f /usr/bin/rg ]];
     then
-        grep
+        rg "$@"
     else
-        grep -irI --color=auto --exclude=\*.svn\* --exclude=\*.git\* --exclude=\*.idea\* "$@" 2>/dev/null
+        if [[ $# -lt 1 ]];
+        then
+            grep
+        else
+            grep -irI --color=auto --exclude=\*.svn\* --exclude=\*.git\* --exclude=\*.idea\* "$@" 2>/dev/null
+        fi
     fi
 }
 
