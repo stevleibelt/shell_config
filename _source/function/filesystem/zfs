@@ -85,19 +85,25 @@ function net_bazzline_delete_list_of_dated_zfs_snapshots()
 
     if [[ ${INITIAL_SNAPSHOT_NUMBER} -gt ${FINAL_SNAPSHOT_NUMBER} ]];
     then
-    echo ":: Invalid arguments"
-    echo "   ${INITIAL_SNAPSHOT_NUMBER} greater than ${FINAL_SNAPSHOT_NUMBER}"
+        echo ":: Invalid arguments"
+        echo "   ${INITIAL_SNAPSHOT_NUMBER} greater than ${FINAL_SNAPSHOT_NUMBER}"
     fi
 
     local NAME_OF_THE_POOL="${3:-${NET_BAZZLINE_ZFS_DEFAULT_POOL}}"
     local INITIAL_SNAPSHOT_NUMBER="${1}"
     local FINAL_SNAPSHOT_NUMBER="${2}"
 
+    echo ":: Calculating reclaimed disk space."
+    #@see: https://jrs-s.net/2020/02/08/estimating-space-occupied-by-multiple-zfs-snapshots/
+    sudo zfs -nv ${NAME_OF_THE_POOL}@${INITIAL_SNAPSHOT_NUMBER}%${FINAL_SNAPSHOT_NUMBER}
+
     #fetch all available snapshots into an array
     #-o name - only display the name like zfspool/dataset@my_snapshot
     #@see: https://stackoverflow.com/q/18884992
     local ARRAY_OF_AVAILABLE_SNAPSHOTS=$(zfs list -t snapshot -o name | grep -i ${NAME_OF_THE_POOL})
     #echo "Available snapshots: ${ARRAY_OF_AVAILABLE_SNAPSHOTS[@]}"
+
+    echo ":: Deleting available snapshots."
 
     for CURRENT_SNAPSHOT_NUMBER in $(seq ${INITIAL_SNAPSHOT_NUMBER} 1 ${FINAL_SNAPSHOT_NUMBER});
     do
