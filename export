@@ -21,5 +21,9 @@ export HISTTIMEFORMAT="%F %T  "
 #@see: https://opensource.com/article/18/5/advanced-use-less-text-file-viewer
 export LESS='-C -M -I -j 10'
 
+#p
+#usefull for things like python
+export PATH=$PATH:${HOME}/.local/bin
+
 #t
 export TERM=xterm-256color
