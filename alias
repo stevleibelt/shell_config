@@ -284,7 +284,8 @@ then
     alias svnLogGrep=net_bazzline_svn_log_grep
     alias svnRevertAll='svn revert -R .'
 fi
-if [[ -x '/sys/power/state' ]]
+if [[ -x '/sys/power/state' ]];
+then
     alias suspendToDisk='sudo bash -c "echo mem > /sys/power/state"'
 fi
 alias syncFromHost=net_bazzline_sync_from_host
