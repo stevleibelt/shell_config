@@ -18,7 +18,13 @@ sudo pacman -Syy
 #end of testing if we are on the right system
 
 ##begin of test
+#bo: 20201112 - migration for old versions without priority number
 if [[ -f /etc/pacman.d/hooks/trigger_reflector_on_mirrorlist_update.hook ]];
+    mv /etc/pacman.d/hooks/trigger_reflector_on_mirrorlist_update.hook /etc/pacman.d/hooks/60-trigger_reflector_on_mirrorlist_update.hook
+fi
+#bo: 20201112 - migration for old versions without priority number
+
+if [[ -f /etc/pacman.d/hooks/60-trigger_reflector_on_mirrorlist_update.hook ]];
 then
     echo ":: Reflector already configured."
     echo ":: Do you want to remove the configuration file? (y|n)"
@@ -26,10 +32,10 @@ then
 
     if [[ ${YES_OR_NO} == "y" ]];
     then
-        sudo rm /etc/pacman.d/hooks/trigger_reflector_on_mirrorlist_update.hook
+        sudo rm /etc/pacman.d/hooks/60-trigger_reflector_on_mirrorlist_update.hook
     else
         echo "   If you want to rerun this script, remove following file:"
-        echo "   /etc/pacman.d/hooks/trigger_reflector_on_mirrorlist_update.hook"
+        echo "   /etc/pacman.d/hooks/60-trigger_reflector_on_mirrorlist_update.hook"
 
         exit 1
     fi
@@ -61,11 +67,11 @@ then
     sudo /usr/bin/env mkdir -p /etc/pacman.d/hooks
 fi
 
-echo "   Creating file >>/etc/pacman.d/hooks/trigger_reflector_on_mirrorlist_update.hook<<"
+echo "   Creating file >>/etc/pacman.d/hooks/60-trigger_reflector_on_mirrorlist_update.hook<<"
 
-sudo touch /etc/pacman.d/hooks/trigger_reflector_on_mirrorlist_update.hook
+sudo touch /etc/pacman.d/hooks/60-trigger_reflector_on_mirrorlist_update.hook
 
-sudo bash -c "cat > /etc/pacman.d/hooks/trigger_reflector_on_mirrorlist_update.hook <<DELIM
+sudo bash -c "cat > /etc/pacman.d/hooks/60-trigger_reflector_on_mirrorlist_update.hook <<DELIM
 [Trigger]
 Operation = Upgrade
 Type = Package
