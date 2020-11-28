@@ -203,36 +203,38 @@ function net_bazzline_mount_crypto_zfs_pool ()
 }
 
 ####
-# @param string <mount point>
 # @param string <zfs pool name>
+# [@param string <mount point>]
 ####
 function net_bazzline_mount_native_encrypted_zfs_pool ()
 {
-    if [[ $# -eq 3 ]];
+    if [[ $# -gt 1 ]];
     then
-        local MOUNT_POINT="${1}"
-        local ZFS_POOL_NAME="${2}"
+        local ZFS_POOL_NAME="${1}"
 
-        shift 2
+        #@20201128 - unsure if this will be ever used
+        if [[ $# -gt 2 ]];
+            local MOUNT_POINT="${2}"
 
-        if [[ -d ${MOUNT_POINT} ]];
-        then
-            #check if directory is not empty
-            if [[ $(ls -A "${MOUNT_POINT}" ]];
+            if [[ -d ${MOUNT_POINT} ]];
             then
-                echo ":: Mount point exists and is not empty."
-                echo "   >>${MOUNT_POINT}<<".
+                #check if directory is not empty
+                if [[ $(ls -A "${MOUNT_POINT}" ]];
+                then
+                    echo ":: Mount point exists and is not empty."
+                    echo "   >>${MOUNT_POINT}<<".
 
-                return 2
-            else
-                echo ":: Mount point exists but is empty."
-                echo "   Removing >>${MOUNT_POINT}<<".
+                    return 2
+                else
+                    echo ":: Mount point exists but is empty."
+                    echo "   Removing >>${MOUNT_POINT}<<".
 
-                net_bazzline_execute_as_super_user_when_not_beeing_root rmdir ${MOUNT_POINT}
+                    net_bazzline_execute_as_super_user_when_not_beeing_root rmdir ${MOUNT_POINT}
+                fi
             fi
-        fi
 
-        net_bazzline_execute_as_super_user_when_not_beeing_root mkdir -p ${MOUNT_POINT}
+            net_bazzline_execute_as_super_user_when_not_beeing_root mkdir -p ${MOUNT_POINT}
+        fi
 
         net_bazzline_execute_as_super_user_when_not_beeing_root zpool import ${ZFS_POOL_NAME}
         net_bazzline_execute_as_super_user_when_not_beeing_root zfs load-key ${ZFS_POOL_NAME}
@@ -240,7 +242,7 @@ function net_bazzline_mount_native_encrypted_zfs_pool ()
     else
         echo ":: called with invalid number of arguments."
         echo "Usage:"
-        echo "    ${FUNCNAME[0]} <mount point> <zfs pool name>"
+        echo "    ${FUNCNAME[0]} <zfs pool name> [<mount point>]"
 
         return 1
     fi
