@@ -208,12 +208,12 @@ function net_bazzline_mount_crypto_zfs_pool ()
 ####
 function net_bazzline_mount_native_encrypted_zfs_pool ()
 {
-    if [[ $# -gt 1 ]];
+    if [[ $# -gt 0 ]];
     then
         local ZFS_POOL_NAME="${1}"
 
         #@20201128 - unsure if this will be ever used
-        if [[ $# -gt 2 ]];
+        if [[ $# -gt 1 ]];
         then
            local MOUNT_POINT="${2}"
 
