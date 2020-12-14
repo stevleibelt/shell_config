@@ -2616,7 +2616,7 @@ function net_bazzline_silent_grep ()
 
     if [[ -f /usr/bin/rg ]];
     then
-        rg "$@"
+        rg -i "$@"
     else
         if [[ $# -lt 1 ]];
         then
