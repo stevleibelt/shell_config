@@ -56,7 +56,7 @@ function podman_install_or_update_pihole()
         echo ":: Building container"
         sudo podman run -d \
             --name=pihole \
-            -e TZ="${SERVER_TIME_ZONE}"n \
+            -e TZ="${SERVER_TIME_ZONE}" \
             -e WEBPASSWORD="${WEB_ADMINPASSWORD_ONE}" \
             -e SERVERIP="${SERVER_IP_ADDRESS}" \
             -v pihole:/etc/pihole \
