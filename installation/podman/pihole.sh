@@ -15,6 +15,9 @@ function podman_install_or_update_pihole()
 
         sudo pacman -Syy podman
     fi
+    # @see: https://aarongodfrey.dev/software/running_pihole_in_docker_on_ubuntu_server/
+    sudo systemctl disable systemd-resolved.service
+    sudo systemctl stop systemd-resolved.service
     #end of testing the environment
 
     #begin of dynamic variables
