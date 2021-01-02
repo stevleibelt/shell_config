@@ -15,9 +15,30 @@ function podman_install_or_update_pihole()
 
         sudo pacman -Syy podman
     fi
+
+    #   begin of clean up
     # @see: https://aarongodfrey.dev/software/running_pihole_in_docker_on_ubuntu_server/
     sudo systemctl disable systemd-resolved.service
     sudo systemctl stop systemd-resolved.service
+
+    if pacman -Q | grep -q pi-hole
+    then
+        echo ":: Found existing installation of a pi hole server."
+        echo "   Removing it..."
+
+        sudo pacman -R pi-hole-server pi-hole-ftl
+    fi
+
+    if -d /etc/pihole
+    then
+        sudo mv /etc/pihole /etc/pihole.save
+    fi
+
+    if -d /etc/dnsmasq.d
+    then
+        sudo mv /etc/dnsmasq.d /etc/dnsmasq.d.save
+    fi
+    #   end of clean up
     #end of testing the environment
 
     #begin of dynamic variables
