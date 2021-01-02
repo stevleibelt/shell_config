@@ -29,12 +29,12 @@ function podman_install_or_update_pihole()
         sudo pacman -R pi-hole-server pi-hole-ftl
     fi
 
-    if -d /etc/pihole
+    if [[ -d /etc/pihole ]];
     then
         sudo mv /etc/pihole /etc/pihole.save
     fi
 
-    if -d /etc/dnsmasq.d
+    if [[ -d /etc/dnsmasq.d ]];
     then
         sudo mv /etc/dnsmasq.d /etc/dnsmasq.d.save
     fi
