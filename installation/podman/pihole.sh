@@ -86,8 +86,8 @@ function podman_install_or_update_pihole()
             -v pihole:/etc/pihole \
             -v dnsmasq:/etc/dnsmasq.d \
             -p 80:80 \
-            -p 53:53/tcp \
-            -p 53:53/udp \
+            -p ${SERVER_IP_ADDRESS}:53:53/tcp \
+            -p ${SERVER_IP_ADDRESS}:53:53/udp \
             --restart=unless-stopped \
             pihole/pihole
     fi
