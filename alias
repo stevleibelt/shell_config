@@ -180,8 +180,8 @@ then
     if [[ ${NET_BAZZLINE_IS_LTS_KERNEL} -eq 1 ]];
     then
         #@todo implement zfs enable/disable handling
-        alias software-upgrade='yay -Syuu || yay -Syuu --ignore=linux-lts,linux-lts-headers,zfs-linux-lts,zfs-utils-common,spl-linux-lts,spl-utils-common'
-        alias software-upgrade-without-lts-kernel='yay -Syuu --ignore=linux-lts,linux-lts-headers,zfs-linux-lts,zfs-utils-common,spl-linux-lts,spl-utils-common'
+        alias software-upgrade='yay -Syuu || yay -Syuu --ignore=linux-lts,linux-lts-headers,zfs-linux,zfs-utils-common,spl-linux-lts,spl-utils-common'
+        alias software-upgrade-without-lts-kernel='yay -Syuu --ignore=linux-lts,linux-lts-headers,zfs-linux,zfs-utils-common,spl-linux-lts,spl-utils-common'
     else
         alias software-upgrade='yay -Syuu || yay -Syuu --ignore=linux,linux-headers,zfs-linux,zfs-utils-common,spl-linux,spl-utils-common'
         alias software-upgrade-without-kernel='yay -Syuu --ignore=linux,linux-headers,zfs-linux,zfs-utils-common,spl-linux,spl-utils-common'
