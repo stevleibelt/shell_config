@@ -296,6 +296,10 @@ alias syncTo=net_bazzline_sync_to
 alias syncToHost=net_bazzline_sync_to_host
 
 #t
+if [[ -f /usr/bin/journalctl ]];
+then
+    alias tailJournalctl='net_bazzline_execute_as_super_user_when_not_beeing_root journalctl -f -p 5'
+fi
 alias takeScreenshot=net_bazzline_screenshot
 alias tarCreate=net_bazzline_tar_create
 alias tarExtract=net_bazzline_tar_extract
