@@ -1,6 +1,6 @@
 # stev leibelt config for shell
 
-This repostiry devides shell configuration into logical parts to gain overview and configuration flexibility.
+This repository divides shell configuration into logical parts to gain overview and configuration flexibility.
 
 The current change log can be found [here](CHANGELOG.md).
 
