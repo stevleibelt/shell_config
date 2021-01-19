@@ -1,0 +1,33 @@
+#!/bin/bash
+####
+#
+####
+# @since 2021-01-19
+# @author stev leibelt
+####
+
+function net_bazzline_shell_config_alias_bootstrap ()
+{
+    local PATH_OF_THE_CURRENT_SCRIPT=$(cd $(dirname "${BASH_SOURCE[0]}"); pwd)
+
+    #order is important
+    #@todo each section should have its own bootstrap
+    declare -a FILES_TO_LOAD=(
+        'acpi'
+        'packagemanager'
+        'php'
+        'powerstate'
+        'pulseaudio'
+        'svn'
+        'systemd'
+        'virtualbox'
+        'zfs'
+    )
+
+    for FILE_TO_LOAD in ${FILES_TO_LOAD[@]};
+    do
+        source "${PATH_OF_THE_CURRENT_SCRIPT}/${FILE_TO_LOAD}"
+    done;
+}
+
+net_bazzline_shell_config_alias_bootstrap

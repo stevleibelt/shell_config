@@ -40,15 +40,72 @@ NET_BAZZLINE_RECORD_FUNCTION_USAGE=0
 NET_BAZZLINE_REMEMBER_SSH_PASSWORD_TIMEOUT_IN_MINUTES=30
 #add port where your secure connection is listen on (via ssh -D)
 NET_BAZZLINE_SECURE_CONNECTION_PORT=0
-#enables (1) or disabled (0) zfs support
+
+#enables (1) or disables (0) acpi support
+if [[ -f /usr/bin/acpi ]];
+then
+    NET_BAZZLINE_ACPI_IS_AVAILABLE=1
+else
+    NET_BAZZLINE_ACPI_IS_AVAILABLE=0
+fi
+
+#enables (1) or disables (0) php support
+if [[ -x '/usr/bin/php' ]];
+then
+    NET_BAZZLINE_PHP_IS_AVAILABLE=1
+else
+    NET_BAZZLINE_PHP_IS_AVAILABLE=0
+fi
+
+#enables (1) or disables (0) powerstate support
+if [[ -x '/sys/power/state' ]];
+then
+    NET_BAZZLINE_POWERSTATE_IS_AVAILABLE=1
+else
+    NET_BAZZLINE_POWERSTATE_IS_AVAILABLE=0
+fi
+
+#enables (1) or disables (0) pulseaudio support
+if [[ -f /usr/bin/pulseaudio ]];
+then
+    NET_BAZZLINE_PULSEAUDIO_IS_AVAILABLE=1
+else
+    NET_BAZZLINE_PULSEAUDIO_IS_AVAILABLE=0
+fi
+
+#enables (1) or disables (0) svn support
+if [[ -f /usr/bin/svn ]];
+then
+    NET_BAZZLINE_SVN_IS_AVAILABLE=1
+else
+    NET_BAZZLINE_SVN_IS_AVAILABLE=0
+fi
+
+#enables (1) or disables (0) systemd support
+if [[ -f /usr/lib/systemd ]];
+then
+    NET_BAZZLINE_SYSTEMD_IS_AVAILABLE=1
+else
+    NET_BAZZLINE_SYSTEMD_IS_AVAILABLE=0
+fi
+
+#enables (1) or disables (0) virtualbox support
+if [[ -f /usr/bin/virtualbox ]];
+then
+    NET_BAZZLINE_VIRTUALBOX_IS_AVAILABLE=1
+else
+    NET_BAZZLINE_VIRTUALBOX_IS_AVAILABLE=0
+fi
+
+#enables (1) or disables (0) zfs support
 if [[ -f /usr/bin/zpool ]];
 then
-    NET_BAZZLINE_ZFS_AVAILABLE=1
+    NET_BAZZLINE_ZFS_IS_AVAILABLE=1
     #default zfs pool if non is provided
     NET_BAZZLINE_ZFS_DEFAULT_POOL='zpool'
     declare -a NET_BAZZLINE_ZFS_LIST_OF_POOLS_TO_SCRUB=("zpool");
 else
-    NET_BAZZLINE_ZFS_AVAILABLE=0
+    NET_BAZZLINE_ZFS_IS_AVAILABLE=0
 fi
 
 #https://wiki.archlinux.org/index.php/Bash

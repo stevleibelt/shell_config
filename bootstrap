@@ -6,30 +6,48 @@
 # @since 2013-04-24
 ####
 
-# order is important
-declare -a FILES_TO_LOAD=('setting' 'variable' 'source' 'export' '_source/function' 'alias' 'automatic_start')
+function net_bazzline_shell_config_bootstrap ()
+{
+    # order is important
+    # path starting with _source/ are handled differently
+    #   it is assumed that this are more complex with a dedicated autoloading
+    declare -a SECTIONS_TO_LOAD=(
+        'setting'
+        'variable'
+        'source'
+        'export'
+        '_source/function/bootstrap'
+        '_source/alias/bootstrap'
+        'automatic_start'
+    )
 
-for FILE_TO_LOAD in ${FILES_TO_LOAD[@]}; do
-    if [[ "${FILE_TO_LOAD}" == "_source/function" ]];
-    then
-        #rename FILE_TO_LOAD to ENVIRONMENT_TO_LOAD
+    # automatic loads files and optional existing local.* files
+    for SECTION_TO_LOAD in ${SECTIONS_TO_LOAD[@]}; do
+        #determine section type
+        if [[ "${SECTION_TO_LOAD}" = "_source/"* ]]; #if SECTION_TO_LOAD starts with _source/
+        then
+            local SECTION_NAME=${SECTION_TO_LOAD:8:-10}    #returns the part between "_source/" and "/bootstrap"
 
-        source "${PATH_SHELL_CONFIG}/${FILE_TO_LOAD}/bootstrap"
-        LOCAL_LEGACY_FILE_TO_LOAD="function.local"
-        LOCAL_FILE_TO_LOAD="local.function"
-    else
-        source "${PATH_SHELL_CONFIG}/${FILE_TO_LOAD}"
-        LOCAL_LEGACY_FILE_TO_LOAD="${FILE_TO_LOAD}.local"
-        LOCAL_FILE_TO_LOAD="local.${FILE_TO_LOAD}"
-    fi
+            source "${PATH_SHELL_CONFIG}/${SECTION_TO_LOAD}"
+            local LOCAL_LEGACY_SECTION_TO_LOAD="${SECTION_NAME}.local"
+            local LOCAL_SECTION_TO_LOAD="local.${SECTION_NAME}"
+        else
+            source "${PATH_SHELL_CONFIG}/${SECTION_TO_LOAD}"
+            local LOCAL_LEGACY_SECTION_TO_LOAD="${SECTION_TO_LOAD}.local"
+            local LOCAL_SECTION_TO_LOAD="local.${SECTION_TO_LOAD}"
+        fi
 
-    if [[ -f "${PATH_SHELL_CONFIG}/${LOCAL_LEGACY_FILE_TO_LOAD}" ]];
-    then
-        echo "legacy local file name detected, please rename it to local.${FILE_TO_LOAD}"
-    fi
+        #loading files
+        if [[ -f "${PATH_SHELL_CONFIG}/${LOCAL_LEGACY_SECTION_TO_LOAD}" ]];
+        then
+            echo "legacy local file name detected, please rename it to ${LOCAL_LEGACY_SECTION_TO_LOAD}"
+        fi
 
-    if [[ -f "${PATH_SHELL_CONFIG}/${LOCAL_FILE_TO_LOAD}" ]];
-    then
-      source "${PATH_SHELL_CONFIG}/${LOCAL_FILE_TO_LOAD}"
-    fi
-done;
+        if [[ -f "${PATH_SHELL_CONFIG}/${LOCAL_SECTION_TO_LOAD}" ]];
+        then
+            source "${PATH_SHELL_CONFIG}/${LOCAL_SECTION_TO_LOAD}"
+        fi
+    done;
+}
+
+net_bazzline_shell_config_bootstrap

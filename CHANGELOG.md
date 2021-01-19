@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### To Add
 
+* replace usage of packagemanager where needed with BASE_DISTRIBUTION ("arch", "debian" etc.)
 * add `gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/ebook -dNOPAUSE -dBATCH -dColorImageResolution=150 -sOutputFile=output.pdf someBigFile.pdf` as `net_bazzline_compress_pdf` (@see: https://opensource.com/article/20/8/reduce-pdf)
 * extend "cd"
     * if you cd to a file, use the base path to cd into that directory
@@ -95,6 +96,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 
+* refactored alias handling and streamlined function loading
+    * introduced more system variables
+    * moved variable dependend aliases into dedicated files
 * refactored zfs filesystem functions and moved zfs pool value from mandatory to optional everywhere
 * refactored deleteListOfDatedZfsSnapshots
     * list all snapshots fitting for this pool and store it in an array
