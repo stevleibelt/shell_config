@@ -8,6 +8,7 @@
 function podman_install_or_update_pihole()
 {
     #begin of testing the environment
+    echo ":: Checking system environment."
     if [[ ! -f /usr/bin/podman ]];
     then
         echo ":: Podman is not installed."
@@ -29,14 +30,33 @@ function podman_install_or_update_pihole()
         sudo pacman -R pi-hole-server pi-hole-ftl
     fi
 
+    echo ":: Do you want to save existing configuration? (y|N)"
+    read YES_OR_NO
+
+    if [[ ${YES_OR_NO} == "y" ]];
+    then
+        SAVE_EXISTING_CONFIGURATION=1
+    fi
     if [[ -d /etc/pihole ]];
     then
-        sudo mv /etc/pihole /etc/pihole.save
+        if [[ ${SAVE_EXISTING_CONFIGURATION} -eq 1 ]];
+        then
+            echo ":: Saving existing path /etc/pihole to /etc/pihole.save"
+            sudo mv /etc/pihole /etc/pihole.save
+        else
+            sudo rm -fr /etc/pihole
+        fi
     fi
 
     if [[ -d /etc/dnsmasq.d ]];
     then
-        sudo mv /etc/dnsmasq.d /etc/dnsmasq.d.save
+        if [[ ${SAVE_EXISTING_CONFIGURATION} -eq 1 ]];
+        then
+            echo ":: Saving existing path /etc/dnsmasq.d to /etc/dnsmasq.d.save"
+            sudo mv /etc/dnsmasq.d /etc/dnsmasq.d.save
+        else
+            sudo rm -fr /etc/dnsmasq.d
+        fi
     fi
     #   end of clean up
     #end of testing the environment
@@ -51,12 +71,8 @@ function podman_install_or_update_pihole()
 
     if [[ ${YES_OR_NO} == "y" ]];
     then
-        echo "> yes"
         echo ":: Please insert server ip address."
         read SERVER_IP_ADDRESS
-        echo "> ${SERVER_IP_ADDRESS}"
-    else
-        echo "> no"
     fi
 
     echo ":: Please insert password for admin page."
@@ -77,8 +93,10 @@ function podman_install_or_update_pihole()
     #end of dynamic variables
 
     #begin of creating the container
+    echo ":: Checking if image exists."
     if sudo podman images | grep -q pihole
     then
+        echo ":: Updating it."
         podman auto-update
     else
         echo ":: Building container"
