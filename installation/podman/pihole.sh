@@ -22,6 +22,14 @@ function podman_install_or_update_pihole()
     sudo systemctl disable systemd-resolved.service
     sudo systemctl stop systemd-resolved.service
 
+    echo ":: Checking if you are logged in to docker.io..."
+    podman login --get-login docker.io
+    if [[ $? -ne 0 ]];
+    then
+        echo ":: You have to login to docker.io..."
+        podman login docker.io
+    fi
+
     if pacman -Q | grep -q pi-hole
     then
         echo ":: Found existing installation of a pi hole server."
@@ -115,7 +123,7 @@ function podman_install_or_update_pihole()
             -p 53:53/tcp \
             -p 53:53/udp \
             --restart=unless-stopped \
-            pihole/pihole
+            docker.io/pihole/pihole
     fi
     #end of creating the container
 
