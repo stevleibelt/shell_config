@@ -48,11 +48,13 @@ function podman_install_or_update_pihole()
     echo "   ${SERVER_IP_ADDRESS}"
     echo ":: Do you want to change this? (y|N)"
     read YES_OR_NO
+    echo "> ${YES_OR_NO}"
 
     if [[ ${YES_OR_NO} == "y" ]];
     then
         echo ":: Please insert server ip address."
         read SERVER_IP_ADDRESS
+    echo "> ${SERVER_IP_ADDRESS}"
     fi
 
     echo ":: Please insert password for admin page."
@@ -80,9 +82,9 @@ function podman_install_or_update_pihole()
         echo ":: Building container"
         sudo podman run -d \
             --name=pihole \
-            -e TZ="${SERVER_TIME_ZONE}" \
-            -e WEBPASSWORD="${WEB_ADMINPASSWORD_ONE}" \
-            -e SERVERIP="${SERVER_IP_ADDRESS}" \
+            -e TZ=${SERVER_TIME_ZONE} \
+            -e WEBPASSWORD=${WEB_ADMINPASSWORD_ONE} \
+            -e SERVERIP=${SERVER_IP_ADDRESS} \
             -v pihole:/etc/pihole \
             -v dnsmasq:/etc/dnsmasq.d \
             -p 80:80 \
