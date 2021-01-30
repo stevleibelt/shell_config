@@ -46,6 +46,8 @@ function podman_install_or_update_pihole()
         else
             sudo rm -fr /etc/pihole
         fi
+
+        sudo mkdir /etc/pihole
     fi
 
     if [[ -d /etc/dnsmasq.d ]];
@@ -57,6 +59,8 @@ function podman_install_or_update_pihole()
         else
             sudo rm -fr /etc/dnsmasq.d
         fi
+
+        sudo mkdir /etc/dnsmasq.d
     fi
     #   end of clean up
     #end of testing the environment
