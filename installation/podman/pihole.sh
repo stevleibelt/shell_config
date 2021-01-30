@@ -48,13 +48,15 @@ function podman_install_or_update_pihole()
     echo "   ${SERVER_IP_ADDRESS}"
     echo ":: Do you want to change this? (y|N)"
     read YES_OR_NO
-    echo "> ${YES_OR_NO}"
 
     if [[ ${YES_OR_NO} == "y" ]];
     then
+        echo "> yes"
         echo ":: Please insert server ip address."
         read SERVER_IP_ADDRESS
-    echo "> ${SERVER_IP_ADDRESS}"
+        echo "> ${SERVER_IP_ADDRESS}"
+    else
+        echo "> no"
     fi
 
     echo ":: Please insert password for admin page."
@@ -88,8 +90,8 @@ function podman_install_or_update_pihole()
             -v pihole:/etc/pihole \
             -v dnsmasq:/etc/dnsmasq.d \
             -p 80:80 \
-            -p ${SERVER_IP_ADDRESS}:53:53/tcp \
-            -p ${SERVER_IP_ADDRESS}:53:53/udp \
+            -p 53:53/tcp \
+            -p 53:53/udp \
             --restart=unless-stopped \
             pihole/pihole
     fi
