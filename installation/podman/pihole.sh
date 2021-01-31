@@ -7,6 +7,11 @@
 
 function podman_install_or_update_pihole()
 {
+    local SYSTEMD_PIHOLE_IS_ACTIVE=$(sudo systemctl is-active pihole.service)
+    local SYSTEMD_PIHOLE_IS_ENABLED=$(sudo systemctl is-enabled pihole.service)
+    local SYSTEMD_RESOLVED_IS_ACTIVE=$(sudo systemctl is-active systemd-resolved.service)
+    local SYSTEMD_RESOLVED_IS_ENABLED=$(sudo systemctl is-enabled systemd-resolved.service)
+
     #begin of testing the environment
     echo ":: Checking system environment."
     if [[ ! -f /usr/bin/podman ]];
@@ -19,8 +24,25 @@ function podman_install_or_update_pihole()
 
     #   begin of clean up
     # @see: https://aarongodfrey.dev/software/running_pihole_in_docker_on_ubuntu_server/
-    sudo systemctl disable systemd-resolved.service
-    sudo systemctl stop systemd-resolved.service
+    if [[ ${SYSTEMD_PIHOLE_IS_ENABLED} == "enabled" ]];
+    then
+        sudo systemctl disable pihole.service
+    fi
+
+    if [[ ${SYSTEMD_PIHOLE_IS_ACTIVE} == "active" ]];
+    then
+        sudo systemctl stop pihole.service
+    fi
+
+    if [[ ${SYSTEMD_RESOLVED_IS_ENABLED} == "enabled" ]];
+    then
+        sudo systemctl disable systemd-resolved.service
+    fi
+
+    if [[ ${SYSTEMD_RESOLVED_IS_ACTIVE} == "active" ]];
+    then
+        sudo systemctl stop systemd-resolved.service
+    fi
 
     echo ":: Checking if you are logged in to docker.io..."
     podman login --get-login docker.io
@@ -47,28 +69,36 @@ function podman_install_or_update_pihole()
     fi
     if [[ -d /etc/pihole ]];
     then
-        if [[ ${SAVE_EXISTING_CONFIGURATION} -eq 1 ]];
+        if [[ ! -f /etc/pihole/.podman ]];
         then
-            echo ":: Saving existing path /etc/pihole to /etc/pihole.save"
-            sudo mv /etc/pihole /etc/pihole.save
-        else
-            sudo rm -fr /etc/pihole
-        fi
+            if [[ ${SAVE_EXISTING_CONFIGURATION} -eq 1 ]];
+            then
+                echo ":: Saving existing path /etc/pihole to /etc/pihole.save"
+                sudo mv /etc/pihole /etc/pihole.save
+            else
+                sudo rm -fr /etc/pihole
+            fi
 
-        sudo mkdir /etc/pihole
+            sudo mkdir /etc/pihole
+            sudo touch /etc/pihole/.podman
+        fi
     fi
 
     if [[ -d /etc/dnsmasq.d ]];
     then
-        if [[ ${SAVE_EXISTING_CONFIGURATION} -eq 1 ]];
+        if [[ ! -f /etc/dnsmasq.d/.podman ]];
         then
-            echo ":: Saving existing path /etc/dnsmasq.d to /etc/dnsmasq.d.save"
-            sudo mv /etc/dnsmasq.d /etc/dnsmasq.d.save
-        else
-            sudo rm -fr /etc/dnsmasq.d
-        fi
+            if [[ ${SAVE_EXISTING_CONFIGURATION} -eq 1 ]];
+            then
+                echo ":: Saving existing path /etc/dnsmasq.d to /etc/dnsmasq.d.save"
+                sudo mv /etc/dnsmasq.d /etc/dnsmasq.d.save
+            else
+                sudo rm -fr /etc/dnsmasq.d
+            fi
 
-        sudo mkdir /etc/dnsmasq.d
+            sudo mkdir /etc/dnsmasq.d
+            sudo touch /etc/dnsmasq.d/.podman
+        fi
     fi
     #   end of clean up
     #end of testing the environment
@@ -111,6 +141,9 @@ function podman_install_or_update_pihole()
         echo ":: Updating it."
         podman auto-update
     else
+        echo ":: Pulling image."
+        sudo podman pull docker.io/pihole/pihole
+
         echo ":: Building container"
         sudo podman run -d \
             --name=pihole \
