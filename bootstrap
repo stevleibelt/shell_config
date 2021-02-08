@@ -38,9 +38,17 @@ function net_bazzline_shell_config_bootstrap ()
         fi
 
         #loading files
+	#section can be removed 2021-10-06
         if [[ -f "${PATH_SHELL_CONFIG}/${LOCAL_LEGACY_SECTION_TO_LOAD}" ]];
         then
-            echo "legacy local file name detected, please rename it to ${LOCAL_LEGACY_SECTION_TO_LOAD}"
+            echo ":: Legacy local file name detected, please rename it to ${LOCAL_LEGACY_SECTION_TO_LOAD}"
+
+	    if [[ -f ${PATH_SHELL_CONFIG}/${LOCAL_SECTION_TO_LOAD} ]];
+	    then
+		echo "   File already exists, can not rename legacy file to >>${PATH_SHELL_CONFIG}/${LOCAL_SECTION_TO_LOAD}<<"
+	    else
+		mv -v "${PATH_SHELL_CONFIG}/${LOCAL_LEGACY_SECTION_TO_LOAD}" "${PATH_SHELL_CONFIG}/${LOCAL_SECTION_TO_LOAD}"
+	    fi
         fi
 
         if [[ -f "${PATH_SHELL_CONFIG}/${LOCAL_SECTION_TO_LOAD}" ]];
