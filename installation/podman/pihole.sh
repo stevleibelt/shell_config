@@ -7,7 +7,13 @@
 
 function podman_install_or_update_pihole()
 {
+    local SYSTEMD_PIHOLE_IS_ACTIVE=$(sudo systemctl is-active pihole.service)
+    local SYSTEMD_PIHOLE_IS_ENABLED=$(sudo systemctl is-enabled pihole.service)
+    local SYSTEMD_RESOLVED_IS_ACTIVE=$(sudo systemctl is-active systemd-resolved.service)
+    local SYSTEMD_RESOLVED_IS_ENABLED=$(sudo systemctl is-enabled systemd-resolved.service)
+
     #begin of testing the environment
+    echo ":: Checking system environment."
     if [[ ! -f /usr/bin/podman ]];
     then
         echo ":: Podman is not installed."
@@ -18,8 +24,33 @@ function podman_install_or_update_pihole()
 
     #   begin of clean up
     # @see: https://aarongodfrey.dev/software/running_pihole_in_docker_on_ubuntu_server/
-    sudo systemctl disable systemd-resolved.service
-    sudo systemctl stop systemd-resolved.service
+    if [[ ${SYSTEMD_PIHOLE_IS_ENABLED} == "enabled" ]];
+    then
+        sudo systemctl disable pihole.service
+    fi
+
+    if [[ ${SYSTEMD_PIHOLE_IS_ACTIVE} == "active" ]];
+    then
+        sudo systemctl stop pihole.service
+    fi
+
+    if [[ ${SYSTEMD_RESOLVED_IS_ENABLED} == "enabled" ]];
+    then
+        sudo systemctl disable systemd-resolved.service
+    fi
+
+    if [[ ${SYSTEMD_RESOLVED_IS_ACTIVE} == "active" ]];
+    then
+        sudo systemctl stop systemd-resolved.service
+    fi
+
+    echo ":: Checking if you are logged in to docker.io..."
+    podman login --get-login docker.io
+    if [[ $? -ne 0 ]];
+    then
+        echo ":: You have to login to docker.io..."
+        podman login docker.io
+    fi
 
     if pacman -Q | grep -q pi-hole
     then
@@ -29,14 +60,45 @@ function podman_install_or_update_pihole()
         sudo pacman -R pi-hole-server pi-hole-ftl
     fi
 
+    echo ":: Do you want to save existing configuration? (y|N)"
+    read YES_OR_NO
+
+    if [[ ${YES_OR_NO} == "y" ]];
+    then
+        SAVE_EXISTING_CONFIGURATION=1
+    fi
     if [[ -d /etc/pihole ]];
     then
-        sudo mv /etc/pihole /etc/pihole.save
+        if [[ ! -f /etc/pihole/.podman ]];
+        then
+            if [[ ${SAVE_EXISTING_CONFIGURATION} -eq 1 ]];
+            then
+                echo ":: Saving existing path /etc/pihole to /etc/pihole.save"
+                sudo mv /etc/pihole /etc/pihole.save
+            else
+                sudo rm -fr /etc/pihole
+            fi
+
+            sudo mkdir /etc/pihole
+            sudo touch /etc/pihole/.podman
+        fi
     fi
 
     if [[ -d /etc/dnsmasq.d ]];
     then
-        sudo mv /etc/dnsmasq.d /etc/dnsmasq.d.save
+        if [[ ! -f /etc/dnsmasq.d/.podman ]];
+        then
+            if [[ ${SAVE_EXISTING_CONFIGURATION} -eq 1 ]];
+            then
+                echo ":: Saving existing path /etc/dnsmasq.d to /etc/dnsmasq.d.save"
+                sudo mv /etc/dnsmasq.d /etc/dnsmasq.d.save
+            else
+                sudo rm -fr /etc/dnsmasq.d
+            fi
+
+            sudo mkdir /etc/dnsmasq.d
+            sudo touch /etc/dnsmasq.d/.podman
+        fi
     fi
     #   end of clean up
     #end of testing the environment
@@ -73,23 +135,28 @@ function podman_install_or_update_pihole()
     #end of dynamic variables
 
     #begin of creating the container
+    echo ":: Checking if image exists."
     if sudo podman images | grep -q pihole
     then
+        echo ":: Updating it."
         podman auto-update
     else
+        echo ":: Pulling image."
+        sudo podman pull docker.io/pihole/pihole
+
         echo ":: Building container"
         sudo podman run -d \
             --name=pihole \
-            -e TZ="${SERVER_TIME_ZONE}" \
-            -e WEBPASSWORD="${WEB_ADMINPASSWORD_ONE}" \
-            -e SERVERIP="${SERVER_IP_ADDRESS}" \
+            -e TZ=${SERVER_TIME_ZONE} \
+            -e WEBPASSWORD=${WEB_ADMINPASSWORD_ONE} \
+            -e SERVERIP=${SERVER_IP_ADDRESS} \
             -v pihole:/etc/pihole \
             -v dnsmasq:/etc/dnsmasq.d \
             -p 80:80 \
-            -p ${SERVER_IP_ADDRESS}:53:53/tcp \
-            -p ${SERVER_IP_ADDRESS}:53:53/udp \
+            -p 53:53/tcp \
+            -p 53:53/udp \
             --restart=unless-stopped \
-            pihole/pihole
+            docker.io/pihole/pihole
     fi
     #end of creating the container
 
