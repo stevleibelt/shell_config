@@ -97,7 +97,7 @@ else
     NET_BAZZLINE_VIRTUALBOX_IS_AVAILABLE=0
 fi
 
-if [[ -f /usr/include/webp ]];
+if [[ -d /usr/include/webp ]];
 then
     NET_BAZZLINE_WEBP_IS_AVAILABLE=1
 else
