@@ -10,3 +10,36 @@ function net_bazzline_list_biggest_swap_space_consumers
 {
     for file in /proc/*/status ; do awk '/VmSwap|Name/{printf $2 " " $3}END{ print ""}' $file; done | sort -k 2 -n -r | less
 }
+
+#r
+####
+# This uses the gnu parallel property
+#
+# [param] string - code to execute
+#
+# @since 2021-02-15
+# @author stev leibelt <artodeto@bazzline.net>
+####
+function net_bazzline_run_in_parallel_when_available
+{
+    if ${NET_BAZZLINE_PARALLEL_IS_AVAILABLE} -eq 1 ]];
+    then
+        if [[ ${NET_BAZZLINE_NUMBER_OF_CPU_CORES} -gt 1 ]];
+        then
+            local NUMBER_OF_THREADS=$(expr ${NET_BAZZLINE_NUMBER_OF_CPU_CORES} - 1)
+        else
+            local DEFAULT_PARALLEL=1
+        fi
+
+        local NUMBER_OF_JOBS=${1:-${DEFAULT_PARALLEL}}
+
+        if [[ ${NUMBER_OF_JOBS} -lt 1 ]];
+        then
+            local NUMBER_OF_JOBS=1
+        fi
+
+        parallel -P ${NUMBER_OF_JOBS} $@
+    else
+        $@
+    fi
+}

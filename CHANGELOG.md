@@ -11,6 +11,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 #### Priority High
 
+* implement usage of `net_bazzline_run_in_parallel_when_available` for image processing
+    * `ls *.wav | parallel ffmpeg -i {} {.}.flac`
+    * [see](https://www.freecodecamp.org/news/how-to-supercharge-your-bash-workflows-with-gnu-parallel-53aab0aea141/)
 * *if* zfs is installed and root pool configured
     * make a snapshot before the upgrade and delete previous one
 * create a function called "organize_dcim" which
