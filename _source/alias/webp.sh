@@ -8,6 +8,6 @@
 
 if [[ ${NET_BAZZLINE_WEBP_IS_AVAILABLE} -eq 1 ]];
 then
-    #c
+    #b
     alias batchConvertImageToWebP="net_bazzline_image_batch_convert_to_webp"
 fi
