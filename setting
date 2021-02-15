@@ -97,6 +97,13 @@ else
     NET_BAZZLINE_VIRTUALBOX_IS_AVAILABLE=0
 fi
 
+if [[ -f /usr/include/webp ]];
+then
+    NET_BAZZLINE_WEBP_IS_AVAILABLE=1
+else
+    NET_BAZZLINE_WEBP_IS_AVAILABLE=0
+fi
+
 #enables (1) or disables (0) zfs support
 if [[ -f /usr/bin/zpool ]];
 then
