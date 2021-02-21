@@ -117,6 +117,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 * refactored deleteListOfDatedZfsSnapshots
     * list all snapshots fitting for this pool and store it in an array
     * use this array to check if this dated snapshot exists
+* renamed `installation` to `setup` to ease up calling `install.sh`
 
 ## [1.0.0](https://github.com/stevleibelt/shell_config/tree/1.0.0) - released at 23.04.2016
 
