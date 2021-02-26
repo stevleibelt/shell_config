@@ -159,6 +159,46 @@ function net_bazzline_image_batch_convert_640 ()
 }
 
 ####
+# Converts png and jpg files in directory to jpg
+#
+# [@param] int - image quality, default is 94
+# [@param] string - path where the files are located, default is current directory
+# [@param] int - geometry, default is keep the geometry
+#
+# @author stev leibelt <artodeto@bazzline.net>
+# @since 2021-02-26
+####
+function net_bazzline_image_batch_convert_to_jpg ()
+{
+    net_bazzline_record_function_usage ${FUNCNAME[0]}
+
+    #@todo use parallel if available
+    local IMAGE_QUALITY=${1:-94}
+
+    if [[ $# -eq 2 ]];
+    then
+        local DIRECTORY="${2}";
+    else
+        local DIRECTORY=$(pwd)
+    fi
+
+    if [[ $# -eq 3 ]];
+    then
+        local GEOMETRY="${3}";
+
+        for FILE in *.[wW][eE][bB][pP];
+        do
+            convert ${FILE} -verbose -geometry ${GEOMETRY}x${GEOMETRY} -quality ${IMAGE_QUALITY} -comment "made with linux and love" "${FILE:0:-5}.jpg"
+        done;
+    else
+        for FILE in *.[wW][eE][bB][pP];
+        do
+            convert ${FILE} -verbose -quality ${IMAGE_QUALITY} -comment "made with linux and love" "${FILE:0:-5}.jpg"
+        done;
+    fi
+}
+
+####
 # Converts png and jpg files in directory to webp
 #
 # [@param] int - image quality, default is 80
@@ -197,5 +237,3 @@ function net_bazzline_image_batch_convert_to_webp ()
         done;
     fi
 }
-
-
