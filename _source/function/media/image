@@ -188,12 +188,22 @@ function net_bazzline_image_batch_convert_to_jpg ()
 
         for FILE in *.[wW][eE][bB][pP];
         do
-            convert ${FILE} -verbose -geometry ${GEOMETRY}x${GEOMETRY} -quality ${IMAGE_QUALITY} -comment "made with linux and love" "${FILE:0:-5}.jpg"
+            local NEW_FILE_NAME="${FILE:0:-5}.jpg"
+
+            if [[ ! -f "${NEW_FILE_NAME}" ]];
+            then
+                convert ${FILE} -verbose -geometry ${GEOMETRY}x${GEOMETRY} -quality ${IMAGE_QUALITY} -comment "made with linux and love" "${NEW_FILE_NAME}"
+            fi
         done;
     else
         for FILE in *.[wW][eE][bB][pP];
         do
-            convert ${FILE} -verbose -quality ${IMAGE_QUALITY} -comment "made with linux and love" "${FILE:0:-5}.jpg"
+            local NEW_FILE_NAME="${FILE:0:-5}.jpg"
+
+            if [[ ! -f "${NEW_FILE_NAME}" ]];
+            then
+                convert ${FILE} -verbose -quality ${IMAGE_QUALITY} -comment "made with linux and love" "${NEW_FILE_NAME}"
+            fi
         done;
     fi
 }
@@ -228,12 +238,22 @@ function net_bazzline_image_batch_convert_to_webp ()
 
         for FILE in *.[jJ][pP][gG];
         do
-            convert ${FILE} -verbose -geometry ${GEOMETRY}x${GEOMETRY} -quality ${IMAGE_QUALITY} -comment "made with linux and love" "${FILE:0:-4}.webp"
+            local NEW_FILE_NAME="${FILE:0:-4}.webp"
+
+            if [[ ! -f "${NEW_FILE_NAME}" ]];
+            then
+                convert ${FILE} -verbose -geometry ${GEOMETRY}x${GEOMETRY} -quality ${IMAGE_QUALITY} -comment "made with linux and love" "${NEW_FILE_NAME}"
+            fi
         done;
     else
         for FILE in *.[jJ][pP][gG];
         do
-            convert ${FILE} -verbose -quality ${IMAGE_QUALITY} -comment "made with linux and love" "${FILE:0:-4}.webp"
+            local NEW_FILE_NAME="${FILE:0:-4}.webp"
+
+            if [[ ! -f "${NEW_FILE_NAME}" ]];
+            then
+                convert ${FILE} -verbose -quality ${IMAGE_QUALITY} -comment "made with linux and love" "${NEW_FILE_NAME}"
+            fi
         done;
     fi
 }
