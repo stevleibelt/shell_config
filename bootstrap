@@ -8,6 +8,7 @@
 
 function net_bazzline_shell_config_bootstrap ()
 {
+    local DEBUG=0
     # order is important
     # path starting with _source/ are handled differently
     #   it is assumed that this are more complex with a dedicated autoloading
@@ -37,23 +38,36 @@ function net_bazzline_shell_config_bootstrap ()
             local LOCAL_SECTION_TO_LOAD="local.${SECTION_TO_LOAD}"
         fi
 
+        if [[ ${DEBUG} -eq 1 ]];
+        then
+            echo ":: Loading files."
+            echo "   Section path >>${PATH_SHELL_CONFIG}/${SECTION_TO_LOAD}<<"
+            echo "   Local section >>${LOCAL_SECTION_TO_LOAD}<<"
+        fi
+
         #loading files
-	#section can be removed 2021-10-06
+	    #section can be removed 2021-10-06
         if [[ -f "${PATH_SHELL_CONFIG}/${LOCAL_LEGACY_SECTION_TO_LOAD}" ]];
         then
             echo ":: Legacy local file name detected, please rename it to ${LOCAL_LEGACY_SECTION_TO_LOAD}"
 
-	    if [[ -f ${PATH_SHELL_CONFIG}/${LOCAL_SECTION_TO_LOAD} ]];
-	    then
-		echo "   File already exists, can not rename legacy file to >>${PATH_SHELL_CONFIG}/${LOCAL_SECTION_TO_LOAD}<<"
-	    else
-		mv -v "${PATH_SHELL_CONFIG}/${LOCAL_LEGACY_SECTION_TO_LOAD}" "${PATH_SHELL_CONFIG}/${LOCAL_SECTION_TO_LOAD}"
-	    fi
+            if [[ -f ${PATH_SHELL_CONFIG}/${LOCAL_SECTION_TO_LOAD} ]];
+            then
+                echo "   File already exists, can not rename legacy file to >>${PATH_SHELL_CONFIG}/${LOCAL_SECTION_TO_LOAD}<<"
+            else
+                mv -v "${PATH_SHELL_CONFIG}/${LOCAL_LEGACY_SECTION_TO_LOAD}" "${PATH_SHELL_CONFIG}/${LOCAL_SECTION_TO_LOAD}"
+            fi
         fi
 
         if [[ -f "${PATH_SHELL_CONFIG}/${LOCAL_SECTION_TO_LOAD}" ]];
         then
             source "${PATH_SHELL_CONFIG}/${LOCAL_SECTION_TO_LOAD}"
+        else
+            if [[ ${DEBUG} -eq 1 ]];
+            then
+                echo ":: File does not exist."
+                echo "   >>${PATH_SHELL_CONFIG}/${LOCAL_LEGACY_SECTION_TO_LOAD}<<"
+            fi
         fi
     done;
 }
