@@ -38,13 +38,7 @@ then
     alias software-search='yay -Ss'
     alias software-search-installed='yay -Qs'
     alias software-upgrade-from-cache='yay -uu'
-    if [[ ${NET_BAZZLINE_IS_LTS_KERNEL} -eq 1 ]];
-    then
-        #@todo implement zfs enable/disable handling
-        alias software-upgrade='yay -Syuu || yay -Syuu --ignore=linux-lts,linux-lts-headers,zfs-linux-lts,zfs-utils,spl-linux-lts,spl-utils-common'
-    else
-        alias software-upgrade='yay -Syuu || yay -Syuu --ignore=linux,linux-headers,zfs-linux,zfs-utils,spl-linux,spl-utils-common'
-    fi
+    alias software-upgrade="net_bazzline_packagemanager_arch_linux_software_upgrade yay ${NET_BAZZLINE_IS_LTS_KERNEL}"
     alias software-repository-info='yay -Si'
 elif [[ ${NET_BAZZLINE_PACKAGE_MANAGER} = 'pacman' ]];
 then
@@ -69,12 +63,7 @@ then
     alias software-search='pacman -Ss'
     alias software-search-installed='sudo pacman -Qs'
     alias software-upgrade-from-cache='sudo pacman -u'
-    if [[ ${NET_BAZZLINE_IS_LTS_KERNEL} -eq 1 ]];
-    then
-        alias software-upgrade='sudo pacman -Syuu || sudo pacman -Syuu --ignore=linux-lts,linux-lts-headers,zfs-linux-lts,zfs-utils,spl-linux-lts,spl-utils-common'
-    else
-        alias software-upgrade='sudo pacman -Syuu || sudo pacman -Syuu --ignore=linux,linux-headers,zfs-linux,zfs-utils,spl-linux,spl-utils-common'
-    fi
+    alias software-upgrade="net_bazzline_packagemanager_arch_linux_software_upgrade 'sudo pacman' ${NET_BAZZLINE_IS_LTS_KERNEL}"
     alias software-repository-info='sudo pacman -Si'
 elif [[ ${NET_BAZZLINE_PACKAGE_MANAGER} = 'apk' ]];
 then

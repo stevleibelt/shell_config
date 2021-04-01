@@ -24,6 +24,7 @@ function net_bazzline_shell_config_function_bootstrap ()
         'media/video' 
         'network/generic' 
         'process/generic' 
+        'packagemanager/generic' 
         'string/generic'
     )
 
