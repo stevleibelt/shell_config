@@ -14,6 +14,7 @@ else
 fi
 
 #@todo: validate against https://wiki.archlinux.org/index.php/Pacman/Rosetta
+#@todo: implement check if /var/lib/pacman/db.lck is there -> if so, ask
 if [[ ${NET_BAZZLINE_PACKAGE_MANAGER} = 'yay' ]];
 then
     alias software-check-unneeded-dependencies='yay -Qqdt'
