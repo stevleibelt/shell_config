@@ -226,7 +226,7 @@ function net_bazzline_image_convert_to_jpg ()
     local IMAGE_QUALITY=${2:-80}
     local GEOMETRY=${3:0}
 
-    if [[ ! - f ${FILE_PATH} ]];
+    if [[ ! -f ${FILE_PATH} ]];
     then
         echo ":: Path >>${FILE_PATH}<< is not a file!"
 
@@ -261,7 +261,7 @@ function net_bazzline_image_convert_to_webp ()
     local IMAGE_QUALITY=${2:-80}
     local GEOMETRY=${3:0}
 
-    if [[ ! - f ${FILE_PATH} ]];
+    if [[ ! -f ${FILE_PATH} ]];
     then
         echo ":: Path >>${FILE_PATH}<< is not a file!"
 
