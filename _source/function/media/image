@@ -209,6 +209,76 @@ function net_bazzline_image_batch_convert_to_jpg ()
 }
 
 ####
+# Convert a file to jpg
+#
+# @param string - file path
+# [@param] int - image quality, default is 80
+# [@param] int - geometry, default is keep the geometry
+#
+# @author stev leibelt <artodeto@bazzline.net>
+# @since 2021-04-07
+####
+function net_bazzline_image_convert_to_jpg ()
+{
+    net_bazzline_record_function_usage ${FUNCNAME[0]}
+
+    local FILE_PATH=${1}
+    local IMAGE_QUALITY=${2:-80}
+    local GEOMETRY=${3:0}
+
+    if [[ ! - f ${FILE_PATH} ]];
+    then
+        echo ":: Path >>${FILE_PATH}<< is not a file!"
+
+        return 1
+    fi
+
+    local NEW_FILE_NAME="${FILE_PATH}.jpg"
+
+    if [[ ${GEOMETRY} -eq 0 ]];
+    then
+        convert ${FILE_PATH} -verbose -quality ${IMAGE_QUALITY} -comment "made with linux and love" "${NEW_FILE_NAME}"
+    else
+        convert ${FILE_PATH} -verbose -geometry ${GEOMETRY}x${GEOMETRY} -quality ${IMAGE_QUALITY} -comment "made with linux and love" "${NEW_FILE_NAME}"
+    fi
+}
+
+####
+# Convert a file to webp
+#
+# @param string - file path
+# [@param] int - image quality, default is 80
+# [@param] int - geometry, default is keep the geometry
+#
+# @author stev leibelt <artodeto@bazzline.net>
+# @since 2021-04-07
+####
+function net_bazzline_image_convert_to_webp ()
+{
+    net_bazzline_record_function_usage ${FUNCNAME[0]}
+
+    local FILE_PATH=${1}
+    local IMAGE_QUALITY=${2:-80}
+    local GEOMETRY=${3:0}
+
+    if [[ ! - f ${FILE_PATH} ]];
+    then
+        echo ":: Path >>${FILE_PATH}<< is not a file!"
+
+        return 1
+    fi
+
+    local NEW_FILE_NAME="${FILE_PATH}.webp"
+
+    if [[ ${GEOMETRY} -eq 0 ]];
+    then
+        convert ${FILE_PATH} -verbose -quality ${IMAGE_QUALITY} -comment "made with linux and love" "${NEW_FILE_NAME}"
+    else
+        convert ${FILE_PATH} -verbose -geometry ${GEOMETRY}x${GEOMETRY} -quality ${IMAGE_QUALITY} -comment "made with linux and love" "${NEW_FILE_NAME}"
+    fi
+}
+
+####
 # Converts png and jpg files in directory to webp
 #
 # [@param] int - image quality, default is 80

@@ -36,6 +36,8 @@ alias cleanupAfterConvertingFiles=net_bazzline_cleanup_after_converting_files
 alias compileC++11='c++ -std=c++11'
 alias compileC++14='c++ -std=c++14'
 alias compress=net_bazzline_compress
+alias convertImageToJPEG=net_bazzline_image_convert_to_jpg
+alias convertImageToWebp=net_bazzline_image_convert_to_webp
 alias convertFileNamesToUtf8=net_bazzline_convert_file_names_to_utf_8
 alias convertM4aToWav=net_bazzline_convert_m4a_to_wav
 alias convertMp4ToMp3=net_bazzline_convert_mp4_to_mp3
