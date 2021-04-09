@@ -101,6 +101,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added
 
+### Changed
+
+## [2.0.0](https://github.com/stevleibelt/shell_config/tree/2.0.0) - released at 20210421
+
+### Added
+
 * CHANGELOG.md
 * created setting values NET_BAZZLINE_ZFS_DEFAULT_POOL and NET_BAZZLINE_ZFS_AVAILABLE (NET_BAZZLINE_ZFS_AVAILABLE is set automatically be default)
 * creation of .bash_profile during the installation
@@ -120,7 +126,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
     * list all snapshots fitting for this pool and store it in an array
     * use this array to check if this dated snapshot exists
 * renamed `installation` to `setup` to ease up calling `install.sh`
+* sorry I have to add this, but `and much more`
 
-## [1.0.0](https://github.com/stevleibelt/shell_config/tree/1.0.0) - released at 23.04.2016
+## [1.0.0](https://github.com/stevleibelt/shell_config/tree/1.0.0) - released at 20160423
 
 * initial release

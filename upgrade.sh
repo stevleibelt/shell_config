@@ -61,6 +61,13 @@ else
     fi
     #end of version 0 migration
 
+    #begin of version 1 migration
+    if [[ ${CURRENT_INSTALLED_VERSION} -eq 1 ]]
+    then
+        CURRENT_INSTALLED_VERSION=$((CURRENT_VERSION + 1))
+    fi
+    #end of version 1 migration
+
     #begin of updating currently installed version
     echo ${CURRENT_VERSION} > ${PATH_TO_CURRENT_INSTALLED_VERSION_FILE}
     #end of updating currently installed version
