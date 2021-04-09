@@ -9,12 +9,19 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### To Add
 
-* replace usage of packagemanager where needed with BASE_DISTRIBUTION ("arch", "debian" etc.)
-* add `gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/ebook -dNOPAUSE -dBATCH -dColorImageResolution=150 -sOutputFile=output.pdf someBigFile.pdf` as `net_bazzline_compress_pdf` (@see: https://opensource.com/article/20/8/reduce-pdf)
-* extend "cd"
-    * if you cd to a file, use the base path to cd into that directory
+#### Priority High
+
+* implement usage of `net_bazzline_run_in_parallel_when_available` for image processing
+    * `ls *.wav | parallel ffmpeg -i {} {.}.flac`
+    * [see](https://www.freecodecamp.org/news/how-to-supercharge-your-bash-workflows-with-gnu-parallel-53aab0aea141/)
 * *if* zfs is installed and root pool configured
     * make a snapshot before the upgrade and delete previous one
+* create a function called "organize_dcim" which
+    * loops starting from $(current_year - 10) until $(current_year) (if no argument provided)
+    * checks if there are files matching the pattern "*_201910_*
+    * if there is at least one file (grep -c)
+    * check if there is a directory called "2019_10" and creates if it does not exist
+    * moves all files for the pattern into this path
 * create a unified backup function
     * creates a file ~/.config/net_bazzline/last_backup_to_$hostname
     * expectes following list of arguments
@@ -24,12 +31,19 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
         * target\_username
         * source\_path [source\_path[...]]
     * handles the synchronisation by using rsync
-* create a function called "organize_dcim" which
-    * loops starting from $(current_year - 10) until $(current_year) (if no argument provided)
-    * checks if there are files matching the pattern "*_201910_*
-    * if there is at least one file (grep -c)
-    * check if there is a directory called "2019_10" and creates if it does not exist
-    * moves all files for the pattern into this path
+
+#### Priority Medium
+
+* extend "cd"
+    * if you cd to a file, use the base path to cd into that directory
+
+#### Priority Low
+
+* add `gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/ebook -dNOPAUSE -dBATCH -dColorImageResolution=150 -sOutputFile=output.pdf someBigFile.pdf` as `net_bazzline_compress_pdf` (@see: https://opensource.com/article/20/8/reduce-pdf)
+* replace usage of packagemanager where needed with BASE_DISTRIBUTION ("arch", "debian" etc.)
+
+#### Not organized yet
+
 * create a way to easily change settings based on the environment (like "work" and "home")
 * create function "regular_start" with dedicated processing steps (function calls defined via local.settings) to do, as example
     * disable touchpad
@@ -105,6 +119,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 * refactored deleteListOfDatedZfsSnapshots
     * list all snapshots fitting for this pool and store it in an array
     * use this array to check if this dated snapshot exists
+* renamed `installation` to `setup` to ease up calling `install.sh`
 
 ## [1.0.0](https://github.com/stevleibelt/shell_config/tree/1.0.0) - released at 23.04.2016
 

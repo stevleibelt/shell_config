@@ -29,6 +29,9 @@ export LESS_TERMCAP_so=$(printf '\e[1;44;1m')
 NET_BAZZLINE_IS_LTS_KERNEL=1
 #add all you known interfaces in here
 NET_BAZZLINE_INTERFACES=()
+#count number of CPU cores
+#@see: https://stackoverflow.com/questions/6481005/how-to-obtain-the-number-of-cpus-cores-in-linux-from-the-command-line
+NET_BAZZLINE_NUMBER_OF_CPU_CORES=$(grep ^cpu\\scores /proc/cpuinfo | uniq |  awk '{print $4}')
 #allowed are [apk, apt, none, pacman, pacget]
 NET_BAZZLINE_PACKAGE_MANAGER='none'
 #either write statistics of function usage or not
@@ -63,6 +66,13 @@ else
     NET_BAZZLINE_POWERSTATE_IS_AVAILABLE=0
 fi
 
+if [[ -f /usr/bin/parallel ]];
+then
+    NET_BAZZLINE_PARALLEL_IS_AVAILABLE=1
+else
+    NET_BAZZLINE_PARALLEL_IS_AVAILABLE=0
+fi
+
 #enables (1) or disables (0) pulseaudio support
 if [[ -f /usr/bin/pulseaudio ]];
 then
@@ -93,6 +103,13 @@ then
     NET_BAZZLINE_VIRTUALBOX_IS_AVAILABLE=1
 else
     NET_BAZZLINE_VIRTUALBOX_IS_AVAILABLE=0
+fi
+
+if [[ -d /usr/include/webp ]];
+then
+    NET_BAZZLINE_WEBP_IS_AVAILABLE=1
+else
+    NET_BAZZLINE_WEBP_IS_AVAILABLE=0
 fi
 
 #enables (1) or disables (0) zfs support

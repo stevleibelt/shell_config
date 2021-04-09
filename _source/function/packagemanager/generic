@@ -1,0 +1,56 @@
+#!/bin/bash
+#s
+
+####
+# @param: <string> packagemanager_command
+# [@param: <int> is_lts_kernel]
+function net_bazzline_packagemanager_arch_linux_software_upgrade ()
+{
+    if [[ $# -lt 1 ]];
+    then
+        echo ":: Invalid amount of arguments provided."
+        echo "   ${FUNCNAME[0]} <packagemanager_command: sudo pacman | yay> [<is_lts_kernel>: 0|1]"
+
+        return 1;
+    fi
+
+    local PACKAGEMANAGER_COMMAND="${1}"
+    local IS_LTS_KERNEL="${2:-0}"
+
+    #bo: check if lock file exists
+    local PACMAN_LOCK_FILE_PATH='/var/lib/pacman/db.lck'
+
+    if [[ -f ${PACMAN_LOCK_FILE_PATH} ]];
+    then
+        read -p ":: Lockfile exists. Remove it? (y|N) " yn
+
+        case ${yn} in
+            [Yy]* )
+                echo "   Removing lock file."
+                sudo rm ${PACMAN_LOCK_FILE_PATH}
+                break;;
+            * ) echo "   Aborting.";
+                return 2;
+        esac
+    fi
+    #bo: check if lock file exists
+
+    #bo: check if screen session exists
+    local SYSTEM_UPGRADE_SCREEN_SESSION_NAME='system_upgrade'
+
+    screen -ls | grep -q ${SYSTEM_UPGRADE_SCREEN_SESSION_NAME}
+
+    #grep -q will exit with an code != 0 if there is no running screen session.
+    if  [[ $? -eq 1 ]];
+    then
+        if [[ ${IS_LTS_KERNEL} -eq 1 ]];
+        then
+            screen -dmS ${SYSTEM_UPGRADE_SCREEN_SESSION_NAME} bash -c "${PACKAGEMANAGER_COMMAND} -Syyu || ${PACKAGEMANAGER_COMMAND} -Syyu --ignore=linux-lts,linux-lts-headers,zfs-linux-lts,zfs-utils"
+        else
+            screen -dmS ${SYSTEM_UPGRADE_SCREEN_SESSION_NAME} bash -c "${PACKAGEMANAGER_COMMAND} -Syyu || ${PACKAGEMANAGER_COMMAND} -Syyu --ignore=linux,linux-headers,zfs-linux,zfs-util"
+        fi
+    fi
+
+    screen -r ${SYSTEM_UPGRADE_SCREEN_SESSION_NAME}
+    #eo: check if screen session exists
+}

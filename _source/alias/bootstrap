@@ -22,6 +22,7 @@ function net_bazzline_shell_config_alias_bootstrap ()
         'svn.sh'
         'systemd.sh'
         'virtualbox.sh'
+        'webp.sh'
         'zfs.sh'
     )
 
