@@ -96,12 +96,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 * change detection for libx256 or libx254 movies
     * instead of checking the filename, implement a dependency (or check if it exists) and use mediainfo
     * `mediainfo <filepath> | grep x265`
+        * ore `ffprobe <filename> | grep codec_name`
 
 ## [Unreleased]
 
 ### Added
 
 ### Changed
+
+* removed `vendor` option since I am not going to use it
 
 ## [2.0.0](https://github.com/stevleibelt/shell_config/tree/2.0.0) - released at 20210421
 
