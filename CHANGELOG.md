@@ -93,6 +93,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 * dedicated installation script for pacget
 * dedicated installation script for reflector
 * converting to rav1e codec
+* added support for third party vendor source
 
 ### Changed
 
