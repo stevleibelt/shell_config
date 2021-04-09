@@ -96,6 +96,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 
+* removed `automatic_start`
 * refactored alias handling and streamlined function loading
     * introduced more system variables
     * moved variable dependend aliases into dedicated files
