@@ -138,6 +138,21 @@ function net_bazzline_list_biggest_directories ()
 }
 
 ####
+# [@param string $CURRENT_PATH=/]
+# [@param int $NUMBER_OF_ENTRIES_TO_DISPLAY=20]
+####
+# @see https://www.shellhacks.com/how-to-check-inode-usage-in-linux/
+# @since 2018-09-06
+# @author stev leibelt
+function net_bazzline_list_inodes ()
+{
+    local CURRENT_PATH=${1:-'/'}
+    local NUMBER_OF_ENTRIES_TO_DISPLAY=${2:-'20'}
+
+    { find ${CURRENT_PATH} -xdev -printf '%h\n' | sort | uniq -c | sort -rn; } 2>/dev/null | head -n ${NUMBER_OF_ENTRIES_TO_DISPLAY}
+}
+
+####
 # [@param string $CURRENT_PATH=.]
 ####
 # @since 2019-12-19
