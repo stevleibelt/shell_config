@@ -92,7 +92,7 @@ then
     alias poweroff='net_bazzline_execute_as_super_user_when_not_beeing_root poweroff'
     alias reboot='net_bazzline_execute_as_super_user_when_not_beeing_root reboot'
     #alias software-check-unneeded-dependencies='echo "todo"'
-    alias software-clean-cache='sudo apt-get autoclean && sudo apt-get autoremove'
+    alias software-clean-cache='sudo apt-get autoclean && sudo apt --purge autoremove'
     alias software-dist-upgrade='sudo apt-get update && sudo apt-get dist-upgrade'
     #alias software-fetch='echo "todo"'
     alias software-info='sudo apt-cache show'
