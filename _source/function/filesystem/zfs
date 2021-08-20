@@ -137,11 +137,11 @@ function net_bazzline_list_zfs_snapshots()
 
     if [[ $# -lt 1 ]];
     then
-        sudo zfs list -t snapshot
+        zfs list -t snapshot
     else
         local NAME_OF_THE_POOL="${1}"
 
-        sudo zfs list -t snapshot | grep --color ${NAME_OF_THE_POOL}
+        zfs list -t snapshot | grep --color ${NAME_OF_THE_POOL}
     fi
 }
 
