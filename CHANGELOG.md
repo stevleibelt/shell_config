@@ -102,6 +102,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added
 
+* added screen wrapper when updating arch linux package managers or apt
+
 ### Changed
 
 * renamed "install" to "add" in the package manager section

@@ -1,11 +1,14 @@
 #!/bin/bash
-#s
+NET_BAZZLINE_FUNCTION_PACKAGEMANAGER_SYSTEM_UPGRADE_SCREEN_SESSION_NAME='system_upgrade'
+
+#a
 
 ####
 # @param: <string> packagemanager_command
 # [@param: <int> is_lts_kernel]
 function net_bazzline_packagemanager_arch_linux_software_upgrade ()
 {
+    #bo: setup
     if [[ $# -lt 1 ]];
     then
         echo ":: Invalid amount of arguments provided."
@@ -17,9 +20,10 @@ function net_bazzline_packagemanager_arch_linux_software_upgrade ()
     local PACKAGEMANAGER_COMMAND="${1}"
     local IS_LTS_KERNEL="${2:-0}"
 
-    #bo: check if lock file exists
     local PACMAN_LOCK_FILE_PATH='/var/lib/pacman/db.lck'
+    #eo: setup
 
+    #bo: check if lock file exists
     if [[ -f ${PACMAN_LOCK_FILE_PATH} ]];
     then
         read -p ":: Lockfile exists. Remove it? (y|N) " yn
@@ -36,21 +40,51 @@ function net_bazzline_packagemanager_arch_linux_software_upgrade ()
     #bo: check if lock file exists
 
     #bo: check if screen session exists
-    local SYSTEM_UPGRADE_SCREEN_SESSION_NAME='system_upgrade'
+    net_bazzline_packagemanager_check_if_system_upgrade_screen_session_exists
 
-    screen -ls | grep -q ${SYSTEM_UPGRADE_SCREEN_SESSION_NAME}
-
-    #grep -q will exit with an code != 0 if there is no running screen session.
     if  [[ $? -eq 1 ]];
     then
         if [[ ${IS_LTS_KERNEL} -eq 1 ]];
         then
-            screen -dmS ${SYSTEM_UPGRADE_SCREEN_SESSION_NAME} bash -c "${PACKAGEMANAGER_COMMAND} -Syyu || ${PACKAGEMANAGER_COMMAND} -Syyu --ignore=linux-lts,linux-lts-headers,zfs-linux-lts,zfs-utils"
+            screen -dmS ${NET_BAZZLINE_FUNCTION_PACKAGEMANAGER_SYSTEM_UPGRADE_SCREEN_SESSION_NAME} bash -c "${PACKAGEMANAGER_COMMAND} -Syyu || ${PACKAGEMANAGER_COMMAND} -Syyu --ignore=linux-lts,linux-lts-headers,zfs-linux-lts,zfs-utils"
         else
-            screen -dmS ${SYSTEM_UPGRADE_SCREEN_SESSION_NAME} bash -c "${PACKAGEMANAGER_COMMAND} -Syyu || ${PACKAGEMANAGER_COMMAND} -Syyu --ignore=linux,linux-headers,zfs-linux,zfs-util"
+            screen -dmS ${NET_BAZZLINE_FUNCTION_PACKAGEMANAGER_SYSTEM_UPGRADE_SCREEN_SESSION_NAME} bash -c "${PACKAGEMANAGER_COMMAND} -Syyu || ${PACKAGEMANAGER_COMMAND} -Syyu --ignore=linux,linux-headers,zfs-linux,zfs-util"
         fi
     fi
 
-    screen -r ${SYSTEM_UPGRADE_SCREEN_SESSION_NAME}
+    screen -r ${NET_BAZZLINE_FUNCTION_PACKAGEMANAGER_SYSTEM_UPGRADE_SCREEN_SESSION_NAME}
     #eo: check if screen session exists
+}
+
+####
+# @param: <string> packagemanager_command
+function net_bazzline_packagemanager_apt_software_upgrade ()
+{
+    #bo: setup
+    if [[ $# -lt 1 ]];
+    then
+        echo ":: Invalid amount of arguments provided."
+        echo "   ${FUNCNAME[0]} <packagemanager_command: apt-get update && apt-get upgrade"
+
+        return 1;
+    fi
+    #eo: setup
+
+    #bo: check if screen session exists
+    net_bazzline_packagemanager_check_if_system_upgrade_screen_session_exists
+
+    if  [[ $? -eq 1 ]];
+    then
+        screen -dmS ${NET_BAZZLINE_FUNCTION_PACKAGEMANAGER_SYSTEM_UPGRADE_SCREEN_SESSION_NAME} bash -c "${PACKAGEMANAGER_COMMAND}"
+    fi
+
+    screen -r ${NET_BAZZLINE_FUNCTION_PACKAGEMANAGER_SYSTEM_UPGRADE_SCREEN_SESSION_NAME}
+}
+
+#c
+
+function net_bazzline_packagemanager_check_if_system_upgrade_screen_session_exists ()
+{
+    #grep -q will exit with an code != 0 if there is no running screen session.
+    screen -ls | grep -q ${NET_BAZZLINE_FUNCTION_PACKAGEMANAGER_SYSTEM_UPGRADE_SCREEN_SESSION_NAME}
 }
