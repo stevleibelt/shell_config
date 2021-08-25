@@ -81,7 +81,39 @@ Target = pacman-mirrorlist
 Description = Updating pacman-mirrorlist with reflector and removing pacnew...
 When = PostTransaction
 Depends = reflector
-Exec = /usr/bin/bash -c \"reflector --country '$(echo ${COUNTRY_NAME})' -l $(echo ${MAXIMUM_NUBERS_OF_SERVERS_TO_USE}) --sort rate --save /etc/pacman.d/mirrorlist && [[ -f /etc/pacman.d/mirrorlist.pacnew ]] && rm /etc/pacman.d/mirrorlist.pacnew\"
+Exec = /bin/sh -c 'systemctl start reflector.service; [ -f /etc/pacman.d/mirrorlist.pacnew ] && rm /etc/pacman.d/mirrorlist.pacnew'
+DELIM"
+
+echo "   Creating file >>/etc/xdg/reflector/reflector.conf<<"
+
+sudo bash -c "cat > /etc/xdg/reflector/reflector.conf <<DELIM
+# Reflector configuration file for the systemd service.
+#
+# Empty lines and lines beginning with "#" are ignored.  All other lines should
+# contain valid reflector command-line arguments. The lines are parsed with
+# Python's shlex modules so standard shell syntax should work. All arguments are
+# collected into a single argument list.
+#
+# See "reflector --help" for details.
+
+# Recommended Options
+
+# Set the output path where the mirrorlist will be saved (--save).
+--save /etc/pacman.d/mirrorlist
+
+# Select the transfer protocol (--protocol).
+--protocol https
+
+# Select the country (--country).
+# Consult the list of available countries with "reflector --list-countries" and
+# select the countries nearest to you or the ones that you trust. For example:
+--country Germany
+
+# Use only the  most recently synchronized mirrors (--latest).
+--latest 13
+
+# Sort the mirrors by synchronization time (--sort).
+--sort age
 DELIM"
 
 echo ":: Done."
