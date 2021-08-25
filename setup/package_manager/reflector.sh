@@ -20,7 +20,8 @@ sudo pacman -Syy
 ##begin of test
 #bo: 20201112 - migration for old versions without priority number
 if [[ -f /etc/pacman.d/hooks/trigger_reflector_on_mirrorlist_update.hook ]];
-    mv /etc/pacman.d/hooks/trigger_reflector_on_mirrorlist_update.hook /etc/pacman.d/hooks/60-trigger_reflector_on_mirrorlist_update.hook
+then
+    sudo mv /etc/pacman.d/hooks/trigger_reflector_on_mirrorlist_update.hook /etc/pacman.d/hooks/60-trigger_reflector_on_mirrorlist_update.hook
 fi
 #bo: 20201112 - migration for old versions without priority number
 
