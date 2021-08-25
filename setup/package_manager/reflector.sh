@@ -55,12 +55,22 @@ fi
 ##begin of setup
 echo ":: Please insert one of the following listed country names."
 echo ""
-cat /etc/pacman.d/mirrorlist | grep '## ' | tr '#' ' ' | sort | uniq | grep -v 'Arch\|Filtered\|Generated'
+reflector --list-countries
 read COUNTRY_NAME
+
+if [[ -z ${COUNTRY_NAME} ]];
+then
+    COUNTRY_NAME="Germany"
+fi
 
 echo ":: Please insert the maximum number of used servers."
 echo "   A good value is something between 50 and 200."
 read MAXIMUM_NUBERS_OF_SERVERS_TO_USE
+
+if [[ -z ${MAXIMUM_NUBERS_OF_SERVERS_TO_USE} ]];
+then
+    MAXIMUM_NUBERS_OF_SERVERS_TO_USE=7
+fi
 
 if [[ ! -d /etc/pacman.d/hooks ]];
 then
@@ -90,12 +100,12 @@ echo "   Creating file >>/etc/xdg/reflector/reflector.conf<<"
 sudo bash -c "cat > /etc/xdg/reflector/reflector.conf <<DELIM
 # Reflector configuration file for the systemd service.
 #
-# Empty lines and lines beginning with "#" are ignored.  All other lines should
+# Empty lines and lines beginning with \"#\" are ignored.  All other lines should
 # contain valid reflector command-line arguments. The lines are parsed with
 # Python's shlex modules so standard shell syntax should work. All arguments are
 # collected into a single argument list.
 #
-# See "reflector --help" for details.
+# See \"reflector --help\" for details.
 
 # Recommended Options
 
@@ -106,12 +116,12 @@ sudo bash -c "cat > /etc/xdg/reflector/reflector.conf <<DELIM
 --protocol https
 
 # Select the country (--country).
-# Consult the list of available countries with "reflector --list-countries" and
+# Consult the list of available countries with \"reflector --list-countries\" and
 # select the countries nearest to you or the ones that you trust. For example:
---country Germany
+--country ${COUNTRY_NAME}
 
 # Use only the  most recently synchronized mirrors (--latest).
---latest 13
+--latest ${MAXIMUM_NUBERS_OF_SERVERS_TO_USE}
 
 # Sort the mirrors by synchronization time (--sort).
 --sort age
