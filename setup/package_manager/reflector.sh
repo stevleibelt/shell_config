@@ -53,7 +53,7 @@ fi
 ##end of installation
 
 ##begin of setup
-echo ":: Please insert one of the following listed country names."
+echo ":: Please insert one of the following listed country names (default: Germany)."
 echo ""
 reflector --list-countries
 read COUNTRY_NAME
@@ -64,7 +64,8 @@ then
 fi
 
 echo ":: Please insert the maximum number of used servers."
-echo "   A good value is something between 50 and 200."
+echo "   A good value is something between 50 and 200 (default: 7)."
+echo ""
 read MAXIMUM_NUBERS_OF_SERVERS_TO_USE
 
 if [[ -z ${MAXIMUM_NUBERS_OF_SERVERS_TO_USE} ]];
