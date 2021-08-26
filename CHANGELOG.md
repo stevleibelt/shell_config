@@ -108,6 +108,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 * renamed "install" to "add" in the package manager section
 * removed `vendor` option since I am not going to use it
+* updated reflector to latest configuration settings
 
 ## [2.0.0](https://github.com/stevleibelt/shell_config/tree/2.0.0) - released at 20210421
 
