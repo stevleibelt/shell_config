@@ -68,6 +68,8 @@ function net_bazzline_packagemanager_apt_software_upgrade ()
 
         return 1;
     fi
+
+    local PACKAGEMANAGER_COMMAND="${1}"
     #eo: setup
 
     #bo: check if screen session exists
