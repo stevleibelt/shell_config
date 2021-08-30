@@ -102,9 +102,9 @@ then
     alias software-search='sudo apt-cache search'
     #alias software-search-added='echo "todo"'
     #alias software-update='sudo apt-get update'
-    alias software-upgrade=net_bazzline_packagemanager_apt_software_upgrade 'sudo apt-get update && sudo apt-get upgrade --assume-yes'
+    alias software-upgrade="net_bazzline_packagemanager_apt_software_upgrade 'sudo apt-get update && sudo apt-get upgrade --assume-yes'"
     #@see: https://debian-administration.org/article/69/Some_upgrades_show_packages_being_kept_back
-    alias software-upgrade-with-new=net_bazzline_packagemanager_apt_software_upgrade 'sudo apt-get update && sudo apt-get --with-new-pkgs upgrade --assume-yes'
-    alias software-upgrade-to-new-version=net_bazzline_packagemanager_apt_software_upgrade 'sudo apt-get update && sudo apt-get dist-upgrade --assume-yes'
+    alias software-upgrade-with-new="net_bazzline_packagemanager_apt_software_upgrade 'sudo apt-get update && sudo apt-get --with-new-pkgs upgrade --assume-yes'"
+    alias software-upgrade-to-new-version="net_bazzline_packagemanager_apt_software_upgrade 'sudo apt-get update && sudo apt-get dist-upgrade --assume-yes'"
     #alias software-repository-info='echo "todo"'
 fi
