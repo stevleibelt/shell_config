@@ -1,0 +1,53 @@
+#!/bin/bash
+
+####
+# @param: <string: source_file_path>
+# [@param: <string: destination_file_path=source_file_path.compressed.pdf>]
+# [@param: <int: image resolution=150]
+# [@param: <string: pdf setting=/ebook]
+#
+# @see: https://opensource.com/article/20/8/reduce-pdf
+####
+function net_bazzline_media_book_compress_pdf ()
+{
+    #bo: user input
+    DESTINATION_FILE_PATH=${2:-''}
+    IMAGE_RESOLUTION=${3:-150}
+    PDF_SETTINGS=${4:-'/ebook'}
+    SOURCE_FILE_PATH=${1}
+    #eo: user input
+
+    #bo: input validation
+    if [[ ${DESTINATION_FILE_PATH} == '' ]];
+    then
+        #assumed the file ends with .pdf, we are removing the last four
+        #   characters and adding >>.compressed.pdf<<.
+        DESTINATION_FILE_PATH="${SOURCE_FILE_PATH:0:-4}.compressed.pdf"
+    fi
+
+    if [[ ! -f "${SOURCE_FILE_PATH}" ]];
+    then
+        echo ":: Provided source file path >>${SOURCE_FILE_PATH}<< does not exist."
+
+        return 1
+    fi
+
+    SOURCE_FILE_PATH_TYPE=$(file -b "${SOURCE_FILE_PATH}");
+
+    if [[ "${SOURCE_FILE_PATH_TYPE:0:12}" != "PDF document" ]];
+    then
+        echo ":: Provided source file path >>${SOURCE_FILE_PATH}<< is not a pdf document."
+
+        return 2
+    fi
+    #eo: input validation
+
+    if [[ ! -x $(command -v gs) ]];
+    then
+        echo ":: gs is not installed. Please install it and run this command again."
+
+        return 3
+    fi
+
+    gs -sDEVICE=pdfwriter -dCompatibilityLevel=1.4 .dPDFSETTINGS=${PDF_SETTINGS} -dNOPAUSE -dBATCH -dColorImageResolution=${IMAGE_RESOLUTION} -sOutputFile="${DESTINATION_FILE_PATH}" "${SOURCE_FILE_PATH}"
+}

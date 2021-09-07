@@ -107,6 +107,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 * added screen wrapper when updating arch linux package managers or apt
+* added `net_bazzline_media_book_compress_pdf`
 
 ### Changed
 

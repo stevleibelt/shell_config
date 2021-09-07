@@ -19,6 +19,7 @@ function net_bazzline_shell_config_function_bootstrap ()
         'filesystem/luks' 
         'filesystem/zfs' 
         'media/audio' 
+        'media/book'
         'media/generic' 
         'media/image' 
         'media/video' 
