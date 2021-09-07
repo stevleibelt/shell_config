@@ -49,5 +49,5 @@ function net_bazzline_media_book_compress_pdf ()
         return 3
     fi
 
-    gs -sDEVICE=pdfwriter -dCompatibilityLevel=1.4 .dPDFSETTINGS=${PDF_SETTINGS} -dNOPAUSE -dBATCH -dColorImageResolution=${IMAGE_RESOLUTION} -sOutputFile="${DESTINATION_FILE_PATH}" "${SOURCE_FILE_PATH}"
+    gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 .dPDFSETTINGS=${PDF_SETTINGS} -dNOPAUSE -dBATCH -dColorImageResolution=${IMAGE_RESOLUTION} -sOutputFile="${DESTINATION_FILE_PATH}" "${SOURCE_FILE_PATH}"
 }
