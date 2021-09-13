@@ -123,6 +123,27 @@ function net_bazzline_cleanup_after_converting_files ()
 }
 
 ####
+# @param <string: path to the file>
+#
+# @see: https://opensource.com/article/21/9/sed-replace-smart-quotes
+####
+function net_bazzline_filesystem_generic_fix_quotes ()
+{
+    local PATH_TO_THE_FILE="${1}"
+    local SINGLEQUOTE_CHARACTER=$(echo -ne '\u2018\u2019')
+    local DOUBLEQUOTE_CHARACTER=$(echo -ne '\u201C\u201D')
+
+    if [[ ! -f "${PATH_TO_THE_FILE}" ]];
+    then
+        echo ":: Invalid file path >>${PATH_TO_THE_FILE}<< provided."
+
+        return 1
+    fi
+
+    sed -i -e "s/[${SINGLEQUOTE_CHARACTER}]/\'/g" -e "s/[${DOUBLEQUOTE_CHARACTER}]/\"/g" "${PATH_TO_THE_FILE}"
+}
+
+####
 # [@param int $NUMBER_OF_DIRECTORIES_TO_OUTPUT=20]
 ####
 # @see

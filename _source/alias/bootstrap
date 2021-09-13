@@ -15,6 +15,7 @@ function net_bazzline_shell_config_alias_bootstrap ()
     declare -a FILES_TO_LOAD=(
         'acpi.sh'
         'general.sh'
+        'filesystem.sh'
         'packagemanager.sh'
         'php.sh'
         'powerstate.sh'
