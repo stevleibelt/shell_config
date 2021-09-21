@@ -11,6 +11,24 @@ function net_bazzline_list_biggest_swap_space_consumers
     for file in /proc/*/status ; do awk '/VmSwap|Name/{printf $2 " " $3}END{ print ""}' $file; done | sort -k 2 -n -r | less
 }
 
+####
+# [param] <int: process id>...
+####
+function net_bazzline_process_list_runtime
+{
+    if [[ $# -lt 2 ]];
+    then
+        local PROCESS_ID=${1:-1}
+        echo ${PROCESS_ID}
+
+        ps -p ${PROCESS_ID} -o pid,tname,state,command,etime
+    else
+        shift
+
+        ps -p "$*" -o pid,tname,state,command,etime
+    fi
+}
+
 #r
 ####
 # This uses the gnu parallel property

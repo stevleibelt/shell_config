@@ -94,6 +94,7 @@ alias listLocalIpAddress=net_bazzline_list_local_ip_address
 alias listMemoryUsageByProcess=net_bazzline_list_memory_usage_by_process
 alias listOpenNetworkPorts='lsof +M -i4 -i6'
 alias listProcessEnvironment=net_bazzline_list_process_environment
+alias listProcessRuntime=net_bazzline_process_list_runtime
 alias listSoftLinks=net_bazzline_list_softlinks
 alias listSymbolicLinks=net_bazzline_list_symbolic_links
 alias listUsers=net_bazzline_list_users
