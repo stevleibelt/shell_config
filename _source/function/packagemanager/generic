@@ -48,7 +48,7 @@ function net_bazzline_packagemanager_arch_linux_software_upgrade ()
         then
             screen -dmS ${NET_BAZZLINE_FUNCTION_PACKAGEMANAGER_SYSTEM_UPGRADE_SCREEN_SESSION_NAME} bash -c "${PACKAGEMANAGER_COMMAND} -Syyu || ${PACKAGEMANAGER_COMMAND} -Syyu --ignore=linux-lts,linux-lts-headers,zfs-linux-lts,zfs-utils"
         else
-            screen -dmS ${NET_BAZZLINE_FUNCTION_PACKAGEMANAGER_SYSTEM_UPGRADE_SCREEN_SESSION_NAME} bash -c "${PACKAGEMANAGER_COMMAND} -Syyu || ${PACKAGEMANAGER_COMMAND} -Syyu --ignore=linux,linux-headers,zfs-linux,zfs-util"
+            screen -dmS ${NET_BAZZLINE_FUNCTION_PACKAGEMANAGER_SYSTEM_UPGRADE_SCREEN_SESSION_NAME} bash -c "${PACKAGEMANAGER_COMMAND} -Syyu || ${PACKAGEMANAGER_COMMAND} -Syyu --ignore=linux,linux-headers,zfs-linux,zfs-utils"
         fi
     fi
 
