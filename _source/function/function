@@ -1582,15 +1582,20 @@ function net_bazzline_list_users ()
     getent passwd | grep '/home' | awk -F ':' '{ print $1 }' | sort
 }
 
-function net_bazzline_load_ssh_keys_in_keychain()
+####
+# @param string <path to the ssh key>
+# [@param int <timeout in minutes>
+####
+function net_bazzline_load_ssh_key_in_keychain()
 {
     net_bazzline_record_function_usage ${FUNCNAME[0]}
 
     if [[ -f /usr/bin/keychain ]];
     then
-        if [[ $# -gt 0 ]]; then
-            eval $(keychain --eval --quiet --timeout ${NET_BAZZLINE_REMEMBER_SSH_PASSWORD_TIMEOUT_IN_MINUTES} $@)
-        fi
+        local PATH_TO_THE_SSH_KEY=${1:-${HOME}/.ssh/id_rsa}
+        local TIMEOUT_IN_MINUTES=${2:-${NET_BAZZLINE_REMEMBER_SSH_PASSWORD_TIMEOUT_IN_MINUTES}}
+
+        eval $(keychain --eval --quiet --timeout ${TIMEOUT_IN_MINUTES} ${$PATH_TO_SSH_KEY})
     else
         echo ":: Error"
         echo "   keychain is not installed"
