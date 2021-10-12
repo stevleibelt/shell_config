@@ -47,6 +47,8 @@ function net_bazzline_create_thumbnails()
 # @param int size
 # [@param] string name for the directory
 #
+# @see
+#   https://opensource.com/article/21/10/image-processing-bash-script
 # @author stev leibelt <artodeto@bazzline.net>
 # @since 2013-10-02
 ####
@@ -57,22 +59,50 @@ function net_bazzline_image_batch_convert ()
     #@todo use parallel if available
     #hook - implement usage and style
     #@todo - implement usage of jpegoptim and optipng
-    if [[ $# -eq 2 ]];
+    local SIZE_TO_CONVERT=${1:-1920}
+
+    local RESIZE_DIRECTORY_NAME=${2:-"resized_${SIZE_TO_CONVERT}"}
+
+    if [[ ! -d "${RESIZE_DIRECTORY_NAME}" ]];
     then
-        local DIRECTORY="${2}";
-    else
-        local DIRECTORY="resized_${1}";
+        echo ":: Creating directory >>${RESIZE_DIRECTORY_NAME}<<."
+        /usr/bin/mkdir "${RESIZE_DIRECTORY_NAME}"
     fi
 
-    if [[ ! -d "${DIRECTORY}" ]];
-    then
-        echo ":: Creating directory >>${DIRECTORY}<<."
-        /usr/bin/mkdir "${DIRECTORY}"
-    fi
-
-    for FILE in *.[jJ][pP][gG];
+    #for FILE in *.[jJ][pP][gG];
+    for FILE in *.*;
     do
-        convert ${FILE} -verbose -geometry ${1}x${1} -quality 98% -comment "made with linux" "${DIRECTORY}/${FILE}"
+        #check if file is an image
+        if file ${FILE} | grep -qE 'image|bitmap'; then
+            #check if identify is available
+            if [[ -x "$(command -v identify)" ]];
+            then
+                #check if width or height is greater than the
+                local HEIGHT_OF_THE_FILE=$(identify -format %h "${FILE}")
+                local WIDTH_OF_THE_FILE=$(identify -format %w "${FILE}")
+
+                if [[ ${HEIGHT_OF_THE_FILE} -gt ${SIZE_TO_CONVERT} || ${WIDTH_OF_THE_FILE} -gt ${SIZE_TO_CONVERT} ]];
+                then
+                    local CONVERT_THIS_FILE=1
+                else
+                    local CONVERT_THIS_FILE=0
+                fi
+            else
+                #we can not determine it, so just set the size high enough
+                local CONVERT_THIS_FILE=1
+            fi
+
+
+            if [[ ${CONVERT_THIS_FILE} -eq 1 ]];
+            then
+                convert ${FILE} -verbose -geometry ${SIZE_TO_CONVERT}x${SIZE_TO_CONVERT} -quality 98% -comment "made with linux" "${RESIZE_DIRECTORY_NAME}/${FILE}"
+            else
+                cp ${FILE} "${RESIZE_DIRECTORY_NAME}/${FILE}"
+                #echo "   Just copied file >>${FILE}<<, neither height with >>${HEIGHT_OF_THE_FILE}<< nor width with >>${WIDTH_OF_THE_FILE}<< is greater than >>${SIZE_TO_CONVERT}<<."
+            fi
+        else
+            echo "   Skipping file >>${FILE}<<, it is not an image."
+        fi
     done;
 }
 
