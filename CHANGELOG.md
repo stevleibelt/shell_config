@@ -113,6 +113,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 
+* renamed function `net_bazzline_load_ssh_keys_in_keychain` to `net_bazzline_load_ssh_key_in_keychain`
+    * changed parameters, now second argument is timeout
 * renamed "install" to "add" in the package manager section
 * removed `vendor` option since I am not going to use it
 * updated reflector to latest configuration settings
