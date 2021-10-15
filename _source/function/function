@@ -1595,7 +1595,7 @@ function net_bazzline_load_ssh_key_in_keychain()
         local PATH_TO_THE_SSH_KEY=${1:-${HOME}/.ssh/id_rsa}
         local TIMEOUT_IN_MINUTES=${2:-${NET_BAZZLINE_REMEMBER_SSH_PASSWORD_TIMEOUT_IN_MINUTES}}
 
-        eval $(keychain --eval --quiet --timeout ${TIMEOUT_IN_MINUTES} ${$PATH_TO_SSH_KEY})
+        eval $(keychain --eval --quiet --timeout ${TIMEOUT_IN_MINUTES} ${PATH_TO_SSH_KEY})
     else
         echo ":: Error"
         echo "   keychain is not installed"
