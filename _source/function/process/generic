@@ -18,7 +18,7 @@ function net_bazzline_process_list_memory_usage
 
     for CURRENT_PROCESS_NAME in "${@}";
     do
-        echo "${CURRENT_PROCESS_NAME}: " && smem -t -k -c pss -P ${CURRENT_PROCESS_NAME} | tail -n 1
+        echo -n "${CURRENT_PROCESS_NAME}: " && smem -t -k -c pss -P ${CURRENT_PROCESS_NAME} | tail -n 1
     done
 }
 
