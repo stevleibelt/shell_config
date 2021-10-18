@@ -9,9 +9,16 @@
 ####
 function net_bazzline_process_list_memory_usage
 {
+    if [[ ! -x $(command -v smem) ]];
+    then
+        echo ":: smem is not installed."
+
+        return 1
+    fi
+
     for CURRENT_PROCESS_NAME in "${@}";
     do
-        smem -t -k -c pss -P ${CURRENT_PROCESS_NAME} | tail -n 1
+        echo "${CURRENT_PROCESS_NAME}: " && smem -t -k -c pss -P ${CURRENT_PROCESS_NAME} | tail -n 1
     done
 }
 
@@ -62,6 +69,6 @@ function net_bazzline_run_in_parallel_when_available
 
         parallel -P ${NUMBER_OF_JOBS} $@
     else
-        $@
+        ${@}
     fi
 }
