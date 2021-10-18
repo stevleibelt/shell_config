@@ -151,11 +151,21 @@ function net_bazzline_filesystem_generic_fix_quotes ()
 #   https://www.cyberciti.biz/faq/how-do-i-find-the-largest-filesdirectories-on-a-linuxunixbsd-filesystem/
 # @since 2018-09-06
 # @author stev leibelt
-function net_bazzline_list_biggest_directories ()
+function net_bazzline_filesystem_list_biggest_directories ()
 {
     local NUMBER_OF_DIRECTORIES_TO_OUTPUT=${1:-20}
 
     du -hsx -- * | sort -rh | head -n${NUMBER_OF_DIRECTORIES_TO_OUTPUT}
+}
+
+####
+# This is only working of you have a swap space configured, else it will just display 0 KB.
+#
+# @see: https://www.cyberciti.biz/faq/linux-which-process-is-using-swap/
+####
+function net_bazzline_filesystem_list_biggest_swap_space_consumers ()
+{
+    for file in /proc/*/status ; do awk '/VmSwap|Name/{printf $2 " " $3}END{ print ""}' $file; done | sort -k 2 -n -r | less
 }
 
 ####

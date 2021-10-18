@@ -2,13 +2,17 @@
 #l
 
 ####
-# This is only working of you have a swap space configured, else it will just display 0 KB.
-#
-# @see:https://www.cyberciti.biz/faq/linux-which-process-is-using-swap/
+# param <string: process name>
+# [param <string: process name>]
+# [...]
+# @see: https://opensource.com/article/21/10/memory-stats-linux-smem
 ####
-function net_bazzline_list_biggest_swap_space_consumers
+function net_bazzline_process_list_memory_usage
 {
-    for file in /proc/*/status ; do awk '/VmSwap|Name/{printf $2 " " $3}END{ print ""}' $file; done | sort -k 2 -n -r | less
+    for CURRENT_PROCESS_NAME in "${@}";
+    do
+        smem -t -k -c pss -P ${CURRENT_PROCESS_NAME} | tail -n 1
+    done
 }
 
 ####

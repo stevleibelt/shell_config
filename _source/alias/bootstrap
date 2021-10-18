@@ -19,6 +19,7 @@ function net_bazzline_shell_config_alias_bootstrap ()
         'packagemanager.sh'
         'php.sh'
         'powerstate.sh'
+        'process.sh'
         'pulseaudio.sh'
         'svn.sh'
         'systemd.sh'

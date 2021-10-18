@@ -107,12 +107,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 * added screen wrapper when updating arch linux package managers or apt
+* added `_source/alias/process.sh`
 * added `net_bazzline_media_book_compress_pdf`
 * added `net_bazzline_process_list_runtime`
+* added `net_bazzline_process_list_memory_usage`
 * added `NET_BAZZLINE_OPERATION_SYSTEM` with supported values `linux`, `windows` and `unknown`
 
 ### Changed
 
+* renamed function `net_bazzline_list_biggest_directory` to `net_bazzline_list_filesystem_biggest_directory` and moved it into filesystem function section
+* renamed function `net_bazzline_list_biggest_swapspace_consumers` to `net_bazzline_list_filesystem_biggest_swapspace_consumers` and moved it into filesystem function section
 * renamed function `net_bazzline_load_ssh_keys_in_keychain` to `net_bazzline_load_ssh_key_in_keychain`
     * changed parameters, now second argument is timeout
 * renamed "install" to "add" in the package manager section
