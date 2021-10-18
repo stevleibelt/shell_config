@@ -7,7 +7,7 @@
 ####
 
 #l
-if [[ ${NET_BAZZLINE_OPERATION_SYSTEM -eq "linux"} ]];
+if [[ ${NET_BAZZLINE_OPERATION_SYSTEM} == "linux" ]];
 then
     alias listProcessMemoryUsage=net_bazzline_process_list_memory_usage
 fi
