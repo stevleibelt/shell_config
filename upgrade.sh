@@ -74,6 +74,7 @@ else
 fi
 
 echo ":: Reloading bash environment."
-source ~/.bashrc && clear
+source "${PATH_TO_THIS_SCRIPT}/bootstrap" && clear
+#source ~/.bashrc && clear
 
 cd ${CURRENT_WORKING_DIRECTORY}

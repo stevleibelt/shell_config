@@ -82,8 +82,6 @@ alias iostat='iostat -x 2'
 #l
 alias l='ls -hAlt'
 alias lh=net_bazzline_list_filesystem_items_head
-alias listBiggestDirectories=net_bazzline_list_biggest_directories
-alias listBiggestSwapSpaceConsumers=net_bazzline_list_biggest_swap_space_consumers
 alias listDomainInformation=net_bazzline_list_domain_information
 alias listEmptyDirectories=net_bazzline_list_empty_directories
 alias listFilesOlderThan=net_bazzline_list_files_older_than
@@ -94,7 +92,6 @@ alias listLocalIpAddress=net_bazzline_list_local_ip_address
 alias listMemoryUsageByProcess=net_bazzline_list_memory_usage_by_process
 alias listOpenNetworkPorts='lsof +M -i4 -i6'
 alias listProcessEnvironment=net_bazzline_list_process_environment
-alias listProcessRuntime=net_bazzline_process_list_runtime
 alias listSoftLinks=net_bazzline_list_softlinks
 alias listSymbolicLinks=net_bazzline_list_symbolic_links
 alias listUsers=net_bazzline_list_users

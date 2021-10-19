@@ -25,6 +25,18 @@ export LESS_TERMCAP_md=$(printf '\e[1;34m')
 export LESS_TERMCAP_us=$(printf '\e[1;32m')
 export LESS_TERMCAP_so=$(printf '\e[1;44;1m')
 
+#bo: detect current os
+CURRENT_UNAME_OUTPUT="$(uname -s)"
+case "${CURRENT_UNAME_OUTPUT}" in
+    Linux*)     NET_BAZZLINE_OPERATION_SYSTEM="linux"
+        ;;
+    MSYS_NT*)   NET_BAZZLINE_OPERATION_SYSTEM="windows"
+        ;;
+    *)          NET_BAZZLINE_OPERATION_SYSTEM="unknown"
+        ;;
+esac
+#eo: detect current os
+
 #either you are using an lts kernel or not: uname -a | grep -i lts
 NET_BAZZLINE_IS_LTS_KERNEL=1
 #add all you known interfaces in here

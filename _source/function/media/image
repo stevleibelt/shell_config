@@ -54,6 +54,12 @@ function net_bazzline_create_thumbnails()
 ####
 function net_bazzline_image_batch_convert ()
 {
+    if [[ ${NET_BAZZLINE_OPERATION_SYSTEM} != 'linux' ]];
+    then
+        echo ":: Only supported under linux so far. Sorry."
+
+        return 2
+    fi
     net_bazzline_record_function_usage ${FUNCNAME[0]}
 
     #@todo use parallel if available
