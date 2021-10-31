@@ -11,6 +11,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 #### Priority High
 
+* for arch linux
+    * record last succesful call of "software-upgrade"
+        * if last call is older than 1 month, install "archlinux-keyring" before doing te regular software-upgrade
 * for all video conversion
     * create directories "in_progres", "done" and "with_error" (last one maybe)
     * add handling for sighalt
