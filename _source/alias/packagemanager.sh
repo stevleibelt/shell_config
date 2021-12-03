@@ -92,7 +92,7 @@ then
     alias poweroff='net_bazzline_execute_as_super_user_when_not_beeing_root poweroff'
     alias reboot='net_bazzline_execute_as_super_user_when_not_beeing_root reboot'
     #alias software-check-unneeded-dependencies='echo "todo"'
-    alias software-clean-cache='sudo apt-get autoclean && sudo apt --purge autoremove'
+    alias software-clean-cache='sudo apt-get autoclean; sudo apt --purge autoremove'
     #alias software-fetch='echo "todo"'
     alias software-info='apt-cache show'
     alias software-add='sudo apt-get install'
@@ -102,9 +102,9 @@ then
     alias software-search='apt-cache search'
     #alias software-search-added='echo "todo"'
     #alias software-update='sudo apt-get update'
-    alias software-upgrade="net_bazzline_packagemanager_apt_software_upgrade 'sudo apt-get update && sudo apt-get upgrade --assume-yes'"
+    alias software-upgrade="net_bazzline_packagemanager_apt_software_upgrade 'sudo apt-get update; sudo apt-get upgrade --assume-yes'"
     #@see: https://debian-administration.org/article/69/Some_upgrades_show_packages_being_kept_back
-    alias software-upgrade-with-new="net_bazzline_packagemanager_apt_software_upgrade 'sudo apt-get update && sudo apt-get --with-new-pkgs upgrade --assume-yes'"
-    alias software-upgrade-to-new-version="net_bazzline_packagemanager_apt_software_upgrade 'sudo apt-get update && sudo apt-get dist-upgrade --assume-yes'"
+    alias software-upgrade-with-new="net_bazzline_packagemanager_apt_software_upgrade 'sudo apt-get update; sudo apt-get --with-new-pkgs upgrade --assume-yes'"
+    alias software-upgrade-to-new-version="net_bazzline_packagemanager_apt_software_upgrade 'sudo apt-get update; sudo apt-get dist-upgrade --assume-yes'"
     #alias software-repository-info='echo "todo"'
 fi

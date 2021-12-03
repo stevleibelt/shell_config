@@ -118,6 +118,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 
+* changed the way we do an apt system update, now it is `apt update; apt upgrade` instead of `apt update && apt upgrade`
 * renamed function `net_bazzline_list_biggest_directory` to `net_bazzline_list_filesystem_biggest_directory` and moved it into filesystem function section
 * renamed function `net_bazzline_list_biggest_swapspace_consumers` to `net_bazzline_list_filesystem_biggest_swapspace_consumers` and moved it into filesystem function section
 * renamed function `net_bazzline_load_ssh_keys_in_keychain` to `net_bazzline_load_ssh_key_in_keychain`

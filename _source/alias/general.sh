@@ -129,7 +129,10 @@ alias removeAllDockerImages='docker ps -a -q | xargs docker rm'
 alias renameAllToLower=net_bazzline_filename_to_lower_batch_rename
 alias renameGitBranch=net_bazzline_rename_git_branch
 alias replaceStringInFiles=net_bazzline_replace_string_in_files
-alias rsync=net_bazzline_rsync
+if [[ -x $(command -v rsync) ]];
+then
+    alias rsync=net_bazzline_rsync
+fi
 alias runJar='java -jar '
 
 #s
