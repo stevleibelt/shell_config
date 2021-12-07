@@ -39,6 +39,35 @@ function net_bazzline_packagemanager_arch_linux_software_upgrade ()
     fi
     #bo: check if lock file exists
 
+    #bo: check last system update timestamp
+    local CURRENT_DATETIME=$(date +'%Y-%m-%d %H:%M:%S')
+    local CURRENT_TIMESTAMP=$(date +'%s')
+    local LAST_SYSTEM_UPDATE_FILE_PATH="${NET_BAZZLINE_CACHE_PATH}/last_system_update"
+    local REINSTALL_ARCH_KEYRING=1
+
+    if [[ -f "${LAST_SYSTEM_UPDATE_FILE_PATH}" ]];
+    then
+        local LAST_SYSTEM_UPDATE_TIMESTAMP=$(head -n 4 ${LAST_SYSTEM_UPDATE_FILE_PATH})
+
+        local LAST_VALID_TIMESTAMP=`expr ${CURRENT_TIMESTAMP} - 2419200`   #2419200 = 28 days
+
+        if [[ ${LAST_SYSTEM_UPDATE_TIMESTAMP} -lt ${LAST_VALID_TIMESTAMP} ]];
+        then
+            bash -c "${PACKAGEMANAGER_COMMAND} -S archlinux-keyring"
+        fi
+    else
+        if [[ ! -d "${NET_BAZZLINE_CACHE_PATH}" ]];
+        then
+            mkdir -p "${NET_BAZZLINE_CACHE_PATH}"
+        fi
+    fi 
+
+    echo "#last system update datetime" > ${LAST_SYSTEM_UPDATE_FILE_PATH}
+    echo ${CURRENT_DATETIME} >> ${LAST_SYSTEM_UPDATE_FILE_PATH}
+    echo "#last system update timestamp" >> ${LAST_SYSTEM_UPDATE_FILE_PATH}
+    echo ${CURRENT_TIMESTAMP} >> ${LAST_SYSTEM_UPDATE_FILE_PATH}
+    #eo: check last system update timestamp
+
     #bo: check if screen session exists
     net_bazzline_packagemanager_check_if_system_upgrade_screen_session_exists
 
@@ -52,6 +81,7 @@ function net_bazzline_packagemanager_arch_linux_software_upgrade ()
         fi
     fi
 
+    #this line is working because we make sure that there is a screen session or we create one abouve this line
     screen -r ${NET_BAZZLINE_FUNCTION_PACKAGEMANAGER_SYSTEM_UPGRADE_SCREEN_SESSION_NAME}
     #eo: check if screen session exists
 }

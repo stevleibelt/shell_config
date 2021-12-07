@@ -11,9 +11,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 #### Priority High
 
-* for arch linux
-    * record last succesful call of "software-upgrade"
-        * if last call is older than 1 month, install "archlinux-keyring" before doing te regular software-upgrade
 * for all video conversion
     * create directories "in_progres", "done" and "with_error" (last one maybe)
     * add handling for sighalt
@@ -109,6 +106,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added
 
+* added usage of last_system_update file for arch linux
+    * if file exists and timestamp is older than 28 days, `archlinux-keyring` will be reinstalled
+* added `NET_BAZZLINE_CACHE_PATH`
 * added screen wrapper when updating arch linux package managers or apt
 * added `_source/alias/process.sh`
 * added `net_bazzline_media_book_compress_pdf`

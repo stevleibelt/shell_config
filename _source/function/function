@@ -2147,7 +2147,7 @@ function net_bazzline_record_function_usage ()
 
         #begin of business logic
         local CURRENT_DATE=$(date +"%Y-%m-%d")
-        local DIRECTORY_PATH_TO_THE_STATISTICS="${HOME}/.cache/net_bazzline/shell_config"
+        local DIRECTORY_PATH_TO_THE_STATISTICS="${NET_BAZZLINE_CACHE_PATH}/shell_config"
         local FUNCTION_NAME="${1}"
 
         if [[ ! -d "${DIRECTORY_PATH_TO_THE_STATISTICS}" ]];
