@@ -114,7 +114,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 * added `net_bazzline_media_book_compress_pdf`
 * added `net_bazzline_process_list_runtime`
 * added `net_bazzline_process_list_memory_usage`
-* added `NET_BAZZLINE_OPERATION_SYSTEM` with supported values `linux`, `windows` and `unknown`
+* added `NET_BAZZLINE_OPERATION_SYSTEM_IS_LINUX` and `NET_BAZZLINE_OPERATION_SYSTEM_IS_WINDOWS`
 
 ### Changed
 

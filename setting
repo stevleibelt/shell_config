@@ -27,12 +27,14 @@ export LESS_TERMCAP_so=$(printf '\e[1;44;1m')
 
 #bo: detect current os
 CURRENT_UNAME_OUTPUT="$(uname -s)"
+NET_BAZZLINE_OPERATION_SYSTEM_IS_LINUX=0
+NET_BAZZLINE_OPERATION_SYSTEM_IS_WINDOWS=0
 case "${CURRENT_UNAME_OUTPUT}" in
-    Linux*)     NET_BAZZLINE_OPERATION_SYSTEM="linux"
+    Linux*)     NET_BAZZLINE_OPERATION_SYSTEM_IS_LINUX=1
         ;;
-    MSYS_NT*)   NET_BAZZLINE_OPERATION_SYSTEM="windows"
+    MSYS_NT*)   NET_BAZZLINE_OPERATION_SYSTEM_IS_WINDOWS=1
         ;;
-    *)          NET_BAZZLINE_OPERATION_SYSTEM="unknown"
+    *)
         ;;
 esac
 #eo: detect current os
