@@ -84,10 +84,12 @@ function net_bazzline_packagemanager_arch_linux_software_upgrade ()
         fi
     fi 
 
-    echo '#last system update datetime' > "${LAST_SYSTEM_UPDATE_FILE_PATH}"
-    echo "${CURRENT_DATETIME}" >> "${LAST_SYSTEM_UPDATE_FILE_PATH}"
-    echo '#last system update timestamp' >> "${LAST_SYSTEM_UPDATE_FILE_PATH}"
-    echo "${CURRENT_TIMESTAMP}" >> "${LAST_SYSTEM_UPDATE_FILE_PATH}"
+    cat > "${LAST_SYSTEM_UPDATE_FILE_PATH}" <DELIM
+#last system update datetime
+${CURRENT_DATETIME}
+#last system update timestamp
+${CURRENT_TIMESTAMP}
+DELIM
     #eo: check last system update timestamp
 
     #bo: check if screen session exists
