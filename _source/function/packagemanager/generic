@@ -23,6 +23,16 @@ function net_bazzline_packagemanager_arch_linux_software_upgrade ()
     local PACMAN_LOCK_FILE_PATH='/var/lib/pacman/db.lck'
     #eo: setup
 
+    #bo: check if packagemanager is valid
+    if [[ ! -x $(command -v "${PACKAGEMANAGER_COMMAND}") ]];
+    then
+        echo ":: Invalid argument provided."
+        echo "   Command >>${PACKAGEMANAGER_COMMAND}<< does not exist."
+
+        return 2;
+    fi
+    #eo: check if packagemanager is valid
+
     #bo: check if lock file exists
     if [[ -f ${PACMAN_LOCK_FILE_PATH} ]];
     then

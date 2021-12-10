@@ -106,6 +106,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added
 
+* for arch linux package manager function, added check if provided packagemanager command exists (use case, yay was not installed)
 * added usage of last_system_update file for arch linux
     * if file exists and timestamp is older than 28 days, `archlinux-keyring` will be reinstalled
 * added `NET_BAZZLINE_CACHE_PATH`
