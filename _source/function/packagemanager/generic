@@ -17,8 +17,9 @@ function net_bazzline_packagemanager_arch_linux_software_upgrade ()
         return 1;
     fi
 
-    local PACKAGEMANAGER_COMMAND="${1}"
+    local BE_VERBOSE=0
     local IS_LTS_KERNEL="${2:-0}"
+    local PACKAGEMANAGER_COMMAND="${1}"
 
     local PACMAN_LOCK_FILE_PATH='/var/lib/pacman/db.lck'
     #eo: setup
@@ -61,21 +62,32 @@ function net_bazzline_packagemanager_arch_linux_software_upgrade ()
 
         local LAST_VALID_TIMESTAMP=`expr ${CURRENT_TIMESTAMP} - 2419200`   #2419200 = 28 days
 
+        if [[ ${BE_VERBOSE} -eq 1 ]];
+        then
+            echo ":: File >>${LAST_SYSTEM_UPDATE_FILE_PATH}<< does exists."
+            echo "   Last system update timestamp >>${LAST_SYSTEM_UPDATE_TIMESTAMP}<<."
+            echo "   Current timestamp >>${CURRENT_TIMESTAMP}<<."
+        fi
+
         if [[ ${LAST_SYSTEM_UPDATE_TIMESTAMP} -lt ${LAST_VALID_TIMESTAMP} ]];
         then
             bash -c "${PACKAGEMANAGER_COMMAND} -S archlinux-keyring"
         fi
     else
+        if [[ ${BE_VERBOSE} -eq 1 ]];
+        then
+            echo ":: File >>${LAST_SYSTEM_UPDATE_FILE_PATH}<< does not exists."
+        fi
         if [[ ! -d "${NET_BAZZLINE_CACHE_PATH}" ]];
         then
             mkdir -p "${NET_BAZZLINE_CACHE_PATH}"
         fi
     fi 
 
-    echo '#last system update datetime' > ${LAST_SYSTEM_UPDATE_FILE_PATH}
-    echo "${CURRENT_DATETIME}" >> ${LAST_SYSTEM_UPDATE_FILE_PATH}
-    echo '#last system update timestamp' >> ${LAST_SYSTEM_UPDATE_FILE_PATH}
-    echo "${CURRENT_TIMESTAMP}" >> ${LAST_SYSTEM_UPDATE_FILE_PATH}
+    echo '#last system update datetime' > "${LAST_SYSTEM_UPDATE_FILE_PATH}"
+    echo "${CURRENT_DATETIME}" >> "${LAST_SYSTEM_UPDATE_FILE_PATH}"
+    echo '#last system update timestamp' >> "${LAST_SYSTEM_UPDATE_FILE_PATH}"
+    echo "${CURRENT_TIMESTAMP}" >> "${LAST_SYSTEM_UPDATE_FILE_PATH}"
     #eo: check last system update timestamp
 
     #bo: check if screen session exists
