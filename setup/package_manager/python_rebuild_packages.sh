@@ -1,7 +1,7 @@
 #!/bin/bash
 ####
 # @see: https://linuxundich.de/gnu-linux/upgrade-auf-python-3-10-zeit-die-aur-pakete-neu-zu-bauen/
-# @since 2018-07-22
+# @since 2021-12-14
 # @author stev leibelt <artodeto@bazzline.net>
 ####
 
