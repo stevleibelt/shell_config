@@ -33,14 +33,14 @@ function _upgrade()
     fi
 
     echo ":: Fetching python packages to upgrade."
-    pacman -Qop "${PATH_TO_OUTDATED_PYTHON_PACKAGE}"
+    pacman -Qoq "${PATH_TO_OUTDATED_PYTHON_PACKAGE}"
 
     echo ""
     echo ":: Rebuilding packages."
-    pacman -Qop "${PATH_TO_OUTDATED_PYTHON_PACKAGE}" | ${PACKAGEMANAGER} -S - --rebuild
+    pacman -Qoq "${PATH_TO_OUTDATED_PYTHON_PACKAGE}" | "${PACKAGEMANAGER}" -S - --rebuild
 
     echo ":: Just for testing ... fetching python packages to upgrade."
-    pacman -Qop "${PATH_TO_OUTDATED_PYTHON_PACKAGE}"
+    pacman -Qoq "${PATH_TO_OUTDATED_PYTHON_PACKAGE}"
 }
 
 _upgrade
