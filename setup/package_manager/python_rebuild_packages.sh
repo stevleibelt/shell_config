@@ -9,6 +9,7 @@ function _upgrade()
 {
     local PACKAGEMANAGER='';
     local PATH_TO_OUTDATED_PYTHON_PACKAGE='/usr/lib/python3.9'
+    local PATH_TO_LATEST_PYTHON_PACKAGE='/usr/lib/python3.10'
 
     #begin of testing if we are on the right system
     if [[ ! -f /usr/bin/pacman ]];
@@ -16,7 +17,7 @@ function _upgrade()
         echo ":: Can not install on your system."
         echo "   Sorry dude, I can only install things on a arch linux."
 
-        exit 1
+        return 1
     fi
 
     if [[ -f /usr/bin/yay ]];
@@ -29,7 +30,17 @@ function _upgrade()
         echo ":: Can not upgrade your aur python packages."
         echo "   Neither yay or paru was found."
 
-        exit 2
+        return 2
+    fi
+
+    if [[ ! -f ${PATH_TO_LATEST_PYTHON_PACKAGE} ]];
+    then
+        echo ":: Expected latest python package not found."
+        echo "   >>${PATH_TO_LATEST_PYTHON_PACKAGE}<< is missing."
+        echo "   Please do a systemupdate first."
+        echo "   Just execute something like >>${PACKAGEMANAGER} -Syyu<<."
+
+        return 3
     fi
 
     echo ":: Fetching python packages to upgrade."
