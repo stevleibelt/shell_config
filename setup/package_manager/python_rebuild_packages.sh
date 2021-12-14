@@ -33,7 +33,7 @@ function _upgrade()
         return 2
     fi
 
-    if [[ ! -f ${PATH_TO_LATEST_PYTHON_PACKAGE} ]];
+    if [[ ! -d ${PATH_TO_LATEST_PYTHON_PACKAGE} ]];
     then
         echo ":: Expected latest python package not found."
         echo "   >>${PATH_TO_LATEST_PYTHON_PACKAGE}<< is missing."
