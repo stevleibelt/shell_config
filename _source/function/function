@@ -855,23 +855,39 @@ function net_bazzline_determine_filesystem_path_age ()
 }
 
 ####
-# Show differences between two directories
+# Show differences between two directory paths
 #
-# @param string $1 - path to first directory
-# @param string $2 - path to second directory
+# @param string $1 - path to first path
+# @param string $2 - path to second path
 # 
 # @author stev leibelt <artodeto@bazzline.net>
 # @since 2013-05-21
-function net_bazzline_diff_directory ()
+function net_bazzline_diff_two_paths ()
 {
     net_bazzline_record_function_usage ${FUNCNAME[0]}
+    local SECOND_PATH=${2}
+    local FIRST_PATH=${1}
+    local INPUT_VARIABLES_ARE_VALID=0
 
-    if [[ $# -eq 2 ]]; then
-        diff -qr "$1" "$2" | sort
+    if [[ $# -eq 2 ]];
+    then
+        if [[ -d "${FIRST_PATH}" ]];
+        then
+            if [[ -d "${SECOND_PATH}" ]];
+            then
+                INPUT_VARIABLES_ARE_VALID=1
+            fi
+        fi
+    fi
+
+    if [[ ${INPUT_VARIABLES_ARE_VALID} -eq 1 ]];
+    then
+        diff -qr "${FIRST_PATH}" "${SECOND_PATH}" | sort
     else
-        echo 'No valid argument supplied.'
-        echo 'Try command directory1 directory2'
-        return 1
+        echo ":: Invalid argument provided."
+        echo "   ${FUNCNAME[0]} <string: path one> <string: path two>"
+
+        return 1;
     fi
 }
 
