@@ -39,7 +39,7 @@ function _main ()
         tar -czf "${BACKUP_TAR_PATH}" "${BACKUP_DIRECTORY_PATH}"
 
         if [[ $? -ne 0 ]];
-        else
+        then
             echo ":: Something bad has happened."
             echo "   Backup path not deleted."
             echo "   Path is >>${BACKUP_DIRECTORY_PATH}<<."
