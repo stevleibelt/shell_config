@@ -32,6 +32,14 @@ then
     sudo pacman -S pacman-contrib
 fi
 
+if [[ ! -f /usr/bin/gcc ]];
+then
+    echo ":: base-devel (at least gcc) is missing but mandatory."
+    echo ":: Installing group base-devel."
+
+    sudo pacman -S base-devel
+fi
+
 CURRENT_WORKING_DIRECTORY=$(pwd)
 
 ##begin of temporary path creation
