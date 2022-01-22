@@ -34,7 +34,7 @@ function _main ()
 
     if [[ ${TAR_BACKUP_DIRECTORY} -eq 1 ]];
     then
-        tar -czf "${BACKUP_DIRECTORY_PATH}.tar.gz" "${BACKUP_DIRECTORY_PATH}"
+        tar -czf "${BACKUP_DIRECTORY_PATH}.tar.gz" $(realpath "${BACKUP_DIRECTORY_PATH}")
     fi
 
     cd "${CURRENT_WORKING_DIRECTORY}"
