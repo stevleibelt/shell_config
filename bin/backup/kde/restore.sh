@@ -13,6 +13,8 @@ function _main ()
     local CURRENT_WORKING_DIRECTORY=$(pwd)
     local TAR_BACKUP_DIRECTORY=0
 
+    local BACKUP_TAR_PATH="${BACKUP_DIRECTORY_PATH}.tar.gz"
+
     if [[ ! -d "${HOME}/.config" ]];
     then
         echo ":: Expected path does not exist."
@@ -23,25 +25,22 @@ function _main ()
 
     cd $(dirname "${BACKUP_DIRECTORY_PATH}")
 
-    if [[ ! -f "${BACKUP_DIRECTORY_PATH}.tar.gz" ]];
+    if [[ ! -f "${BACKUP_TAR_PATH}z" ]];
     then
         echo ":: Expected file does not exist."
-        echo "   File path >>${BACKUP_DIRECTORY_PATH}.tar.gz<< does not exist."
+        echo "   File path >>${BACKUP_TAR_PATH}<< does not exist."
 
         return 2
     fi
 
-    tar -xzf "${BACKUP_DIRECTORY_PATH}.tar.gz"
-
     if [[ ! -d "${BACKUP_DIRECTORY_PATH}" ]];
     then
-        echo ":: Expected path does not exist."
-        echo "   Directory path >>${BACKUP_DIRECTORY_PATH}<< does not exist."
-
-        return 3
+        /usr/bin/mkdir -p "${BACKUP_DIRECTORY_PATH}"
     fi
 
     cd "${BACKUP_DIRECTORY_PATH}"
+
+    tar -xzf "${BACKUP_TAR_PATH}"
 
     for CURRENT_DIRECTORY in "${ARRAY_OF_DIRECTORY_NAMES[@]}";
     do

@@ -13,6 +13,8 @@ function _main ()
     local CURRENT_WORKING_DIRECTORY=$(pwd)
     local TAR_BACKUP_DIRECTORY=0
 
+    local BACKUP_TAR_PATH="${BACKUP_DIRECTORY_PATH}.tar.gz"
+
     if [[ ! -d "${HOME}/.config" ]];
     then
         echo ":: Expected path does not exist."
@@ -34,7 +36,18 @@ function _main ()
 
     if [[ ${TAR_BACKUP_DIRECTORY} -eq 1 ]];
     then
-        tar -czf "${BACKUP_DIRECTORY_PATH}.tar.gz" $(realpath "${BACKUP_DIRECTORY_PATH}")
+        tar -czf "${BACKUP_TAR_PATH}" "${BACKUP_DIRECTORY_PATH}"
+
+        if [[ $? -eq 0 ]];
+        then
+        else
+            echo ":: Something bad has happened."
+            echo "   Backup path not deleted."
+            echo "   Path is >>${BACKUP_DIRECTORY_PATH}<<."
+            echo "   Please check if tar archive still exists in path >>${BACKUP_TAR_PATH}<<."
+
+            return 2
+        fi
     fi
 
     cd "${CURRENT_WORKING_DIRECTORY}"
