@@ -38,8 +38,7 @@ function _main ()
     then
         tar -czf "${BACKUP_TAR_PATH}" "${BACKUP_DIRECTORY_PATH}"
 
-        if [[ $? -eq 0 ]];
-        then
+        if [[ $? -ne 0 ]];
         else
             echo ":: Something bad has happened."
             echo "   Backup path not deleted."
