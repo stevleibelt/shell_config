@@ -129,6 +129,46 @@ function net_bazzline_delete_list_of_dated_zfs_snapshots()
 }
 
 ####
+# Shows the reclaimable diskspace for a dataset and its used snapshots.
+#
+# If called with no parameters, this function iterates over all
+#   available datasets
+#
+# [@param string of a zfs dataset name like tank1/dataset1]
+# [@param ...]
+####
+function net_bazzline_list_zfs_snapshot_diskspace()
+{
+    if [[ $# -lt 1 ]];
+    then
+        local ARRAY_OF_DATASET_NAME=($(zfs list -Ho name))
+    else
+        declare -a ARRAY_OF_DATASET_NAME
+
+        for CURRENT_DATASET_NAME in $*;
+        do
+            ARRAY_OF_DATASET_NAME+=(${CURRENT_DATASET_NAME})
+        done
+    fi
+
+    for CURRENT_DATASET_NAME in ${ARRAY_OF_DATASET_NAME[@]};
+    do
+        local NUMBER_OF_AVAILABLE_SNAPSHOTS=$(zfs list -t snapshot ${CURRENT_DATASET_NAME} | wc -l)
+
+        if [[ ${NUMBER_OF_AVAILABLE_SNAPSHOTS} -gt 0 ]];
+        then
+            local FIRST_SNAPSHOT_NAME=$(zfs list -t snapshot ${CURRENT_DATASET_NAME} | head -n2 | tail -n1 | cut -d " " -f1 | cut -d "@" -f2)
+            local LAST_SNAPSHOT_NAME=$(zfs list -t snapshot ${CURRENT_DATASET_NAME} | tail -n1 | cut -d " " -f1 | cut -d "@" -f2)
+
+            echo ":: Destroying all snapshots of dataset >>${CURRENT_DATASET_NAME}<<"
+            zfs destroy -nv ${CURRENT_DATASET_NAME}@${FIRST_SNAPSHOT_NAME}%${LAST_SNAPSHOT_NAME} | tail -n1 -r
+        else
+            echo ":: No snapshot available for dataset >>${CURRENT_DATASET_NAME}<<."
+        fi
+    done
+}
+
+####
 # [@param string <name of the zfs pool>]
 ####
 function net_bazzline_list_zfs_snapshots()

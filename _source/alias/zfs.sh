@@ -16,6 +16,7 @@ then
     alias deleteListOfDatedZfsSnapshots=net_bazzline_delete_list_of_dated_zfs_snapshots
 
     #l
+    alias listZfsSnapshotDiskspace=net_bazzline_list_zfs_snapshot_diskspace
     alias listZfsSnapshots=net_bazzline_list_zfs_snapshots
 
     #s
