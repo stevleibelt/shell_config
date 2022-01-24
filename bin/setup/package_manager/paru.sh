@@ -1,7 +1,7 @@
 #!/bin/bash
 ####
-# @see: https://aur.archlinux.org/yay.git
-# @since 2018-07-22
+# @see: https://aur.archlinux.org/paru.git
+# @since 2021-12-11
 # @author stev leibelt <artodeto@bazzline.net>
 ####
 
@@ -32,6 +32,14 @@ then
     sudo pacman -S pacman-contrib
 fi
 
+if [[ ! -f /usr/bin/gcc ]];
+then
+    echo ":: base-devel (at least gcc) is missing but mandatory."
+    echo ":: Installing group base-devel."
+
+    sudo pacman -S base-devel
+fi
+
 CURRENT_WORKING_DIRECTORY=$(pwd)
 
 ##begin of temporary path creation
@@ -42,7 +50,7 @@ cd ${TEMPORARY_DIRECTORY_PATH}
 ##begin of building and installing
 cd ${TEMPORARY_DIRECTORY_PATH}
 #git clone https://aur.archlinux.org/yay.git .
-git clone https://aur.archlinux.org/yay-bin.git .
+git clone https://aur.archlinux.org/paru.git .
 makepkg -si
 ##end of building and installing
 
