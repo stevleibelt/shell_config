@@ -24,7 +24,7 @@ function net_bazzline_packagemanager_arch_linux_software_upgrade ()
     #eo: setup
 
     #bo: check if packagemanager is valid
-    if [[ ! -x $(command -v "${PACKAGEMANAGER_COMMAND}") ]];
+    if [[ "${PACKAGEMANAGER_COMMAND}" != "sudo pacman"  &&  ! -x $(command -v "${PACKAGEMANAGER_COMMAND}") ]];
     then
         echo ":: Invalid argument provided."
         echo "   Command >>${PACKAGEMANAGER_COMMAND}<< does not exist."
