@@ -32,7 +32,14 @@ function net_bazzline_packagemanager_arch_linux_software_upgrade ()
     if [[ -f /usr/bin/tee ]];
     then
         local LOG_UPGRADE=1
-        local LOG_FILE_PATH="${HOME}/.cache/net_bazzline/last_system_upgrade.log"
+        local LOG_DIRECTORY_PATH="${HOME}/.cache/net_bazzline"
+
+        local LOG_FILE_PATH="${LOG_DIRECTORY_PATH}/last_system_upgrade.log"
+
+        if [[ ! -d ${LOG_DIRECTORY_PATH} ]];
+        then
+            /usr/bin/mkdir -p "${LOG_DIRECTORY_PATH}"
+        fi
     else
         local LOG_UPGRADE=0
     fi
