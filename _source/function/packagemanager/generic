@@ -21,6 +21,21 @@ function net_bazzline_packagemanager_arch_linux_software_upgrade ()
     local PACKAGEMANAGER_COMMAND="${1}"
 
     local PACMAN_LOCK_FILE_PATH='/var/lib/pacman/db.lck'
+
+    if [[ ${IS_LTS_KERNEL} -eq 1 ]];
+    then
+        local PACKGES_TO_IGNORE="linux-lts,linux-lts-headers,zfs-linux-lts,zfs-utils"
+    else
+        local PACKGES_TO_IGNORE="linux,linux-headers,zfs-linux-lts,zfs-utils"
+    fi
+
+    if [[ -f /usr/bin/tee ]];
+    then
+        local LOG_UPGRADE=1
+        local LOG_FILE_PATH="${HOME}/.cache/net_bazzline/last_system_upgrade.log"
+    else
+        local LOG_UPGRADE=0
+    fi
     #eo: setup
 
     #bo: check if packagemanager is valid
@@ -85,16 +100,21 @@ DELIM
 
     if  [[ $? -eq 1 ]];
     then
-        if [[ ${IS_LTS_KERNEL} -eq 1 ]];
+        if [[ ${LOG_UPGRADE} -eq 1 ]];
         then
-            screen -dmS ${NET_BAZZLINE_FUNCTION_PACKAGEMANAGER_SYSTEM_UPGRADE_SCREEN_SESSION_NAME} bash -c "${PACKAGEMANAGER_COMMAND} -Syyu || ${PACKAGEMANAGER_COMMAND} -Syyu --ignore=linux-lts,linux-lts-headers,zfs-linux-lts,zfs-utils"
+            screen -dmS ${NET_BAZZLINE_FUNCTION_PACKAGEMANAGER_SYSTEM_UPGRADE_SCREEN_SESSION_NAME} bash -c "${PACKAGEMANAGER_COMMAND} -Syyu | tee ${LOG_FILE_PATH} || ${PACKAGEMANAGER_COMMAND} -Syyu --ignore=${PACKGES_TO_IGNORE} | tee ${LOG_FILE_PATH}"
         else
-            screen -dmS ${NET_BAZZLINE_FUNCTION_PACKAGEMANAGER_SYSTEM_UPGRADE_SCREEN_SESSION_NAME} bash -c "${PACKAGEMANAGER_COMMAND} -Syyu || ${PACKAGEMANAGER_COMMAND} -Syyu --ignore=linux,linux-headers,zfs-linux,zfs-utils"
+            screen -dmS ${NET_BAZZLINE_FUNCTION_PACKAGEMANAGER_SYSTEM_UPGRADE_SCREEN_SESSION_NAME} bash -c "${PACKAGEMANAGER_COMMAND} -Syyu || ${PACKAGEMANAGER_COMMAND} -Syyu --ignore=${PACKGES_TO_IGNORE}"
         fi
     fi
 
-    #this line is working because we make sure that there is a screen session or we create one abouve this line
+    #this line is working because we make sure that there is a screen session or we create one above this line
     screen -r ${NET_BAZZLINE_FUNCTION_PACKAGEMANAGER_SYSTEM_UPGRADE_SCREEN_SESSION_NAME}
+
+    if [[ ${LOG_UPGRADE} -eq 1 ]];
+    then
+        echo ":: system upgrade logged in >>${LOG_FILE_PATH}<<."
+    fi
     #eo: check if screen session exists
 }
 
