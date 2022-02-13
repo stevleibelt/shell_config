@@ -6,6 +6,12 @@
 # @since 2021-10-18
 ####
 
+#d
+alias decreaseProcessPriority='renice -n 5 -p '
+
+#i
+alias increaseProcessPriority='renice -n -5 -p '
+
 #l
 if [[ ${NET_BAZZLINE_OPERATION_SYSTEM_IS_LINUX} -eq 1 ]];
 then
