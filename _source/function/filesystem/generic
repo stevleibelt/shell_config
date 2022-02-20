@@ -212,5 +212,6 @@ function net_bazzline_rsync ()
 
     #@see:
     #   https://opensource.com/article/19/5/advanced-rsync
-    rsync -caq --delete $@
+    #   https://utcc.utoronto.ca/~cks/space/blog/sysadmin/RsyncAndHardlinks
+    rsync -caqHS --delete $@
 }
