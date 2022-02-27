@@ -40,6 +40,9 @@ function net_bazzline_packagemanager_arch_linux_software_upgrade ()
         then
             /usr/bin/mkdir -p "${LOG_DIRECTORY_PATH}"
         fi
+
+        echo ":: Logging of upgrade via tee currently disabled!"
+        local LOG_UPGRADE=0
     else
         local LOG_UPGRADE=0
     fi
