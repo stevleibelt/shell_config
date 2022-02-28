@@ -18,6 +18,7 @@ function net_bazzline_packagemanager_arch_linux_software_upgrade ()
     fi
 
     local IS_LTS_KERNEL="${2:-0}"
+    local LOG_FILE_PATH="/var/log/pacman.log"
     local PACKAGEMANAGER_COMMAND="${1}"
 
     local PACMAN_LOCK_FILE_PATH='/var/lib/pacman/db.lck'
@@ -27,24 +28,6 @@ function net_bazzline_packagemanager_arch_linux_software_upgrade ()
         local PACKGES_TO_IGNORE="linux-lts,linux-lts-headers,zfs-linux-lts,zfs-utils"
     else
         local PACKGES_TO_IGNORE="linux,linux-headers,zfs-linux-lts,zfs-utils"
-    fi
-
-    if [[ -f /usr/bin/tee ]];
-    then
-        local LOG_UPGRADE=1
-        local LOG_DIRECTORY_PATH="${HOME}/.cache/net_bazzline"
-
-        local LOG_FILE_PATH="${LOG_DIRECTORY_PATH}/last_system_upgrade.log"
-
-        if [[ ! -d ${LOG_DIRECTORY_PATH} ]];
-        then
-            /usr/bin/mkdir -p "${LOG_DIRECTORY_PATH}"
-        fi
-
-        echo ":: Logging of upgrade via tee currently disabled!"
-        local LOG_UPGRADE=0
-    else
-        local LOG_UPGRADE=0
     fi
     #eo: setup
 
@@ -110,21 +93,13 @@ DELIM
 
     if  [[ $? -eq 1 ]];
     then
-        if [[ ${LOG_UPGRADE} -eq 1 ]];
-        then
-            screen -dmS ${NET_BAZZLINE_FUNCTION_PACKAGEMANAGER_SYSTEM_UPGRADE_SCREEN_SESSION_NAME} bash -c "${PACKAGEMANAGER_COMMAND} -Syyu | tee ${LOG_FILE_PATH} || ${PACKAGEMANAGER_COMMAND} -Syyu --ignore=${PACKGES_TO_IGNORE} | tee ${LOG_FILE_PATH}"
-        else
-            screen -dmS ${NET_BAZZLINE_FUNCTION_PACKAGEMANAGER_SYSTEM_UPGRADE_SCREEN_SESSION_NAME} bash -c "${PACKAGEMANAGER_COMMAND} -Syyu || ${PACKAGEMANAGER_COMMAND} -Syyu --ignore=${PACKGES_TO_IGNORE}"
-        fi
+        screen -dmS ${NET_BAZZLINE_FUNCTION_PACKAGEMANAGER_SYSTEM_UPGRADE_SCREEN_SESSION_NAME} bash -c "${PACKAGEMANAGER_COMMAND} -Syyu || ${PACKAGEMANAGER_COMMAND} -Syyu --ignore=${PACKGES_TO_IGNORE}"
     fi
 
     #this line is working because we make sure that there is a screen session or we create one above this line
     screen -r ${NET_BAZZLINE_FUNCTION_PACKAGEMANAGER_SYSTEM_UPGRADE_SCREEN_SESSION_NAME}
 
-    if [[ ${LOG_UPGRADE} -eq 1 ]];
-    then
-        echo ":: system upgrade logged in >>${LOG_FILE_PATH}<<."
-    fi
+    echo ":: system upgrade logged in >>${LOG_FILE_PATH}<<."
     #eo: check if screen session exists
 }
 
