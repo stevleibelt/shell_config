@@ -27,7 +27,7 @@ function net_bazzline_packagemanager_arch_linux_software_upgrade ()
     then
         local PACKGES_TO_IGNORE="linux-lts,linux-lts-headers,zfs-linux-lts,zfs-utils"
     else
-        local PACKGES_TO_IGNORE="linux,linux-headers,zfs-linux-lts,zfs-utils"
+        local PACKGES_TO_IGNORE="linux,linux-headers,zfs-linux,zfs-utils"
     fi
     #eo: setup
 
