@@ -109,7 +109,7 @@ function net_bazzline_packagemanager_apt_software_upgrade ()
 {
     #bo: setup
     if [[ $# -lt 1 ]];
-    ßthen
+    then
         echo ":: Invalid amount of arguments provided."
         echo "   ${FUNCNAME[0]} <packagemanager_command: apt-get update && apt-get upgrade"
 
