@@ -93,7 +93,7 @@ DELIM
 
     if  [[ $? -eq 1 ]];
     then
-        screen -dmS ${NET_BAZZLINE_FUNCTION_PACKAGEMANAGER_SYSTEM_UPGRADE_SCREEN_SESSION_NAME} bash -c "${PACKAGEMANAGER_COMMAND} -Syyu || ${PACKAGEMANAGER_COMMAND} -Syyu --ignore=${PACKGES_TO_IGNORE}; if [[ $? -ne 0 ]]; then echo \":: Something bad happens.\"; read -n 1 -s -r -p \"Press any key to continue\"; fi; echo \":: Waiting for 30 seconds.\"; pause 30"
+        screen -dmS ${NET_BAZZLINE_FUNCTION_PACKAGEMANAGER_SYSTEM_UPGRADE_SCREEN_SESSION_NAME} bash -c "${PACKAGEMANAGER_COMMAND} -Syyu || ${PACKAGEMANAGER_COMMAND} -Syyu --ignore=${PACKGES_TO_IGNORE}; if [[ $? -ne 0 ]]; then echo \":: Something bad happens.\"; read -n 1 -s -r -p \"Press any key to continue\"; fi; echo \":: Waiting for 30 seconds.\"; sleep 30"
     fi
 
     #this line is working because we make sure that there is a screen session or we create one above this line
@@ -124,7 +124,7 @@ function net_bazzline_packagemanager_apt_software_upgrade ()
 
     if  [[ $? -eq 1 ]];
     then
-        screen -dmS ${NET_BAZZLINE_FUNCTION_PACKAGEMANAGER_SYSTEM_UPGRADE_SCREEN_SESSION_NAME} bash -c "${PACKAGEMANAGER_COMMAND}; echo \":: Waiting for 30 seconds.\"; pause 30"
+        screen -dmS ${NET_BAZZLINE_FUNCTION_PACKAGEMANAGER_SYSTEM_UPGRADE_SCREEN_SESSION_NAME} bash -c "${PACKAGEMANAGER_COMMAND}; echo \":: Waiting for 30 seconds.\"; sleep 30"
     fi
 
     screen -r ${NET_BAZZLINE_FUNCTION_PACKAGEMANAGER_SYSTEM_UPGRADE_SCREEN_SESSION_NAME}
