@@ -161,7 +161,7 @@ function net_bazzline_list_zfs_snapshot_diskspace()
             local FIRST_SNAPSHOT_NAME=$(zfs list -t snapshot ${CURRENT_DATASET_NAME} | head -n2 | tail -n1 | cut -d " " -f1 | cut -d "@" -f2)
             local LAST_SNAPSHOT_NAME=$(zfs list -t snapshot ${CURRENT_DATASET_NAME} | tail -n1 | cut -d " " -f1 | cut -d "@" -f2)
 
-            echo ":: Destroying all snapshots of dataset >>${CURRENT_DATASET_NAME}<<"
+            echo ":: Destroying >>${NUMBER_OF_AVAILABLE_SNAPSHOTS}<< snapshots on dataset >>${CURRENT_DATASET_NAME}<<."
             zfs destroy -nvr ${CURRENT_DATASET_NAME}@${FIRST_SNAPSHOT_NAME}%${LAST_SNAPSHOT_NAME} | tail -n1
         fi
     done
