@@ -106,6 +106,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added
 
+### Changed
+
+## [3.0.0](https://github.com/stevleibelt/shell_config/tree/3.0.0) - released at 20220315
+
+### Added
+
 * for arch linux package manager function, added check if provided packagemanager command exists (use case, yay was not installed)
 * added usage of last_system_update file for arch linux
     * if file exists and timestamp is older than 28 days, `archlinux-keyring` will be reinstalled
@@ -119,6 +125,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 
+* changed verbosity switch for `net_bazzline_shell_config_bootstrap`, call it from with an shell with `net_bazzline_shell_config_bootstrap 1` to enable verbosity
 * changed alias from `diffDirectories` to `diffTwoPaths`
 * changed function names from `net_bazzline_diff_directory` to `net_bazzline_diff_two_paths`
 * changed the way we do an apt system update, now it is `apt update; apt upgrade` instead of `apt update && apt upgrade`
@@ -128,6 +135,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
     * changed parameters, now second argument is timeout
 * renamed "install" to "add" in the package manager section
 * removed `vendor` option since I am not going to use it
+* removed legacy local configuration file name support like `setting.local`
 * updated reflector to latest configuration settings
 
 ## [2.0.0](https://github.com/stevleibelt/shell_config/tree/2.0.0) - released at 20210421
