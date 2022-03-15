@@ -153,7 +153,8 @@ function net_bazzline_list_zfs_snapshot_diskspace()
 
     for CURRENT_DATASET_NAME in ${ARRAY_OF_DATASET_NAME[@]};
     do
-        local NUMBER_OF_AVAILABLE_SNAPSHOTS=$(zfs list -t snapshot ${CURRENT_DATASET_NAME} | wc -l)
+        #with >>2>/dev/null<< we are preventing the >>no datasets available<< error message
+        local NUMBER_OF_AVAILABLE_SNAPSHOTS=$(zfs list -t snapshot ${CURRENT_DATASET_NAME} 2>/dev/null | wc -l)
 
         if [[ ${NUMBER_OF_AVAILABLE_SNAPSHOTS} -gt 0 ]];
         then
@@ -162,8 +163,6 @@ function net_bazzline_list_zfs_snapshot_diskspace()
 
             echo ":: Destroying all snapshots of dataset >>${CURRENT_DATASET_NAME}<<"
             zfs destroy -nvr ${CURRENT_DATASET_NAME}@${FIRST_SNAPSHOT_NAME}%${LAST_SNAPSHOT_NAME} | tail -n1
-        else
-            echo ":: No snapshot available for dataset >>${CURRENT_DATASET_NAME}<<."
         fi
     done
 }
