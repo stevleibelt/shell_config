@@ -19,7 +19,7 @@ The logical parts are:
 
 You can overwrite or extend a logical part by creating a "local.<logical part file name>" file. This file is loaded after the original file.
 
-If you want to see what is loaded and what is skipped, call `net_bazzline_shell_config_bootstrap 1`.
+If you want to see what is loaded and what is skipped, call `net_bazzline_shell_config_bootstrap 1` or use the build in alias `bootstrapShellConfigurationInVerboseMode`.
 
 # Installation
 

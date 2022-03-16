@@ -106,6 +106,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added
 
+* added alias `bootstrapShellConfigurationInVerboseMode`
+
 ### Changed
 
 ## [3.0.0](https://github.com/stevleibelt/shell_config/tree/3.0.0) - released at 20220315
