@@ -1,6 +1,152 @@
 #!/bin/bash
 
 ####
+# finds all *.md files in current working directory
+# converts each md file in a pdf file
+# merges all created pdf files into one file
+####
+function net_bazzline_media_book_convert_markdown_files_to_one_pdf ()
+{
+    local CURRENT_WORKING_DIRECTORY=$(pwd)
+    local MERGED_PDF_FILE_NAME="_merged.pdf"
+    local TEMPORARY_DIRECTORY=$(mktemp -d)
+
+    local TEMPORARY_FILE_PATH="${TEMPORARY_DIRECTORY}/list_of_files.txt"
+    local PDF_DIRECTORY_PATH="${TEMPORARY_DIRECTORY}/_pdf"
+
+    if [[ ! -f /usr/bin/pandoc ]];
+    then
+        echo ":: >>/usr/bin/pandoc<< is not a file."
+        echo "   pandoc is mandatory"
+
+        exit 1
+    fi
+
+    if [[ ! -f /usr/bin/gs ]];
+    then
+        echo ":: >>/usr/bin/gs<< is not a file."
+        echo "   gs is mandatory"
+
+        exit 2
+    fi
+
+    #find all md files and put the file path into a temporary file
+    find . -iname "*.md" -type f -exec sh -c 'printf "${0:2}\n"' {} \; > "${TEMPORARY_FILE_PATH}"
+
+    local NUMBER_OF_FOUND_FILES=$(cat "${TEMPORARY_FILE_PATH}" | wc -l)
+
+    if [[ ${NUMBER_OF_FOUND_FILES} -gt 0  ]];
+    then
+        echo ":: Processing >>${NUMBER_OF_FOUND_FILES}<< *.md files from >>${CURRENT_WORKING_DIRECTORY}<< or below."
+
+        mkdir "${PDF_DIRECTORY_PATH}"
+
+        cat "${TEMPORARY_FILE_PATH}" | while read FILE_PATH;
+        do
+                echo -n "."
+                local OUTPUT_FILE_PATH=$(echo "${FILE_PATH}" | sed 's/\//-/g')
+                local FILE_BASEDIR=$(dirname "${FILE_PATH}")
+                local FILE_BASENAME=$(basename "${FILE_PATH}")
+
+                cd "${FILE_BASEDIR}"
+
+                pandoc -s "${FILE_BASENAME}" -o "${PDF_DIRECTORY_PATH}/${OUTPUT_FILE_PATH}.pdf"
+
+                cd -
+        done
+
+        cd "${CURRENT_WORKING_DIRECTORY}"
+
+        echo ":: Creating file >>${MERGED_PDF_FILE_NAME}<< by using all files from >>${PDF_DIRECTORY_PATH}<<."
+        gs -dNOPAUSE -sDEVICE=pdfwrite -sOUTPUTFILE=${MERGED_PDF_FILE_NAME} -dBATCH ${PDF_DIRECTORY_PATH}/*
+    else
+        echo ":: No *.md files found in >>${CURRENT_WORKING_DIRECTORY}<< or below."
+    fi
+
+    rm -fr "${TEMPORARY_DIRECTORY}"
+}
+
+####
+# @param: <string: source_file_path>
+# [@param: <string: destination_file_path=source_file_path.compressed.pdf>]
+# [@param: <int: image resolution=150]
+# [@param: <string: pdf setting=/ebook]
+#
+# @see: https://opensource.com/article/20/8/reduce-pdf
+####
+function net_bazzline_media_book_compress_pdf ()
+{
+    #bo: user input
+    DESTINATION_FILE_PATH=${2:-''}
+    IMAGE_RESOLUTION=${3:-150}
+    PDF_SETTINGS=${4:-'/ebook'}
+    SOURCE_FILE_PATH=${1}
+    #eo: user input
+
+    #bo: input validation
+    if [[ ${DESTINATION_FILE_PATH} == '' ]];
+    then
+        #assumed the file ends with .pdf, we are removing the last four
+        #   characters and adding >>.compressed.pdf<<.
+        DESTINATION_FILE_PATH="${SOURCE_FILE_PATH:0:-4}.compressed.pdf"
+    fi
+
+    if [[ ! -f "${SOURCE_FILE_PATH}" ]];
+    then
+        echo ":: Provided source file path >>${SOURCE_FILE_PATH}<< does not exist."
+
+        return 1
+    fi
+
+    SOURCE_FILE_PATH_TYPE=$(file -b "${SOURCE_FILE_PATH}");
+
+    if [[ "${SOURCE_FILE_PATH_TYPE:0:12}" != "PDF document" ]];
+    then
+        echo ":: Provided source file path >>${SOURCE_FILE_PATH}<< is not a pdf document."
+
+        return 2
+    fi
+    #eo: input validation
+
+    if [[ ! -x $(command -v gs) ]];
+    then
+    #find all md files and put the file path into a temporary file
+    find . -iname "*.md" -type f -exec sh -c 'printf "${0:2}\n"' {} \; > "${TEMPORARY_FILE_PATH}"
+
+    local NUMBER_OF_FOUND_FILES=$(cat "${TEMPORARY_FILE_PATH}" | wc -l)
+
+    if [[ ${NUMBER_OF_FOUND_FILES} -gt 0  ]];
+    then
+        echo ":: Processing >>${NUMBER_OF_FOUND_FILES}<< *.md files from >>${CURRENT_WORKING_DIRECTORY}<< or below."
+
+        mkdir "${PDF_DIRECTORY_PATH}"
+
+        cat "${TEMPORARY_FILE_PATH}" | while read FILE_PATH;
+        do
+                echo -n "."
+                local OUTPUT_FILE_PATH=$(echo "${FILE_PATH}" | sed 's/\//-/g')
+                local FILE_BASEDIR=$(dirname "${FILE_PATH}")
+                local FILE_BASENAME=$(basename "${FILE_PATH}")
+
+                cd "${FILE_BASEDIR}"
+
+                pandoc -s "${FILE_BASENAME}" -o "${PDF_DIRECTORY_PATH}/${OUTPUT_FILE_PATH}.pdf"
+
+                cd -
+        done
+
+        cd "${CURRENT_WORKING_DIRECTORY}"
+
+        echo ":: Creating file >>${MERGED_PDF_FILE_NAME}<< by using all files from >>${PDF_DIRECTORY_PATH}<<."
+        gs -dNOPAUSE -sDEVICE=pdfwrite -sOUTPUTFILE=${MERGED_PDF_FILE_NAME} -dBATCH ${PDF_DIRECTORY_PATH}/*
+    else
+        echo ":: No *.md files found in >>${CURRENT_WORKING_DIRECTORY}<< or below."
+    fi
+
+    rm -fr "${TEMPORARY_DIRECTORY}"
+}
+
+####
 # @param: <string: source_file_path>
 # [@param: <string: destination_file_path=source_file_path.compressed.pdf>]
 # [@param: <int: image resolution=150]
