@@ -110,35 +110,36 @@ function net_bazzline_media_book_compress_pdf ()
 
     if [[ ! -x $(command -v gs) ]];
     then
-    #find all md files and put the file path into a temporary file
-    find . -iname "*.md" -type f -exec sh -c 'printf "${0:2}\n"' {} \; > "${TEMPORARY_FILE_PATH}"
+        #find all md files and put the file path into a temporary file
+        find . -iname "*.md" -type f -exec sh -c 'printf "${0:2}\n"' {} \; > "${TEMPORARY_FILE_PATH}"
 
-    local NUMBER_OF_FOUND_FILES=$(cat "${TEMPORARY_FILE_PATH}" | wc -l)
+        local NUMBER_OF_FOUND_FILES=$(cat "${TEMPORARY_FILE_PATH}" | wc -l)
 
-    if [[ ${NUMBER_OF_FOUND_FILES} -gt 0  ]];
-    then
-        echo ":: Processing >>${NUMBER_OF_FOUND_FILES}<< *.md files from >>${CURRENT_WORKING_DIRECTORY}<< or below."
+        if [[ ${NUMBER_OF_FOUND_FILES} -gt 0  ]];
+        then
+            echo ":: Processing >>${NUMBER_OF_FOUND_FILES}<< *.md files from >>${CURRENT_WORKING_DIRECTORY}<< or below."
 
-        mkdir "${PDF_DIRECTORY_PATH}"
+            mkdir "${PDF_DIRECTORY_PATH}"
 
-        cat "${TEMPORARY_FILE_PATH}" | while read FILE_PATH;
-        do
-                echo -n "."
-                local OUTPUT_FILE_PATH=$(echo "${FILE_PATH}" | sed 's/\//-/g')
-                local FILE_BASEDIR=$(dirname "${FILE_PATH}")
-                local FILE_BASENAME=$(basename "${FILE_PATH}")
+            cat "${TEMPORARY_FILE_PATH}" | while read FILE_PATH;
+            do
+                    echo -n "."
+                    local OUTPUT_FILE_PATH=$(echo "${FILE_PATH}" | sed 's/\//-/g')
+                    local FILE_BASEDIR=$(dirname "${FILE_PATH}")
+                    local FILE_BASENAME=$(basename "${FILE_PATH}")
 
-                cd "${FILE_BASEDIR}"
+                    cd "${FILE_BASEDIR}"
 
-                pandoc -s "${FILE_BASENAME}" -o "${PDF_DIRECTORY_PATH}/${OUTPUT_FILE_PATH}.pdf"
+                    pandoc -s "${FILE_BASENAME}" -o "${PDF_DIRECTORY_PATH}/${OUTPUT_FILE_PATH}.pdf"
 
-                cd -
-        done
+                    cd -
+            done
 
-        cd "${CURRENT_WORKING_DIRECTORY}"
+            cd "${CURRENT_WORKING_DIRECTORY}"
 
-        echo ":: Creating file >>${MERGED_PDF_FILE_NAME}<< by using all files from >>${PDF_DIRECTORY_PATH}<<."
-        gs -dNOPAUSE -sDEVICE=pdfwrite -sOUTPUTFILE=${MERGED_PDF_FILE_NAME} -dBATCH ${PDF_DIRECTORY_PATH}/*
+            echo ":: Creating file >>${MERGED_PDF_FILE_NAME}<< by using all files from >>${PDF_DIRECTORY_PATH}<<."
+            gs -dNOPAUSE -sDEVICE=pdfwrite -sOUTPUTFILE=${MERGED_PDF_FILE_NAME} -dBATCH ${PDF_DIRECTORY_PATH}/*
+        fi
     else
         echo ":: No *.md files found in >>${CURRENT_WORKING_DIRECTORY}<< or below."
     fi
