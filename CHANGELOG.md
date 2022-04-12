@@ -106,11 +106,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added
 
-* added alias `bootstrapShellConfigurationInVerboseMode`
+* Added alias `bootstrapShellConfigurationInVerboseMode`
+* Create script to manage local settings (configure.sh)[bin/configure.sh]
+    * Currently supports initial setting of `NET_BAZZLINE_PACKAGE_MANAGER`
 
 ### Changed
 
-* moved `install.sh`, `update.sh` and `upgrade.sh` into [bin](bin/)
+* Moved `install.sh`, `update.sh` and `upgrade.sh` into [bin](bin/)
 
 ## [3.0.0](https://github.com/stevleibelt/shell_config/tree/3.0.0) - released at 20220315
 

@@ -37,3 +37,8 @@ updateShellConfiguration
 # Links
 
 * [bash-config](https://github.com/victorbrca/bash-config) - 20210409
+
+# Contributers
+
+* [stevleibelt](https://github.com/stevleibelt)
+* [terminalforlife](https://github.com/terminalforlife)
