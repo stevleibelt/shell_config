@@ -61,7 +61,7 @@ cat >> "${PATH_TO_THE_BASH_RC}" <<DELIM
 #begin of net_bazzline_config_shell"
 #date: "${DATETIME}
 
-PATH_SHELL_CONFIG="${PATH_TO_THIS_SCRIPT}"
+PATH_SHELL_CONFIG="${PATH_TO_THIS_SCRIPT}/.."
 
 if [[ -f "\${PATH_SHELL_CONFIG}/bootstrap" ]];
 then
@@ -78,7 +78,7 @@ echo ":: Creating local files"
 declare -a FILES_TO_CREATE=("setting" "variable" "source" "export" "function" "alias" "automatic_start")
 
 for FILE_TO_CREATE in ${FILES_TO_CREATE[@]}; do
-    FILE_PATH_NAME="${PATH_TO_THIS_SCRIPT}/local.${FILE_TO_CREATE}"
+    FILE_PATH_NAME="${PATH_TO_THIS_SCRIPT}/../local.${FILE_TO_CREATE}"
     touch "${FILE_PATH_NAME}"
     echo "#!/bin/bash" > "${FILE_PATH_NAME}"
 done;
@@ -96,7 +96,7 @@ cat >> "${PATH_TO_THE_TEMPORARY_XINIT}" <<DELIM
 #begin of net_bazzline_config_shell"
 #date: "${DATETIME}
 
-PATH_SHELL_CONFIG="${PATH_TO_THIS_SCRIPT}"
+PATH_SHELL_CONFIG="${PATH_TO_THIS_SCRIPT}/.."
 
 if [[ -f "\${PATH_SHELL_CONFIG}/color" ]];
 then

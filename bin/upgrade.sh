@@ -8,10 +8,10 @@
 
 CURRENT_WORKING_DIRECTORY=$(pwd)
 PATH_TO_THIS_SCRIPT=$(cd $(dirname "$0"); pwd)
-PATH_TO_CURRENT_VERSION_FILE=${PATH_TO_THIS_SCRIPT}"/.current_version"
-PATH_TO_CURRENT_INSTALLED_VERSION_FILE=${PATH_TO_THIS_SCRIPT}"/.current_installed_version"
+PATH_TO_CURRENT_VERSION_FILE="${PATH_TO_THIS_SCRIPT}/../.current_version"
+PATH_TO_CURRENT_INSTALLED_VERSION_FILE="${PATH_TO_THIS_SCRIPT}/../.current_installed_version"
 
-cd "${PATH_TO_THIS_SCRIPT}"
+cd "${PATH_TO_THIS_SCRIPT}/.."
 
 echo ":: Updating repository."
 git pull --quiet
@@ -37,8 +37,8 @@ else
         declare -a FILES_TO_RENAME=('setting' 'variable' 'source' 'export' 'function' 'alias' 'automatic_start')
 
         for FILE_TO_RENAME in ${FILES_TO_RENAME[@]}; do
-            DESTINATION_FILE_PATH=${PATH_TO_THIS_SCRIPT}"/local."${FILE_TO_RENAME}
-            SOURCE_FILE_PATH=${PATH_TO_THIS_SCRIPT}"/"${FILE_TO_RENAME}".local"
+            DESTINATION_FILE_PATH="${PATH_TO_THIS_SCRIPT}/../local.${FILE_TO_RENAME}"
+            SOURCE_FILE_PATH="${PATH_TO_THIS_SCRIPT}/../${FILE_TO_RENAME}.local"
 
             #does local source file exist?
             if [[ -f ${SOURCE_FILE_PATH} ]]
@@ -74,7 +74,7 @@ else
 fi
 
 echo ":: Reloading bash environment."
-source "${PATH_TO_THIS_SCRIPT}/bootstrap" && clear
+source "${PATH_TO_THIS_SCRIPT}/../bootstrap" && clear
 #source ~/.bashrc && clear
 
 cd ${CURRENT_WORKING_DIRECTORY}

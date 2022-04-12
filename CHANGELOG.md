@@ -110,6 +110,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 
+* moved `install.sh`, `update.sh` and `upgrade.sh` into [bin](bin/)
+
 ## [3.0.0](https://github.com/stevleibelt/shell_config/tree/3.0.0) - released at 20220315
 
 ### Added

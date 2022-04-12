@@ -9,7 +9,7 @@
 CURRENT_WORKING_DIRECTORY=$(pwd)
 PATH_TO_THIS_SCRIPT=$(cd $(dirname "$0"); pwd)
 
-cd "${PATH_TO_THIS_SCRIPT}"
+cd "${PATH_TO_THIS_SCRIPT}/.."
 
 echo ":: Updating repository."
 git pull --quiet

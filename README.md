@@ -25,7 +25,7 @@ If you want to see what is loaded and what is skipped, call `net_bazzline_shell_
 
 ```
 git clone https://github.com/stevleibelt/shell_config .
-./shell_config/install.sh
+./shell_config/bin/install.sh
 ```
 
 # Updating
