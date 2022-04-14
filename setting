@@ -56,6 +56,7 @@ NET_BAZZLINE_REMEMBER_SSH_PASSWORD_TIMEOUT_IN_MINUTES=30
 #add port where your secure connection is listen on (via ssh -D)
 NET_BAZZLINE_SECURE_CONNECTION_PORT=0
 
+#### will be replaced from configuration.sh
 #enables (1) or disables (0) acpi support
 if [[ -f /usr/bin/acpi ]];
 then
@@ -138,6 +139,7 @@ then
 else
     NET_BAZZLINE_ZFS_IS_AVAILABLE=0
 fi
+#### will be replaced from configuration.sh
 
 #https://wiki.archlinux.org/index.php/Bash
 # faster completion

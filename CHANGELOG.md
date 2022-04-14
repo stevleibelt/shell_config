@@ -107,7 +107,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 * Added alias `bootstrapShellConfigurationInVerboseMode`
-* Create script to manage local settings (configure.sh)[bin/configure.sh]
+* Create script to manage `local setting` (configure_local_setting.sh)[bin/configure.sh]
     * Currently supports initial setting of `NET_BAZZLINE_PACKAGE_MANAGER`
 
 ### Changed
