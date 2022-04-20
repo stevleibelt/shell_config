@@ -6,6 +6,7 @@ NET_BAZZLINE_FUNCTION_PACKAGEMANAGER_SYSTEM_UPGRADE_SCREEN_SESSION_NAME='system_
 ####
 # @param: <string> packagemanager_command
 # [@param: <int> is_lts_kernel]
+####
 function net_bazzline_packagemanager_arch_linux_software_upgrade ()
 {
     #bo: setup
@@ -107,6 +108,7 @@ DELIM
 
 ####
 # @param: <string> packagemanager_command
+####
 function net_bazzline_packagemanager_apt_software_upgrade ()
 {
     #bo: setup
