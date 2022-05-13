@@ -20,3 +20,33 @@ function net_bazzline_list_local_ip_address ()
     fi
 }
 
+#s
+
+####
+# @param <string: <ip_address_or_hostname>
+# @param <string: <service_name>
+# @return <int: 0|1> - it also returns 0 if netcat is not available
+#
+# @see: https://utcc.utoronto.ca/~cks/space/blog/sysadmin/LittleScriptsVII
+# @author stev leibelt <artodeto@bazzline.net>
+# @since 2022-05-13
+####
+function net_bazzline_network_service_is_reachable ()
+{
+    local IP_ADDRESS_OR_HOSTNAME="${1}"
+    local RETURN_CODE=0
+    local SERVICE_NAME="${2}"
+
+    if [[ -f /usr/bin/netcat ]];
+    then
+        if nc -z ${IP_ADDRESS_OR_HOSTNAME} ${SERVICE_NAME}
+        then
+            local RETURN_CODE=0
+        else
+            local RETURN_CODE=1
+        fi
+    fi
+
+    return 0;
+}
+

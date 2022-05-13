@@ -44,20 +44,27 @@ function _add_or_overwrite_line_in_local_setting ()
     #bo: remove line if needed
     if [[ ${REMOVE_EXISTING_VARIABLE} -eq 1 ]];
     then
-        _echo_if_be_verbose "   Removing line >>${VARIABLE_NAME}=<< from >>${FILE_PATH_TO_LOCAL_SETTING}<<."
+        if [[ ${IS_DRY_RUN} -eq 1 ]];
+        then
+            _echo_if_be_verbose "   Would have removed line >>${VARIABLE_NAME})<< from >>${FILE_PATH_TO_LOCAL_SETTING}<<."
+        else
+            _echo_if_be_verbose "   Removing line >>${VARIABLE_NAME}=<< from >>${FILE_PATH_TO_LOCAL_SETTING}<<."
 
-        cat "${FILE_PATH_TO_LOCAL_SETTING}" | grep -v "${VARIABLE_NAME}" > "${FILE_PATH_TO_LOCAL_SETTING}"
+            #cat "${FILE_PATH_TO_LOCAL_SETTING}" | grep -v "${VARIABLE_NAME}=" > "${FILE_PATH_TO_LOCAL_SETTING}"
+            #echo "sed -i \"/^${VARIABLE_NAME}=/d\" \"${FILE_PATH_TO_LOCAL_SETTING}\""
+            sed -i "/^${VARIABLE_NAME}=/d" "${FILE_PATH_TO_LOCAL_SETTING}"
+        fi
     fi
     #eo: remove line if needed
 
     #bo: adding value
-    if [[ ${IS_DRY_RUN} -ne 1 ]];
+    if [[ ${IS_DRY_RUN} -eq 1 ]];
     then
+        _echo_if_be_verbose "   Would have added line >>${VARIABLE_NAME}=\"${VARIABLE_VALUE}\"<< to >>${FILE_PATH_TO_LOCAL_SETTING}<<."
+    else
         _echo_if_be_verbose "   Adding line >>${VARIABLE_NAME}=\"${VARIABLE_VALUE}\"<< to >>${FILE_PATH_TO_LOCAL_SETTING}<<."
 
         echo "${VARIABLE_NAME}=\"${VARIABLE_VALUE}\"" >> "${FILE_PATH_TO_LOCAL_SETTING}"
-    else
-        _echo_if_be_verbose "   Would have added line >>${VARIABLE_NAME}=\"${VARIABLE_VALUE}\"<< to >>${FILE_PATH_TO_LOCAL_SETTING}<<."
     fi
     #eo: adding value
 }
@@ -65,10 +72,13 @@ function _add_or_overwrite_line_in_local_setting ()
 function _configure_package_manager ()
 {
     #bo: detect current package manager
-    if [[ -f /usr/bin/pacman ]];
+    if [[ -x /usr/bin/yay ]];
+    then
+        local PACKAGE_MANAGER="yay"
+    elif [[ -x /usr/bin/pacman ]];
     then
         local PACKAGE_MANAGER="pacman"
-    elif [[ -f /usr/bin/apt ]];
+    elif [[ -x /usr/bin/apt ]];
     then
         local PACKAGE_MANAGER="apt"
     else
@@ -147,15 +157,19 @@ function _main ()
 {
     #bo: variables
     local CURRENT_WORKING_DIRECTORY=$(pwd)
+    local CURRENT_DATE_TIME=$(date +'%Y%m%d-%H%M%S')
     local PATH_TO_THIS_SCRIPT=$(cd $(dirname "$0"); pwd)
 
     local PROJECT_ROOT_PATH="${PATH_TO_THIS_SCRIPT}/.."
 
     local FILE_PATH_TO_LOCAL_SETTING="${PROJECT_ROOT_PATH}/local.setting"
+
+    local FILE_PATH_TO_LOCAL_SETTING_BACKUP="${FILE_PATH_TO_LOCAL_SETTING}.${CURRENT_DATE_TIME}"
     #eo: variables
 
     #bo: user input
     local BE_VERBOSE=0
+    local CREATE_BACKUP=1
     local IS_DRY_RUN=0
     local IS_FORCED=0
     local SHOW_HELP=0
@@ -206,11 +220,15 @@ function _main ()
     if [[ ${SHOW_HELP} -eq 1 ]];
     then
         echo ":: Usage"
-        echo "   ${0} [-f|--force] [-h|--help] [-v|--verbose]"
+        echo "   ${0} [-d|--dry-run] [-f|--force] [-h|--help] [-v|--verbose]"
 
         exit 0
     fi
     #eo: help
+
+    _echo_if_be_verbose "   Creating backup file >>${FILE_PATH_TO_LOCAL_SETTING_BACKUP}<< from >>${FILE_PATH_TO_LOCAL_SETTING}<<."
+
+    cp "${FILE_PATH_TO_LOCAL_SETTING}" "${FILE_PATH_TO_LOCAL_SETTING_BACKUP}"
 
     _configure_package_manager
     _configure_simple_values

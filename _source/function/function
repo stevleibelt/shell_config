@@ -2455,9 +2455,14 @@ function net_bazzline_scp_from_host()
         local SOURCE_HOST="${2}"
         local SOURCE_PATH="${3}"
 
-        scp -r -i ${PATH_TO_SSH_KEY} ${SOURCE_HOST}:${SOURCE_PATH} ${DESTINATION_PATH}
+        if net_bazzline_network_service_is_reachable "${SOURCE_HOST}" "ssh"
+        then
+            scp -r -i ${PATH_TO_SSH_KEY} ${SOURCE_HOST}:${SOURCE_PATH} ${DESTINATION_PATH}
+        else
+            echo ":: Host >>${SOURCE_HOST}<< is down or ssh is not running"
+        fi
     else
-        echo 'invalid number of arguments'
+        echo ':: Invalid number of arguments'
         echo '    net_bazzline_scp_from_host <path to ssh key> <source host> <source path> <destination path>'
     fi  
 }
@@ -2480,9 +2485,14 @@ function net_bazzline_scp_to_host()
         local SOURCE_PATH="${3}"
         local DESTINATION_PATH="${4}"
 
-        scp -r -i ${PATH_TO_SSH_KEY} ${SOURCE_PATH} ${DESTINATION_HOST}:${DESTINATION_PATH}
+        if net_bazzline_network_service_is_reachable "${SOURCE_HOST}" "ssh"
+        then
+            scp -r -i ${PATH_TO_SSH_KEY} ${SOURCE_PATH} ${DESTINATION_HOST}:${DESTINATION_PATH}
+        else
+            echo ":: Host >>${SOURCE_HOST}<< is down or ssh is not running"
+        fi
     else
-        echo 'invalid number of arguments'
+        echo ':: Invalid number of arguments'
         echo '    net_bazzline_scp_to_host <path to ssh key> <source host> <source path> <destination path>'
     fi  
 }
