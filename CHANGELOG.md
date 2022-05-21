@@ -108,7 +108,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 * Added alias `bootstrapShellConfigurationInVerboseMode`
 * Create script to manage `local setting` (configure_local_setting.sh)[bin/configure.sh]
-    * Currently supports initial setting of `NET_BAZZLINE_PACKAGE_MANAGER`
+  * Currently supports initial setting of `NET_BAZZLINE_PACKAGE_MANAGER`
+* Added check for path provided in `net_bazzline_cd`
+  * If path is a file, we use `dirname` to change into the directory of the file
+  * Usecase: We are lazy, have used `vim foo/bar` and just want to replace  vim` with `cd` :-)
 
 ### Changed
 

@@ -307,7 +307,7 @@ function net_bazzline_cd ()
     elif [[ `expr ${1} + 1 2> /dev/null` ]];
     then
         #directory exist?
-        if [[ -d ${1} ]];
+        if [[ -d "${1}" ]];
         then
             \cd "${1}"
         else
@@ -320,6 +320,10 @@ function net_bazzline_cd ()
 
             \cd ${PATH_TO_GO_UP}
         fi
+    #is provided path a file?
+    elif [[ -f "${1}" ]];
+    then
+        \cd $(dirname "${1}")
     else
         \cd "${1}"
     fi
@@ -2459,7 +2463,7 @@ function net_bazzline_scp_from_host()
         then
             scp -r -i ${PATH_TO_SSH_KEY} ${SOURCE_HOST}:${SOURCE_PATH} ${DESTINATION_PATH}
         else
-            echo ":: Host >>${SOURCE_HOST}<< is down or ssh is not running"
+            echo ":: Host >>${SOURCE_HOST}<< is down or ssh is not running."
         fi
     else
         echo ':: Invalid number of arguments'
