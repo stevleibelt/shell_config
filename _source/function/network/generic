@@ -39,7 +39,7 @@ function net_bazzline_network_service_is_reachable ()
 
     if [[ -f /usr/bin/netcat ]];
     then
-        if nc -z ${IP_ADDRESS_OR_HOSTNAME} ${SERVICE_NAME}
+        if netcat -z ${IP_ADDRESS_OR_HOSTNAME} ${SERVICE_NAME}
         then
             local RETURN_CODE=0
         else
@@ -47,6 +47,6 @@ function net_bazzline_network_service_is_reachable ()
         fi
     fi
 
-    return 0;
+    return ${RETURN_CODE};
 }
 

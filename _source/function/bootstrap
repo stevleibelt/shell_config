@@ -24,6 +24,7 @@ function net_bazzline_shell_config_function_bootstrap ()
         'media/image' 
         'media/video' 
         'network/generic' 
+        'network/ssh' 
         'process/generic' 
         'packagemanager/generic' 
         'string/generic'
