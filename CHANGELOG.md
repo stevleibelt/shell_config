@@ -112,6 +112,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 
+* Commented out `LESS_TERMCAP_*` settings section in file `setting`
+
 * Moved `install.sh`, `update.sh` and `upgrade.sh` into [bin](bin/)
 
 ## [3.0.0](https://github.com/stevleibelt/shell_config/tree/3.0.0) - released at 20220315
