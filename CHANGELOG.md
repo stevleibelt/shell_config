@@ -108,7 +108,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 * Added alias `bootstrapShellConfigurationInVerboseMode`
 * Create script to manage `local setting` (configure_local_setting.sh)[bin/configure.sh]
-    * Currently supports initial setting of `NET_BAZZLINE_PACKAGE_MANAGER`
+  * Currently supports initial setting of `NET_BAZZLINE_PACKAGE_MANAGER`
+* Added check for path provided in `net_bazzline_cd`
+  * If path is a file, we use `dirname` to change into the directory of the file
+  * Usecase: We are lazy, have used `vim foo/bar` and just want to replace  vim` with `cd` :-)
+* Added `net_bazzline_network_ssh_to_host`
+  * For each provided ip address as comma separated list
+    * Checks if ssh is running on this host
+    * If so, ssh into it
+  * Example `net_bazzline_network_ssh_to_host 'ssh -i ~/.ssh/my_private_key user' '192.168.178.212,10.1.10.4'
 
 ### Changed
 

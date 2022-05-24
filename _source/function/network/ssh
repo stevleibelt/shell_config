@@ -1,0 +1,32 @@
+#!/bin/bash
+#s
+
+####
+# @param <string: ssh string like >>ssh -i ~/.ssh/foo_bar username@>
+# @param <string: <hostname or ip address>[,<hostname or ip address>[,...]]
+####
+function net_bazzline_network_ssh_to_host
+{
+    local HOST_IS_ONLINE=1
+    local SSH_COMMAND_STRING="${1}"
+    local STRING_OF_HOSTS="${2}"
+
+    local LIST_OF_HOSTS=($(echo ${STRING_OF_HOSTS} | tr "," "\n"))
+
+    for CURRENT_HOST in "${LIST_OF_HOSTS[@]}";
+    do
+        if net_bazzline_network_service_is_reachable "${CURRENT_HOST}" "ssh"
+        then
+            ${SSH_COMMAND_STRING}@${CURRENT_HOST}
+
+            local HOST_IS_ONLINE=0
+
+            break
+        else
+            echo ":: Host >>${CURRENT_HOST}<< is down or ssh is not running."
+        fi
+    done
+
+    return ${HOST_IS_ONLINE}
+}
+
