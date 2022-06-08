@@ -17,13 +17,16 @@
 unset GREP_OPTIONS
 
 export LESS=-R
-export LESS_TERMCAP_me=$(printf '\e[0m')
-export LESS_TERMCAP_se=$(printf '\e[0m')
-export LESS_TERMCAP_ue=$(printf '\e[0m')
-export LESS_TERMCAP_mb=$(printf '\e[1;32m')
-export LESS_TERMCAP_md=$(printf '\e[1;34m')
-export LESS_TERMCAP_us=$(printf '\e[1;32m')
-export LESS_TERMCAP_so=$(printf '\e[1;44;1m')
+#use >>termcap terminfo<< to check what it is good for
+##bo: disabled section 20220524
+#export LESS_TERMCAP_me=$(printf '\e[0m')        #turn of bold_ blink and underline
+#export LESS_TERMCAP_se=$(printf '\e[0m')        #stop standout
+#export LESS_TERMCAP_ue=$(printf '\e[0m')        #stop underline
+#export LESS_TERMCAP_mb=$(printf '\e[1;32m')     #start blink
+#export LESS_TERMCAP_md=$(printf '\e[1;34m')     #start bold
+#export LESS_TERMCAP_us=$(printf '\e[1;32m')     #start underline
+#export LESS_TERMCAP_so=$(printf '\e[1;44;1m')   #start standout (reverse video)
+##bo: disabled section 20220524
 
 #bo: detect current os
 CURRENT_UNAME_OUTPUT="$(uname -s)"
