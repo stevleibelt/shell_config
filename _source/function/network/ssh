@@ -29,17 +29,16 @@ function net_bazzline_network_ssh_to_host
                 local HOST_IS_ONLINE=0
 
                 break
-            else
-                echo ":: Host >>${CURRENT_HOST}<< is down or ssh is not running."
-                echo "   Waiting for >>${NUMBER_OF_SECONDS_TO_WAIT_BETWEEN_RETRIES}<< seconds."
-                echo "   Run [${CURRENT_RETRY_NUMBER}/${NUMBER_OF_RETIRES_IF_HOST_IS_DOWN}]."
-
-                sleep ${NUMBER_OF_SECONDS_TO_WAIT_BETWEEN_RETRIES}s
             fi
         done
 
         if [[ ${HOST_IS_ONLINE} -eq 1 ]];
         then
+            echo ":: Host with provided list >>${STRING_OF_HOSTS}<< is down or ssh is not running."
+            echo "   Waiting for >>${NUMBER_OF_SECONDS_TO_WAIT_BETWEEN_RETRIES}<< seconds."
+            echo "   Run [${CURRENT_RETRY_NUMBER}/${NUMBER_OF_RETIRES_IF_HOST_IS_DOWN}]."
+
+            sleep ${NUMBER_OF_SECONDS_TO_WAIT_BETWEEN_RETRIES}s
             ((CURRENT_RETRY_NUMBER++))
         else
             CURRENT_RETRY_NUMBER=${NUMBER_OF_RETIRES_IF_HOST_IS_DOWN}
