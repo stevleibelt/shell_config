@@ -17,7 +17,6 @@ function net_bazzline_shell_config_function_bootstrap ()
         'function' 
         'filesystem/generic' 
         'filesystem/luks' 
-        'filesystem/zfs' 
         'media/audio' 
         'media/book'
         'media/generic' 
@@ -29,6 +28,16 @@ function net_bazzline_shell_config_function_bootstrap ()
         'packagemanager/generic' 
         'string/generic'
     )
+
+    if [[ ${NET_BAZZLINE_ZFS_IS_AVAILABLE} -eq 1 ]];
+    then
+        FILES_TO_LOAD+=('filesystem/zfs')
+    fi
+
+    if [[ ${NET_BAZZLINE_OPERATION_SYSTEM_IS_WINDOWS} -eq 1 ]];
+    then
+        FILES_TO_LOAD+=('filesystem/windows')
+    fi
 
     for FILE_TO_LOAD in ${FILES_TO_LOAD[@]};
     do

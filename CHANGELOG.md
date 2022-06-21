@@ -117,6 +117,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
     * Checks if ssh is running on this host
     * If so, ssh into it
   * Example `net_bazzline_network_ssh_to_host 'ssh -i ~/.ssh/my_private_key user' '192.168.178.212,10.1.10.4'
+* Added logic into the bootstrap files of the alias and the function section to only load what needed
+  * Drawback, duplicated places where the almost same logic exists
+  * Idea, move sections together like
+    * `_source/windows/{bootstrap|filesystem_function|filesystem_alias}`
+* Added `net_bazzline_robocopy` with my default values
+  * Only available for windows systems
 
 ### Changed
 

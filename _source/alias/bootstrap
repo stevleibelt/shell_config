@@ -28,6 +28,16 @@ function net_bazzline_shell_config_alias_bootstrap ()
         'zfs.sh'
     )
 
+    if [[ ${NET_BAZZLINE_ZFS_IS_AVAILABLE} -eq 1 ]];
+    then
+        FILES_TO_LOAD+=('zfs.sh')
+    fi
+
+    if [[ ${NET_BAZZLINE_OPERATION_SYSTEM_IS_WINDOWS} -eq 1 ]];
+    then
+        FILES_TO_LOAD+=('windows.sh')
+    fi
+
     for FILE_TO_LOAD in ${FILES_TO_LOAD[@]};
     do
         source "${PATH_OF_THE_CURRENT_SCRIPT}/${FILE_TO_LOAD}"
