@@ -123,6 +123,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
     * `_source/windows/{bootstrap|filesystem_function|filesystem_alias}`
 * Added `net_bazzline_robocopy` with my default values
   * Only available for windows systems
+* Started alias section `cpu`
 
 ### Changed
 
