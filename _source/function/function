@@ -2459,11 +2459,18 @@ function net_bazzline_scp_from_host()
         local SOURCE_HOST="${2}"
         local SOURCE_PATH="${3}"
 
-        if net_bazzline_network_service_is_reachable "${SOURCE_HOST}" "ssh"
+        if net_bazzline_string_contains "${SOURCE_HOST}" "@";
+        then
+            local SOURCE_HOST_WITHOUT_USER_AT="${SOURCE_HOST#*"@"}"
+        else
+            local SOURCE_HOST_WITHOUT_USER_AT="${SOURCE_HOST}"
+        fi
+
+        if net_bazzline_network_service_is_reachable "${SOURCE_HOST_WITHOUT_USER_AT}" "ssh"
         then
             scp -r -i ${PATH_TO_SSH_KEY} ${SOURCE_HOST}:${SOURCE_PATH} ${DESTINATION_PATH}
         else
-            echo ":: Host >>${SOURCE_HOST}<< is down or ssh is not running."
+            echo ":: Host >>${SOURCE_HOST_WITHOUT_USER_AT}<< is down or ssh is not running."
         fi
     else
         echo ':: Invalid number of arguments'
