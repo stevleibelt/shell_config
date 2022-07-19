@@ -14,6 +14,7 @@ function net_bazzline_shell_config_alias_bootstrap ()
     #@todo each section should have its own bootstrap
     declare -a FILES_TO_LOAD=(
         'acpi.sh'
+        'cpu.sh'
         'general.sh'
         'filesystem.sh'
         'packagemanager.sh'
