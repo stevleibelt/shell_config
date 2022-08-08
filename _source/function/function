@@ -2511,7 +2511,7 @@ function net_bazzline_scp_to_host()
         fi
     else
         echo ':: Invalid number of arguments'
-        echo '    net_bazzline_scp_to_host <path to ssh key> <source host> <source path> <destination path>'
+        echo '    net_bazzline_scp_to_host <path to ssh key> <destination host> <source path> <destination path>'
     fi  
 }
 
