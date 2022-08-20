@@ -1,5 +1,8 @@
 #!/bin/bash
 
+#c
+alias createSha512sumFromFile=net_bazzline_filesystem_create_sha512sum_from_file
+
 #f
 alias fixQuotes=net_bazzline_filesystem_generic_fix_quotes
 

@@ -106,6 +106,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added
 
+* Added alias `createSha512SumFromFile`
 * Added alias `bootstrapShellConfigurationInVerboseMode`
 * Create script to manage `local setting` (configure_local_setting.sh)[bin/configure.sh]
   * Currently supports initial setting of `NET_BAZZLINE_PACKAGE_MANAGER`

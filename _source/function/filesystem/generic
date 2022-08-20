@@ -123,6 +123,37 @@ function net_bazzline_cleanup_after_converting_files ()
 }
 
 ####
+# @param1 <string: checksum method to use>
+# @param2... <string: file path>
+####
+function net_bazzline_filesystem_create_checksum_from_file ()
+{
+    local CHECKSUM_METHOD
+    local CURRENT_ARGUMENT
+
+    CHECKSUM_METHOD="${1}"
+    shift 1
+
+    for CURRENT_ARGUMENT in ${@};
+    do
+        if [[ -f "${CURRENT_ARGUMENT}" ]];
+        then
+            sha512sum "${CURRENT_ARGUMENT}" > "${CURRENT_ARGUMENT}.sha512sum"
+        else
+            echo "  Skipping >>${CURRENT_ARGUMENT}<< because it is not a file."
+        fi
+    done
+}
+
+####
+# @param... <string: file path>
+####
+function net_bazzline_filesystem_create_sha512sum_from_file ()
+{
+    net_bazzline_filesystem_create_checksum_from_file "sha512sum" "${@}"
+}
+
+####
 # @param <string: path to the file>
 #
 # @see: https://opensource.com/article/21/9/sed-replace-smart-quotes
