@@ -125,6 +125,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 * Added `net_bazzline_robocopy` with my default values
   * Only available for windows systems
 * Started alias section `cpu`
+* Started alias section `network`
+* Added function `net_bazzline_network_list_open_ports`
 
 ### Changed
 

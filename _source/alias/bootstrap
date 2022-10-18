@@ -17,6 +17,7 @@ function net_bazzline_shell_config_alias_bootstrap ()
         'cpu.sh'
         'general.sh'
         'filesystem.sh'
+        'network.sh'
         'packagemanager.sh'
         'php.sh'
         'powerstate.sh'

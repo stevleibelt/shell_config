@@ -4,8 +4,8 @@
 ####
 # list available local ip address
 #
-# @author stev leibelt <artodeto@bazzline.net>
 # @since 2018-10-01
+# @author stev leibelt <artodeto@bazzline.net>
 ####
 function net_bazzline_list_local_ip_address ()
 {
@@ -20,16 +20,35 @@ function net_bazzline_list_local_ip_address ()
     fi
 }
 
+####
+# @param <string: host_ip_address>
+#
+# @see: https://linuxhandbook.com/check-open-ports-linux/
+# @since: 2022-10-18
+# @author stev leibelt <artodeto@bazzline.net>
+####
+function net_bazzline_network_list_open_ports ()
+{
+  if [[ $# -ne 1 ]];
+  then
+    net_bazzline_handle_invalid_number_of_arguments_supplied "${FUNCNAME[0]} <string: host_ip_address>"
+  fi
+
+  local HOST_IP_ADDRESS="${1}"
+
+  nc -z -v ${HOST_IP_ADDRESS} 1-65535 2>&1 | grep -v 'Connection refused'
+}
+
 #s
 
 ####
-# @param <string: <ip_address_or_hostname>
-# @param <string: <service_name>
+# @param <string: ip_address_or_hostname>
+# @param <string: service_name>
 # @return <int: 0|1> - it also returns 0 if netcat is not available
 #
 # @see: https://utcc.utoronto.ca/~cks/space/blog/sysadmin/LittleScriptsVII
-# @author stev leibelt <artodeto@bazzline.net>
 # @since 2022-05-13
+# @author stev leibelt <artodeto@bazzline.net>
 ####
 function net_bazzline_network_service_is_reachable ()
 {
