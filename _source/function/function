@@ -1741,15 +1741,26 @@ function net_bazzline_mkdir ()
     # change to it
     if [[ $# -eq 1 ]];
     then
+      if [[ ${NET_BAZZLINE_OPERATION_SYSTEM_IS_WINDOWS} -eq 1 ]];
+      then
+        /usr/bin/mkdir -p "${1}"
+      else
         /usr/bin/env mkdir -p "${1}" 
-        cd "${1}"
+      fi
+
+      cd "${1}"
     fi
 
     #if more then one argument is supplied
     # execute default mkdir
     if [[ $# -gt 1 ]];
     then
-        /usr/bin/env mkdir $@
+      if [[ ${NET_BAZZLINE_OPERATION_SYSTEM_IS_WINDOWS} -eq 1 ]];
+      then
+        /usr/bin/mkdir ${@}
+      else
+        /usr/bin/env mkdir ${@}
+      fi
     fi
 
     return 0
