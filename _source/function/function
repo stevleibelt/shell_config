@@ -1925,7 +1925,8 @@ function net_bazzline_mount_luks_zpool ()
 {
     net_bazzline_record_function_usage ${FUNCNAME[0]}
 
-    if [[ $# -lt 4 ]];
+    echo $#
+    if [[ $# -lt 3 ]];
     then
         echo 'usage: <command> <zpool> <disk uuid> <crypto name> [<disk uuid> <crypto name>[...]]'
         return 1
