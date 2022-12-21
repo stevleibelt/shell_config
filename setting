@@ -16,6 +16,9 @@
 #https://bbs.archlinux.org/viewtopic.php?pid=1478573
 unset GREP_OPTIONS
 
+#sets vi as default editor for bash editing mode
+set -o vim
+
 export LESS=-R
 #use >>termcap terminfo<< to check what it is good for
 ##bo: disabled section 20220524
