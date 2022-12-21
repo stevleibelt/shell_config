@@ -17,7 +17,7 @@
 unset GREP_OPTIONS
 
 #sets vi as default editor for bash editing mode
-set -o vim
+set -o vi
 
 export LESS=-R
 #use >>termcap terminfo<< to check what it is good for
