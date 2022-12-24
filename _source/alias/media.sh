@@ -8,5 +8,5 @@ fi
 
 if [[ -f /usr/bin/vobcopy ]];
 then
-  alias ripDvdAsVob=vobcopy -M
+  alias ripDvdAsVob='vobcopy -M'
 fi
