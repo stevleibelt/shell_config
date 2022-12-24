@@ -106,6 +106,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added
 
+* Added function to rip a cd as mp3 using cyanrip with alias `ripCdAsMp3`
 * Added `set -o vi`
 * Added alias `createSha512SumFromFile`
 * Added alias `bootstrapShellConfigurationInVerboseMode`
