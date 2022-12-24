@@ -21,3 +21,48 @@ function net_bazzline_convert_video_to_gif ()
 
     echo "not done yet"
 }
+
+####
+# [@param string <output_file_name> - default is output.converted265.mkv
+# [@param string <input_device> - default is /dev/sr0
+# @see: https://www.internalpointers.com/post/convert-vob-files-mkv-ffmpeg
+####
+function net_bazzline_media_rip_dvd_to_x265 ()
+{
+  local OUTPUT_FILE_NAME="${1:-'output.converted265.mkv'}"
+  local INPUT_DEVICE="${2:-'/dev/sr0'}"
+
+  if [[ ${NUMBER_OF_VOB_FILES} -eq 0 ]];
+  then
+    if [[ -e "${INPUT_DEVICE}" ]];
+    then
+      echo ":: Ripping dvd"
+      vobcopy -i "${INPUT_DEVICE}" -M
+    else
+      echo ":: No input device found."
+      echo "   >>${INPUT_DEVICE}<< does not exist."
+
+      return 1
+    fi
+  fi
+
+  if [[ ! -f movie.vob ]];
+  then
+    echo ":: Mergig vob-files"
+    cat *.vob > merged_file.foo
+
+    echo ":: Cleanup"
+    rm *.vob
+    mv merged_file.foo movie.vob
+  fi
+
+  echo ":: Convering vob to mkv"
+  ffmpeg \
+    -analyzeduration 100M -probesize 100M \
+    -i movie.vob \
+    -dn \
+    -codec:v libx265 -crf 21 \
+    -codec:a libmp3lame -qscale:a 2 \
+    -codec:s copy \
+    "${OUTPUT_FILE_NAME}"
+}
