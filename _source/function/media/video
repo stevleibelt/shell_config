@@ -30,14 +30,14 @@ function net_bazzline_convert_video_to_gif ()
 function net_bazzline_media_rip_dvd_to_x265 ()
 {
   local OUTPUT_FILE_NAME="${1:-'output.converted265.mkv'}"
-  local INPUT_DEVICE="${2:-'/dev/sr0'}"
+  local INPUT_DEVICE="${2:-/dev/sr0}"
 
   if [[ ${NUMBER_OF_VOB_FILES} -eq 0 ]];
   then
-    if [[ -e "${INPUT_DEVICE}" ]];
+    if [[ -e ${INPUT_DEVICE} ]];
     then
       echo ":: Ripping dvd"
-      vobcopy -i "${INPUT_DEVICE}" -M
+      vobcopy -i ${INPUT_DEVICE} -M
     else
       echo ":: No input device found."
       echo "   >>${INPUT_DEVICE}<< does not exist."
