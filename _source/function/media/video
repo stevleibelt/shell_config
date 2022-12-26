@@ -29,8 +29,10 @@ function net_bazzline_convert_video_to_gif ()
 ####
 function net_bazzline_media_rip_dvd_to_x265 ()
 {
-  local OUTPUT_FILE_NAME="${1:-'output.converted265.mkv'}"
   local INPUT_DEVICE="${2:-/dev/sr0}"
+  local MERGED_VOB_FILE_NAME="movie.vob"
+  local NUMBER_OF_VOB_FILES=$(ls * | grep -c ".vob")
+  local OUTPUT_FILE_NAME=${1:-'output.converted265.mkv'}
 
   if [[ ${NUMBER_OF_VOB_FILES} -eq 0 ]];
   then
@@ -46,23 +48,25 @@ function net_bazzline_media_rip_dvd_to_x265 ()
     fi
   fi
 
-  if [[ ! -f movie.vob ]];
+  if [[ ! -f "${MERGED_VOB_FILE_NAME}" ]];
   then
     echo ":: Mergig vob-files"
-    cat *.vob > merged_file.foo
+    cat *.vob > "${MERGED_VOB_FILE_NAME}".tmp
 
     echo ":: Cleanup"
     rm *.vob
-    mv merged_file.foo movie.vob
+    mv "${MERGED_VOB_FILE_NAME}".tmp "${MERGED_VOB_FILE_NAME}"
   fi
 
-  echo ":: Convering vob to mkv"
+  echo ":: Converting vob to mkv"
   ffmpeg \
+    -i ${MERGED_VOB_FILE_NAME} \
     -analyzeduration 100M -probesize 100M \
-    -i movie.vob \
     -dn \
-    -codec:v libx265 -crf 21 \
-    -codec:a libmp3lame -qscale:a 2 \
+    -codec:v libx265 \
+    -crf 21 \
+    -codec:a libmp3lame \
+    -qscale:a 2 \
     -codec:s copy \
-    "${OUTPUT_FILE_NAME}"
+    ${OUTPUT_FILE_NAME}
 }
