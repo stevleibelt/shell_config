@@ -23,16 +23,20 @@ function net_bazzline_convert_video_to_gif ()
 }
 
 ####
-# [@param string <output_file_name> - default is output.converted265.mkv
+# [@param string <movie_name> - default is movie
 # [@param string <input_device> - default is /dev/sr0
+# [@param int <process_prority> - default is -19
 # @see: https://www.internalpointers.com/post/convert-vob-files-mkv-ffmpeg
 ####
 function net_bazzline_media_rip_dvd_to_x265 ()
 {
   local INPUT_DEVICE="${2:-/dev/sr0}"
-  local MERGED_VOB_FILE_NAME="movie.vob"
   local NUMBER_OF_VOB_FILES=$(ls * | grep -c ".vob")
-  local OUTPUT_FILE_NAME=${1:-'output.converted265.mkv'}
+  local PROCESS_PRIORITY=${3:--19}
+  local MOVIE_NAME=${1:-'movie'}
+
+  local MERGED_VOB_FILE_NAME="${MOVIE_NAME}.vob"
+  local OUTPUT_FILE_NAME="${MOVIE_NAME}.converted265.mkv"
 
   if [[ ${NUMBER_OF_VOB_FILES} -eq 0 ]];
   then
@@ -59,7 +63,8 @@ function net_bazzline_media_rip_dvd_to_x265 ()
   fi
 
   echo ":: Converting vob to mkv"
-  ffmpeg \
+  nice ${PROCESS_PRIORITY} \
+    ffmpeg \
     -i ${MERGED_VOB_FILE_NAME} \
     -analyzeduration 100M -probesize 100M \
     -dn \
@@ -69,4 +74,6 @@ function net_bazzline_media_rip_dvd_to_x265 ()
     -qscale:a 2 \
     -codec:s copy \
     ${OUTPUT_FILE_NAME}
+
+  echo "   File >>${OUTPUT_FILE_NAME}<< created."
 }
