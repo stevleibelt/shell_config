@@ -26,7 +26,9 @@ function net_bazzline_convert_video_to_gif ()
 # [@param string <movie_name> - default is movie
 # [@param string <input_device> - default is /dev/sr0
 # [@param int <process_prority> - default is -19
-# @see: https://www.internalpointers.com/post/convert-vob-files-mkv-ffmpeg
+# @see:
+#   https://www.internalpointers.com/post/convert-vob-files-mkv-ffmpeg
+#   https://stackoverflow.com/questions/37820083/ffmpeg-not-copying-all-audio-streams
 ####
 function net_bazzline_media_rip_dvd_to_x265 ()
 {
@@ -68,6 +70,8 @@ function net_bazzline_media_rip_dvd_to_x265 ()
     -i ${MERGED_VOB_FILE_NAME} \
     -analyzeduration 100M -probesize 100M \
     -dn \
+    -map 0:a \
+    -map 0:v \
     -codec:v libx265 \
     -crf 21 \
     -codec:a libmp3lame \
