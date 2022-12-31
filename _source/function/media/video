@@ -23,6 +23,9 @@ function net_bazzline_convert_video_to_gif ()
 }
 
 ####
+# Uses vobcopy and ffmpeg to rip the biggest vob's, merges them and create a
+#   mkv file with all audio streams.
+####
 # [@param <string: movie_name> - default is movie
 # [@param <string: input_device> - default is /dev/sr0
 # [@param <string: ffmpeg_video_codec] - default is libx265
@@ -31,7 +34,7 @@ function net_bazzline_convert_video_to_gif ()
 #   https://www.internalpointers.com/post/convert-vob-files-mkv-ffmpeg
 #   https://stackoverflow.com/questions/37820083/ffmpeg-not-copying-all-audio-streams
 ####
-function net_bazzline_media_rip_dvd_to_x265 ()
+function net_bazzline_media_rip_dvd_to_mkv ()
 {
   local FFMPEG_VIDEO_CODEC="${3:-libx265}"
   local INPUT_DEVICE="${2:-/dev/sr0}"
@@ -82,4 +85,5 @@ function net_bazzline_media_rip_dvd_to_x265 ()
     ${OUTPUT_FILE_NAME}
 
   echo "   File >>${OUTPUT_FILE_NAME}<< created."
+  echo "   Please remove the >>${MERGED_VOB_FILE_NAME}<< manually after you've validated the mkv file."
 }
