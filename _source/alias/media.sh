@@ -7,5 +7,5 @@ then
 fi
 if [[ -f /usr/bin/vobcopy ]] && [[ -f /usr/bin/ffmpeg ]];
 then
-  alias ripDvdAs265Mkv=net_bazzline_media_rip_dvd_to_x265
+  alias ripDvdAsMkv=net_bazzline_media_rip_dvd_to_mkv
 fi
