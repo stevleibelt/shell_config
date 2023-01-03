@@ -106,6 +106,6 @@ then
     alias software-search='apt-cache search'
     #alias software-search-added='echo "todo"'
     #alias software-update='sudo apt-get update'
-    alias software-upgrade="net_bazzline_packagemanager_apt_software_upgrade 'sudo apt update; sudo apt full-upgrade --assume-yes'"
+    alias software-upgrade="net_bazzline_packagemanager_apt_software_upgrade 'sudo apt update; sudo apt full-upgrade --assume-yes; sudo apt autoclean; sudo apt --purge autoremove'"
     #alias software-repository-info='echo "todo"'
 fi
