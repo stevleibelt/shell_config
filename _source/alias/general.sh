@@ -67,6 +67,10 @@ alias findDirectory=net_bazzline_find_directory
 alias findFile=net_bazzline_find_file
 alias findAllPacFiles='find / -regextype posix-extended -regex ".+\.pac(new|save|orig)" 2> /dev/null'
 alias findSymlinks='find -type l'
+if [[ ${NET_BAZZLINE_FWUPDMGR_IS_AVAILABLE} -eq 1 ]];
+then
+  alias firmware-update="fwupdmgr refresh; fwupdmgr update;"
+fi
 
 #g
 alias getExtensionFromFilename=net_bazzline_get_extension_from_filename
