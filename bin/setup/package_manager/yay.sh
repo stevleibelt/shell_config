@@ -58,3 +58,4 @@ makepkg -si
 cd ${CURRENT_WORKING_DIRECTORY}
 rm -fr {TEMPORARY_DIRECTORY_PATH}
 ##end of clean up
+

@@ -48,3 +48,4 @@ else
     echo ":: Enabling service"
     sudo systemctl enable ${SYSTEMD_SERVICE_NAME}
 fi
+

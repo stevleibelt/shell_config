@@ -51,3 +51,4 @@ then
     echo ":: Installing keepassxc"
     sudo pacman -S keepassxc
 fi
+

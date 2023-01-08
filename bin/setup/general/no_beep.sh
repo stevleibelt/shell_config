@@ -18,3 +18,4 @@ DELIM"
 
     echo ":: File >>/etc/modeprobe.conf/nobeeb.conf<< created."
 fi
+
