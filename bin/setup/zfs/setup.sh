@@ -4,6 +4,8 @@
 ####
 # @todo:
 #   Add zfs-autotrim timer and service
+#   Add smartctl check timer
+#   Add support for email on error
 # @see: https://wiki.archlinux.org/title/ZFS - 20230108
 # @since: 20230108
 # @author: stev leibelt <artodeto@bazzline.net>
