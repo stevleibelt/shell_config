@@ -32,7 +32,7 @@ function _main ()
   #bo: user input
   local CURRENT_VERSION=1
   local PATH_TO_THE_LOCAL_SETTINGS="${HOME}/.local/net_bazzline/shell_config/zfs"
-  local PATH_TO_THE_ZREPL_PATH="/mnt/zrepl"
+  local PATH_TO_THE_ZREPL_PATH="/etc/zrepl"
   declare -a LIST_OF_AVAILABLE_DATASETS=( $(zfs list | cut -f 1 -d " " | tail -n +2) )
   declare -a LIST_OF_AVAILABLE_ZPOOLS=()
   declare -a LIST_OF_ZREPL_FILESYSTEMS=()
@@ -112,7 +112,7 @@ function _main ()
       sudo zpool set autotrim=on "${CURRENT_ZPOOL}"
     fi
 
-    _enable_and_start_zfs_timer_if_needed "zfs-scrub-weekly@${CURRENT_ZPOOL}";
+    _enable_and_start_zfs_timer_if_needed "zfs-scrub-weekly@${CURRENT_ZPOOL}.timer";
 
     #@todo create timer
     #sudo systemctl enable zfs-trim@${CURRENT_ZPOOL}.timer
