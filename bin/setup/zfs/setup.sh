@@ -77,13 +77,13 @@ function _main ()
     echo "   Processing >>${CURRENT_DATASET}<<"
 
     #bo: general tuning
-    if [[ $(zfs get -H -o value atime "${CURRENT_DATASET}" != "on") ]];
+    if [[ $(zfs get -H -o value atime "${CURRENT_DATASET}") != "on" ]];
     then
       echo "     Set >>atime<< to >>off<<"
       sudo zfs set atime=off "${CURRENT_DATASET}"
     fi
 
-    if [[ $(zfs get -H -o value compression "${CURRENT_DATASET}" == "off") ]];
+    if [[ $(zfs get -H -o value compression "${CURRENT_DATASET}") == "off" ]];
     then
       echo "     Set >>compression<< to >>on<<"
       sudo zfs set compression=on "${CURRENT_DATASET}"
@@ -106,7 +106,7 @@ function _main ()
   do
     echo "   Processing >>${CURRENT_ZPOOL}<<."
 
-    if [[ $(zpool get -H -o value autotrim "${CURRENT_ZPOOL}" != "on") ]];
+    if [[ $(zpool get -H -o value autotrim "${CURRENT_ZPOOL}") != "on" ]];
     then
       echo "     Set >>autotrim<< to >>off<<"
       sudo zpool set autotrim=on "${CURRENT_ZPOOL}"
