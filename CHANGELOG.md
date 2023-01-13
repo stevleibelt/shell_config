@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 #### Priority High
 
+* unify all `show`, `display` and `watch` commands
 * for all video conversion
     * create directories "in_progres", "done" and "with_error" (last one maybe)
     * add handling for sighalt
@@ -106,6 +107,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added
 
+* Added `watchForSync`
 * Added `NET_BAZZLINE_FWUPDMGR_IS_AVAILABLE` and fitting alias `firmware-update` if `fwupdmgr` is available on the system
 * Added function to rip a cd as mp3 using cyanrip with alias `ripCdAsMp3`
 * Added alias `ripDvdAsMkv` using `vobcopy` and `ffmpeg`
