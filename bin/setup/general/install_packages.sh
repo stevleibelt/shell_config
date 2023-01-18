@@ -23,10 +23,10 @@ function _main () {
   #stage 3
   yay -S \ 
     arandr autorandr \
-    chromium cyanrip \ 
+    cppcheck chromium clang cyanrip \ 
     ddev-bin dmenu \ 
     element-desktop \ 
-    firefox \ 
+    firefox ffmpeg \ 
     gvfs gvfs-mtb gvfs-smb git \ 
     i3-wm i3status \
     jetbrains-toolbox \ 
@@ -35,7 +35,7 @@ function _main () {
     networkmanager nextcloud-client \ 
     pcmanfm python python-pip \ 
     ranger \ 
-    signal-desktop \ 
+    signal-desktop splint \ 
     thunderbird \ 
     telegram-desktop tor-browser \ 
     ventoy-bin vim vscodium-bin \ 
