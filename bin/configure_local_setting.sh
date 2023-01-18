@@ -21,12 +21,11 @@ function _add_or_overwrite_line_in_local_setting ()
     #bo: is variable set already?
     if cat "${FILE_PATH_TO_LOCAL_SETTING}" | grep -q "${VARIABLE_NAME}"
     then
-        _echo_if_be_verbose "   >>${VARIABLE_NAME}<< is configured in >>${FILE_PATH_TO_LOCAL_SETTING}<<. "
-
         if [[ ${IS_FORCED} -eq 1 ]];
         then
             local REMOVE_EXISTING_VARIABLE=1
         else
+            _echo_if_be_verbose "   >>${VARIABLE_NAME}<< is configured in >>${FILE_PATH_TO_LOCAL_SETTING}<<. "
             read -p "Do you want to overwrite it with calculated value >>${VARIABLE_VALUE}<<? (y|N)" YES_OR_NO
 
             case ${YES_OR_NO} in

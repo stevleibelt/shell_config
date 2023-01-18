@@ -107,6 +107,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added
 
+* Added [install_packages.sh](bin/setup/general/install_packages.sh)
 * Added `watchForSync`
 * Added `NET_BAZZLINE_FWUPDMGR_IS_AVAILABLE` and fitting alias `firmware-update` if `fwupdmgr` is available on the system
 * Added function to rip a cd as mp3 using cyanrip with alias `ripCdAsMp3`
