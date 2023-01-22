@@ -25,36 +25,46 @@ function _main () {
   #stage 3
   #use >>pacman -Qe<< to get a list of installed packages
   yay -S \ 
-    acpi acpid android-tools android-udev arandr archiso autorandr \
-    cppcheck chromium clang composer cyanrip \ 
-    ddev-bin dmenu \ 
+    acpi acpid android-tools android-udev ansible arandr archiso autorandr \
+    catdoc cppcheck chromium clang composer cyanrip \ 
+    dbeaver ddev-bin dmenu \ 
     element-desktop \ 
-    firefox ffmpeg flameshot fwupd \ 
-    gcc gcc-libs glibc gvfs gvfs-mtb gvfs-smb git \ 
+    firefox ffmpeg flameshot freeplan fwupd \ 
+    gcc gcc-libs gimp git gparted glibc gvfs gvfs-mtb gvfs-smb \ 
     htop hwinfo \ 
     i3-wm i3status \
-    jetbrains-toolbox \ 
+    jetbrains-toolbox jq \ 
     keepassxc \ 
-    libreoffice-fresh librewolf-bin light linux-headers lm_sensors lshw lutris \ 
-    make mesa mplayer mpv mupdf \ 
+    libreoffice-fresh librewolf-bin light linux-headers lm_sensors lowdown lshw lutris \ 
+    make man-db man-pages man2html mesa mplayer mpv mupdf \ 
     ncdu networkmanager nextcloud-client nmap nmon ntfs-3g \ 
-    okular openssh \ 
-    parallel pavucontrol-qt pcmanfm podman powertop progress pulseaudio-alsa pulsemix python python-pip \ 
+    okular openssh openvpn \ 
+    pandoc parallel pavucontrol-qt pcmanfm podman powertop progress pulseaudio-alsa pulsemix python python-pip \ 
     qemu-full \ 
-    ranger redshift rsync \ 
+    ranger redshift rustdesk rustup rsync \ 
     screen sed signal-desktop simple-scan splint slock smartmontools smplayer sshfs steam syncthing \ 
     thunderbird \ 
     telegram-desktop tor-browser \ 
     unrar \ 
     valgrind ventoy-bin vim vlc vscodium-bin \ 
-    wine-staging \ 
-    xinit xorg-server xorg-apps xterm \ 
+    wireguard-tools wireshark wine-staging \ 
+    xdg-user-dirs xinit xorg-server xorg-apps xterm \ 
     zrepl-bin
 
   #stage 4
   #@todo ask
   yay -S \
     vobcopy
+
+  #stage 5
+  if [[ -f /usr/bin/zfs ]];
+  then
+    bash "${PATH_TO_THIS_SCRIPT}/../zfs/setup.sh"
+  fi
+
+  #stage 6
+  sudo systemctl enable acpid.service
+  sudo systemctl start acpid.service
 }
 
 _main ${@}
