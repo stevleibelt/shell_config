@@ -27,14 +27,43 @@ function _main () {
 
   #stage3
   cd ~/software/source/com/github/stevleibelt
-  git clone https://github.com/stevleibelt/shell_config
-  git clone https://github.com/stevleibelt/settings
-  git clone https://github.com/stevleibelt/general_howtos
-  git clone https://github.com/stevleibelt/examples
 
-  bash shell_config/bin/install.sh
-  bash shell_config/bin/configure_local_settings.sh
-  vimdiff shell_config/setting shell_config/local.setting
+  if [[ ! -d shell_config ]];
+  then
+    git clone https://github.com/stevleibelt/shell_config
+
+    bash shell_config/bin/install.sh
+    bash shell_config/bin/configure_local_settings.sh
+    vimdiff shell_config/setting shell_config/local.setting
+  else
+    cd shell_config
+    git pull
+    cd ..
+  fi
+  if [[ ! -d settings ]];
+  then
+    git clone https://github.com/stevleibelt/settings
+  else
+    cd settings
+    git pull
+    cd ..
+  fi
+  if [[ ! -d general_howtos ]];
+  then
+    git clone https://github.com/stevleibelt/general_howtos
+  else
+    cd general_howtos
+    git pull
+    cd ..
+  fi
+  if [[ ! -d examples ]];
+  then
+    git clone https://github.com/stevleibelt/examples
+  else
+    cd examples
+    git pull
+    cd ..
+  fi
 
   bash settings/i3/install.sh
   bash settings/i3status/install.sh
@@ -43,7 +72,7 @@ function _main () {
   bash settings/xdg/install.sh
 
   git config --global init.defaultBranch main
-  git config --global user.name "Stev Leibelt"
+  git config --global user.name "stevleibelt"
   git config --global user.email "artodeto@bazzline.net"
 
   cd "${CURRENT_WORKING_DIRECTORY}"
