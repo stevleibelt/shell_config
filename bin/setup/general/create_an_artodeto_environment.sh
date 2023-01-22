@@ -17,7 +17,11 @@ function _main () {
 
   #stage 1
   echo ":: Creating basic environment."
-  cp /etc/bash.bashrc ~/.bashrc
+  
+  if [[ ! -f ~/.bashrc ]];
+  then
+    cp /etc/bash.bashrc ~/.bashrc
+  fi
 
   mkdir -p ~/document ~/media/{audio,book,image,video} ~/network/net.bazzline.cloud ~/software/source/com/github/stevleibelt ~/temporary/download
 
