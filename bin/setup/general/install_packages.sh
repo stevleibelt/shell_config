@@ -18,12 +18,12 @@ function _main () {
   echo ":: Installing core packages."
   sudo pacman -S git pactree-contrib base-devel
 
-  if lscpu -iq intel;
+  if lscpu | grep -iq intel;
   then
     sudo pacman -S intel-ucode
   fi
 
-  if lscpu -iq amd;
+  if lscpu | grep -iq amd;
   then
     sudo pacman -S amd-ucode
   fi
