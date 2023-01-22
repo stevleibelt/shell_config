@@ -20,7 +20,7 @@ function _main () {
 
   mkdir -p ~/document ~/media/{audio,book,image,video} ~/network/net.bazzline.cloud ~/software/source/com/github/stevleibelt ~/temporary/download
 
-  localeectl set-x11-keymap de
+  localectl set-x11-keymap de
 
   #stage2
   bash "${PATH_TO_THIS_SCRIPT}/install_packages.sh"
