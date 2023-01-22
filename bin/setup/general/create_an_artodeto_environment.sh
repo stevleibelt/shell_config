@@ -16,6 +16,7 @@ function _main () {
   fi
 
   #stage 1
+  echo ":: Creating basic environment."
   cp /etc/bash.bashrc ~/.bashrc
 
   mkdir -p ~/document ~/media/{audio,book,image,video} ~/network/net.bazzline.cloud ~/software/source/com/github/stevleibelt ~/temporary/download
@@ -23,9 +24,11 @@ function _main () {
   localectl set-x11-keymap de
 
   #stage2
+  echo ":: Installing mandatory software."
   bash "${PATH_TO_THIS_SCRIPT}/install_packages.sh"
 
   #stage3
+  echo ":: Adding github stored knowledge and settings."
   cd ~/software/source/com/github/stevleibelt
 
   if [[ ! -d shell_config ]];
