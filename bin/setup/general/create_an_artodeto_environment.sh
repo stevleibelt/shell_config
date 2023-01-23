@@ -78,6 +78,7 @@ function _main () {
   bash settings/vim/install.sh
   bash settings/xdg/install.sh
 
+  git config --global core.editor vim
   git config --global init.defaultBranch main
   git config --global user.name "stevleibelt"
   git config --global user.email "artodeto@bazzline.net"
