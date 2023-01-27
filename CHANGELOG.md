@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 #### Priority High
 
+* Add check of battery status and charging status (if available) before doing `software-upgrade`
 * unify all `show`, `display` and `watch` commands
 * for all video conversion
     * create directories "in_progres", "done" and "with_error" (last one maybe)
