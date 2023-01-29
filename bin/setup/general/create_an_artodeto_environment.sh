@@ -3,10 +3,25 @@
 # Create an environment artodeto can work with
 ####
 
-function _main () {
+####
+# @param <string: current_step_journal_file_name>
+# @param <int: current_step_version>
+####
+function _step_was_not_done ()
+{
+  #@todo
+  #think about a logic  add a kind of migration from version 1 to 2
+  # maybe have two functions? one for "step configuration exists" and "fetch version"
+  # cat journal file | grep current_step_journal_file_name:current_step_version
 
-  local PATH_TO_THIS_SCRIPT=$(cd $(dirname "$0"); pwd)
+  return 0
+}
+
+function _main () 
+{
   local CURRENT_WORKING_DIRECTORY=$(pwd)
+  local FILE_PATH_TO_THE_INSTALLATION_JOURNAL="${HOME}/.config/net_bazzline/setup/journal.txt"
+  local PATH_TO_THIS_SCRIPT=$(cd $(dirname "${0}"); pwd)
 
   if [[ ! -f /usr/bin/pacman ]];
   then
@@ -26,6 +41,8 @@ function _main () {
   mkdir -p ~/document ~/media/{audio,book,image,video} ~/network/net.bazzline.cloud ~/software/source/com/github/stevleibelt ~/temporary/download
 
   localectl set-x11-keymap de
+
+  bash "${PATH_TO_THIS_SCRIPT}/slock_on_suspend.sh"
 
   #stage2
   echo ":: Installing mandatory software."
@@ -78,6 +95,7 @@ function _main () {
   bash settings/vim/install.sh
   bash settings/xdg/install.sh
 
+  git config --global core.editor vim
   git config --global init.defaultBranch main
   git config --global user.name "stevleibelt"
   git config --global user.email "artodeto@bazzline.net"
