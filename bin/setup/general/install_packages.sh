@@ -36,76 +36,76 @@ function _main () {
   #stage 3
   #use >>pacman -Qe<< to get a list of installed packages
   echo ":: Installig software"
-  echo "   a"
+  echo "   Processing packages with >>a<<"
   yay -S acpi acpid android-tools android-udev ansible arandr archiso autorandr
 
-  echo "   c"
+  echo "   Processing packages with >>c<<"
   yay -S catdoc cppcheck chromium clang composer cyanrip
 
-  echo "   d"
+  echo "   Processing packages with >>d<<"
   yay -S dbeaver ddev-bin dmenu
   
-  echo "   e"
+  echo "   Processing packages with >>e<<"
   yay -S element-desktop
   
-  echo "   f"
+  echo "   Processing packages with >>f<<"
   yay -S firefox ffmpeg flameshot freeplan fwupd
   
-  echo "   g"
-  yay -S gcc gcc-libs gimp git gparted glibc gvfs gvfs-mtb gvfs-smb
+  echo "   Processing packages with >>g<<"
+  yay -S gcc gcc-libs geeqie gimp git gparted glibc gvfs gvfs-mtb gvfs-smb
   
-  echo "   h"
+  echo "   Processing packages with >>h<<"
   yay -S htop hwinfo
   
-  echo "   i"
+  echo "   Processing packages with >>i<<"
   yay -S i3-wm i3status
   
-  echo "   j"
+  echo "   Processing packages with >>j<<"
   yay -S jetbrains-toolbox jq
   
-  echo "   k"
+  echo "   Processing packages with >>k<<"
   yay -S keepassxc
   
-  echo "   l"
+  echo "   Processing packages with >>l<<"
   yay -S libreoffice-fresh librewolf-bin light linux-headers lm_sensors lowdown lshw lutris
   
-  echo "   m"
+  echo "   Processing packages with >>m<<"
   yay -S make man-db man-pages man2html mesa mplayer mpv mupdf
   
-  echo "   n"
+  echo "   Processing packages with >>n<<"
   yay -S ncdu networkmanager nextcloud-client nmap nmon ntfs-3g
   
-  echo "   o"
+  echo "   Processing packages with >>o<<"
   yay -S okular openssh openvpn
   
-  echo "   p"
+  echo "   Processing packages with >>p<<"
   yay -S pandoc parallel pavucontrol-qt pcmanfm podman powertop progress pulseaudio-alsa pulsemix python python-pip
   
-  echo "   q"
+  echo "   Processing packages with >>q"
   yay -S qemu-full
   
-  echo "   r"
+  echo "   Processing packages with >>r<<"
   yay -S ranger redshift rustdesk rustup rsync
   
-  echo "   s"
+  echo "   Processing packages with >>s"
   yay -S screen sed signal-desktop simple-scan splint slock smartmontools smplayer sshfs steam syncthing
   
-  echo "   t"
+  echo "   Processing packages with >>t<<"
   yay -S telegram-desktop thunderbird tor-browser
   
-  echo "   u"
+  echo "   Processing packages with >>u<<"
   yay -S unrar
   
-  echo "   v"
+  echo "   Processing packages with >>v<<"
   yay -S valgrind ventoy-bin vim vlc vscodium-bin
   
-  echo "   w"
+  echo "   Processing packages with >>w<<"
   yay -S wireguard-tools wireshark wine-staging
   
-  echo "   x"
+  echo "   Processing packages with >>x<<"
   yay -S xdg-user-dirs xinit xorg-server xorg-apps xterm
   
-  echo "   z"
+  echo "   Processing packages with >>z<<"
   yay -S zrepl-bin
 
   #stage 4
