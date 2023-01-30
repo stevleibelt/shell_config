@@ -40,19 +40,19 @@ function _main () {
   yay -S acpi acpid android-tools android-udev ansible arandr archiso autorandr
 
   echo "   Processing packages with >>c<<"
-  yay -S calc catdoc cppcheck chromium clang composer cyanrip
+  yay -S calc catdoc cppcheck chromium clamav clang composer cyanrip
 
   echo "   Processing packages with >>d<<"
   yay -S dbeaver ddev-bin dmenu
   
   echo "   Processing packages with >>e<<"
-  yay -S element-desktop
+  yay -S element-desktop exfatprogs exfat-utils
   
   echo "   Processing packages with >>f<<"
   yay -S firefox ffmpeg flameshot freeplan fwupd
   
   echo "   Processing packages with >>g<<"
-  yay -S gcc gcc-libs geeqie gimp git gparted glibc gvfs gvfs-mtb gvfs-smb
+  yay -S gcc gcc-libs geeqie geany gimp git gparted glibc gvfs gvfs-mtb gvfs-smb
   
   echo "   Processing packages with >>h<<"
   yay -S htop hwinfo
@@ -67,7 +67,7 @@ function _main () {
   yay -S keepassxc
   
   echo "   Processing packages with >>l<<"
-  yay -S libreoffice-fresh librewolf-bin light linux-headers lm_sensors lowdown lshw lutris
+  yay -S libreoffice-fresh librewolf-bin light linux-headers lm_sensors lowdown lshw lutris lynis
   
   echo "   Processing packages with >>m<<"
   yay -S make man-db man-pages man2html mesa mplayer mpv mupdf
@@ -88,10 +88,10 @@ function _main () {
   yay -S ranger redshift rustdesk rustup rsync
   
   echo "   Processing packages with >>s"
-  yay -S screen sed signal-desktop simple-scan splint slock smartmontools smplayer sshfs steam syncthing
+  yay -S screen sed signal-desktop simple-scan splint slock smartmontools smplayer sshguard sshfs steam syncthing
   
   echo "   Processing packages with >>t<<"
-  yay -S telegram-desktop thunderbird tor-browser
+  yay -S telegram-desktop thunderbird tor-browser tripwire
   
   echo "   Processing packages with >>u<<"
   yay -S unrar
