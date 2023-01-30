@@ -40,7 +40,7 @@ function _main () {
   yay -S acpi acpid android-tools android-udev ansible arandr archiso autorandr
 
   echo "   Processing packages with >>c<<"
-  yay -S catdoc cppcheck chromium clang composer cyanrip
+  yay -S calc catdoc cppcheck chromium clang composer cyanrip
 
   echo "   Processing packages with >>d<<"
   yay -S dbeaver ddev-bin dmenu

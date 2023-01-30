@@ -43,6 +43,8 @@ function _main ()
   localectl set-x11-keymap de
 
   bash "${PATH_TO_THIS_SCRIPT}/slock_on_suspend.sh"
+  bash "${PATH_TO_THIS_SCRIPT}/../zfs/setup.sh"
+  bash "${PATH_TO_THIS_SCRIPT}/../zfs/set_arc_size_max.sh"
 
   #stage2
   echo ":: Installing mandatory software."
