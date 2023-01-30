@@ -14,43 +14,49 @@
 function _main ()
 {
   local CURRENT_SCRIPT_PATH=$(cd $(dirname "${BASH_SOURCE[0]}"); pwd)
-  local SYSTEMD_SERVICE_NAME="slock.service"
+  local LEGACY_SYSTEMD_SERVICE_FILE_PATH="/etc/systemd/system/slock.service"  #should be removed 2024
 
-  local LOCK_FILE_PATH="/usr/bin/slock"
-  local SYSTEMD_TEMPLATE_FILE="${CURRENT_SCRIPT_PATH}/data/systemd/${SYSTEMD_SERVICE_NAME}.template"
-  local SYSTEMD_SERVICE_FILE_PATH="/etc/systemd/system/${SYSTEMD_SERVICE_NAME}"
-
-  if [[ ! -f ${LOCK_FILE_PATH} ]];
+  if [[ ! -f /usr/bin/slock ]];
   then
-    echo ":: slock is not installed."
-    echo "   >>${LOCK_FILE_PATH}<< is missing."
+    echo ":: Error"
+    echo "   slock is not installed."
 
-    if [[ -f /usr/bin/pacman ]];
+    return 1
+  fi
+
+  if [[ -f "${LEGACY_SYSTEMD_SERVICE_FILE_PATH}" ]];
+  then
+    sudo systemctl stop slock.service
+    sudo systemctl disable slock.service
+    sudo rm "${LEGACY_SYSTEMD_SERVICE_FILE_PATH}"
+
+    if [[ ${?} -ne 0 ]];
     then
-      echo ":: Installing it."
+      echo ":: Error"
+      echo "   Could not remove legacy file >>${LEGACY_SYSTEMD_SERVICE_FILE_PATH}<<."
 
-      sudo pacman -S slock
-    else
-      echo ":: Please install slock and restart this setup."
-
-      exit 1
+      return 2
     fi
   fi
 
+  echo "   Creating service file >>slock@.service<<"
+  sudo bash -c "cat > /etc/systemd/system/slock@.service <<DELIM
+[Unit]
+Description=Lock X session using slock for user %i
+Before=sleep.target
 
-  if [[ -f ${SYSTEMD_SERVICE_FILE_PATH} ]];
-  then
-    echo ":: Systemd service file already exists."
-  else
-    local CURRENT_USER=$(whoami)
-    echo ":: Creating systemd service file for user >>${CURRENT_USER}<<."
-    sudo bash -c "sed \"s/CURRENT_USER/${CURRENT_USER}/\" ${SYSTEMD_TEMPLATE_FILE} > ${SYSTEMD_SERVICE_FILE_PATH}"
+[Service]
+User=%i
+Environment=DISPLAY=:0
+ExecStartPre=/usr/bin/xset dpms force suspend
+ExecStart=/usr/bin/slock
 
-    echo "   File path >>${SYSTEMD_SERVICE_FILE_PATH}<<"
+[Install]
+WantedBy=sleep.target
+DELIM"
 
-    echo ":: Enabling service"
-    sudo systemctl enable ${SYSTEMD_SERVICE_NAME}
-  fi
+  echo "   Enabling service"
+  sudo systemctl enable slock@${USER}.service
 }
 
 _main ${@}
