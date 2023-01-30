@@ -9,7 +9,7 @@
 
 function _main ()
 {
-  local CURRENT_SYSTEM_MEMORY=$(grep MemTotal /proc/meminfo | tr -dc '[::digit:]')
+  local CURRENT_SYSTEM_MEMORY=$(grep MemTotal /proc/meminfo | tr -dc '[:digit:]')
   local FILE_PATH_TO_ZFS_CONF="/etc/modprobe.d/zfs_arc_max.conf"
 
   if [[ -f "${FILE_PATH_TO_ZFS_CONF}" ]];
