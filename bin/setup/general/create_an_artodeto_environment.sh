@@ -91,16 +91,12 @@ function _main ()
     cd ..
   fi
 
+  bash settings/git/setup.sh
   bash settings/i3/install.sh
   bash settings/i3status/install.sh
   bash settings/screen/install.sh
   bash settings/vim/install.sh
   bash settings/xdg/install.sh
-
-  git config --global core.editor vim
-  git config --global init.defaultBranch main
-  git config --global user.name "stevleibelt"
-  git config --global user.email "artodeto@bazzline.net"
 
   cd "${CURRENT_WORKING_DIRECTORY}"
 }
