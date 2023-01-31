@@ -9,7 +9,7 @@
 
 function _main ()
 {
-  local CURRENT_SYSTEM_MEMORY=$(grep MemTotal /proc/meminfo | tr -dc '[::digit:]')
+  local CURRENT_SYSTEM_MEMORY=$(grep MemTotal /proc/meminfo | tr -dc '[:digit:]')
   local FILE_PATH_TO_ZFS_CONF="/etc/modprobe.d/zfs_arc_max.conf"
 
   if [[ -f "${FILE_PATH_TO_ZFS_CONF}" ]];
@@ -23,23 +23,23 @@ function _main ()
   fi
 
   #less or equal 4 gb
-  if [[ ${CURRENT_SYSTEM_MEMORY} -le 4007516 ]];
+  if [[ ${CURRENT_SYSTEM_MEMORY} -le 4194304 ]];
   then
-    echo "   Setting arc size to 1 GB"
-    sudo bash -c "echo \"options zfs zfs_arc_max=1073741824\" > ${FILE_PATH_TO_ZFS_CONF}"
+    echo "   Less or exact than 4 GB of memory, setting arc size to 512 MB"
+    sudo bash -c "echo \"options zfs zfs_arc_max=524288\" > ${FILE_PATH_TO_ZFS_CONF}"
   #8 gb
-  elif [[ ${CURRENT_SYSTEM_MEMORY} -eq 8015032 ]];
+  elif [[ ${CURRENT_SYSTEM_MEMORY} -le 8388608 ]];
   then
-    echo "   Setting arc size to 2 GB"
-    sudo bash -c "echo \"options zfs zfs_arc_max=2147483648\" > ${FILE_PATH_TO_ZFS_CONF}"
+    echo "   Less or exact than 8 GB of memory, setting arc size to 1 GB"
+    sudo bash -c "echo \"options zfs zfs_arc_max=1048576\" > ${FILE_PATH_TO_ZFS_CONF}"
   #16 gb
-  elif [[ ${CURRENT_SYSTEM_MEMORY} -eq 16030064 ]];
+  elif [[ ${CURRENT_SYSTEM_MEMORY} -le 16777216 ]];
   then
-    echo "   Setting arc size to 4 GB"
-    sudo bash -c "echo \"options zfs zfs_arc_max=4294967296\" > ${FILE_PATH_TO_ZFS_CONF}"
+    echo "   Less or exact than 16 GB of memory, setting arc size to 2 GB"
+    sudo bash -c "echo \"options zfs zfs_arc_max=2097152\" > ${FILE_PATH_TO_ZFS_CONF}"
   else
-    echo "   Setting arc size to 8 GB"
-    sudo bash -c "echo \"options zfs zfs_arc_max=8589934592\" > ${FILE_PATH_TO_ZFS_CONF}"
+    echo "   More than 16 GB of memory, setting arc size to 4 GB"
+    sudo bash -c "echo \"options zfs zfs_arc_max=4194304\" > ${FILE_PATH_TO_ZFS_CONF}"
   fi
 
   if [[ ${?} -eq 0 ]];
