@@ -91,7 +91,7 @@ function _main () {
   yay -S screen sed signal-desktop simple-scan splint slock smartmontools smplayer sshguard sshfs steam syncthing
   
   echo "   Processing packages with >>t<<"
-  yay -S telegram-desktop testdisk thunderbird tor-browser tripwire
+  yay -S texlive-core telegram-desktop testdisk thunderbird tor-browser tripwire
   
   echo "   Processing packages with >>u<<"
   yay -S unrar
