@@ -55,7 +55,7 @@ function _main () {
   yay -S gcc gcc-libs geeqie geany gimp git gparted glibc gvfs gvfs-mtb gvfs-smb
   
   echo "   Processing packages with >>h<<"
-  yay -S htop hwinfo
+  yay -S hdparm htop hwinfo
   
   echo "   Processing packages with >>i<<"
   yay -S i3-wm i3status
@@ -91,7 +91,7 @@ function _main () {
   yay -S screen sed signal-desktop simple-scan splint slock smartmontools smplayer sshguard sshfs steam syncthing
   
   echo "   Processing packages with >>t<<"
-  yay -S telegram-desktop thunderbird tor-browser tripwire
+  yay -S telegram-desktop testdisk thunderbird tor-browser tripwire
   
   echo "   Processing packages with >>u<<"
   yay -S unrar
