@@ -30,6 +30,9 @@ function _main ()
     return 1
   fi
 
+  cd "${PATH_TO_THIS_SCRIPT}/../../../.."
+  ?
+
   #stage 1
   echo ":: Creating basic environment."
   
@@ -56,6 +59,7 @@ function _main ()
 
   if [[ ! -d shell_config ]];
   then
+    #doesn't make sense since this script is inside
     git clone https://github.com/stevleibelt/shell_config
 
     bash shell_config/bin/install.sh
