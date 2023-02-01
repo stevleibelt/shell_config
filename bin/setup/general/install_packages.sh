@@ -90,7 +90,7 @@ function _main ()
   _install_packages_with_yay okular openssh openvpn
   
   echo "   Processing packages with >>p<<"
-  _install_packages_with_yay pandoc parallel pavucontrol-qt pcmanfm podman powertop progress pulseaudio-alsa pulsemix python python-pip
+  _install_packages_with_yay pandoc parallel pavucontrol-qt pcmanfm plantuml podman powertop progress pulseaudio-alsa pulsemix python python-pip
   
   echo "   Processing packages with >>q"
   _install_packages_with_yay qemu-full
@@ -105,7 +105,7 @@ function _main ()
   _install_packages_with_yay texlive-core telegram-desktop testdisk thunderbird tor-browser tripwire
   
   echo "   Processing packages with >>u<<"
-  _install_packages_with_yay unrar
+  _install_packages_with_yay umlet unrar
   
   echo "   Processing packages with >>v<<"
   _install_packages_with_yay valgrind ventoy-bin vim vlc vscodium-bin
