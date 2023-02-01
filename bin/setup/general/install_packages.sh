@@ -94,7 +94,7 @@ function _main () {
   yay -S texlive-core telegram-desktop testdisk thunderbird tor-browser tripwire
   
   echo "   Processing packages with >>u<<"
-  yay -S unrar
+  yay -S umlet unrar
   
   echo "   Processing packages with >>v<<"
   yay -S valgrind ventoy-bin vim vlc vscodium-bin
