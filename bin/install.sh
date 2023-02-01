@@ -24,12 +24,23 @@ function _main ()
   #end of setup
 
   ##begin of validation
-  if [[ ! -f "${PATH_TO_THE_BASH_RC}" ]];
+  if [[ -f "${PATH_TO_THE_BASH_RC}" ]];
   then
+    cat "${PATH_TO_THE_BASH_RC}" | grep -q net_bazzline_config_shell
+
+    if [[ ${?} -eq 0 ]];
+    then
+      echo ":: Installation already done."
+      echo "   Will stop here."
+
+      return 0
+    fi
+  else
     echo ":: No .bashrc file found."
     echo "   Bash is currently the only supported shell"
-
-   exit 1
+    
+    echo "   Copying and creating it."
+    cp -v /etc/bash.bashrc ~/.bashrc
   fi
   ##end of validation
 
