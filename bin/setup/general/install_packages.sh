@@ -79,7 +79,7 @@ function _main () {
   yay -S okular openssh openvpn
   
   echo "   Processing packages with >>p<<"
-  yay -S pandoc parallel pavucontrol-qt pcmanfm podman powertop progress pulseaudio-alsa pulsemix python python-pip
+  yay -S pandoc parallel pavucontrol-qt pcmanfm plantuml podman powertop progress pulseaudio-alsa pulsemix python python-pip
   
   echo "   Processing packages with >>q"
   yay -S qemu-full
