@@ -114,7 +114,7 @@ function _main ()
   _install_packages_with_yay wireguard-tools wireshark wine-staging
   
   echo "   Processing packages with >>x<<"
-  _install_packages_with_yay xdg-user-dirs xinit xorg-server xorg-apps xterm
+  _install_packages_with_yay xdg-user-dirs xorg-xinit xorg-server xorg-apps xterm
   
   echo "   Processing packages with >>z<<"
   _install_packages_with_yay zrepl-bin
