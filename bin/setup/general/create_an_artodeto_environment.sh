@@ -30,9 +30,6 @@ function _main ()
     return 1
   fi
 
-  cd "${PATH_TO_THIS_SCRIPT}/../../../.."
-  ?
-
   #stage 1
   echo ":: Creating basic environment."
   
@@ -57,19 +54,13 @@ function _main ()
   echo ":: Adding github stored knowledge and settings."
   cd ~/software/source/com/github/stevleibelt
 
-  if [[ ! -d shell_config ]];
-  then
-    #doesn't make sense since this script is inside
-    git clone https://github.com/stevleibelt/shell_config
-
-    bash shell_config/bin/install.sh
-    bash shell_config/bin/configure_local_settings.sh
-    vimdiff shell_config/setting shell_config/local.setting
-  else
-    cd shell_config
-    git pull
-    cd ..
-  fi
+  cd shell_config
+  git pull
+  bash shell_config/bin/install.sh
+  bash shell_config/bin/configure_local_settings.sh
+  vimdiff shell_config/setting shell_config/local.setting
+  cd ..
+  
   if [[ ! -d settings ]];
   then
     git clone https://github.com/stevleibelt/settings
