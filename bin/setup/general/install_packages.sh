@@ -78,7 +78,7 @@ function _main ()
   _install_packages_with_yay keepassxc
   
   echo "   Processing packages with >>l<<"
-  _install_packages_with_yay libreoffice-fresh librewolf-bin light linux-headers lm_sensors lowdown lshw lutris lynis
+  _install_packages_with_yay libreoffice-fresh librewolf-bin light linux-headers lm_sensors lowdown lshw lutris lxterminal lynis
   
   echo "   Processing packages with >>m<<"
   _install_packages_with_yay make man-db man-pages man2html mesa mplayer mpv mupdf
