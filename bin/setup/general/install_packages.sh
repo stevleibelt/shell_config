@@ -50,6 +50,9 @@ function _main ()
   echo "   Processing packages with >>a<<"
   _install_packages_with_yay acpi acpid android-tools android-udev ansible arandr archiso autorandr
 
+  echo "   Processing packages with >>b<<"
+  _install_packages_with_yay btop
+
   echo "   Processing packages with >>c<<"
   _install_packages_with_yay calc catdoc cppcheck chromium clamav clang composer cyanrip
 
