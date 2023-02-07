@@ -99,7 +99,7 @@ function _main ()
   _install_packages_with_yay ranger redshift rustdesk rustup rsync
   
   echo "   Processing packages with >>s"
-  _install_packages_with_yay screen sed signal-desktop simple-scan splint slock smartmontools smplayer sshguard sshfs steam syncthing
+  _install_packages_with_yay screen sed shelldap signal-desktop simple-scan splint slock smartmontools smplayer sshguard sshfs steam syncthing
   
   echo "   Processing packages with >>t<<"
   _install_packages_with_yay texlive-core telegram-desktop testdisk thunderbird tor-browser tripwire
