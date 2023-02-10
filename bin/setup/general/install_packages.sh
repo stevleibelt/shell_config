@@ -93,7 +93,7 @@ function _main ()
   _install_packages_with_yay okular openssh openvpn
   
   echo "   Processing packages with >>p<<"
-  _install_packages_with_yay pandoc parallel pavucontrol-qt pcmanfm plantuml podman potato powertop progress pulseaudio-alsa pulsemix python python-pip
+  _install_packages_with_yay pandoc parallel pavucontrol-qt pcmanfm picocom plantuml podman potato powertop progress pulseaudio-alsa pulsemix python python-pip
   
   echo "   Processing packages with >>q"
   _install_packages_with_yay qemu-full
