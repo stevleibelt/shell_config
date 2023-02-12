@@ -11,7 +11,8 @@ function _install_packages_with_pacman ()
 function _install_packages_with_yay ()
 {
   #@see: https://github.com/Jguer/yay/issues/830
-  yay -S --clean --answerdiff=None --noconfirm ${@}
+  #yay -S --clean --answerdiff=None --noconfirm ${@}
+  yay --needed --noconfirm -S ${@}
 }
 
 function _main ()
@@ -125,6 +126,8 @@ function _main ()
   #stage 4
   #@todo ask
   _install_packages_with_yay vobcopy
+
+  yay --clean
 
   #stage 5
   if [[ -f /usr/bin/zfs ]];
