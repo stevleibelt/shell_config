@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 #### Priority High
 
+* Disable [systemd-sleep](https://man.archlinux.org/man/systemd-sleep.8) or [any|one fitting] [systemd-*suspend*](https://man.archlinux.org/man/systemd.special.7) units **before** starting an update, enable it **after** the update has been finished
 * Add check of battery status and charging status (if available) before doing `software-upgrade`
 * unify all `show`, `display` and `watch` commands
 * for all video conversion
