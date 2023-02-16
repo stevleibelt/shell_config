@@ -73,7 +73,7 @@ function _main ()
   _install_packages_with_yay hdparm htop hwinfo
   
   echo "   Processing packages with >>i<<"
-  _install_packages_with_yay i3-wm i3status
+  _install_packages_with_yay i3-wm i3status iw
   
   echo "   Processing packages with >>j<<"
   _install_packages_with_yay jetbrains-toolbox jq
