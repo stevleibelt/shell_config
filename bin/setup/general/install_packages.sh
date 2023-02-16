@@ -88,7 +88,7 @@ function _main ()
   _install_packages_with_yay make man-db man-pages man2html mesa mplayer mpv mupdf
   
   echo "   Processing packages with >>n<<"
-  _install_packages_with_yay ncdu networkmanager nextcloud-client nmap nmon ntfs-3g
+  _install_packages_with_yay ncdu networkmanager nextcloud-client nm-applet nmap nmon ntfs-3g
   
   echo "   Processing packages with >>o<<"
   _install_packages_with_yay okular openssh openvpn
