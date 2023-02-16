@@ -82,7 +82,7 @@ function _main ()
   _install_packages_with_yay keepassxc
   
   echo "   Processing packages with >>l<<"
-  _install_packages_with_yay libreoffice-fresh librewolf-bin light linux-headers lm_sensors lowdown lshw lutris lxterminal lynis
+  _install_packages_with_yay libcoverart libdiscid libreoffice-fresh librewolf-bin light linux-headers lm_sensors lowdown lshw lutris lxterminal lynis
   
   echo "   Processing packages with >>m<<"
   _install_packages_with_yay make man-db man-pages man2html mesa mplayer mpv mupdf
@@ -94,7 +94,7 @@ function _main ()
   _install_packages_with_yay okular openssh openvpn
   
   echo "   Processing packages with >>p<<"
-  _install_packages_with_yay pandoc parallel pavucontrol-qt pcmanfm picocom plantuml podman potato powertop progress pulseaudio-alsa pulsemix python python-pip
+  _install_packages_with_yay pandoc parallel pavucontrol-qt picard pcmanfm picocom plantuml podman potato powertop progress pulseaudio-alsa pulsemix python python-pip
   
   echo "   Processing packages with >>q"
   _install_packages_with_yay qemu-full
