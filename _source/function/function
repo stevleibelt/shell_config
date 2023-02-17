@@ -1954,53 +1954,62 @@ function net_bazzline_mount_luks_zpool ()
 
 ####
 # @param string - mount point
-# @param string - name
-# @param string - host
+# @param string - user name
+# @param string - host name or ip
+# @param string - host mount point
 # [@param string - path to the identity file]
 ####
 function net_bazzline_mount_sshfs ()
 {
-    net_bazzline_record_function_usage ${FUNCNAME[0]}
+  if [[ ${#} -lt 4 ]];
+  then
+    net_bazzline_handle_invalid_number_of_arguments_supplied "${FUNCNAME[0]} <string: mount_point> <string: user_name> <string: host_name_or_ip> <string: host_mount_point> [<string: path_to_the_identity_file>]"
 
-    if [[ $# -lt 4 ]];
+    return 1
+  else
+    local MOUNT_POINT="${1}"
+    local USER_NAME="${2}"
+    local HOST_MOUNT_POINT="${4}"
+    local HOST_NAME_OR_IP="${3}"
+
+    #begin of duplicated code - remove empty path if possible
+    if [[ -d ${MOUNT_POINT} ]]; 
     then
-        echo "usage: <command> <mount point> <name> <host> [<path to identity file>]"
-        return 1
-    else
-        local MOUNT_POINT="$2"
-        local NAME="$3"
-        local HOST="$4"
+      #check if directory is not empty
+      if [[ $(ls -A "${MOUNT_POINT}") ]];
+      then
+        echo ":: Mount point exists and is not empty."
+        echo "   ${MOUNT_POINT}"
 
-        #begin of duplicated code - remove empty path if possible
-        if [[ -d ${MOUNT_POINT} ]]; 
-        then
-            #check if directory is not empty
-            if [[ $(ls -A "${MOUNT_POINT}") ]];
-            then
-                echo ":: Mount point exists and is not empty."
-                echo "   ${MOUNT_POINT}"
+        return 2
+      else
+        echo ":: Mount point exists but is empty."
+        echo "   Removing ${MOUNT_POINT}"
 
-                return 2
-            else
-                echo ":: Mount point exists but is empty."
-                echo "   Removing ${MOUNT_POINT}"
-
-                rmdir ${MOUNT_POINT}
-            fi
-        fi
-        #end of duplicated code - remove empty path if possible
-
-        net_bazzline_mkdir -p "${MOUNT_POINT}"
-
-        if [[ $# -eq 5 ]];
-        then
-            local KEY="$5"
-
-            sshfs -o IdentitiyFile="${KEY}" "${NAME}"@"${HOST}" "${MOUNT_POINT}"
-        else
-            sshfs "${NAME}"@"${HOST}" "${MOUNT_POINT}"
-        fi
+        rmdir ${MOUNT_POINT}
+      fi
     fi
+    #end of duplicated code - remove empty path if possible
+
+    /usr/bin/mkdir "${MOUNT_POINT}"
+
+    if [[ ${#} -gt 4 ]];
+    then
+      local PATH_TO_THE_IDENTITY_FILE="${5}"
+
+      if [[ ! -f ${PATH_TO_THE_IDENTITY_FILE} ]];
+      then
+        echo ":: Invalid path to the identity file provided."
+        echo "   >>${PATH_TO_THE_IDENTITY_FILE}<< is not a file."
+
+        return 3
+      fi
+
+      sshfs -o IdentitiyFile="${PATH_TO_THE_IDENTITY_FILE}" "${USER_NAME}@${HOST_NAME_OR_IP}:${HOST_MOUNT_POINT}" "${MOUNT_POINT}"
+    else
+      sshfs "${USER_NAME}@${HOST_NAME_OR_IP}:${HOST_MOUNT_POINT}" "${MOUNT_POINT}"
+    fi
+  fi
 }
 
 #o
@@ -2975,10 +2984,45 @@ function net_bazzline_unmount_luks_zpool ()
 ####
 function net_bazzline_unmount_sshfs ()
 {
-    net_bazzline_record_function_usage ${FUNCNAME[0]}
+    local MOUNT_POINT="${1}"
 
-    echo "fusermount -u <mount point>"
-    echo "rm -fr <mount point>"
+    if [[ -d "${MOUNT_POINT}" ]];
+    then
+
+      mount | grep -v "${MOUNT_POINT}"
+
+      if [[ ${?} -eq 0 ]];
+      then
+        umount "${MOUNT_POINT}"
+
+        if [[ ${?} -ne 0 ]];
+        then
+          echo ":: Could not unmount directory >>${MOUNT_POINT}<<."
+
+          return 1
+        fi
+
+        rmdir "${MOUNT_POINT}"
+
+        if [[ ${?} -ne 0 ]];
+        then
+          echo ":: Could not remove directory >>${MOUNT_POINT}<<."
+          echo "   Please check if the directory is not empty or if there is an issue with the rights."
+
+          return 2
+        fi
+    else
+      echo ":: Invalid mount point provided."
+      echo "   >>${MOUNT_POINT}<< is not in the list provided by `mount`."
+
+      return 4
+    fi
+  else
+    echo ":: Invalid argument provided."
+    echo "   >>${MOUNT_POINT}<< is not a directory."
+
+    return 3
+  fi
 }
 
 function net_bazzline_update_shell_configuration ()
