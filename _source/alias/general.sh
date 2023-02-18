@@ -53,6 +53,7 @@ alias convertVideoToLibx265=net_bazzline_convert_video_to_libx265
 alias convertVideoToLibrav1e=net_bazzline_convert_video_to_librav1e
 alias convertWavToMp3=net_bazzline_convert_wav_to_mp3
 alias createAMp3FileForEachMpcFileInTheCurrentWorkingDirectory=net_bazzline_create_a_mp3_file_for_each_mpc_file_in_the_current_directory
+alias createNewSshKey='ssh-keygen -b 4096 -t rsa'
 alias createPathOrReturnErrorIfPathExistsAlready=net_bazzline_create_path_or_return_error_if_path_exists_already
 
 #d
@@ -155,7 +156,6 @@ alias showSystemTemperature=sensors
 alias showSystemUsers=net_bazzline_show_system_users
 alias startSshAgent='eval $(ssh-agent)'
 alias startXorg='startx; exit'
-alias sshKeygen='ssh-keygen -b 4096 -t rsa'
 alias syncFromHost=net_bazzline_sync_from_host
 alias syncTime='ntpd -s'
 alias syncTo=net_bazzline_sync_to
