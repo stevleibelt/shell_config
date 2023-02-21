@@ -3047,6 +3047,8 @@ function net_bazzline_update_vim_bundles_and_plugins_with_vundle()
 {
     net_bazzline_record_function_usage ${FUNCNAME[0]}
 
+    echo "vundlevim is not available anymore :/"
+
     CURRENT_WORKING_DIRECTORY=$(pwd)
     local PATH_TO_VUNDLE="${HOME}/.vim/bundle/Vundle.vim"
 
