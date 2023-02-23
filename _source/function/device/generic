@@ -13,13 +13,18 @@
 ####
 function net_bazzline_list_memory_usage_by_process ()
 {
-    local NUMBER_OF_PROCESSES_TO_LIST=${1:-8}
+    local NUMBER_OF_PROCESSES_TO_LIST=${1:-20}
 
     ps axo rss,comm,pid \
         | awk '{ proc_list[$2]++; proc_list[$2 "," 1] += $1;  } \
     END { for (proc in proc_list) { printf("%d\t%s\n", \
     proc_list[proc "," 1],proc);  } }' | sort -n | tail -n ${NUMBER_OF_PROCESSES_TO_LIST} | sort -rn \
     | awk '{$1/=1024;printf "%.0fMB\t",$1}{print $2}'
+
+    echo ":: If you are using firefox, open a tab with >>about:memory?verbose<< and click on >>Minimize ...<<"
+
+    #@see: https://superuser.com/questions/398862/linux-find-out-what-process-is-using-all-the-ram
+    #ps aux  | awk '{printf "%8.3f MB\t\t%s\n", $6/1024, $11}'  | sort -n | grep -v '^   0.000 MB'
 }
 
 #s

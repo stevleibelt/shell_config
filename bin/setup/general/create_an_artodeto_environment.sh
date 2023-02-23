@@ -3,6 +3,8 @@
 # Create an environment artodeto can work with
 ####
 
+exec &> >(tee "create_an_artodeto_environment.log")
+
 ####
 # @param <string: current_step_journal_file_name>
 # @param <int: current_step_version>
