@@ -96,7 +96,7 @@ function _main ()
   echo "   Processing packages with >>p<<"
   _install_packages_with_yay pandoc parallel pavucontrol-qt picard pcmanfm perl-io-socket-ssl picocom plantuml podman potato powertop progress pulseaudio-alsa pulsemix python python-pip
   
-  echo "   Processing packages with >>q"
+  echo "   Processing packages with >>q<<"
   _install_packages_with_yay qemu-full
   
   echo "   Processing packages with >>r<<"
@@ -106,7 +106,7 @@ function _main ()
   _install_packages_with_yay screen sed shelldap signal-desktop simple-scan splint slock smartmontools smplayer sshguard sshfs steam syncthing
   
   echo "   Processing packages with >>t<<"
-  _install_packages_with_yay texlive-core telegram-desktop testdisk thunderbird tor-browser tripwire terminus-font ttf-terminus-nerd
+  _install_packages_with_yay texlive-core telegram-desktop tree testdisk thunderbird tor-browser tripwire terminus-font ttf-terminus-nerd
   
   echo "   Processing packages with >>u<<"
   _install_packages_with_yay umlet unrar
