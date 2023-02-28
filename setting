@@ -102,6 +102,15 @@ else
     NET_BAZZLINE_PARALLEL_IS_AVAILABLE=0
 fi
 
+#enables (1) or disables (0) cups support
+#
+if [[ -f /usr/lip/cups ]];
+then
+  NET_BAZZLINE_PRINTER_IS_AVAILABLE=1
+else
+  NET_BAZZLINE_PRINTER_IS_AVAILABLE=0
+fi
+
 #enables (1) or disables (0) pulseaudio support
 if [[ -f /usr/bin/pulseaudio ]];
 then
