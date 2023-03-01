@@ -21,17 +21,8 @@ function _install_packages_with_yay ()
   yay --needed --noconfirm -S ${@}
 }
 
-function _main ()
+function _install_stage_1 ()
 {
-  local PATH_TO_THIS_SCRIPT=$(cd $(dirname "$0"); pwd)
-
-  if [[ ! -f /usr/bin/pacman ]];
-  then
-    echo ":: Sorry, we need pacman to work."
-
-    return 1
-  fi
-
   #stage 1
   echo ":: Installing core packages."
   _install_packages_with_pacman git pactree-contrib base-devel
@@ -46,11 +37,17 @@ function _main ()
     _install_packages_with_pacman amd-ucode
   fi
   #xf86-video-amdgpu
+}
 
+function _install_stage_2 ()
+{
   #stage 2
   echo ":: Installing yay if needed."
   bash "${PATH_TO_THIS_SCRIPT}/../package_manager/yay.sh"
+}
 
+function _install_stage_3 ()
+{
   #stage 3
   #use >>pacman -Qe<< to get a list of installed packages
   echo ":: Installig software"
@@ -128,14 +125,20 @@ function _main ()
   
   echo "   Processing packages with >>z<<"
   _install_packages_with_yay zrepl-bin
+}
 
+function _install_stage_4 ()
+{
   #stage 4
   ask ":: Do you want to install multimedia tools? (N|y)"
   if [[ ${REPLY} =~ ^[Yy]$ ]]
   then
     _install_packages_with_yay vobcopy
   fi
+}
 
+function _install_stage_5 ()
+{
   #stage 5
   #ref: https://wiki.archlinux.org/title/List_of_games
   ask ":: Do you want to install ga,es? (N|y)"
@@ -143,23 +146,83 @@ function _main ()
   then
     _install_packages_with_yay widelands wesnoth cataclysm-dda 0ad 0ad-data openttd kollision liquidwar neverball veloren hedgewars ltris mari0 warmux aisleriot atanks lskat gnuchess pingus supertuxkart trigger ultimatestunts vdrift flare darkplaces quake-qrp-textures quake2 quake2-retexture ioquake3 redeclipse unrealtournament4 urbanterror rigsofrods openra 
   fi
+}
 
+function _install_stage_6 ()
+{
   #stage 6
   ask ":: Do you want to install educational games? (N|y)"
   if [[ ${REPLY} =~ ^[Yy]$ ]]
   then
     _install_packages_with_yay artikulate blinken gcompris kanagram khangman tuxtype tuxmath 
   fi
+}
+
+function _install_stage_7 ()
+{
+  #open
+  echo "todo"
+}
+
+####
+#[@param <int: stage>]
+####
+function _main ()
+{
+  local PATH_TO_THIS_SCRIPT=$(cd $(dirname "$0"); pwd)
+  local STAGE=${1:-}
+
+  if [[ ${STAGE} -gt 0 && ${STAGE} -lt 7 ]];
+  then
+    local EXCLUSIVE_STAGE_SELECTED=0
+  else
+    local EXCLUSIVE_STAGE_SELECTED=1
+  fi
+
+  if [[ ! -f /usr/bin/pacman ]];
+  then
+    echo ":: Sorry, we need pacman to work."
+
+    return 1
+  fi
+
+  if [[ ${EXCLUSIVE_STAGE_SELECTED} -eq 1 ]] || [[ ${EXCLUSIVE_STAGE_SELECTED} -eq 0 && ${STAGE} -eq 1 ]];
+  then
+    _install_stage_1
+  fi
+
+  if [[ ${EXCLUSIVE_STAGE_SELECTED} -eq 1 ]] || [[ ${EXCLUSIVE_STAGE_SELECTED} -eq 0 && ${STAGE} -eq 2 ]];
+  then
+    _install_stage_2
+  fi
+
+  if [[ ${EXCLUSIVE_STAGE_SELECTED} -eq 1 ]] || [[ ${EXCLUSIVE_STAGE_SELECTED} -eq 0 && ${STAGE} -eq 3 ]];
+  then
+    _install_stage_3
+  fi
+
+  if [[ ${EXCLUSIVE_STAGE_SELECTED} -eq 1 ]] || [[ ${EXCLUSIVE_STAGE_SELECTED} -eq 0 && ${STAGE} -eq 4 ]];
+  then
+    _install_stage_4
+  fi
+
+  if [[ ${EXCLUSIVE_STAGE_SELECTED} -eq 1 ]] || [[ ${EXCLUSIVE_STAGE_SELECTED} -eq 0 && ${STAGE} -eq 5 ]];
+  then
+    _install_stage_5
+  fi
+
+  if [[ ${EXCLUSIVE_STAGE_SELECTED} -eq 1 ]] || [[ ${EXCLUSIVE_STAGE_SELECTED} -eq 0 && ${STAGE} -eq 6 ]];
+  then
+    _install_stage_6
+  fi
 
   yay --clean
 
-  #stage 5
   if [[ -f /usr/bin/zfs ]];
   then
     bash "${PATH_TO_THIS_SCRIPT}/../zfs/setup.sh"
   fi
 
-  #stage 6
   sudo systemctl -q is-enabled acpid.service
 
   if [[ ${?} -eq 0 ]];
