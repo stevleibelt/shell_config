@@ -130,7 +130,7 @@ function _install_stage_3 ()
 function _install_stage_4 ()
 {
   #stage 4
-  ask ":: Do you want to install multimedia tools? (N|y)"
+  _ask ":: Do you want to install multimedia tools? (N|y)"
   if [[ ${REPLY} =~ ^[Yy]$ ]]
   then
     _install_packages_with_yay vobcopy
@@ -141,7 +141,7 @@ function _install_stage_5 ()
 {
   #stage 5
   #ref: https://wiki.archlinux.org/title/List_of_games
-  ask ":: Do you want to install ga,es? (N|y)"
+  _ask ":: Do you want to install ga,es? (N|y)"
   if [[ ${REPLY} =~ ^[Yy]$ ]]
   then
     _install_packages_with_yay widelands wesnoth cataclysm-dda 0ad 0ad-data openttd kollision liquidwar neverball veloren hedgewars ltris mari0 warmux aisleriot atanks lskat gnuchess pingus supertuxkart trigger ultimatestunts vdrift flare darkplaces quake-qrp-textures quake2 quake2-retexture ioquake3 redeclipse unrealtournament4 urbanterror rigsofrods openra 
@@ -151,7 +151,7 @@ function _install_stage_5 ()
 function _install_stage_6 ()
 {
   #stage 6
-  ask ":: Do you want to install educational games? (N|y)"
+  _ask ":: Do you want to install educational games? (N|y)"
   if [[ ${REPLY} =~ ^[Yy]$ ]]
   then
     _install_packages_with_yay artikulate blinken gcompris kanagram khangman tuxtype tuxmath 
