@@ -95,6 +95,9 @@ function _main ()
   bash settings/vim/install.sh
   bash settings/xdg/install.sh
 
+  echo ":: @todo"
+  echo "   Add >>NOPASSWD: /usr/bin/light<< to created user"
+
   cd "${CURRENT_WORKING_DIRECTORY}"
 }
 

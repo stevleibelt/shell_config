@@ -11,9 +11,9 @@
 # @since 2013-04-24
 ####
 
-#https://wiki.archlinux.org/index.php/Xterm#TERM_Environmental_Variable
+#@see: https://wiki.archlinux.org/index.php/Xterm#TERM_Environmental_Variable
 #export GREP_OPTIONS='--color=auto'
-#https://bbs.archlinux.org/viewtopic.php?pid=1478573
+#@see: https://bbs.archlinux.org/viewtopic.php?pid=1478573
 unset GREP_OPTIONS
 
 #sets vi as default editor for bash editing mode
@@ -100,6 +100,15 @@ then
     NET_BAZZLINE_PARALLEL_IS_AVAILABLE=1
 else
     NET_BAZZLINE_PARALLEL_IS_AVAILABLE=0
+fi
+
+#enables (1) or disables (0) cups support
+#
+if [[ -f /usr/lip/cups ]];
+then
+  NET_BAZZLINE_PRINTER_IS_AVAILABLE=1
+else
+  NET_BAZZLINE_PRINTER_IS_AVAILABLE=0
 fi
 
 #enables (1) or disables (0) pulseaudio support

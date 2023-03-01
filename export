@@ -26,4 +26,5 @@ export LESS='-C -M -I -j 10'
 export PATH=$PATH:${HOME}/.local/bin
 
 #t
+#@see: https://wiki.archlinux.org/title/Xterm
 export TERM=xterm-256color

@@ -1,2 +1,3 @@
 .current_installed_version
 local.*
+bin/setup/general/create_an_artodeto_environment.log
