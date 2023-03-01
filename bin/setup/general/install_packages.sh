@@ -3,6 +3,12 @@
 #
 ####
 
+function _ask ()
+{
+  read -p "> ${1} " -r
+  echo
+}
+
 function _install_packages_with_pacman ()
 {
   sudo pacman -S --noconfirm --needed ${@}
@@ -124,8 +130,26 @@ function _main ()
   _install_packages_with_yay zrepl-bin
 
   #stage 4
-  #@todo ask
-  _install_packages_with_yay vobcopy
+  ask ":: Do you want to install multimedia tools? (N|y)"
+  if [[ ${REPLY} =~ ^[Yy]$ ]]
+  then
+    _install_packages_with_yay vobcopy
+  fi
+
+  #stage 5
+  #ref: https://wiki.archlinux.org/title/List_of_games
+  ask ":: Do you want to install ga,es? (N|y)"
+  if [[ ${REPLY} =~ ^[Yy]$ ]]
+  then
+    _install_packages_with_yay widelands wesnoth cataclysm-dda 0ad 0ad-data openttd kollision liquidwar neverball veloren hedgewars ltris mari0 warmux aisleriot atanks lskat gnuchess pingus supertuxkart trigger ultimatestunts vdrift flare darkplaces quake-qrp-textures quake2 quake2-retexture ioquake3 redeclipse unrealtournament4 urbanterror rigsofrods openra 
+  fi
+
+  #stage 6
+  ask ":: Do you want to install educational games? (N|y)"
+  if [[ ${REPLY} =~ ^[Yy]$ ]]
+  then
+    _install_packages_with_yay artikulate blinken gcompris kanagram khangman tuxtype tuxmath 
+  fi
 
   yay --clean
 
