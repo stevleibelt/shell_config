@@ -118,7 +118,7 @@ function _install_stage_3 ()
   _install_packages_with_yay valgrind ventoy-bin vim vlc vscodium-bin
   
   echo "   Processing packages with >>w<<"
-  _install_packages_with_yay wireguard-tools wireshark wine-staging
+  _install_packages_with_yay wget wireguard-tools wireshark wine-staging
   
   echo "   Processing packages with >>x<<"
   _install_packages_with_yay xdg-user-dirs xorg-xinit xorg-server xorg-apps xterm
