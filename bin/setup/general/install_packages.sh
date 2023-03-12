@@ -97,7 +97,7 @@ function _install_stage_3 ()
   _install_packages_with_yay okular openssh openvpn
   
   echo "   Processing packages with >>p<<"
-  _install_packages_with_yay pandoc parallel pavucontrol-qt picard pcmanfm perl-io-socket-ssl picocom plantuml podman potato powertop progress pulseaudio-alsa pulsemix python python-pip
+  _install_packages_with_yay pandoc parallel pavucontrol-qt picard pcmanfm perl-io-socket-ssl picocom plantuml podman potato powertop progress pulseaudio-alsa pulsemixer python python-pip
   
   echo "   Processing packages with >>q<<"
   _install_packages_with_yay qemu-full
@@ -149,14 +149,14 @@ function _install_stage_5 ()
   #ref: https://wiki.archlinux.org/title/List_of_games
   if [[ ${EXCLUSIVE_STAGE_SELECTED} -eq 1 ]];
   then
-    _ask ":: Do you want to install ga,es? (N|y)"
+    _ask ":: Do you want to install games? (N|y)"
   else
     REPLY='y'
   fi
 
   if [[ ${REPLY} =~ ^[Yy]$ ]]
   then
-    _install_packages_with_yay widelands wesnoth cataclysm-dda 0ad 0ad-data openttd kollision liquidwar neverball veloren hedgewars ltris mari0 warmux aisleriot atanks lskat gnuchess pingus supertuxkart trigger ultimatestunts vdrift flare darkplaces quake-qrp-textures quake2 quake2-retexture ioquake3 redeclipse unrealtournament4 urbanterror rigsofrods openra 
+    _install_packages_with_yay widelands wesnoth cataclysm-dda 0ad 0ad-data openttd kollision liquidwar neverball veloren hedgewars ltris mari0 warmux aisleriot atanks lskat gnuchess pingus supertuxkart trigger ultimatestunts vdrift flare darkplaces quake-qrp-textures quake2 quake2-retexture ioquake3 redeclipse unrealtournament4 urbanterror retroarch rigsofrods openra 
   fi
 }
 
