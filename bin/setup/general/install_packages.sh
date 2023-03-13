@@ -58,7 +58,7 @@ function _install_stage_3 ()
   _install_packages_with_yay bat btop
 
   echo "   Processing packages with >>c<<"
-  _install_packages_with_yay calc catdoc cppcheck chromium clamav clang composer cyanrip
+  _install_packages_with_yay calc catdoc cppcheck check-broken-packages-pacman-hook-git chromium clamav clang composer cyanrip
 
   echo "   Processing packages with >>d<<"
   _install_packages_with_yay dbeaver ddev-bin dmenu
