@@ -137,6 +137,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 * Started alias section `cpu`
 * Started alias section `network`
 * Added function `net_bazzline_network_list_open_ports`
+* Added support for `NET_BAZZLINE_IS_LTS_KERNEL` detection in `local.setting` creation
+* Added a bit more verbosity in `software-upgrade`
 
 ### Changed
 
