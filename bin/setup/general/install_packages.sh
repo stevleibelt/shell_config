@@ -134,7 +134,7 @@ function _install_stage_3 ()
   fi
 
   # ref: https://wiki.archlinux.org/title/Samba#Client
-  wget -O /etc/samba/smb.conf https://git.samba.org/samba.git/?p=samba.git;a=blob_plain;f=examples/smb.conf.default;hb=HEAD
+  curl "https://git.samba.org/samba.git/?p=samba.git;a=blob_plain;f=examples/smb.conf.default;hb=HEAD" > /etc/samba/smb.conf
 }
 
 function _install_stage_4 ()
