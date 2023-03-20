@@ -125,6 +125,16 @@ function _install_stage_3 ()
   
   echo "   Processing packages with >>z<<"
   _install_packages_with_yay zrepl-bin
+
+  
+  #smb
+  if [[ ! -d /etc/samba ]];
+  then
+    mkdir -p /etc/samba
+  fi
+
+  # ref: https://wiki.archlinux.org/title/Samba#Client
+  wget -O /etc/samba/smb.conf https://git.samba.org/samba.git/?p=samba.git;a=blob_plain;f=examples/smb.conf.default;hb=HEAD
 }
 
 function _install_stage_4 ()
