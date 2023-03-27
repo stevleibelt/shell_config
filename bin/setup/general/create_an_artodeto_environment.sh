@@ -89,6 +89,7 @@ function _main ()
   fi
 
   bash settings/git/setup.sh
+  bash settings/gnome-terminal-colors/install.sh
   bash settings/i3/install.sh
   bash settings/i3status/install.sh
   bash settings/screen/install.sh
