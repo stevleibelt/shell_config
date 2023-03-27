@@ -55,7 +55,7 @@ function _install_stage_3 ()
   _install_packages_with_yay acpi acpid android-tools android-udev ansible arandr archiso autorandr
 
   echo "   Processing packages with >>b<<"
-  _install_packages_with_yay bat btop
+  _install_packages_with_yay bat bind btop
 
   echo "   Processing packages with >>c<<"
   _install_packages_with_yay calc catdoc cppcheck check-broken-packages-pacman-hook-git chromium clamav clang composer cyanrip
