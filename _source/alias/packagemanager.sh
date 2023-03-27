@@ -41,6 +41,7 @@ then
     alias software-search-added='yay -Qs'
     alias software-upgrade-from-cache='yay -uu'
     alias software-upgrade="net_bazzline_packagemanager_arch_linux_software_upgrade yay ${NET_BAZZLINE_IS_LTS_KERNEL}"
+    alias software-upgrade-without-kernel="net_bazzline_packagemanager_arch_linux_software_upgrade yay ${NET_BAZZLINE_IS_LTS_KERNEL} 0"
     alias software-repository-info='yay -Si'
 elif [[ ${NET_BAZZLINE_PACKAGE_MANAGER} = 'pacman' ]];
 then
@@ -68,6 +69,7 @@ then
     alias software-search-added='sudo pacman -Qs'
     alias software-upgrade-from-cache='sudo pacman -u'
     alias software-upgrade="net_bazzline_packagemanager_arch_linux_software_upgrade 'sudo pacman' ${NET_BAZZLINE_IS_LTS_KERNEL}"
+    alias software-upgrade-without-kernel="net_bazzline_packagemanager_arch_linux_software_upgrade packman ${NET_BAZZLINE_IS_LTS_KERNEL} 0"
     alias software-repository-info='sudo pacman -Si'
 elif [[ ${NET_BAZZLINE_PACKAGE_MANAGER} = 'apk' ]];
 then
