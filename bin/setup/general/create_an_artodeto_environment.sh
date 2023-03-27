@@ -66,6 +66,9 @@ function _main ()
   if [[ ! -d settings ]];
   then
     git clone https://github.com/stevleibelt/settings
+    # ref: https://git-scm.com/book/de/v2/Git-Tools-Submodule
+    git submodule init
+    git submodule update
   else
     cd settings
     git pull
