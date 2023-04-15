@@ -15,8 +15,6 @@
 ####
 function net_bazzline_backup_to ()
 {
-    net_bazzline_record_function_usage ${FUNCNAME[0]}
-
     if [[ $# -eq 0 ]];
     then
         net_bazzline_handle_invalid_number_of_arguments_supplied "${FUNCNAME[0]} <source one> [<source ...>] <target>"
@@ -40,8 +38,6 @@ function net_bazzline_backup_to ()
 ####
 function net_bazzline_batch_directory_path_to_lower ()
 {
-    net_bazzline_record_function_usage ${FUNCNAME[0]}
-
     local MAX_DEPTH=${1:-1}
     local SEARCH_PATH="${2:-.}"
 
@@ -58,14 +54,12 @@ function net_bazzline_batch_directory_path_to_lower ()
 ####
 function net_bazzline_batch_convert_video_to_libx264 ()
 {
-    net_bazzline_record_function_usage ${FUNCNAME[0]}
-
     local MAX_DEPTH=${1:-1}
     local SEARCH_PATH="${2:-.}"
 
     #@todo use parallel if available
     #find ${SEARCH_PATH} -maxdepth ${MAX_DEPTH} -type f -print0 | while read -d $'\0' FILE_PATH;
-    find ${SEARCH_PATH} -maxdepth ${MAX_DEPTH} -type f -iregex '.*\.\(mp4\|mov\|flv\|avi\)$' -print0 | while read -d $'\0' FILE_PATH;
+    find "${SEARCH_PATH}" -maxdepth "${MAX_DEPTH}" -type f -iregex '.*\.\(mp4\|mov\|flv\|avi\)$' -print0 | while read -f -d $'\0' FILE_PATH;
     do
         #@see: https://stackoverflow.com/a/25535717
         #if [[ ${FILE_PATH} != *"converted264"* ]];
@@ -94,8 +88,6 @@ function net_bazzline_batch_convert_video_to_libx264 ()
 ####
 function net_bazzline_batch_convert_video_to_librav1e ()
 {
-    net_bazzline_record_function_usage ${FUNCNAME[0]}
-
     local MAX_DEPTH
     local SEARCH_PATH
 
@@ -104,7 +96,7 @@ function net_bazzline_batch_convert_video_to_librav1e ()
 
     #@todo use parallel if available
     #find ${SEARCH_PATH} -maxdepth ${MAX_DEPTH} -type f -print0 | while read -d $'\0' FILE_PATH;
-    find ${SEARCH_PATH} -maxdepth ${MAX_DEPTH} -type f -iregex '.*\.\(mp4\|mov\|flv\|avi\)$' -print0 | while read -d $'\0' FILE_PATH;
+    find "${SEARCH_PATH}" -maxdepth "${MAX_DEPTH}" -type f -iregex '.*\.\(mp4\|mov\|flv\|avi\)$' -print0 | while read -r -d $'\0' FILE_PATH;
     do
         #@see: https://stackoverflow.com/a/25535717
         #if [[ ${FILE_PATH} != *"converted265"* ]];
@@ -133,14 +125,12 @@ function net_bazzline_batch_convert_video_to_librav1e ()
 ####
 function net_bazzline_batch_convert_video_to_libx265 ()
 {
-    net_bazzline_record_function_usage ${FUNCNAME[0]}
-
     local MAX_DEPTH=${1:-1}
     local SEARCH_PATH="${2:-.}"
 
     #@todo use parallel if available
     #find ${SEARCH_PATH} -maxdepth ${MAX_DEPTH} -type f -print0 | while read -d $'\0' FILE_PATH;
-    find ${SEARCH_PATH} -maxdepth ${MAX_DEPTH} -type f -iregex '.*\.\(mp4\|mov\|flv\|avi\)$' -print0 | while read -d $'\0' FILE_PATH;
+    find "${SEARCH_PATH}" -maxdepth "${MAX_DEPTH}" -type f -iregex '.*\.\(mp4\|mov\|flv\|avi\)$' -print0 | while read -r -d $'\0' FILE_PATH;
     do
         #@see: https://stackoverflow.com/a/25535717
         #if [[ ${FILE_PATH} != *"converted265"* ]];
@@ -168,8 +158,6 @@ function net_bazzline_batch_convert_video_to_libx265 ()
 ####
 function net_bazzline_batch_file_path_to_lower ()
 {
-    net_bazzline_record_function_usage ${FUNCNAME[0]}
-
     local MAX_DEPTH=${1:-1}
     local SEARCH_PATH="${2:-.}"
 
@@ -187,8 +175,6 @@ function net_bazzline_batch_file_path_to_lower ()
 ####
 function net_bazzline_batch_filesystem_path_to_lower ()
 {
-    net_bazzline_record_function_usage ${FUNCNAME[0]}
-
     local FILE_TYPE="${3:-''}"
     local MAX_DEPTH=${1:-1}
     local SEARCH_PATH="${2:-.}"
@@ -202,7 +188,7 @@ function net_bazzline_batch_filesystem_path_to_lower ()
         local FILE_TYPE_OPTION=""
     fi
 
-    find ${SEARCH_PATH} -maxdepth ${MAX_DEPTH}${FILE_TYPE_OPTION} -print0 | while read -d $'\0' FILE_PATH;
+    find "${SEARCH_PATH}" -maxdepth "${MAX_DEPTH}${FILE_TYPE_OPTION}" -print0 | while read -r -d $'\0' FILE_PATH;
     do
         if [[ "${SEARCH_PATH}" == "." ]];
         then
@@ -226,9 +212,7 @@ function net_bazzline_batch_filesystem_path_to_lower ()
 ####
 function net_bazzline_bash_grep ()
 {
-    net_bazzline_record_function_usage ${FUNCNAME[0]}
-
-    grep -rI -color=auto -exclude-dir=\.bzr -exclude-dir=\.git -exclude-dir=\.hg -exclude-dir=\.svn -exclude-dir=build -exclude-dir=dist -exclude=tags $*
+    grep -rI -color=auto -exclude-dir=\.bzr -exclude-dir=\.git -exclude-dir=\.hg -exclude-dir=\.svn -exclude-dir=build -exclude-dir=dist -exclude=tags "${*}"
 }
 
 #c
@@ -238,8 +222,6 @@ function net_bazzline_bash_grep ()
 ####
 function net_bazzline_create_a_mp3_file_for_each_mpc_file_in_the_current_directory()
 {
-    net_bazzline_record_function_usage ${FUNCNAME[0]}
-
     if [[ -f /usr/bin/mpcdec ]];
     then
         #@link https://odoepner.wordpress.com/2017/01/01/convert-mpc-to-mp3-on-linux/
@@ -270,8 +252,6 @@ function not_working:net_bazzline_convert_dvd_to_mkv()
 ####
 function net_bazzline_burn ()
 {
-    net_bazzline_record_function_usage ${FUNCNAME[0]}
-
     if [[ $# -lt 1 ]];
     then
         net_bazzline_handle_invalid_number_of_arguments_supplied "${FUNCNAME[0]} <path to the iso file> [<device to burn>]"
@@ -301,18 +281,17 @@ function net_bazzline_burn ()
 ####
 function net_bazzline_cd ()
 {
-    net_bazzline_record_function_usage ${FUNCNAME[0]}
-
     if [[ $# -eq 0 ]];
     then 
-        cd "${HOME}"
-    #is numeric value?
-    elif [[ `expr ${1} + 1 2> /dev/null` ]];
+        cd "${HOME}" || echo "Could not change into directory >>${HOME}<<."
+    # Checks if value is numeric (check allowes negativ numbers too)
+    # ref: https://stackoverflow.com/a/13089269
+    elif [[ "${1}" == ?(-)+([[:digit:]]) ]];
     then
-        #directory exist?
+        # Check if we have a directory with the numeric name
         if [[ -d "${1}" ]];
         then
-            \cd "${1}"
+            \cd "${1}" || echo "Could not change into directory >>${1}<<."
         else
             local PATH_TO_GO_UP=""
 
@@ -321,14 +300,14 @@ function net_bazzline_cd ()
                 PATH_TO_GO_UP+="../"
             done
 
-            \cd ${PATH_TO_GO_UP}
+            \cd "${PATH_TO_GO_UP}" || echo "Could not change into directory >>${PATH_TO_GO_UP}<<."
         fi
     #is provided path a file?
     elif [[ -f "${1}" ]];
     then
-        \cd $(dirname "${1}")
+        \cd "$(dirname "${1}")" || echo "Could not change into directory >>${1}<<."
     else
-        \cd "${1}"
+        \cd "${1}" || echo "Could not change into directory >>${1}<<."
     fi
 }
 
@@ -971,8 +950,6 @@ function net_bazzline_execute_as_super_user_when_not_beeing_root ()
 ####
 function net_bazzline_filesystem_path_to_lower ()
 {
-    net_bazzline_record_function_usage ${FUNCNAME[0]}
-
     if [[ $# -lt 1 ]];
     then
         net_bazzline_handle_invalid_number_of_arguments_supplied "${FUNCNAME[0]} <file path>"
@@ -999,21 +976,19 @@ function net_bazzline_filesystem_path_to_lower ()
 # calles find with given param and type d
 #
 # @param string $1 - pattern your are searching for
-# @param [string $2] - path to serching in
+# @param [string $2] - path to serching in, default is >>.<<
 #
 # @author stev leibelt
 # @since 2013-03-08
 ####
 function net_bazzline_find_directory ()
 {
-    net_bazzline_record_function_usage ${FUNCNAME[0]}
-
     if [[ $# -eq 1 ]]; then
-        find -iname "$1" -type d 2>/dev/null
+        find . -iname "$1" -type d 2>/dev/null
     elif [[ $# -eq 2 ]]; then
         find "$2" -iname "$1" -type d 2>/dev/null
     else
-        net_bazzline_handle_invalid_number_of_arguments_supplied "${FUNCNAME[0]} <search pattern> [<path>"
+        net_bazzline_handle_invalid_number_of_arguments_supplied "${FUNCNAME[0]} <string: search pattern> [<string: path>]"
 
         return 1
     fi
@@ -1023,7 +998,7 @@ function net_bazzline_find_directory ()
 # calles find with given param and type f
 #
 # @param string $1 - pattern you are searching for
-# @param [string $2] - path to serching in
+# @param [string $2] - path to serching in, default is >>.<<
 # @param [bool $3] - do not ignore dot files
 #
 # dot exclusion taken from: https://www.linuxquestions.org/questions/linux-general-1/find-and-excluding-all-hidden-directories-910578/
@@ -1033,16 +1008,14 @@ function net_bazzline_find_directory ()
 ####
 function net_bazzline_find_file ()
 {
-    net_bazzline_record_function_usage ${FUNCNAME[0]}
-
     if [[ $# -eq 1 ]]; then
-        find -iname "$1" -not -path "*/.*/*" -not -name ".*" -type f 2>/dev/null
+        find . -iname "${1}" -not -path "*/.*/*" -not -name ".*" -type f 2>/dev/null
     elif [[ $# -eq 2 ]]; then
-        find "$2"  -iname "$1" -not -path "*/.*/*" -not -name ".*" -type f 2>/dev/null
+        find "${2}"  -iname "${1}" -not -path "*/.*/*" -not -name ".*" -type f 2>/dev/null
     elif [[ $# -eq 3 ]]; then
-        find "$2" -iname "$1" -type f 2>/dev/null
+        find "${2}" -iname "${1}" -type f 2>/dev/null
     else
-        net_bazzline_handle_invalid_number_of_arguments_supplied "${FUNCNAME[0]} <search pattern> [<path> [<do not ignore dot files>]]"
+        net_bazzline_handle_invalid_number_of_arguments_supplied "${FUNCNAME[0]} <string: search pattern> [<string: path> [<bool: do not ignore dot files>]]"
 
         return 1
     fi
