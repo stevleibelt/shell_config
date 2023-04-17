@@ -97,7 +97,8 @@ function _install_stage_3 ()
   _install_packages_with_yay okular openssh openvpn
   
   echo "   Processing packages with >>p<<"
-  _install_packages_with_yay pandoc parallel pavucontrol-qt picard pcmanfm perl-io-socket-ssl picocom plantuml podman potato powertop progress pulseaudio-alsa pulsemixer python python-pip
+  _install_packages_with_yay pandoc parallel pavucontrol-qt picard pcmanfm perl-io-socket-ssl picocom plantuml podman potato powertop progress pulseaudio pulseaudio-alsa pulsemixer python python-pip
+  systemctl --user enable pulseaudio
   
   echo "   Processing packages with >>q<<"
   _install_packages_with_yay qemu-full
