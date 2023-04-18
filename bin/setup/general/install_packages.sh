@@ -67,7 +67,7 @@ function _install_stage_3 ()
   _install_packages_with_yay element-desktop exfatprogs exfat-utils
   
   echo "   Processing packages with >>f<<"
-  _install_packages_with_yay firefox ffmpeg flameshot freeplan fwupd
+  _install_packages_with_yay firefox ffmpeg flameshot freeplane fwupd
   
   echo "   Processing packages with >>g<<"
   _install_packages_with_yay gcc gcc-libs geeqie geany gimp git gnome-terminal gparted glibc gvfs gvfs-mtb gvfs-smb
