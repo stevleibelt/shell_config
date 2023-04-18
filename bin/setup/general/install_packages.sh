@@ -68,6 +68,17 @@ function _install_stage_3 ()
   
   echo "   Processing packages with >>f<<"
   _install_packages_with_yay firefox ffmpeg flameshot freeplane fwupd
+  # freeplane only works with java version <= 17
+  # PACKAGE_NAME_OF_JAVA_17 sould contain "java-17-openjdk"
+  local PACKAGE_NAME_OF_JAVA_17
+  PACKAGE_NAME_OF_JAVA_17=$(archlinux-java status | grep 17 | xargs | cut -d " " -f 1)
+
+  if [[ "${PACKAGE_NAME_OF_JAVA_17}" = "" ]];
+  then
+    echo ":: Warning, no java 17 version detected. Freeplane will not start."
+  else
+    sudo archlinux-java set "${PACKAGE_NAME_OF_JAVA_17}"
+  fi
   
   echo "   Processing packages with >>g<<"
   _install_packages_with_yay gcc gcc-libs geeqie geany gimp git gnome-terminal gparted glibc gvfs gvfs-mtb gvfs-smb
