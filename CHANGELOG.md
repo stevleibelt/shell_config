@@ -110,6 +110,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added
 
+* Added string in alias and function section including `left_trim`, `right_trim` and `trim`
 * Added option to upgrade an arch linux system without linux kernel (and zfs) ... you know, arch zfs users are different
 * Added [install_packages.sh](bin/setup/general/install_packages.sh)
 * Added `watchForSync`

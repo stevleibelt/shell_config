@@ -40,10 +40,11 @@ function net_bazzline_shell_config_function_bootstrap ()
         FILES_TO_LOAD+=('filesystem/windows')
     fi
 
-    for FILE_TO_LOAD in ${FILES_TO_LOAD[@]};
+    for FILE_TO_LOAD in "${FILES_TO_LOAD[@]}";
     do
         source "${PATH_OF_THE_CURRENT_SCRIPT}/${FILE_TO_LOAD}"
     done;
 }
 
 net_bazzline_shell_config_function_bootstrap
+

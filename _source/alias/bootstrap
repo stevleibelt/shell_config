@@ -25,6 +25,7 @@ function net_bazzline_shell_config_alias_bootstrap ()
         'powerstate.sh'
         'process.sh'
         'pulseaudio.sh'
+        'string.sh'
         'svn.sh'
         'systemd.sh'
         'virtualbox.sh'
@@ -42,10 +43,11 @@ function net_bazzline_shell_config_alias_bootstrap ()
         FILES_TO_LOAD+=('windows.sh')
     fi
 
-    for FILE_TO_LOAD in ${FILES_TO_LOAD[@]};
+    for FILE_TO_LOAD in "${FILES_TO_LOAD[@]}";
     do
         source "${PATH_OF_THE_CURRENT_SCRIPT}/${FILE_TO_LOAD}"
     done;
 }
 
 net_bazzline_shell_config_alias_bootstrap
+

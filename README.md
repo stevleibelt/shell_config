@@ -42,3 +42,4 @@ updateShellConfiguration
 
 * [stevleibelt](https://github.com/stevleibelt)
 * [terminalforlife](https://github.com/terminalforlife)
+
