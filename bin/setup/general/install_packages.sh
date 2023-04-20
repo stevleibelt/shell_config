@@ -138,6 +138,10 @@ function _install_stage_3 ()
   echo "   Processing packages with >>z<<"
   _install_packages_with_yay zrepl-bin
 
+  #light
+  # ref: https://wiki.archlinux.org/title/Backlight#light
+  local CURRENT_USER
+  sudo usermod -aG video ${USER}
   
   #smb
   if [[ ! -d /etc/samba ]];
