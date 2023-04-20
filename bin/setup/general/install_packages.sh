@@ -139,9 +139,11 @@ function _install_stage_3 ()
   _install_packages_with_yay zrepl-bin
 
   #light
-  # ref: https://wiki.archlinux.org/title/Backlight#light
-  local CURRENT_USER
-  sudo usermod -aG video ${USER}
+  if ! groups | grep -q video;
+  then
+    # ref: https://wiki.archlinux.org/title/Backlight#light
+    sudo usermod -aG video "${USER}"
+  fi
   
   #smb
   if [[ ! -d /etc/samba ]];
