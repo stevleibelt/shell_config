@@ -11,14 +11,14 @@ function _ask ()
 
 function _install_packages_with_pacman ()
 {
-  sudo pacman -S --noconfirm --needed ${@}
+  sudo pacman -S --noconfirm --needed "${@}"
 }
 
 function _install_packages_with_yay ()
 {
   #@see: https://github.com/Jguer/yay/issues/830
   #yay -S --clean --answerdiff=None --noconfirm ${@}
-  yay --needed --noconfirm -S ${@}
+  yay --needed --noconfirm -S "${@}"
 }
 
 function _install_stage_1 ()
@@ -87,7 +87,8 @@ function _install_stage_3 ()
   _install_packages_with_yay hdparm htop hwinfo
   
   echo "   Processing packages with >>i<<"
-  _install_packages_with_yay i3-wm i3status iw
+  # perl-anyevent-i3 is needed for i3-save-tree
+  _install_packages_with_yay i3-wm perl-anyevent-i3 i3status iw
   
   echo "   Processing packages with >>j<<"
   _install_packages_with_yay jetbrains-toolbox jq
@@ -269,9 +270,7 @@ function _main ()
     bash "${PATH_TO_THIS_SCRIPT}/../zfs/setup.sh"
   fi
 
-  sudo systemctl -q is-enabled acpid.service
-
-  if [[ ${?} -eq 0 ]];
+  if sudo systemctl -q is-enabled acpid.service;
   then
     echo ":: Enabling and starting acpid.service"
     sudo systemctl enable acpid.service
@@ -279,4 +278,4 @@ function _main ()
   fi
 }
 
-_main ${@}
+_main "${@}"
