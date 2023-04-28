@@ -155,7 +155,7 @@ if [[ -f /usr/bin/zpool ]];
 then
     NET_BAZZLINE_ZFS_IS_AVAILABLE=1
     #default zfs pool if non is provided
-    NET_BAZZLINE_ZFS_DEFAULT_POOL='zpool'
+    NET_BAZZLINE_ZFS_DEFAULT_POOL='zroot'
     declare -a NET_BAZZLINE_ZFS_LIST_OF_POOLS_TO_SCRUB=("zroot");
 else
     NET_BAZZLINE_ZFS_IS_AVAILABLE=0

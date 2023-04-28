@@ -110,6 +110,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added
 
+* Added zfs snapshot creation with name of `net_bazzline_before_system_upgrade` when zfs is available **before** a system upgrade
 * Added string in alias and function section including `left_trim`, `right_trim` and `trim`
 * Added option to upgrade an arch linux system without linux kernel (and zfs) ... you know, arch zfs users are different
 * Added [install_packages.sh](bin/setup/general/install_packages.sh)
@@ -144,8 +145,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 
-* Changed arch linux keyring reinstalltion from 28 to 14 days
 * Added optional parameters "number of retries if host is down" and "number of seconds between retries" for function `net_bazzline_network_ssh_to_host`
+* Changed arch linux keyring reinstalltion from 28 to 14 days
+* Changed content of `NET_BAZZLINE_ZFS_DEFAULT_POOL` from `zpool` to `zroot`
 * Commented out `LESS_TERMCAP_*` settings section in file `setting`
 * Moved `install.sh`, `update.sh` and `upgrade.sh` into [bin](bin/)
 
