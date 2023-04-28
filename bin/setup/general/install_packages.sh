@@ -58,7 +58,7 @@ function _install_stage_3 ()
   _install_packages_with_yay bat bind btop
 
   echo "   Processing packages with >>c<<"
-  _install_packages_with_yay calc catdoc cppcheck check-broken-packages-pacman-hook-git chromium clamav clang composer cyanrip
+  _install_packages_with_yay calc catdoc cppcheck check-broken-packages-pacman-hook-git chromium clamav clang composer curlie cyanrip
 
   echo "   Processing packages with >>d<<"
   _install_packages_with_yay dbeaver ddev-bin dmenu
@@ -84,7 +84,7 @@ function _install_stage_3 ()
   _install_packages_with_yay gcc gcc-libs geeqie geany gimp git gnome-terminal gparted glibc gvfs gvfs-mtb gvfs-smb
   
   echo "   Processing packages with >>h<<"
-  _install_packages_with_yay hdparm htop hwinfo
+  _install_packages_with_yay hdparm htop httpie hwinfo
   
   echo "   Processing packages with >>i<<"
   # perl-anyevent-i3 is needed for i3-save-tree
