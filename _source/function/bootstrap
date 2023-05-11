@@ -42,7 +42,7 @@ function net_bazzline_shell_config_function_bootstrap ()
 
     if [[ -f /usr/bin/jq ]];
     then
-      FILE_TO_LOAD+=('string/jq')
+      FILES_TO_LOAD+=('string/jq')
     fi
 
     for FILE_TO_LOAD in "${FILES_TO_LOAD[@]}";
