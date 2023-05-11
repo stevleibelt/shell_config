@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # d
-# Usage: echo " my string to trim " | net_bazzline_string_left_trim
+# Usage: net_bazzline_string_jq_decode_base64_jwt_token "content of jwt token"
 # ref: https://tribut.de
 function net_bazzline_string_jq_decode_base64_jwt_token ()
 {
