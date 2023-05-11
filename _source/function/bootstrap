@@ -13,36 +13,41 @@ function net_bazzline_shell_config_function_bootstrap ()
     #order is important
     #@todo each section should have its own bootstrap
     declare -a FILES_TO_LOAD=(
-        'date/generic'
-        'device/generic'
-        'function' 
-        'filesystem/generic' 
-        'filesystem/luks' 
-        'media/audio' 
-        'media/book'
-        'media/generic' 
-        'media/image' 
-        'media/video' 
-        'network/generic' 
-        'network/ssh' 
-        'process/generic' 
-        'packagemanager/generic' 
-        'string/generic'
+      'date/generic'
+      'device/generic'
+      'function' 
+      'filesystem/generic' 
+      'filesystem/luks' 
+      'media/audio' 
+      'media/book'
+      'media/generic' 
+      'media/image' 
+      'media/video' 
+      'network/generic' 
+      'network/ssh' 
+      'process/generic' 
+      'packagemanager/generic' 
+      'string/generic'
     )
 
     if [[ ${NET_BAZZLINE_ZFS_IS_AVAILABLE} -eq 1 ]];
     then
-        FILES_TO_LOAD+=('filesystem/zfs')
+      FILES_TO_LOAD+=('filesystem/zfs')
     fi
 
     if [[ ${NET_BAZZLINE_OPERATION_SYSTEM_IS_WINDOWS} -eq 1 ]];
     then
-        FILES_TO_LOAD+=('filesystem/windows')
+      FILES_TO_LOAD+=('filesystem/windows')
+    fi
+
+    if [[ -f /usr/bin/jq ]];
+    then
+      FILE_TO_LOAD+=('string/jq')
     fi
 
     for FILE_TO_LOAD in "${FILES_TO_LOAD[@]}";
     do
-        source "${PATH_OF_THE_CURRENT_SCRIPT}/${FILE_TO_LOAD}"
+      source "${PATH_OF_THE_CURRENT_SCRIPT}/${FILE_TO_LOAD}"
     done;
 }
 
