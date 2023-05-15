@@ -156,7 +156,7 @@ echo ":: Trying upgrade with ignoring following packages >>${PACKGES_TO_IGNORE}<
 if ${PACKAGEMANAGER_COMMAND} -Syyu --ignore=${PACKGES_TO_IGNORE};
 then
   echo ":: Cleaning up" 
-  ${PACKAGEMANAGER_COMMAND} --clean
+  ${PACKAGEMANAGER_COMMAND} -Sc
 else
   echo ":: Something bad happens."
   read -n 1 -s -r -p "Press any key to continue"
@@ -180,7 +180,7 @@ then
   if ${PACKAGEMANAGER_COMMAND} -Syyu --ignore=${PACKGES_TO_IGNORE};
   then
     echo ":: Cleaning up" 
-    ${PACKAGEMANAGER_COMMAND} --clean
+    ${PACKAGEMANAGER_COMMAND} -Sc
   else
     echo ":: Something bad happens.";
     read -n 1 -s -r -p "Press any key to continue"
