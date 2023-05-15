@@ -133,6 +133,11 @@ ${CURRENT_TIMESTAMP}
 DELIM
     #eo: check last system update timestamp
 
+    #bo: log file cleanup
+    echo ":: Truncating >>${LOG_FILE_PATH}<<"
+    truncate -s 0 ${LOG_FILE_PATH}
+    #eo: log file cleanup
+
     #bo: check if screen session exists
     net_bazzline_packagemanager_check_if_system_upgrade_screen_session_exists
 
