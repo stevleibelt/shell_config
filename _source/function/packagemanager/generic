@@ -128,6 +128,7 @@ function net_bazzline_packagemanager_arch_linux_software_upgrade ()
     fi 
 
     cat > "${LAST_SYSTEM_UPDATE_FILE_PATH}" <<DELIM
+#!/bin/bash
 #last system update datetime
 ${CURRENT_DATETIME}
 #last system update timestamp
@@ -151,6 +152,7 @@ DELIM
       if [[ ${SKIP_KERNEL_PACKAGES} -eq 0 ]];
       then
         cat > ${UPGRADE_SCRIPT_FILE_PATH} <<DELIM
+#!/bin/bash
 echo ":: Trying upgrade with ignoring following packages >>${PACKGES_TO_IGNORE}<<"
 
 if ${PACKAGEMANAGER_COMMAND} -Syyu --ignore=${PACKGES_TO_IGNORE};
