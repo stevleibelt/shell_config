@@ -192,9 +192,10 @@ then
   sleep 30
 fi
 DELIM
-      screen -dmS ${NET_BAZZLINE_FUNCTION_PACKAGEMANAGER_SYSTEM_UPGRADE_SCREEN_SESSION_NAME} bash ${UPGRADE_SCRIPT_FILE_PATH}
       fi
       #eo: upgrade script generation
+      
+      screen -dmS ${NET_BAZZLINE_FUNCTION_PACKAGEMANAGER_SYSTEM_UPGRADE_SCREEN_SESSION_NAME} bash ${UPGRADE_SCRIPT_FILE_PATH}
     fi
 
     #this line is working because we make sure that there is a screen session or we create one above this line
