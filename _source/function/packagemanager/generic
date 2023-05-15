@@ -86,7 +86,7 @@ function net_bazzline_packagemanager_arch_linux_software_upgrade ()
           echo "   Removed snapshot >>${ZFS_SNAPSHOT_NAME}<<."
         else
           echo ":: Error"
-          echo "   Could not destory snapsho >>${NET_BAZZLINE_ZFS_DEFAULT_POOL}@${ZFS_SNAPSHOT_NAME}<<."
+          echo "   Could not destory snapshot >>${NET_BAZZLINE_ZFS_DEFAULT_POOL}@${ZFS_SNAPSHOT_NAME}<<."
         
           return 30;
         fi
@@ -97,7 +97,7 @@ function net_bazzline_packagemanager_arch_linux_software_upgrade ()
           echo "   Zfs snapshot >>${ZFS_SNAPSHOT_NAME}<< created."
         else
           echo ":: Error"
-          echo "   Could not create snapshop >>${NET_BAZZLINE_ZFS_DEFAULT_POOL}@${ZFS_SNAPSHOT_NAME}"
+          echo "   Could not create snapshot >>${NET_BAZZLINE_ZFS_DEFAULT_POOL}@${ZFS_SNAPSHOT_NAME}"
 
           return 32;
         fi
@@ -192,7 +192,7 @@ then
   sleep 30
 fi
 DELIM
-      screen -dmS ${NET_BAZZLINE_FUNCTION_PACKAGEMANAGER_SYSTEM_UPGRADE_SCREEN_SESSION_NAME} bash -c ${UPGRADE_SCRIPT_FILE_PATH}
+      screen -dmS ${NET_BAZZLINE_FUNCTION_PACKAGEMANAGER_SYSTEM_UPGRADE_SCREEN_SESSION_NAME} bash ${UPGRADE_SCRIPT_FILE_PATH}
       fi
       #eo: upgrade script generation
     fi
