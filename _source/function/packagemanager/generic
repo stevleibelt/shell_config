@@ -6,7 +6,7 @@ NET_BAZZLINE_FUNCTION_PACKAGEMANAGER_SYSTEM_UPGRADE_SCREEN_SESSION_NAME='system_
 ####
 # @param: <string> packagemanager_command
 # [@param: <int> is_lts_kernel = 1]
-# [@param: <int> skip_kernel_PACKAGES = 1]
+# [@param: <int> skip_kernel_packages = 1]
 ####
 function net_bazzline_packagemanager_arch_linux_software_upgrade ()
 {
@@ -14,7 +14,7 @@ function net_bazzline_packagemanager_arch_linux_software_upgrade ()
     if [[ $# -lt 1 ]];
     then
         echo ":: Invalid amount of arguments provided."
-        echo "   ${FUNCNAME[0]} <packagemanager_command: sudo pacman | yay> [<is_lts_kernel>: 0|1]"
+        echo "   ${FUNCNAME[0]} <packagemanager_command: sudo pacman | yay> [<is_lts_kernel>: 0|1] [<skip_kernel_packages>: 0|1]"
 
         return 1;
     fi
@@ -28,6 +28,7 @@ function net_bazzline_packagemanager_arch_linux_software_upgrade ()
     local PACKGES_TO_IGNORE
     local PACMAN_LOCK_FILE_PATH
     local SKIP_KERNEL_PACKAGES
+    local UPGRADE_SCRIPT_FILE_PATH
     local ZFS_SNAPSHOT_NAME
 
     IS_LTS_KERNEL="${2:-1}"
@@ -35,15 +36,16 @@ function net_bazzline_packagemanager_arch_linux_software_upgrade ()
     PACKAGEMANAGER_COMMAND="${1}"
     PACMAN_LOCK_FILE_PATH='/var/lib/pacman/db.lck'
     SKIP_KERNEL_PACKAGES="${3:-1}"
+    UPGRADE_SCRIPT_FILE_PATH="/tmp/net_bazzline_system_upgrade.sh"
     ZFS_SNAPSHOT_NAME='net_bazzline_before_system_upgrade'
 
     #@todo: @see: https://github.com/archzfs/archzfs/issues/446#issuecomment-1103320350
     #implement something like this: pacman -Syyu $(for i in {zfs-,}{nvidia,linux}{,-lts,-hardened,-zen}{,-headers}; do echo --ignore $i; done)
     if [[ ${IS_LTS_KERNEL} -eq 0 ]];
     then
-        PACKGES_TO_IGNORE="linux-lts,linux-lts-headers,zfs-linux-lts,zfs-utils"
+      PACKGES_TO_IGNORE="linux-lts,linux-lts-headers,zfs-linux-lts,zfs-utils"
     else
-        PACKGES_TO_IGNORE="linux,linux-headers,zfs-linux,zfs-utils"
+      PACKGES_TO_IGNORE="linux,linux-headers,zfs-linux,zfs-utils"
     fi
     #eo: setup
 
@@ -135,7 +137,7 @@ DELIM
 
     #bo: log file cleanup
     echo ":: Truncating >>${LOG_FILE_PATH}<<"
-    truncate -s 0 ${LOG_FILE_PATH}
+    sudo truncate -s 0 ${LOG_FILE_PATH}
     #eo: log file cleanup
 
     #bo: check if screen session exists
@@ -143,18 +145,64 @@ DELIM
 
     if  [[ ${?} -eq 1 ]];
     then
-        if [[ ${SKIP_KERNEL_PACKAGES} -eq 0 ]];
-        then
-          screen -dmS ${NET_BAZZLINE_FUNCTION_PACKAGEMANAGER_SYSTEM_UPGRADE_SCREEN_SESSION_NAME} bash -c "echo \":: Trying upgrade with ignoring following packages >>${PACKGES_TO_IGNORE}<<\"; ${PACKAGEMANAGER_COMMAND} -Syyu --ignore=${PACKGES_TO_IGNORE}; if [[ $? -ne 0 ]]; then echo ':: Something bad happens.'; read -n 1 -s -r -p \"Press any key to continue\"; else echo ':: Cleaning up' && ${PACKAGEMANAGER_COMMAND}; fi; echo ':: Waiting for 30 seconds.'; echo ' Hit CTRL+C to terminate this waiting.'; sleep 30"
-        else
-          screen -dmS ${NET_BAZZLINE_FUNCTION_PACKAGEMANAGER_SYSTEM_UPGRADE_SCREEN_SESSION_NAME} bash -c "echo ':: Trying default upgrade'; ${PACKAGEMANAGER_COMMAND} -Syyu || echo ':: Ignoring zfs packages'; echo \"   Ignoring packages >>${PACKGES_TO_IGNORE}<<\"; ${PACKAGEMANAGER_COMMAND} -Syyu --ignore=${PACKGES_TO_IGNORE}; if [[ $? -ne 0 ]]; then echo ':: Something bad happens.'; read -n 1 -s -r -p \"Press any key to continue\"; else echo ':: Cleaning up' && ${PACKAGEMANAGER_COMMAND}; fi; echo ':: Waiting for 30 seconds.'; echo ' Hit CTRL+C to terminate this waiting.'; sleep 30"
-        fi
+      #bo: upgrade script generation
+      echo ":: Generating >>${UPGRADE_SCRIPT_FILE_PATH}<<"
+      
+      if [[ ${SKIP_KERNEL_PACKAGES} -eq 0 ]];
+      then
+        cat > ${UPGRADE_SCRIPT_FILE_PATH} <<DELIM
+echo ":: Trying upgrade with ignoring following packages >>${PACKGES_TO_IGNORE}<<"
+
+if ${PACKAGEMANAGER_COMMAND} -Syyu --ignore=${PACKGES_TO_IGNORE};
+then
+  echo ":: Cleaning up" 
+  ${PACKAGEMANAGER_COMMAND} --clean
+else
+  echo ":: Something bad happens."
+  read -n 1 -s -r -p "Press any key to continue"
+fi
+
+echo ":: Waiting for 30 seconds."
+echo " Hit CTRL+C to terminate this waiting."
+sleep 30
+DELIM
+    else
+        cat > ${UPGRADE_SCRIPT_FILE_PATH} <<DELIM
+echo ":: Trying default upgrade"
+
+${PACKAGEMANAGER_COMMAND} -Syyu
+
+if [[ ${?} -ne 0 ]];
+then
+  echo ":: Ignoring zfs packages";
+  echo "   Ignoring packages >>${PACKGES_TO_IGNORE}<<";
+
+  if ${PACKAGEMANAGER_COMMAND} -Syyu --ignore=${PACKGES_TO_IGNORE};
+  then
+    echo ":: Cleaning up" 
+    ${PACKAGEMANAGER_COMMAND} --clean
+  else
+    echo ":: Something bad happens.";
+    read -n 1 -s -r -p "Press any key to continue"
+  fi
+
+  echo ":: Waiting for 30 seconds."
+  echo " Hit CTRL+C to terminate this waiting."
+
+  sleep 30
+fi
+DELIM
+      screen -dmS ${NET_BAZZLINE_FUNCTION_PACKAGEMANAGER_SYSTEM_UPGRADE_SCREEN_SESSION_NAME} bash -c ${UPGRADE_SCRIPT_FILE_PATH}
+      fi
+      #eo: upgrade script generation
     fi
 
     #this line is working because we make sure that there is a screen session or we create one above this line
     screen -r ${NET_BAZZLINE_FUNCTION_PACKAGEMANAGER_SYSTEM_UPGRADE_SCREEN_SESSION_NAME}
 
-    echo ":: system upgrade logged in >>${LOG_FILE_PATH}<<."
+    echo ":: System Information"
+    echo "   System upgrade logged: >>${LOG_FILE_PATH}<<."
+    echo "   Executed upgrade script: >>${UPGRADE_SCRIPT_FILE_PATH}<<"
     #eo: check if screen session exists
 }
 
