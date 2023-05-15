@@ -110,6 +110,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added
 
+* Added jq section below string with function `net_bazzline_string_jq_decode_base64_jwt_token` and alias `decodeBase64Jwt` if `jq` is installed
 * Added zfs snapshot creation with name of `net_bazzline_before_system_upgrade` when zfs is available **before** a system upgrade
 * Added string in alias and function section including `left_trim`, `right_trim` and `trim`
 * Added option to upgrade an arch linux system without linux kernel (and zfs) ... you know, arch zfs users are different
