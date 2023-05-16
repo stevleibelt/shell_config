@@ -151,6 +151,7 @@ DELIM
       if [[ ${SKIP_KERNEL_PACKAGES} -eq 0 ]];
       then
         cat > ${UPGRADE_SCRIPT_FILE_PATH} <<DELIM
+#!/bin/bash
 echo ":: Trying upgrade with ignoring following packages >>${PACKGES_TO_IGNORE}<<"
 
 if ${PACKAGEMANAGER_COMMAND} -Syyu --ignore=${PACKGES_TO_IGNORE};
@@ -168,6 +169,7 @@ sleep 30
 DELIM
     else
         cat > ${UPGRADE_SCRIPT_FILE_PATH} <<DELIM
+#!/bin/bash
 echo ":: Trying default upgrade"
 
 ${PACKAGEMANAGER_COMMAND} -Syyu
