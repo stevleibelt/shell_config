@@ -13,6 +13,7 @@ function net_bazzline_shell_config_function_bootstrap ()
     #order is important
     #@todo each section should have its own bootstrap
     declare -a FILES_TO_LOAD=(
+      'core.sh' #has to be the first file always loaded
       'date/generic'
       'device/generic'
       'function' 
