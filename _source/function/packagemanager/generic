@@ -203,9 +203,13 @@ DELIM
     #this line is working because we make sure that there is a screen session or we create one above this line
     screen -r ${NET_BAZZLINE_FUNCTION_PACKAGEMANAGER_SYSTEM_UPGRADE_SCREEN_SESSION_NAME}
 
-    echo ":: System Information"
+    echo ":: Runtime information"
     echo "   System upgrade logged: >>${LOG_FILE_PATH}<<."
     echo "   Executed upgrade script: >>${UPGRADE_SCRIPT_FILE_PATH}<<"
+    if [[ ${NET_BAZZLINE_ZFS_IS_AVAILABLE} -eq 1 ]];
+    then
+      echo "   ZFS Snapshotname before upgrade: >>${ZFS_SNAPSHOT_NAME}<<"
+    fi
     #eo: check if screen session exists
 }
 
