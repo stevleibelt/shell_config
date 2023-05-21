@@ -10,76 +10,98 @@
 ####
 function net_bazzline_media_book_convert_markdown_files_to_one_pdf ()
 {
-    local CURRENT_WORKING_DIRECTORY
-    local FILE_PATTERN
-    local NUMBER_OF_FOUND_FILES
-    local MERGED_PDF_FILE_NAME
-    local PDF_DIRECTORY_PATH
-    local TEMPORARY_DIRECTORY
-    local TEMPORARY_FILE_PATH
+  local CURRENT_WORKING_DIRECTORY
+  local FILE_PATTERN
+  local NUMBER_OF_FOUND_FILES
+  local MERGED_PDF_FILE_NAME
+  local PDF_DIRECTORY_PATH
+  local TEMPORARY_DIRECTORY
+  local TEMPORARY_FILE_PATH
 
-    CURRENT_WORKING_DIRECTORY=$(pwd)
-    FILE_PATTERN="${1-*.md}"
-    MERGED_PDF_FILE_NAME="${2-_merged.pdf}"
-    TEMPORARY_DIRECTORY=$(mktemp -d)
+  CURRENT_WORKING_DIRECTORY=$(pwd)
+  FILE_PATTERN="${1-*.md}"
+  MERGED_PDF_FILE_NAME="${2-_merged.pdf}"
+  TEMPORARY_DIRECTORY=$(mktemp -d)
 
-    TEMPORARY_FILE_PATH="${TEMPORARY_DIRECTORY}/list_of_files.txt"
-    PDF_DIRECTORY_PATH="${TEMPORARY_DIRECTORY}/_pdf"
+  PDF_DIRECTORY_PATH="${TEMPORARY_DIRECTORY}/_pdf"
+  TEMPORARY_FILE_PATH="${TEMPORARY_DIRECTORY}/list_of_files.txt"
 
-    if [[ ! -f /usr/bin/pandoc ]];
-    then
-        echo ":: >>/usr/bin/pandoc<< is not a file."
-        echo "   pandoc is mandatory"
+  if [[ ! -f /usr/bin/pandoc ]];
+  then
+    echo ":: >>/usr/bin/pandoc<< is not a file."
+    echo "   pandoc is mandatory"
 
-        exit 1
-    fi
+    exit 1
+  fi
 
-    if [[ ! -f /usr/bin/gs ]];
-    then
-        echo ":: >>/usr/bin/gs<< is not a file."
-        echo "   gs is mandatory"
+  if [[ ! -f /usr/bin/gs ]];
+  then
+    echo ":: >>/usr/bin/gs<< is not a file."
+    echo "   gs is mandatory"
 
-        exit 2
-    fi
+    exit 2
+  fi
 
-    #find all md files and put the file path into a temporary file
-    find . -iname "${FILE_PATTERN}" -type f -exec sh -c 'printf "${0:2}\n"' {} \; > "${TEMPORARY_FILE_PATH}"
+  net_bazzline_core_echo_if_be_verbose ":: Dumping runtime environment"
+  net_bazzline_core_echo_if_be_verbose "   CURRENT_WORKING_DIRECTORY >>${CURRENT_WORKING_DIRECTORY}<<"
+  net_bazzline_core_echo_if_be_verbose "   FILE_PATTERN >>${FILE_PATTERN}<<"
+  net_bazzline_core_echo_if_be_verbose "   MERGED_PDF_FILE_NAME >>${MERGED_PDF_FILE_NAME}<<"
+  net_bazzline_core_echo_if_be_verbose "   PDF_DIRECTORY_PATH >>${PDF_DIRECTORY_PATH}<<"
+  net_bazzline_core_echo_if_be_verbose "   TEMPORARY_FILE_PATH >>${TEMPORARY_FILE_PATH}<<"
 
-    NUMBER_OF_FOUND_FILES=$(wc -l < "${TEMPORARY_FILE_PATH}")
+  #find all md files and put the file path into a temporary file
+  find . -iname "${FILE_PATTERN}" -type f -exec sh -c 'printf "${0:2}\n"' {} \; > "${TEMPORARY_FILE_PATH}"
 
-    if [[ ${NUMBER_OF_FOUND_FILES} -gt 0  ]];
-    then
-        echo ":: Processing >>${NUMBER_OF_FOUND_FILES}<< *.md files from >>${CURRENT_WORKING_DIRECTORY}<< or below."
+  NUMBER_OF_FOUND_FILES=$(wc -l < "${TEMPORARY_FILE_PATH}")
 
-        mkdir "${PDF_DIRECTORY_PATH}"
+  if [[ ${NUMBER_OF_FOUND_FILES} -gt 0  ]];
+  then
+    net_bazzline_core_echo_if_be_verbose ":: Processing >>${NUMBER_OF_FOUND_FILES}<< *.md files from >>${CURRENT_WORKING_DIRECTORY}<< or below."
 
-        local OUTPUT_FILE_PATH
-        local FILE_BASEDIR
-        local FILE_BASENAME
+    /usr/bin/mkdir -p "${PDF_DIRECTORY_PATH}" || echo ":: Could not create directory >>${PDF_DIRECTORY_PATH}<<"
 
-        while read -r FILE_PATH;
-        do
-                echo -n "."
-                OUTPUT_FILE_PATH=$(echo "${FILE_PATH}" | sed 's/\//-/g')
-                FILE_BASEDIR=$(dirname "${FILE_PATH}")
-                FILE_BASENAME=$(basename "${FILE_PATH}")
+    local OUTPUT_FILE_PATH
+    local FILE_BASEDIR
+    local FILE_BASENAME
+    local FILE_NAMES_TO_MERGE
 
-                cd "${FILE_BASEDIR}" || echo "Could not change into directory >>${FILE_BASEDIR}<<."
+    while read -r FILE_PATH;
+    do
+      OUTPUT_FILE_PATH=$(echo "${FILE_PATH}" | sed 's/\//-/g')
+      FILE_BASEDIR=$(dirname "${FILE_PATH}")
+      FILE_BASENAME=$(basename "${FILE_PATH}")
 
-                pandoc -s "${FILE_BASENAME}" -o "${PDF_DIRECTORY_PATH}/${OUTPUT_FILE_PATH}.pdf"
+      net_bazzline_core_echo_if_be_verbose "      FILE_BASEDIR >>${FILE_BASEDIR}<<"
+      net_bazzline_core_echo_if_be_verbose "      FILE_BASENAME >>${FILE_BASENAME}<<"
+      net_bazzline_core_echo_if_be_verbose "      OUTPUT_FILE_PATH >>${OUTPUT_FILE_PATH}<<"
 
-                cd - || echo "Could not change into previos directory."
-        done < "${TEMPORARY_FILE_PATH}"
+      cd "${FILE_BASEDIR}" || echo "Could not change into directory >>${FILE_BASEDIR}<<."
 
-        cd "${CURRENT_WORKING_DIRECTORY}" || echo "Could not change into directory >>${CURRENT_WORKING_DIRECTORY}<<"
+      if [[ -f "${FILE_BASENAME}" ]];
+      then
+        net_bazzline_core_echo_if_be_verbose "   Executing >>pandoc --standalone \"${FILE_BASENAME}\" --output=\"${PDF_DIRECTORY_PATH}/${OUTPUT_FILE_PATH}.pdf\"<<"
+        pandoc --standalone "${FILE_BASENAME}" --output="${PDF_DIRECTORY_PATH}/${OUTPUT_FILE_PATH}.pdf"
+      else
+        echo "   Skipping file >>${FILE_BASENAME}<<, does not exist."
+      fi
 
-        echo ":: Creating file >>${MERGED_PDF_FILE_NAME}<< by using all files from >>${PDF_DIRECTORY_PATH}<<."
-        gs -dNOPAUSE -sDEVICE=pdfwrite -sOUTPUTFILE="${MERGED_PDF_FILE_NAME}" -dBATCH "${PDF_DIRECTORY_PATH}/*"
-    else
-        echo ":: No files found for pattern >>${FILE_PATTERN}<< in >>${CURRENT_WORKING_DIRECTORY}<< or below."
-    fi
+      cd - || echo "Could not change into previous directory."
+    done < "${TEMPORARY_FILE_PATH}"
 
-    rm -fr "${TEMPORARY_DIRECTORY}"
+    cd "${CURRENT_WORKING_DIRECTORY}" || echo "Could not change into directory >>${CURRENT_WORKING_DIRECTORY}<<"
+
+    FILE_NAMES_TO_MERGE=$(ls "${PDF_DIRECTORY_PATH}"/*.pdf)
+
+    net_bazzline_core_echo_if_be_verbose ":: Creating file >>${MERGED_PDF_FILE_NAME}<< by using all files from >>${PDF_DIRECTORY_PATH}<<."
+    net_bazzline_core_echo_if_be_verbose "   Executing >>gs -dNOPAUSE -sDEVICE=pdfwrite -sOUTPUTFILE=\"${MERGED_PDF_FILE_NAME}\" -dBATCH ${FILE_NAMES_TO_MERGE}<<"
+    # shellcheck disable=SC2086
+    gs -dNOPAUSE -sDEVICE=pdfwrite -sOUTPUTFILE="${MERGED_PDF_FILE_NAME}" -dBATCH ${FILE_NAMES_TO_MERGE}
+  else
+    echo ":: No files found for pattern >>${FILE_PATTERN}<< in >>${CURRENT_WORKING_DIRECTORY}<< or below."
+  fi
+
+  net_bazzline_core_echo_if_be_verbose ":: Removing temporary directory >>${TEMPORARY_DIRECTORY}<<."
+  rm -fr "${TEMPORARY_DIRECTORY}"
 }
 
 ####
@@ -214,3 +236,4 @@ function net_bazzline_media_book_compress_pdf ()
 
     gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=${PDF_SETTINGS} -dNOPAUSE -dBATCH -dColorImageResolution=${IMAGE_RESOLUTION} -sOutputFile="${DESTINATION_FILE_PATH}" "${SOURCE_FILE_PATH}"
 }
+

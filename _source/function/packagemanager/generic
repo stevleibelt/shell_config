@@ -170,6 +170,7 @@ sleep 30
 DELIM
     else
         cat > ${UPGRADE_SCRIPT_FILE_PATH} <<DELIM
+#!/bin/bash
 echo ":: Trying default upgrade"
 
 ${PACKAGEMANAGER_COMMAND} -Syyu

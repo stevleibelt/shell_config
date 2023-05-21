@@ -110,6 +110,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added
 
+* Added [core.sh](_source/functions/core.sh) as place to use for all general purpose functions used below [functions](_source/functions)
+  * As example, this file contains the function `net_bazzline_core_echo_if_be_verbose` which can be used everywhere and will echo all if global `BE_VERBOSE` is greater 0
 * Added jq section below string with function `net_bazzline_string_jq_decode_base64_jwt_token` and alias `decodeBase64Jwt` if `jq` is installed
 * Added zfs snapshot creation with name of `net_bazzline_before_system_upgrade` when zfs is available **before** a system upgrade
 * Added string in alias and function section including `left_trim`, `right_trim` and `trim`
