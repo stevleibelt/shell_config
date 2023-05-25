@@ -805,7 +805,7 @@ function net_bazzline_delete_empty_directories ()
 }
 
 ####
-# [@param int $MINUTES - default is 60]
+# [@param int $MINUTES - default is 97200] - 27*60*60 = 97200, 27 days
 # [@param string $NAME - default is empty]
 # [@param string $ROOT_PATH - default is cwd]
 # [@param int $MAX_DEPTH - default is 1]
@@ -815,21 +815,25 @@ function net_bazzline_delete_empty_directories ()
 ####
 function net_bazzline_delete_files_older_than ()
 {
-    net_bazzline_record_function_usage ${FUNCNAME[0]}
+  #begin of default settings
+  local NAME
+  local MAX_DEPTH
+  local MINUTES
+  local ROOT_PATH
 
-    #begin of default settings
-    local NAME=${2:-""}
-    local MAX_DEPTH=${4:-1}
-    local MINUTES=${1:60}
-    local ROOT_PATH=${3:"."}
-    #end of default settings
+  NAME=${2:-""}
+  MAX_DEPTH=${4:-1}
+  MINUTES=${1:-97200}
+  ROOT_PATH=${3:-"."}
+  #end of default settings
 
-    if [[ ${NAME} == "" ]];
-    then
-        find ${ROOT_PATH} -maxdepth ${MAX_DEPTH} -type f -mmin +${MINUTES} -delete
-    else
-        find ${ROOT_PATH} -maxdepth ${MAX_DEPTH} -name "${NAME}" -type f -mmin +${MINUTES} -delete
-    fi
+  if [[ ${NAME} == "" ]];
+  then
+    # -print: prints the deleted files
+    find "${ROOT_PATH}" -maxdepth "${MAX_DEPTH}" -type f -mmin +"${MINUTES}" -delete -print
+  else
+    find "${ROOT_PATH}" -maxdepth "${MAX_DEPTH}" -name "${NAME}" -type f -mmin +"${MINUTES}" -delete -print
+  fi
 }
 
 function net_bazzline_determine_filesystem_path_age ()
