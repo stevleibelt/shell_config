@@ -152,6 +152,7 @@ alias searchAndReplaceInFiles=net_bazzline_replace_string_in_files
 alias scanNetworkForIpAddressRange=net_bazzline_scan_network
 alias scpFromHost=net_bazzline_scp_from_host
 alias scpToHost=net_bazzline_scp_to_host
+alias shuffelNumber=net_bazzline_shuffle_number
 alias showSystemTemperature=sensors
 alias showSystemUsers=net_bazzline_show_system_users
 alias startSshAgent='eval $(ssh-agent)'

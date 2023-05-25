@@ -2538,11 +2538,23 @@ function net_bazzline_screenshot ()
     import -window root "${FILENAME}"
 }
 
+
+####
+# [@param] <int: HIGHEST_NUMBER> - default is 99
+# [@param] <int: LOWEST_NUMBER> - default is 1
+# [@param] <int: NUMBER_OF_RESULTS> - default is 1
+function net_bazzline_shuffle_number ()
+{
+  local HIGHEST_NUMBER="${1:-99}"
+  local LOWEST_NUMBER="${2:-1}"
+  local NUMBER_OF_RESULTS="${3:-1}"
+
+  shuf -i ${LOWEST_NUMBER}-${HIGHEST_NUMBER} -n ${NUMBER_OF_RESULTS}
+}
+
 ####
 # Calls grep with "-ir --color=auto --exclude=\*.svn\* --exclude=\*.git\*" and directs errors to /dev/null
 # All your provided parameters are passed to grep
-#
-# 
 ####
 function net_bazzline_silent_grep ()
 {
