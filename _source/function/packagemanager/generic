@@ -41,7 +41,7 @@ function net_bazzline_packagemanager_arch_linux_software_upgrade ()
 
     #@todo: @see: https://github.com/archzfs/archzfs/issues/446#issuecomment-1103320350
     #implement something like this: pacman -Syyu $(for i in {zfs-,}{nvidia,linux}{,-lts,-hardened,-zen}{,-headers}; do echo --ignore $i; done)
-    if [[ ${IS_LTS_KERNEL} -eq 0 ]];
+    if [[ ${IS_LTS_KERNEL} -eq 1 ]];
     then
       PACKGES_TO_IGNORE="linux-lts,linux-lts-headers,zfs-linux-lts,zfs-utils"
     else

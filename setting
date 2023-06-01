@@ -52,7 +52,7 @@ else
   NET_BAZZLINE_FWUPDMGR_IS_AVAILABLE=0
 fi
 #either you are using an lts kernel or not: uname -a | grep -i lts
-NET_BAZZLINE_IS_LTS_KERNEL=1
+NET_BAZZLINE_IS_LTS_KERNEL=0
 #add all you known interfaces in here
 NET_BAZZLINE_INTERFACES=()
 #count number of CPU cores
