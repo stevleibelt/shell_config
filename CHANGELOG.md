@@ -150,6 +150,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 
+* Extended `bin/configure_local_setting.sh`
 * Added optional parameters "number of retries if host is down" and "number of seconds between retries" for function `net_bazzline_network_ssh_to_host`
 * Changed arch linux keyring reinstalltion from 28 to 14 days
 * Changed content of `NET_BAZZLINE_ZFS_DEFAULT_POOL` from `zpool` to `zroot`
