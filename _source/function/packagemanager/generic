@@ -115,21 +115,26 @@ function net_bazzline_packagemanager_arch_linux_software_upgrade ()
 
     if [[ -f "${LAST_SYSTEM_UPDATE_FILE_PATH}" ]];
     then
-        local LAST_SYSTEM_UPDATE_TIMESTAMP
-        local LAST_VALID_TIMESTAMP
+      local LAST_SYSTEM_UPDATE_TIMESTAMP
+      local LAST_VALID_TIMESTAMP
 
-        LAST_SYSTEM_UPDATE_TIMESTAMP=$(head -n 4 "${LAST_SYSTEM_UPDATE_FILE_PATH}" | tail -n 1)
-        LAST_VALID_TIMESTAMP=$(("${CURRENT_TIMESTAMP}" - 1209600))   #86400 (sec/day) * 14 (day) = 1209600 (sec)
+      LAST_SYSTEM_UPDATE_TIMESTAMP=$(head -n 4 "${LAST_SYSTEM_UPDATE_FILE_PATH}" | tail -n 1)
+      LAST_VALID_TIMESTAMP=$(("${CURRENT_TIMESTAMP}" - 1209600))   #86400 (sec/day) * 14 (day) = 1209600 (sec)
 
-        if [[ ${LAST_SYSTEM_UPDATE_TIMESTAMP} -lt ${LAST_VALID_TIMESTAMP} ]];
+      if [[ ${LAST_SYSTEM_UPDATE_TIMESTAMP} -lt ${LAST_VALID_TIMESTAMP} ]];
+      then
+        bash -c "${PACKAGEMANAGER_COMMAND} -S archlinux-keyring"
+
+        if systemctl list-unit-files | grep -q reflector
         then
-            bash -c "${PACKAGEMANAGER_COMMAND} -S archlinux-keyring"
+          sudo systemctl start reflector.service
         fi
+      fi
     else
-        if [[ ! -d "${NET_BAZZLINE_CACHE_PATH}" ]];
-        then
-            mkdir -p "${NET_BAZZLINE_CACHE_PATH}"
-        fi
+      if [[ ! -d "${NET_BAZZLINE_CACHE_PATH}" ]];
+      then
+        mkdir -p "${NET_BAZZLINE_CACHE_PATH}"
+      fi
     fi 
 
     cat > "${LAST_SYSTEM_UPDATE_FILE_PATH}" <<DELIM
