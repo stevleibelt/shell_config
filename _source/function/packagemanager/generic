@@ -47,6 +47,11 @@ function net_bazzline_packagemanager_arch_linux_software_upgrade ()
     else
       PACKGES_TO_IGNORE="linux,linux-headers,zfs-linux,zfs-utils"
     fi
+
+    if [[ ${NET_BAZZLINE_IS_ZFS_DKMS} -eq 1 ]];
+    then
+      PACKGES_TO_IGNORE+=",zfs-dkms"
+    fi
     #eo: setup
 
     #bo: check if packagemanager is valid

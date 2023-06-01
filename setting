@@ -150,6 +150,9 @@ else
     NET_BAZZLINE_WEBP_IS_AVAILABLE=0
 fi
 
+#disable (0) zfs dkms status by default
+NET_BAZZLINE_IS_ZFS_DKMS=0
+
 #enables (1) or disables (0) zfs support
 if [[ -f /usr/bin/zpool ]];
 then

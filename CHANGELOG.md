@@ -110,6 +110,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added
 
+* Added variable `NET_BAZZLINE_IS_ZFS_DKMS` including adaptation of `bin/configure_local_setting.sh` and usage for `software-upgrade-without-kernel`
 * Added function `net_bazzline_shuffle_number` and alias `shuffelNumber`
 * Added [core.sh](_source/functions/core.sh) as place to use for all general purpose functions used below [functions](_source/functions)
   * As example, this file contains the function `net_bazzline_core_echo_if_be_verbose` which can be used everywhere and will echo all if global `BE_VERBOSE` is greater 0

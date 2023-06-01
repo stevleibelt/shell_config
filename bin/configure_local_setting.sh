@@ -138,6 +138,13 @@ function _configure_simple_values ()
         _add_or_overwrite_line_in_local_setting NET_BAZZLINE_ZFS_IS_AVAILABLE 0
     fi
 
+    if dkms status | grep -q 'zfs';
+    then
+      _add_or_overwrite_line_in_local_setting NET_BAZZLINE_IS_ZFS_DKMS 1
+    else
+      _add_or_overwrite_line_in_local_setting NET_BAZZLINE_IS_ZFS_DKMS 0
+    fi
+
     if uname -r | grep -q 'lts';
     then
       _add_or_overwrite_line_in_local_setting NET_BAZZLINE_IS_LTS_KERNEL 1
