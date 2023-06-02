@@ -22,8 +22,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 * implement usage of `net_bazzline_run_in_parallel_when_available` for image processing
     * `ls *.wav | parallel ffmpeg -i {} {.}.flac`
     * [see](https://www.freecodecamp.org/news/how-to-supercharge-your-bash-workflows-with-gnu-parallel-53aab0aea141/)
-* *if* zfs is installed and root pool configured
-    * make a snapshot before the upgrade and delete previous one
 * create a function called "organize_dcim" which
     * loops starting from $(current_year - 10) until $(current_year) (if no argument provided)
     * checks if there are files matching the pattern "*_201910_*
@@ -42,34 +40,29 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 #### Priority Medium
 
-* extend "cd"
-    * if you cd to a file, use the base path to cd into that directory
-
 #### Priority Low
 
-* add `gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/ebook -dNOPAUSE -dBATCH -dColorImageResolution=150 -sOutputFile=output.pdf someBigFile.pdf` as `net_bazzline_compress_pdf` (@see: https://opensource.com/article/20/8/reduce-pdf)
-* replace usage of packagemanager where needed with BASE_DISTRIBUTION ("arch", "debian" etc.)
+* create caching 
+  * that puts all files into one merged file below .config/net_bazzline/shell_config/merged_config
+  * cache is cleared on "reloadBashEnvironment" and "clearCache"
+  * can be enabled or disabled via setting
+* create a way to easily change settings based on the environment (like "work" and "home")
+* for the function file as test
+  * split this file up into logical units (source/function/filesystem/{luks, zfs}, source/function/media/image ...)
+  * create bash script that glues them all together to the known function file
+  * based on the configuration value, comment out or comment in the net_bazzline_record_function_usage
+  * prefix all variables with "local "
+  * move fitting code into c++ code
+  * align output by using arch installation style ":: [A-Z"
+  * implement bash auto completion (tricky part -> per user to support individual settings!)  support like "net_bazzline filesystem zfs list-available-snapshots" :O
+* read each line in source or local.source and load them via source
+* deal with statistic data
+  * enable/disable (disable is default)
+  * analyze statistic data
+  * delete statistic data
 
 #### Not organized yet
 
-* create a way to easily change settings based on the environment (like "work" and "home")
-* create function "regular_start" with dedicated processing steps (function calls defined via local.settings) to do, as example
-    * disable touchpad
-    * start wifi (if configured by using netctl configuration file via shell configuration)
-    * update system
-* for the function file as test
-    * split this file up into logical units (source/function/filesystem/{luks, zfs}, source/function/media/image ...)
-    * create bash script that glues them all together to the known function file
-    * based on the configuration value, comment out or comment in the net_bazzline_record_function_usage
-    * prefix all variables with "local "
-    * move fitting code into c++ code
-    * align output by using arch installation style ":: [A-Z"
-    * implement bash auto completion (tricky part -> per user to support individual settings!)  support like "net_bazzline filesystem zfs list-available-snapshots" :O
-* read each line in source or local.source and load them via source
-* create caching 
-    * that puts all files into one merged file below .config/net_bazzline/shell_config/merged_config
-    * cache is cleared on "reloadBashEnvironment" and "clearCache"
-    * can be enabled or disabled via setting
 * extend update.sh
     * removes existing adaption of the bashrc
     * recalls install.sh
@@ -89,22 +82,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
     * creates a system dependend alias file from (alias.source, alias/zfs.source, alias/software-pacaur.source, alias/software-pacman.source etc.)
     * creates a system dependend function file from (function.source, function/zfs.source, function/software-pacaur.source, function/software-pacman.source etc.)
 * create clean
-    * removes local.\* files
-* create configuration to enable or disable things like zfs aliases
-* deal with statistic data
-    * enable/disable (disable is default)
-    * analyze statistic data
-    * delete statistic data
+  * removes local.\* files
 * installation
-    * ask if .bash_profile should be created
-    * ask if .bashrc should be created
+  * ask if .bash_profile should be created
+  * ask if .bashrc should be created
 
 ### To Change
 
 * change detection for libx256 or libx254 movies
-    * instead of checking the filename, implement a dependency (or check if it exists) and use mediainfo
-    * `mediainfo <filepath> | grep x265`
-        * ore `ffprobe <filename> | grep codec_name`
+  * instead of checking the filename, implement a dependency (or check if it exists) and use mediainfo
+  * `mediainfo <filepath> | grep x265`
+    * ore `ffprobe <filename> | grep codec_name`
 
 ## [Unreleased]
 
@@ -217,3 +205,4 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [1.0.0](https://github.com/stevleibelt/shell_config/tree/1.0.0) - released at 20160423
 
 * initial release
+
