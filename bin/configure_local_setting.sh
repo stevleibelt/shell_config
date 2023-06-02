@@ -274,6 +274,9 @@ function _main ()
   _configure_simple_values
 
   cd "${CURRENT_WORKING_DIRECTORY}" || printf ":: Error\n   Could not change into directory >>%s<<." "${CURRENT_WORKING_DIRECTORY}"
+
+  echo ":: Reloading bash environment."
+  source ~/.bashrc && clear
 }
 
 _main "${@}"
