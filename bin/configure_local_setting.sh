@@ -151,11 +151,14 @@ function _configure_simple_values ()
       _add_or_overwrite_line_in_local_setting NET_BAZZLINE_ZFS_IS_AVAILABLE 0
   fi
 
-  if dkms status | grep -q 'zfs';
+
+  _add_or_overwrite_line_in_local_setting NET_BAZZLINE_IS_ZFS_DKMS 0
+  if [[ -f /usr/bin/dkms ]];
   then
-    _add_or_overwrite_line_in_local_setting NET_BAZZLINE_IS_ZFS_DKMS 1
-  else
-    _add_or_overwrite_line_in_local_setting NET_BAZZLINE_IS_ZFS_DKMS 0
+    if dkms status | grep -q 'zfs';
+    then
+      _add_or_overwrite_line_in_local_setting NET_BAZZLINE_IS_ZFS_DKMS 1
+    fi
   fi
 
   if uname -r | grep -q 'lts';
@@ -183,7 +186,6 @@ function _main ()
   local BE_VERBOSE
   local CURRENT_WORKING_DIRECTORY
   local CURRENT_DATE_TIME
-  local CREATE_BACKUP
   local FILE_PATH_TO_LOCAL_SETTING
   local FILE_PATH_TO_LOCAL_SETTING_BACKUP
   local IS_DRY_RUN
