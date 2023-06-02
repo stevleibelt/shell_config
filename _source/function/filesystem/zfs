@@ -55,8 +55,12 @@ function net_bazzline_delete_zfs_snapshot()
 
     if sudo zfs list -t snapshot | grep -q "${NAME_OF_THE_POOL}@${NAME_OF_THE_SNAPSHOT}";
     then
-        if sudo zfs destroy -R ${NAME_OF_THE_POOL}@${NAME_OF_THE_SNAPSHOT}; then
-            echo ":: Snapshot \"${NAME_OF_THE_SNAPSHOT}\" deleted from pool \"${NAME_OF_THE_POOL}\""
+        if net_bazzline_core_ask_yes_or_no "Remove snapshot >>${NAME_OF_THE_POOL}@${NAME_OF_THE_SNAPSHOT}? (y|N)"
+        then
+          if sudo zfs destroy -R "${NAME_OF_THE_POOL}@${NAME_OF_THE_SNAPSHOT}"
+          then
+              echo ":: Snapshot \"${NAME_OF_THE_SNAPSHOT}\" deleted from pool \"${NAME_OF_THE_POOL}\""
+          fi
         fi
     else
         echo ":: Failure"
@@ -95,7 +99,7 @@ function net_bazzline_delete_list_of_dated_zfs_snapshots()
 
     echo ":: Calculating reclaimed disk space."
     #@see: https://jrs-s.net/2020/02/08/estimating-space-occupied-by-multiple-zfs-snapshots/
-    sudo zfs destroy -nv ${NAME_OF_THE_POOL}@${INITIAL_SNAPSHOT_NUMBER}%${FINAL_SNAPSHOT_NUMBER}
+    sudo zfs destroy -nv "${NAME_OF_THE_POOL}@${INITIAL_SNAPSHOT_NUMBER}%${FINAL_SNAPSHOT_NUMBER}"
 
     #fetch all available snapshots into an array
     #-o name - only display the name like zfspool/dataset@my_snapshot

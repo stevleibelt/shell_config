@@ -86,14 +86,17 @@ function net_bazzline_packagemanager_arch_linux_software_upgrade ()
     then
       if zfs list -t snapshot | grep -q "${ZFS_SNAPSHOT_NAME}";
       then
-        if sudo zfs destroy -r "${NET_BAZZLINE_ZFS_DEFAULT_POOL}@${ZFS_SNAPSHOT_NAME}";
+        if net_bazzline_core_ask_yes_or_no "Remove snapshot >>${NET_BAZZLINE_ZFS_DEFAULT_POOL}@${ZFS_SNAPSHOT_NAME}? (y|N)"
         then
-          echo "   Removed snapshot >>${ZFS_SNAPSHOT_NAME}<<."
-        else
-          echo ":: Error"
-          echo "   Could not destory snapshot >>${NET_BAZZLINE_ZFS_DEFAULT_POOL}@${ZFS_SNAPSHOT_NAME}<<."
-        
-          return 30;
+          if sudo zfs destroy -r "${NET_BAZZLINE_ZFS_DEFAULT_POOL}@${ZFS_SNAPSHOT_NAME}";
+          then
+            echo "   Removed snapshot >>${ZFS_SNAPSHOT_NAME}<<."
+          else
+            echo ":: Error"
+            echo "   Could not destory snapshot >>${NET_BAZZLINE_ZFS_DEFAULT_POOL}@${ZFS_SNAPSHOT_NAME}<<."
+          
+            return 30;
+          fi
         fi
       fi
 
