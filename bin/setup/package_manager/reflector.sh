@@ -7,15 +7,28 @@
 
 function _main()
 {
+  #bo: variable
+  local PATH_TO_THIS_SCRIPT
+  PATH_TO_THIS_SCRIPT=$(cd $(dirname "$0"); pwd)
+  #eo: variable
+
   #begin of testing if we are on the right system
   if [[ ! -f /usr/bin/pacman ]];
   then
       echo ":: Can not install on your system."
       echo "   Sorry dude, I can only install things on a arch linux."
 
-      exit 1
+      return 1
   fi
 
+  #bo: bootstrapping
+  if [[ $(type -t net_bazzline_core_ask_yes_or_no) != function ]];
+  then
+    source "${PATH_TO_THIS_SCRIPT}/../../../_source/function/core.sh"
+  fi
+  #eo: bootstrapping
+
+  echo ":: Updating system"
   sudo pacman -Syy
   #end of testing if we are on the right system
 
@@ -38,7 +51,7 @@ function _main()
           echo "   If you want to rerun this script, remove following file:"
           echo "   /etc/pacman.d/hooks/60-trigger_reflector_on_mirrorlist_update.hook"
 
-          exit 1
+          return 1
       fi
   fi
   ##end of test

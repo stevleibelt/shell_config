@@ -237,6 +237,16 @@ function _main ()
   done
   #eo: user input
 
+  #bo: bootstrapping
+  if [[ $(type -t net_bazzline_core_ask_yes_or_no) != function ]];
+  then
+    _echo_if_be_verbose ":: Need to source some code ..."
+    source "${PATH_TO_THIS_SCRIPT}/../_source/function/core.sh"
+  else
+    _echo_if_be_verbose ":: Don't need to source some code ..."
+  fi
+  #eo: bootstrapping
+
   #bo: verbose output
   if [[ ${BE_VERBOSE} -eq 1 ]];
   then
@@ -275,7 +285,7 @@ function _main ()
   cd "${CURRENT_WORKING_DIRECTORY}" || printf ":: Error\n   Could not change into directory >>%s<<." "${CURRENT_WORKING_DIRECTORY}"
 
   echo ":: Reloading bash environment."
-  source ~/.bashrc && clear
+  source ~/.bashrc
 }
 
 _main "${@}"
