@@ -116,7 +116,7 @@ function _install_stage_3 ()
   _install_packages_with_yay qemu-full
   
   echo "   Processing packages with >>r<<"
-  _install_packages_with_yay ranger redshift rustdesk rustup rsync
+  _install_packages_with_yay ranger redshift ruby-mdl rustdesk rustup rsync
   
   echo "   Processing packages with >>s<<"
   _install_packages_with_yay screen sed shellcheck-bin shelldap signal-desktop simple-scan splint slock smartmontools smplayer sshguard sshfs steam syncthing
