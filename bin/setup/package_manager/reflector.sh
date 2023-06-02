@@ -30,10 +30,8 @@ function _main()
   if [[ -f /etc/pacman.d/hooks/60-trigger_reflector_on_mirrorlist_update.hook ]];
   then
       echo ":: Reflector already configured."
-      echo ":: Do you want to remove the configuration file? (y|n)"
-      read YES_OR_NO
 
-      if [[ ${YES_OR_NO} == "y" ]];
+      if net_bazzline_core_ask_yes_or_no "Do you want to remove the configuration file? (y|N)"
       then
           sudo rm /etc/pacman.d/hooks/60-trigger_reflector_on_mirrorlist_update.hook
       else

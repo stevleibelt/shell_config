@@ -343,22 +343,17 @@ function net_bazzline_check_ext4_device ()
 # @since 2017-10-24
 function net_bazzline_check_fat_device ()
 {
-    net_bazzline_record_function_usage ${FUNCNAME[0]}
-
     if [[ $# -gt 0 ]];
     then
         local DEVICE_PATH="${1}"
 
-        read -p ":: Take the long road? [y/N]" YES_OR_NO
+        if net_bazzline_core_ask_yes_or_no "Take the long road? (y|N)"
+        then
+          sudo dosfsck -w -r -l -a -v -t ${DEVICE_PATH};
+        else
+          sudo fsck.fat -aV ${DEVICE_PATH};
+        fi
 
-        case ${YES_OR_NO} in
-            [Yy]* )
-                #@see: https://duckduckgo.com/?q=fsck.fat&t=hf&ia=qa
-                sudo dosfsck -w -r -l -a -v -t ${DEVICE_PATH};
-                ;;
-            * ) sudo fsck.fat -aV ${DEVICE_PATH};
-                ;;
-        esac
         sudo sync
     else
         net_bazzline_handle_invalid_number_of_arguments_supplied "${FUNCNAME[0]} <path to the device>"
@@ -2293,9 +2288,7 @@ function net_bazzline_rename_git_branch ()
         git checkout -  
 
         echo ""
-        echo ":: Can I delete the local repository? (Y|n)" 
-        read -p "   " YES_OR_NO 
-        if [[ ${YES_OR_NO} != "n" ]];
+        if net_bazzline_core_ask_yes_or_no "Can I delete the local repository? (Y|n)" "y"
         then
             echo ":: Deleting local repository."
             git branch -D "${NEW_BRANCH_NAME}"

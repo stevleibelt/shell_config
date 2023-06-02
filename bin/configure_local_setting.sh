@@ -34,16 +34,13 @@ function _add_or_overwrite_line_in_local_setting ()
       if [[ "${!VARIABLE_NAME}" != "${VARIABLE_VALUE}" ]];
       then
         _echo_if_be_verbose "   >>${VARIABLE_NAME}<< is configured in >>${FILE_PATH_TO_LOCAL_SETTING}<<. "
-        read -r -p "Do you want to overwrite value of >>${VARIABLE_NAME}<< with value >>${!VARIABLE_NAME}<< with calculated value >>${VARIABLE_VALUE}<<? (y|N)" YES_OR_NO
 
-        case ${YES_OR_NO} in
-          [Yy]* )
-            local REMOVE_EXISTING_VARIABLE=1
-            ;;
-          * )
-            return 0
-            ;;
-        esac
+        if net_bazzline_core_ask_yes_or_no "Do you want to overwrite value of >>${VARIABLE_NAME}<< with value >>${!VARIABLE_NAME}<< with calculated value >>${VARIABLE_VALUE}<<? (y|N)"
+        then
+          REMOVE_EXISTING_VARIABLE=1
+        else
+          return 0
+        fi
       else
         _echo_if_be_verbose "   >>${VARIABLE_NAME}<< is configured in >>${FILE_PATH_TO_LOCAL_SETTING}<<. Existiting value of >>${!VARIABLE_NAME}<< is the same as >>${VARIABLE_VALUE}<<."
       fi
