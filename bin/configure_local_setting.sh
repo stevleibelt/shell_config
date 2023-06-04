@@ -127,6 +127,7 @@ function _configure_simple_values ()
     "NET_BAZZLINE_ZFS_IS_AVAILABLE|/usr/bin/zpool"
   )
 
+  _echo_if_be_verbose ":: Checking simple settings"
   for CURRENT_ROW in "${VARIABLE_NAME_TO_FILE_PATH[@]}"
   do
       IFS=$'|' read -r CURRENT_VARIABLE_NAME CURRENT_FILE_PATH <<< "${CURRENT_ROW}"
@@ -139,6 +140,7 @@ function _configure_simple_values ()
       fi
   done
 
+  _echo_if_be_verbose ":: Checking zfs settings"
   #enables (1) or disables (0) zfs support
   if [[ -f /usr/bin/zpool ]];
   then
@@ -151,20 +153,30 @@ function _configure_simple_values ()
       _add_or_overwrite_line_in_local_setting NET_BAZZLINE_ZFS_IS_AVAILABLE 0
   fi
 
-
-  _add_or_overwrite_line_in_local_setting NET_BAZZLINE_IS_ZFS_DKMS 0
+  _echo_if_be_verbose ":: Checking dkms settings"
   if [[ -f /usr/bin/dkms ]];
   then
+    _echo_if_be_verbose "   File /usr/bin/dkms found"
     if dkms status | grep -q 'zfs';
     then
+      _echo_if_be_verbose "   dkms status | grep -q zfs found"
       _add_or_overwrite_line_in_local_setting NET_BAZZLINE_IS_ZFS_DKMS 1
+    else
+      _echo_if_be_verbose "   dkms status | grep -q zfs not found"
+      _add_or_overwrite_line_in_local_setting NET_BAZZLINE_IS_ZFS_DKMS 0
     fi
+  else
+    _echo_if_be_verbose "   File /usr/bin/dkms not found"
+    _add_or_overwrite_line_in_local_setting NET_BAZZLINE_IS_ZFS_DKMS 0
   fi
 
+  _echo_if_be_verbose ":: Checking kernel settings"
   if uname -r | grep -q 'lts';
   then
+    _echo_if_be_verbose "   lts kernel detected"
     _add_or_overwrite_line_in_local_setting NET_BAZZLINE_IS_LTS_KERNEL 1
   else
+    _echo_if_be_verbose "   default kernel detected"
     _add_or_overwrite_line_in_local_setting NET_BAZZLINE_IS_LTS_KERNEL 0
   fi
 }
