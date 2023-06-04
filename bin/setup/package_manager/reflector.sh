@@ -99,49 +99,49 @@ function _main()
     sudo touch /etc/pacman.d/hooks/60-trigger_reflector_on_mirrorlist_update.hook
 
     sudo bash -c "cat > /etc/pacman.d/hooks/60-trigger_reflector_on_mirrorlist_update.hook <<DELIM
-  [Trigger]
-  Operation = Upgrade
-  Type = Package
-  Target = pacman-mirrorlist
+[Trigger]
+Operation = Upgrade
+Type = Package
+Target = pacman-mirrorlist
 
-  [Action]
-  Description = Updating pacman-mirrorlist with reflector and removing pacnew...
-  When = PostTransaction
-  Depends = reflector
-  Exec = /bin/sh -c 'systemctl start reflector.service; [ -f /etc/pacman.d/mirrorlist.pacnew ] && rm /etc/pacman.d/mirrorlist.pacnew'
-  DELIM"
+[Action]
+Description = Updating pacman-mirrorlist with reflector and removing pacnew...
+When = PostTransaction
+Depends = reflector
+Exec = /bin/sh -c 'systemctl start reflector.service; [ -f /etc/pacman.d/mirrorlist.pacnew ] && rm /etc/pacman.d/mirrorlist.pacnew'
+DELIM"
 
     echo "   Creating file >>/etc/xdg/reflector/reflector.conf<<"
 
     sudo bash -c "cat > /etc/xdg/reflector/reflector.conf <<DELIM
-  # Reflector configuration file for the systemd service.
-  #
-  # Empty lines and lines beginning with \"#\" are ignored.  All other lines should
-  # contain valid reflector command-line arguments. The lines are parsed with
-  # Python's shlex modules so standard shell syntax should work. All arguments are
-  # collected into a single argument list.
-  #
-  # See \"reflector --help\" for details.
+# Reflector configuration file for the systemd service.
+#
+# Empty lines and lines beginning with \"#\" are ignored.  All other lines should
+# contain valid reflector command-line arguments. The lines are parsed with
+# Python's shlex modules so standard shell syntax should work. All arguments are
+# collected into a single argument list.
+#
+# See \"reflector --help\" for details.
 
-  # Recommended Options
+# Recommended Options
 
-  # Set the output path where the mirrorlist will be saved (--save).
-  --save /etc/pacman.d/mirrorlist
+# Set the output path where the mirrorlist will be saved (--save).
+--save /etc/pacman.d/mirrorlist
 
-  # Select the transfer protocol (--protocol).
-  --protocol https
+# Select the transfer protocol (--protocol).
+--protocol https
 
-  # Select the country (--country).
-  # Consult the list of available countries with \"reflector --list-countries\" and
-  # select the countries nearest to you or the ones that you trust. For example:
-  --country ${COUNTRY_NAME}
+# Select the country (--country).
+# Consult the list of available countries with \"reflector --list-countries\" and
+# select the countries nearest to you or the ones that you trust. For example:
+--country ${COUNTRY_NAME}
 
-  # Use only the  most recently synchronized mirrors (--latest).
-  --latest ${MAXIMUM_NUMBERS_OF_SERVER_TO_USE}
+# Use only the  most recently synchronized mirrors (--latest).
+--latest ${MAXIMUM_NUMBERS_OF_SERVER_TO_USE}
 
-  # Sort the mirrors by synchronization time (--sort).
-  --sort age
-  DELIM"
+# Sort the mirrors by synchronization time (--sort).
+--sort age
+DELIM"
 
     echo ":: Done."
     ##end of setup
