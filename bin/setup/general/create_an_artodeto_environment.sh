@@ -99,6 +99,12 @@ function _main ()
   bash settings/vim/install.sh
   bash settings/xdg/install.sh
 
+  # bo: ommd nohang
+  yay -S nohang
+  sudo systemctl enable nohang-desktop.service 
+  sudo systemctl start nohang-desktop.service 
+  # eo: ommd nohang
+
   echo ":: @todo"
   echo "   Add >>NOPASSWD: /usr/bin/light<< to created user"
 
