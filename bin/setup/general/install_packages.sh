@@ -61,7 +61,7 @@ function _install_stage_3 ()
   _install_packages_with_yay calc catdoc cppcheck check-broken-packages-pacman-hook-git chromium clamav clang composer curlie cyanrip
 
   echo "   Processing packages with >>d<<"
-  _install_packages_with_yay dbeaver ddev-bin dmenu
+  _install_packages_with_yay dbeaver ddev-bin dmenu dunst
   
   echo "   Processing packages with >>e<<"
   _install_packages_with_yay element-desktop exfatprogs exfat-utils
