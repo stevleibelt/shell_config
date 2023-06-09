@@ -1,0 +1,47 @@
+  _install_packages_with_yay 
+acpi acpid android-tools android-udev ansible arandr archiso autorandr
+
+  echo "   Processing packages with >>b<<"
+  _install_packages_with_yay bat bind btop
+
+  echo "   Processing packages with >>c<<"
+  _install_packages_with_yay calc catdoc cppcheck check-broken-packages-pacman-hook-git chromium clamav clang composer curlie cyanrip
+
+  echo "   Processing packages with >>d<<"
+  _install_packages_with_yay dbeaver ddev-bin dmenu dunst
+  
+  echo "   Processing packages with >>e<<"
+  _install_packages_with_yay element-desktop exfatprogs exfat-utils
+  
+  echo "   Processing packages with >>f<<"
+  _install_packages_with_yay firefox ffmpeg flameshot freeplane fwupd
+  # freeplane only works with java version <= 17
+  # PACKAGE_NAME_OF_JAVA_17 sould contain "java-17-openjdk"
+  local PACKAGE_NAME_OF_JAVA_17
+  PACKAGE_NAME_OF_JAVA_17=$(archlinux-java status | grep 17 | xargs | cut -d " " -f 1)
+
+  if [[ "${PACKAGE_NAME_OF_JAVA_17}" = "" ]];
+  then
+    echo ":: Warning, no java 17 version detected. Freeplane will not start."
+  else
+    sudo archlinux-java set "${PACKAGE_NAME_OF_JAVA_17}"
+  fi
+  
+  echo "   Processing packages with >>g<<"
+  _install_packages_with_yay gcc gcc-libs geeqie geany gimp git gnome-terminal gparted glibc gvfs gvfs-mtb gvfs-smb
+  
+  echo "   Processing packages with >>h<<"
+  _install_packages_with_yay hdparm htop httpie hwinfo
+  
+  echo "   Processing packages with >>i<<"
+  # perl-anyevent-i3 is needed for i3-save-tree
+  _install_packages_with_yay i3-wm perl-anyevent-i3 i3status iw
+  
+  echo "   Processing packages with >>j<<"
+  _install_packages_with_yay jetbrains-toolbox jq
+  
+  echo "   Processing packages with >>k<<"
+  _install_packages_with_yay keepassxc
+  
+  echo "   Processing packages with >>l<<"
+  _install_packages_with_yay libcoverart libdiscid libreoffice-fresh librewolf-bin light linux-headers lm_sensors lowdown lshw lutris lxterminal lynis
