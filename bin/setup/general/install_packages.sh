@@ -50,7 +50,7 @@ function _install_stage_3 ()
 {
   #stage 3
   #use >>pacman -Qe<< to get a list of installed packages
-  echo ":: Installig software"
+  echo ":: Installing software"
   echo "   Processing packages with >>a<<"
   _install_packages_with_yay acpi acpid android-tools android-udev ansible arandr archiso autorandr
 
@@ -109,7 +109,7 @@ function _install_stage_3 ()
   _install_packages_with_yay okular openssh openvpn
   
   echo "   Processing packages with >>p<<"
-  _install_packages_with_yay pandoc parallel pavucontrol-qt picard pcmanfm perl-io-socket-ssl picocom plantuml podman potato powertop progress pulseaudio pulseaudio-alsa pulsemixer python python-pip
+  _install_packages_with_yay pandoc parallel pavucontrol-qt picard pcmanfm perl-io-socket-ssl picocom plantuml podman potato powertop prettier progress pulseaudio pulseaudio-alsa pulsemixer python python-pip
   systemctl --user enable pulseaudio
   
   echo "   Processing packages with >>q<<"
@@ -279,3 +279,7 @@ function _main ()
 }
 
 _main "${@}"
+_aur_package_list_no_dependencies.txt
+_pacman_package_list_no_dependencies.txt
+_pacman_package_list_with_dependencies.txt
+_yay_package_list_with_dependencies.txt
