@@ -1,35 +1,35 @@
-aur: check-broken-packages-pacman-hook-git
-aur: cyanrip
-aur: ddev-bin
-aur: jetbrains-toolbox
-aur: librewolf-bin
-aur: potato
-aur: rustdesk
-aur: shellcheck-bin
-aur: shelldap
-aur: tor-browser
-aur: tripwire
-aur: umlet
-aur: ventoy-bin
-aur: vscodium-bin
-aur: zrepl-bin
-aur: vobcopy
-aur: liquidwar
-aur: neverball
-aur: veloren
-aur: ltris
-aur: warmux
-aur: atanks
-aur: ultimatestunts
-aur: vdrift
-aur: darkplaces
-aur: quake-qrp-textures
-aur: quake2
-aur: quake2-retexture
-aur: ioquake3
-aur: redeclipse
-aur: unrealtournament4
-aur: urbanterror
-aur: rigsofrods
-aur: tuxtype
-aur: tuxmath
+check-broken-packages-pacman-hook-git
+cyanrip
+ddev-bin
+jetbrains-toolbox
+librewolf-bin
+potato
+rustdesk
+shellcheck-bin
+shelldap
+tor-browser
+tripwire
+umlet
+ventoy-bin
+vscodium-bin
+zrepl-bin
+vobcopy
+liquidwar
+neverball
+veloren
+ltris
+warmux
+atanks
+ultimatestunts
+vdrift
+darkplaces
+quake-qrp-textures
+quake2
+quake2-retexture
+ioquake3
+redeclipse
+unrealtournament4
+urbanterror
+rigsofrods
+tuxtype
+tuxmath

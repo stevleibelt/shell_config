@@ -130,7 +130,8 @@ vim
 vlc
 wget
 wireguard-tools
-wireshark
+wireshark-cli
+wireshark-qt
 wine-staging
 xdg-user-dirs
 xorg-xinit
@@ -140,6 +141,7 @@ xterm
 widelands
 wesnoth
 cataclysm-dda
+#games
 0ad
 0ad-data
 openttd
@@ -151,12 +153,10 @@ lskat
 gnuchess
 pingus
 supertuxkart
-trigger
-flare
 retroarch
 openra
 artikulate
 blinken
-gcompris
+gcompris-qt
 kanagram
 khangman
