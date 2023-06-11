@@ -1,9 +1,9 @@
 ---
 - name: Update system using yay
   hosts: localhost
-  become: true
   tasks:
     - name: Call yay
+      become: true
       become_user: aur_builder
       kewlfft.aur.aur:
         aur_only: no

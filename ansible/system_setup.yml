@@ -30,7 +30,16 @@
         name: "{{ lookup('ansible.builtin.file', '../bin/setup/general/list_of_archlinux_packages.txt').splitlines() }}"
         state: present
 #@todo: update yay
+    - name: Upgrade system/installed package and update yay package database
+      become: true
+      become_user: aur_builder
+      kewlfft.aur.aur:
+        aur_only: true
+        update_cache: true
+        upgrade: true
+        use: yay
     - name: Install aur package list
+      become: true
       become_user: aur_builder
       kewlfft.aur.aur:
         name: "{{ lookup('ansible.builtin.file', '../bin/setup/general/list_of_aur_packages.txt').splitlines() }}"
