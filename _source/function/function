@@ -173,28 +173,33 @@ function net_bazzline_batch_file_path_to_lower ()
 ####
 function net_bazzline_batch_filesystem_path_to_lower ()
 {
-    local FILE_TYPE="${3:-''}"
-    local MAX_DEPTH=${1:-1}
-    local SEARCH_PATH="${2:-.}"
+  local FILE_TYPE_OPTION
+  local FILE_TYPE
+  local MAX_DEPTH
+  local SEARCH_PATH
 
-    #@todo check not working. When called without any argument, following error is displayed
-    #find: Arguments to -type should contain only one letter
-    if [[ "${FILE_TYPE}" != "" ]];
+  FILE_TYPE="${3:-''}"
+  MAX_DEPTH=${1:-1}
+  SEARCH_PATH="${2:-.}"
+
+  #@todo check not working. When called without any argument, following error is displayed
+  #find: Arguments to -type should contain only one letter
+  if [[ "${#FILE_TYPE}" -gt 0 ]];
+  then
+    FILE_TYPE_OPTION=" -type ${FILE_TYPE}"
+  else
+    FILE_TYPE_OPTION=""
+  fi
+
+  find "${SEARCH_PATH}" -maxdepth ${MAX_DEPTH}${FILE_TYPE_OPTION} -print0 | while read -r -d $'\0' FILE_PATH;
+  do
+    if [[ "${SEARCH_PATH}" == "." ]];
     then
-        local FILE_TYPE_OPTION=" -type ${FILE_TYPE}"
-    else
-        local FILE_TYPE_OPTION=""
+      FILE_PATH="${FILE_PATH:2}"
     fi
 
-    find "${SEARCH_PATH}" -maxdepth "${MAX_DEPTH}${FILE_TYPE_OPTION}" -print0 | while read -r -d $'\0' FILE_PATH;
-    do
-        if [[ "${SEARCH_PATH}" == "." ]];
-        then
-            FILE_PATH="${FILE_PATH:2}"
-        fi
-
-        net_bazzline_filesystem_path_to_lower "${FILE_PATH}"
-    done
+    net_bazzline_filesystem_path_to_lower "${FILE_PATH}"
+  done
 }
 
 ####
