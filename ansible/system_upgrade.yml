@@ -1,0 +1,12 @@
+---
+- name: Update system using yay
+  hosts: localhost
+  become: true
+  tasks:
+    - name: Call yay
+      become_user: aur_builder
+      kewlfft.aur.aur:
+        aur_only: no
+        update_cache: true
+        upgrade: true
+        use: yay

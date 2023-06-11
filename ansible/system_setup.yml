@@ -1,0 +1,38 @@
+---
+- name: Setup system
+  hosts: localhost
+  become: true
+  tasks:
+    - name: Upgrade system/installed packages and update pacman package database
+      community.general.pacman:
+        update_cache: true
+        upgrade: true
+    - name: Create the `aur_builder` user
+      ansible.builtin.user:
+        name: aur_builder
+        create_home: true
+        group: wheel
+    - name: Allow the `aur_builder` user to run `sudo pacman` without a password
+      ansible.builtin.lineinfile:
+        create: true
+        line: 'aur_builder ALL=(ALL) NOPASSWD: /usr/bin/pacman'
+        path: /etc/sudoers.d/11-install-aur_builder
+        mode: '0440'
+        validate: 'visudo -cf %s'
+    - name: Install `yay` using makepkg if it isn`t installed already
+      become_user: aur_builder
+      kewlfft.aur.aur:
+        name: yay-bin
+        use: makepkg
+        state: present
+    - name: Install archlinux package list
+      community.general.pacman:
+        name: "{{ lookup('ansible.builtin.file', '../bin/setup/general/list_of_archlinux_packages.txt').splitlines() }}"
+        state: present
+#@todo: update yay
+    - name: Install aur package list
+      become_user: aur_builder
+      kewlfft.aur.aur:
+        name: "{{ lookup('ansible.builtin.file', '../bin/setup/general/list_of_aur_packages.txt').splitlines() }}"
+        state: present
+        use: yay
