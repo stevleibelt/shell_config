@@ -45,23 +45,22 @@ function _install_archlinux_packages()
       if [[ ${CHECK_CONTENT} -gt 0 ]];
       then
         LAST_RESULT_OF_PACKAGE_SEARCH=$(pacman -Ss "${CURRENT_CONTENT_LINE}")
-      else
-        #later on, we are checking against string lenght
-        LAST_RESULT_OF_PACKAGE_SEARCH="valid"
-      fi
 
-      if [[ "${#LAST_RESULT_OF_PACKAGE_SEARCH}" -eq 0 ]]
-      then
-        echo -n "x"
-        LIST_OF_INVALID_PACKEGES="${LIST_OF_INVALID_PACKEGES}${CURRENT_CONTENT_LINE} "
+        if [[ "${#LAST_RESULT_OF_PACKAGE_SEARCH}" -eq 0 ]]
+        then
+          echo -n "x"
+          LIST_OF_INVALID_PACKEGES="${LIST_OF_INVALID_PACKEGES}${CURRENT_CONTENT_LINE} "
+        else
+          echo -n "."
+          LIST_OF_VALID_PACKEGES="${LIST_OF_VALID_PACKEGES}${CURRENT_CONTENT_LINE} "
+        fi
+        ((++CURRENT_LINE_NUMBER))
+        if (( CURRENT_LINE_NUMBER % 80 == 0 ));
+        then
+          echo ""
+        fi
       else
-        echo -n "."
         LIST_OF_VALID_PACKEGES="${LIST_OF_VALID_PACKEGES}${CURRENT_CONTENT_LINE} "
-      fi
-      ((++CURRENT_LINE_NUMBER))
-      if (( CURRENT_LINE_NUMBER % 80 == 0 ));
-      then
-        echo ""
       fi
     fi
   done < "${PATH_TO_PACKAGE_LIST}"
@@ -108,23 +107,22 @@ function _install_aur_packages()
       if [[ ${CHECK_CONTENT} -gt 0 ]];
       then
         LAST_RESULT_OF_PACKAGE_SEARCH=$(yay -Ss "${CURRENT_CONTENT_LINE}")
-      else
-        #later on, we are checking against string lenght
-        LAST_RESULT_OF_PACKAGE_SEARCH="valid"
-      fi
 
-      if [[ "${#LAST_RESULT_OF_PACKAGE_SEARCH}" -eq 0 ]]
-      then
-        echo -n "x"
-        LIST_OF_INVALID_PACKEGES="${LIST_OF_INVALID_PACKEGES}${CURRENT_CONTENT_LINE} "
+        if [[ "${#LAST_RESULT_OF_PACKAGE_SEARCH}" -eq 0 ]]
+        then
+          echo -n "x"
+          LIST_OF_INVALID_PACKEGES="${LIST_OF_INVALID_PACKEGES}${CURRENT_CONTENT_LINE} "
+        else
+          echo -n "."
+          LIST_OF_VALID_PACKEGES="${LIST_OF_VALID_PACKEGES}${CURRENT_CONTENT_LINE} "
+        fi
+        ((++CURRENT_LINE_NUMBER))
+        if (( CURRENT_LINE_NUMBER % 80 == 0 ));
+        then
+          echo ""
+        fi
       else
-        echo -n "."
-        LIST_OF_VALID_PACKEGES="${LIST_OF_VALID_PACKEGES}${CURRENT_CONTENT_LINE} "
-      fi
-      ((++CURRENT_LINE_NUMBER))
-      if (( CURRENT_LINE_NUMBER % 80 == 0 ));
-      then
-        echo ""
+        LIST_OF_INVALID_PACKEGES="${LIST_OF_INVALID_PACKEGES}${CURRENT_CONTENT_LINE} "
       fi
     fi
   done < "${1}"
