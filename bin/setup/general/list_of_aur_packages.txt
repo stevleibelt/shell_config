@@ -4,11 +4,10 @@ ddev-bin
 jetbrains-toolbox
 librewolf-bin
 potato
-rustdesk
+rustdesk-bin
 shellcheck-bin
 shelldap
 tor-browser
-tripwire
 umlet
 ventoy-bin
 vscodium-bin
