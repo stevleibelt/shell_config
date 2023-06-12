@@ -149,12 +149,12 @@ fi
 #end of net_bazzline_config_shell"
 DELIM
 
-    if [[ -f "${PATH_TO_THE_XINIT}" ]];
+    if [[ ! -f "${PATH_TO_THE_XINIT}" ]];
     then
-      echo "   Copy content of ${PATH_TO_THE_XINIT} into ${PATH_TO_THE_TEMPORARY_XINIT}"
-
-      cat "${PATH_TO_THE_XINIT}" >> "${PATH_TO_THE_TEMPORARY_XINIT}"
+      cp /etc/X11/xinit/xinitrc ~/.xinitrc
     fi
+
+    cat "${PATH_TO_THE_XINIT}" >> "${PATH_TO_THE_TEMPORARY_XINIT}"
 
     echo "   Replacing ${PATH_TO_THE_XINIT} with ${PATH_TO_THE_TEMPORARY_XINIT}"
 
