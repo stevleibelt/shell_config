@@ -6,24 +6,49 @@
 # @author: stev leibelt <artodeto@bazzline.net>
 ####
 
+####
+# @param1 <string: PATH_TO_PACKAGE_LIST>
+# [@param2 <int: CHECK_CONTENT>] - 0|1, default is 1
+####
 function _install_archlinux_packages()
 {
+  local CHECK_CONTENT
   local CURRENT_LINE_NUMBER
   local LAST_RESULT_OF_PACKAGE_SEARCH
   local LIST_OF_INVALID_PACKEGES
   local LIST_OF_VALID_PACKEGES
+  local PATH_TO_PACKAGE_LIST
 
+  CHECK_CONTENT="${2:-1}"
   CURRENT_LINE_NUMBER=0
   LIST_OF_INVALID_PACKEGES=""
   LIST_OF_VALID_PACKEGES=""
+  PATH_TO_PACKAGE_LIST="${1}"
 
-  echo ":: Checking content of >>$(basename ${1})<<."
+  if [[ ! -f "${PATH_TO_PACKAGE_LIST}" ]];
+  then
+    echo ":: Error"
+    echo "   >>${PATH_TO_PACKAGE_LIST}<< is not a valid file"
+
+    return 1
+  fi
+
+  if [[ ${CHECK_CONTENT} -gt 0 ]];
+  then
+    echo ":: Checking content of >>$(basename ${PATH_TO_PACKAGE_LIST})<<."
+  fi
 
   while IFS='' read -r CURRENT_CONTENT_LINE || [[ -n "${CURRENT_CONTENT_LINE}" ]];
   do
     if [[ "${#CURRENT_CONTENT_LINE}" -gt 0 ]] && [[ "${CURRENT_CONTENT_LINE:0:1}" != "#" ]];
     then
-      LAST_RESULT_OF_PACKAGE_SEARCH=$(pacman -Ss "${CURRENT_CONTENT_LINE}")
+      if [[ ${CHECK_CONTENT} -gt 0 ]];
+      then
+        LAST_RESULT_OF_PACKAGE_SEARCH=$(pacman -Ss "${CURRENT_CONTENT_LINE}")
+      else
+        #later on, we are checking against string lenght
+        LAST_RESULT_OF_PACKAGE_SEARCH="valid"
+      fi
 
       if [[ "${#LAST_RESULT_OF_PACKAGE_SEARCH}" -eq 0 ]]
       then
@@ -39,7 +64,7 @@ function _install_archlinux_packages()
         echo ""
       fi
     fi
-  done < "${1}"
+  done < "${PATH_TO_PACKAGE_LIST}"
   echo ""
 
   echo ":: Starting installation"
@@ -52,24 +77,41 @@ function _install_archlinux_packages()
   fi
 }
 
+####
+# @param1 <string: PATH_TO_PACKAGE_LIST>
+# [@param2 <int: CHECK_CONTENT>] - 0|1, default is 1
+####
 function _install_aur_packages()
 {
+  local CHECK_CONTENT
   local CURRENT_LINE_NUMBER
   local LAST_RESULT_OF_PACKAGE_SEARCH
   local LIST_OF_INVALID_PACKEGES
   local LIST_OF_VALID_PACKEGES
+  local PATH_TO_PACKAGE_LIST
 
+  CHECK_CONTENT="${2:-1}"
   CURRENT_LINE_NUMBER=0
   LIST_OF_INVALID_PACKEGES=""
   LIST_OF_VALID_PACKEGES=""
+  PATH_TO_PACKAGE_LIST="${1}"
 
-  echo ":: Checking content of >>$(basename ${1})<<."
+  if [[ ${CHECK_CONTENT} -gt 0 ]];
+  then
+    echo ":: Checking content of >>$(basename ${1})<<."
+  fi
 
   while IFS='' read -r CURRENT_CONTENT_LINE || [[ -n "${CURRENT_CONTENT_LINE}" ]];
   do
     if [[ "${#CURRENT_CONTENT_LINE}" -gt 0 ]] && [[ "${CURRENT_CONTENT_LINE:0:1}" != "#" ]];
     then
-      LAST_RESULT_OF_PACKAGE_SEARCH=$(yay -Ss "${CURRENT_CONTENT_LINE}")
+      if [[ ${CHECK_CONTENT} -gt 0 ]];
+      then
+        LAST_RESULT_OF_PACKAGE_SEARCH=$(yay -Ss "${CURRENT_CONTENT_LINE}")
+      else
+        #later on, we are checking against string lenght
+        LAST_RESULT_OF_PACKAGE_SEARCH="valid"
+      fi
 
       if [[ "${#LAST_RESULT_OF_PACKAGE_SEARCH}" -eq 0 ]]
       then
@@ -100,13 +142,24 @@ function _install_aur_packages()
 
 function _main()
 {
+  local INSTALL_ARCHLINUX_PACKAGES
+  local INSTALL_AUR_PACKAGES
   local PATH_OF_THE_CALLED_SCRIPT
   local PATH_TO_THE_PACKAGE_FILE
 
+  INSTALL_ARCHLINUX_PACKAGES=0
+  INSTALL_AUR_PACKAGES=1
   PATH_OF_THE_CALLED_SCRIPT=$(cd $(dirname "${0}"); pwd)
 
-  _install_archlinux_packages "${PATH_OF_THE_CALLED_SCRIPT}/list_of_archlinux_packages.txt"
-  _install_aur_packages "${PATH_OF_THE_CALLED_SCRIPT}/list_of_aur_packages.txt"
+  if [[ ${INSTALL_ARCHLINUX_PACKAGES} -gt 0 ]];
+  then
+    _install_archlinux_packages "${PATH_OF_THE_CALLED_SCRIPT}/list_of_archlinux_packages.txt" 0
+  fi
+
+  if [[ ${INSTALL_AUR_PACKAGES} -gt 0 ]];
+  then
+    _install_aur_packages "${PATH_OF_THE_CALLED_SCRIPT}/list_of_aur_packages.txt" 0
+  fi
 }
 
 _main "${@}"
