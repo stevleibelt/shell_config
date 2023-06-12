@@ -27,7 +27,7 @@
         state: present
     - name: Install archlinux package list
       community.general.pacman:
-        name: "{{ lookup('ansible.builtin.file', '../bin/setup/general/list_of_archlinux_packages.txt').splitlines() }}"
+        name: "{{ lookup('ansible.builtin.file', '../bin/setup/general/list_of_archlinux_packages.txt').splitlines()|select('match', '^[^#]')|list }}"
         state: present
 #@todo: update yay
     - name: Upgrade system/installed package and update yay package database
@@ -42,6 +42,6 @@
       become: true
       become_user: aur_builder
       kewlfft.aur.aur:
-        name: "{{ lookup('ansible.builtin.file', '../bin/setup/general/list_of_aur_packages.txt').splitlines() }}"
+        name: "{{ lookup('ansible.builtin.file', '../bin/setup/general/list_of_aur_packages.txt').splitlines()|select('match', '^[^#]')|list }}"
         state: present
         use: yay
