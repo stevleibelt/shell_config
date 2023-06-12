@@ -112,7 +112,6 @@ smartmontools
 smplayer
 sshguard
 sshfs
-steam
 syncthing
 texlive-core
 telegram-desktop
@@ -129,7 +128,6 @@ wget
 wireguard-tools
 wireshark-cli
 wireshark-qt
-wine-staging
 xdg-user-dirs
 xorg-xinit
 xorg-server
