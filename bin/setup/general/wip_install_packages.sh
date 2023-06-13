@@ -152,6 +152,7 @@ function _main()
   if [[ ${INSTALL_ARCHLINUX_PACKAGES} -gt 0 ]];
   then
     _install_archlinux_packages "${PATH_OF_THE_CALLED_SCRIPT}/list_of_archlinux_packages.txt" 0
+    rustup default stable
   fi
 
   if [[ ${INSTALL_AUR_PACKAGES} -gt 0 ]];
