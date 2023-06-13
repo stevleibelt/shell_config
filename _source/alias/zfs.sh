@@ -21,6 +21,7 @@ then
 
     #s
     alias scrubListOfZfsPools=net_bazzline_scrub_list_of_zfs_pools
+    alias sendAndReceiveZfs=net_bazzline_zfs_send_and_receive
 
     #w
     alias watchForZpoolStatus="net_bazzline_execute_as_super_user_when_not_beeing_root watch -n 60 'zpool status -v'"

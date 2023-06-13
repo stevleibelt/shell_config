@@ -98,6 +98,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added
 
+* Added function `net_bazzline_zfs_send_and_receive`
 * Added function `net_bazzline_core_ask_yes_or_no` can be used with default values or like `net_bazzline_core_ask_yes_or_no "(n|Y)?" "y"`
 * Added variable `NET_BAZZLINE_IS_ZFS_DKMS` including adaptation of `bin/configure_local_setting.sh` and usage for `software-upgrade-without-kernel`
 * Added function `net_bazzline_shuffle_number` and alias `shuffelNumber`

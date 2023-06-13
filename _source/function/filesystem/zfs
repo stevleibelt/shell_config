@@ -388,6 +388,29 @@ function net_bazzline_scrub_list_of_zfs_pools()
 }
 
 ####
+# @param <string: source> - e.g. zroot@my_snapshot
+# @param <string: destination> - e.g. backup-pool/zroot
+####
+function net_bazzline_zfs_send_and_receive()
+{
+  local DESTINATION
+  local SOURCE
+
+  if [[ ${#} -lt 2 ]];
+  then
+    echo ":: Invalid amount of parameters"
+    echo "   ${0} <source> <destination>"
+
+    return 1
+  fi
+
+  DESTINATION="${2}"
+  SOURCE="${1}"
+
+  sudo zfs send -v -w -R "${SOURCE}" | zfs receive "${DESTINATION}"
+}
+
+####
 # @param string <mount point>
 # @param string <zfs pool name>
 # @param string <uuid of device>
