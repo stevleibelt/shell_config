@@ -61,6 +61,7 @@ linux-headers
 lm_sensors
 lowdown
 lshw
+lsof
 lutris
 lxterminal
 lynis
