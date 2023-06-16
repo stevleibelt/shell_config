@@ -31,6 +31,7 @@ function _main ()
 {
   #bo: user input
   local CURRENT_VERSION
+  local PATH_OF_THE_CURRENT_SCRIPT
   local PATH_TO_THE_LOCAL_SETTINGS
   local PATH_TO_THE_ZREPL_PATH
   local LIST_OF_AVAILABLE_DATASETS
@@ -38,6 +39,7 @@ function _main ()
   local LIST_OF_ZREPL_FILESYSTEMS
 
   CURRENT_VERSION=1
+  PATH_OF_THE_CURRENT_SCRIPT=$(cd $(dirname "${BASH_SOURCE[0]}"); pwd)
   PATH_TO_THE_LOCAL_SETTINGS="${HOME}/.local/net_bazzline/shell_config/zfs"
   PATH_TO_THE_ZREPL_PATH="/etc/zrepl"
 
@@ -166,40 +168,15 @@ DELIM"
   fi
   #eo: zrepl
 
-  #bo: swap
-  # ref: https://wiki.archlinux.org/title/ZFS#Swap_volume
-
-  if ! swapon -s | grep -q '/dev';
+  if [[ -f "${PATH_OF_THE_CURRENT_SCRIPT}/create_arc_size_max.sh" ]];
   then
-    zfs list
-    read -p "> Please input local root zpool (e.g. zroot). " -r
-
-    if [[ ${#REPLY} -gt 0 ]];
-    then
-
-      sudo zfs create -V 8G             \
-        -b $(getconf PAGESIZE)          \
-        -o compression=zle              \
-        -o logbias=throughput           \
-        -o sync=always                  \
-        -o primarycache=metadata        \
-        -o secondarycache=none          \
-        -o com.sun:auto-snapshot=false  \
-        "${REPLY}/swap"
-
-      sudo mkswap -f "/dev/zvol/${REPLY}/swap"
-      sudo swapon "/dev/zvol/${REPLY}/swap"
-
-      sudo bash -c "cat >> /etc/fstab <<DELIM
-/dev/zvol/${REPLY}/swap none  swap  discard 0 0
-DELIM"
-    else
-      echo "   Invalid or no pool name provided."
-    fi
-  else
-    echo "   Skipping swap creation, there is a swap available already"
+    bash "${PATH_OF_THE_CURRENT_SCRIPT}/create_arc_size_max.sh"
   fi
-  #eo: swap
+
+  if [[ -f "${PATH_OF_THE_CURRENT_SCRIPT}/create_swap.sh" ]];
+  then
+    bash "${PATH_OF_THE_CURRENT_SCRIPT}/create_swap.sh"
+  fi
 }
 
 _main "${@}"
