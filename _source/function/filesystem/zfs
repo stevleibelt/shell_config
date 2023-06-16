@@ -202,76 +202,17 @@ function net_bazzline_list_zfs_snapshots()
 }
 
 ####
-# @param string <mount point>
-# @param string <zfs pool name>
-# @param string <uuid of device>
-# [@param string <uuid of device>]
-# [...]
-####
-function net_bazzline_mount_crypto_zfs_pool ()
-{
-    local MOUNT_POINT
-    local UUID
-    local ZFS_POOL_NAME
-
-    if [[ ${#} -ge 3 ]];
-    then
-        MOUNT_POINT="${1}"
-        ZFS_POOL_NAME="${2}"
-
-        shift 2
-
-        #begin of duplicated code - remove empty path if possible
-        if [[ -d "${MOUNT_POINT}" ]];
-        then
-            #check if directory is not empty
-            if [[ $(ls -A "${MOUNT_POINT}") ]];
-            then
-                echo ":: Mount point exists and is not empty."
-                echo "   ${MOUNT_POINT}"
-
-                return 2
-            else
-                echo ":: Mount point exists but is empty."
-                echo "   Removing ${MOUNT_POINT}"
-
-                net_bazzline_execute_as_super_user_when_not_beeing_root rmdir "${MOUNT_POINT}"
-            fi
-        fi
-        #end of duplicated code - remove empty path if possible
-
-        net_bazzline_execute_as_super_user_when_not_beeing_root mkdir -p "${MOUNT_POINT}"
-
-        for CURRENT_ARGUMENT_NUMBER in $(seq ${#});
-        do
-            UUID="${1}"
-            echo ":: disk ${CURRENT_ARGUMENT_NUMBER}"
-            net_bazzline_execute_as_super_user_when_not_beeing_root cryptsetup luksOpen "/dev/disk/by-uuid/${UUID}" "crypt-${ZFS_POOL_NAME}-${CURRENT_ARGUMENT_NUMBER}"
-            shift
-        done
-
-        net_bazzline_execute_as_super_user_when_not_beeing_root zpool import "${ZFS_POOL_NAME}"
-    else
-        echo ":: called with invalid number of arguments."
-        echo "Usage:"
-        echo "    ${FUNCNAME[0]} <mount point> <zfs pool name> <uuid of device> [<uuid of device> [...]]"
-
-        return 1
-    fi
-}
-
-####
 # @param string <zfs pool name>
 # [@param string <mount point>]
 ####
-function net_bazzline_mount_native_encrypted_zfs_pool ()
+function net_bazzline_mount_encrypted_zfs_pool ()
 {
-    if [[ $# -gt 0 ]];
+    if [[ ${#} -gt 0 ]];
     then
         local ZFS_POOL_NAME="${1}"
 
         #@20201128 - unsure if this will be ever used
-        if [[ $# -gt 1 ]];
+        if [[ ${#} -gt 1 ]];
         then
            local MOUNT_POINT="${2}"
 
@@ -413,75 +354,12 @@ function net_bazzline_zfs_send_and_receive()
 ####
 # @param string <mount point>
 # @param string <zfs pool name>
-# @param string <uuid of device>
-# [@param string <uuid of device>]
-# [...]
-####
-function net_bazzline_umount_crypto_zfs_pool ()
-{
-    net_bazzline_record_function_usage ${FUNCNAME[0]}
-
-    if [[ $# -ge 3 ]];
-    then
-        MOUNT_POINT="${1}"
-        ZFS_POOL_NAME="${2}"
-
-        shift 2
-
-        if [[ -d ${MOUNT_POINT} ]];
-        then
-            if [[ "$(ls -A ${MOUNT_POINT})" ]];
-            then
-                CURRENT_WORKING_DIRECTORY=$(pwd)
-                SUB_STRING="${CURRENT_WORKING_DIRECTORY:0:${#CURRENT_WORKING_DIRECTORY}}"
-
-                #change to home if user is a sub directory of the mount point
-                if [[ "${SUB_STRING}" == "${MOUNT_POINT}" ]];
-                then
-                    cd ${HOME}
-                fi
-
-                net_bazzline_execute_as_super_user_when_not_beeing_root zpool export ${ZFS_POOL_NAME}
-
-                for CURRENT_ARGUMENT_NUMBER in $(seq ${#});
-                do
-                    UUID=${1}
-                    echo ":: disk ${CURRENT_ARGUMENT_NUMBER}"
-                    net_bazzline_execute_as_super_user_when_not_beeing_root cryptsetup luksClose crypt-${ZFS_POOL_NAME}-${CURRENT_ARGUMENT_NUMBER}
-                    shift
-                done
-
-                if [[ ! "$(ls -A ${MOUNT_POINT})" ]];
-                then
-                    net_bazzline_execute_as_super_user_when_not_beeing_root rmdir ${MOUNT_POINT}
-                else
-                    echo ":: can not remove mount point, there is still content inside."
-                    ls -A ${MOUNT_POINT}
-                fi
-            else
-                echo ":: mountpoint ${MOUNT_POINT} exists but is empty"
-            fi
-        else
-            echo ":: mountpoint ${MOUNT_POINT} does not exist"
-        fi
-    else
-        echo ":: called with invalid number of arguments."
-        echo "Usage:"
-        echo "    ${FUNCNAME[0]} <mount point> <zfs pool name> <uuid of device> [<uuid of device> [...]]"
-
-        return 1
-    fi
-}
-
-####
-# @param string <mount point>
-# @param string <zfs pool name>
 ####
 function net_bazzline_umount_zfs_pool ()
 {
     net_bazzline_record_function_usage ${FUNCNAME[0]}
 
-    if [[ $# -eq 2 ]];
+    if [[ ${#} -eq 2 ]];
     then
         MOUNT_POINT="${1}"
         ZFS_POOL_NAME="${2}"
