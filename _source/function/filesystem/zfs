@@ -1,5 +1,167 @@
 #!/bin/bash
 
+function net_bazzline_zfs_create_pool()
+{
+  local ARRAY_OF_DEVICES
+  local BE_VERBOSE
+  local CURRENT_DEVICE
+  local CURRENT_OPTION
+  local DEVICES_AS_STRING
+  local ENCRYPT
+  local NAME
+  local RANDOMIZED_NAME_EXTENSION
+  local SHOW_HELP
+  local WIPE_DEVICES
+
+  declare -a ARRAY_OF_DEVICES=()
+  BE_VERBOSE=0
+  CURRENT_OPTION=""
+  DEVICES_AS_STRING=""
+  ENCRYPT=0
+  NAME="zroot"
+  OPTIND=1
+  RANDOMIZED_NAME_EXTENSION=$(tr -dc a-z0-9 < /dev/urandom | head -c 4)
+  SHOW_HELP=0
+  WIPE_DEVICES=0
+
+  while getopts "d:ehn:vw" CURRENT_OPTION;
+  do
+    case ${CURRENT_OPTION} in
+      d)
+        if [[ -b "${OPTARG}" ]];
+        then
+          ARRAY_OF_DEVICES+=("${OPTARG}")
+          DEVICES_AS_STRING="${DEVICES_AS_STRING}${OPTARG} "
+        else
+          echo ":: Error: >>${OPTARG}<< is not a valid device."
+        fi
+        ;;
+      e)
+        ENCRYPT=1
+        ;;
+      h)
+        SHOW_HELP=1
+        ;;
+      n)
+        NAME="${OPTARG}"
+        ;;
+      v)
+        BE_VERBOSE=1
+        ;;
+      w)
+        WIPE_DEVICES=1
+        ;;
+    esac
+  done
+
+  if [[ $SHOW_HELP -eq 1 ]];
+  then
+    echo ":: Usage"
+    echo "   ${0} -d <string: /dev/disk/by-uuid/foo> [-d [...]] [-p] [-v] [-w]"
+    echo "   -d: Device for the pool"
+    echo "   -e: Encrypt the pool"
+    echo "   -n: Name of the pool, default is >>zroot<< plus for randomized characters"
+    echo "   -v: Be verbose"
+    echo "   -w: Wipe data on all provided devices"
+
+    return 0
+  fi
+
+  NAME="${NAME}-${RANDOMIZED_NAME_EXTENSION}"
+
+  if [[ ${#ARRAY_OF_DEVICES[@]} -lt 1 ]];
+  then
+    echo ":: Error: No device provided"
+
+    ls -l /dev/disk/by-id
+
+    return 1
+  fi
+
+  if [[ ${#DEVICES_AS_STRING} -lt 1 ]];
+  then
+    echo ":: Error: Invalid device string"
+
+    ls -l /dev/disk/by-id
+
+    return 1
+  fi
+
+  for CURRENT_DEVICE in "${ARRAY_OF_DEVICES[@]}";
+  do
+    if [[ $WIPE_DEVICES -eq 1 ]];
+    then
+        if [[ $BE_VERBOSE -eq 1 ]];
+        then
+          echo ":: Start wiping device >>${CURRENT_DEVICE}<<."
+        fi
+
+        sudo dd if=/dev/zero of="${CURRENT_DEVICE}" bs=512 count=1
+        sudo wipefs -af "${CURRENT_DEVICE}"
+        sudo sgdisk -Zo "${CURRENT_DEVICE}"
+    fi
+
+    if [[ $BE_VERBOSE -eq 1 ]];
+    then
+      echo ":: Start partitioning device >>${CURRENT_DEVICE}<<."
+    fi
+
+    #sudo sgdisk -n1:0:0 -t1:bf01 "${CURRENT_DEVICE}"
+    sudo sgdisk -o "${CURRENT_DEVICE}"
+
+    # Inform kernel
+    sudo partprobe "${CURRENT_DEVICE}"
+  done
+
+  DEVICES_AS_STRING="${DEVICES_AS_STRING:0:-1}"
+
+  if [[ $ENCRYPT -gt 0 ]];
+  then
+    if [[ $BE_VERBOSE -eq 1 ]];
+    then
+      echo ":: Creating encrypted zfs pool"
+    fi
+
+    sudo zpool create -f          \
+      -o ashift=12                \
+      -o autotrim=on              \
+      -O acltype=posixacl         \
+      -O compression=zstd         \
+      -O relatime=on              \
+      -O xattr=sa                 \
+      -O dnodesize=legacy         \
+      -O encryption=aes-256-gcm   \
+      -O keyformat=passphrase     \
+      -O keylocation=prompt       \
+      -O normalization=formD      \
+      -O mountpoint=none          \
+      -O canmount=off             \
+      -O devices=off              \
+      -R /mnt                     \
+      "${NAME}" "${DEVICES_AS_STRING}"
+  else
+    if [[ $BE_VERBOSE -eq 1 ]];
+    then
+      echo ":: Creating zfs pool"
+    fi
+
+    sudo zpool create -f          \
+      -o ashift=12                \
+      -o autotrim=on              \
+      -O acltype=posixacl         \
+      -O compression=zstd         \
+      -O relatime=on              \
+      -O xattr=sa                 \
+      -O dnodesize=legacy         \
+      -O normalization=formD      \
+      -O mountpoint=none          \
+      -O canmount=off             \
+      -O devices=off              \
+      -R /mnt                     \
+      "${NAME}" "${DEVICES_AS_STRING}"
+  fi
+}
+
 ####
 # [@param string <name of the snapshot>, default is current date
 # [@param string <name of the zfs pool>]
