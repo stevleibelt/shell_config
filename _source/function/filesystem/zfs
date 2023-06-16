@@ -122,22 +122,22 @@ function net_bazzline_zfs_create_pool()
       echo ":: Creating encrypted zfs pool"
     fi
 
-    sudo zpool create -f          \
-      -o ashift=12                \
-      -o autotrim=on              \
-      -O acltype=posixacl         \
-      -O compression=zstd         \
-      -O relatime=on              \
-      -O xattr=sa                 \
-      -O dnodesize=legacy         \
-      -O encryption=aes-256-gcm   \
-      -O keyformat=passphrase     \
-      -O keylocation=prompt       \
-      -O normalization=formD      \
-      -O mountpoint=none          \
-      -O canmount=off             \
-      -O devices=off              \
-      -R /mnt                     \
+    sudo zpool create -f            \
+      -o ashift=12                  \
+      -o autotrim=on                \
+      -O acltype=posixacl           \
+      -O compression=zstd           \
+      -O relatime=on                \
+      -O xattr=sa                   \
+      -O dnodesize=legacy           \
+      -O encryption=aes-256-gcm     \
+      -O keyformat=passphrase       \
+      -O keylocation=prompt         \
+      -O normalization=formD        \
+      -O mountpoint="/mnt/${NAME}"  \
+      -O canmount=off               \
+      -O devices=off                \
+      -R /mnt                       \
       "${NAME}" "${DEVICES_AS_STRING}"
   else
     if [[ $BE_VERBOSE -eq 1 ]];
@@ -145,19 +145,20 @@ function net_bazzline_zfs_create_pool()
       echo ":: Creating zfs pool"
     fi
 
-    sudo zpool create -f          \
-      -o ashift=12                \
-      -o autotrim=on              \
-      -O acltype=posixacl         \
-      -O compression=zstd         \
-      -O relatime=on              \
-      -O xattr=sa                 \
-      -O dnodesize=legacy         \
-      -O normalization=formD      \
-      -O mountpoint=none          \
-      -O canmount=off             \
-      -O devices=off              \
-      -R /mnt                     \
+    sudo zpool create -f            \
+      -o ashift=12                  \
+      -o autotrim=on                \
+      -O acltype=posixacl           \
+      -O compression=zstd           \
+      -O relatime=on                \
+      -O xattr=sa                   \
+      -O dnodesize=legacy           \
+      -O normalization=formD        \
+#      -O mountpoint=none          \
+      -O mountpoint="/mnt/${NAME}"  \
+      -O canmount=off               \
+      -O devices=off                \
+      -R /mnt                       \
       "${NAME}" "${DEVICES_AS_STRING}"
   fi
 }
