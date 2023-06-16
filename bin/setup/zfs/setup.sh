@@ -18,9 +18,7 @@ function _enable_and_start_zfs_timer_if_needed ()
 {
   local SYSTEMCTL_TIMER="${1}"
 
-  sudo systemctl -q is-enabled "${SYSTEMCTL_TIMER}"
-
-  if [[ ${?} -ne 0 ]];
+  if ! sudo systemctl -q is-enabled "${SYSTEMCTL_TIMER}";
   then
     echo "   Enabling and staring >>${SYSTEMCTL_TIMER}<<."
 
@@ -32,9 +30,17 @@ function _enable_and_start_zfs_timer_if_needed ()
 function _main ()
 {
   #bo: user input
-  local CURRENT_VERSION=1
-  local PATH_TO_THE_LOCAL_SETTINGS="${HOME}/.local/net_bazzline/shell_config/zfs"
-  local PATH_TO_THE_ZREPL_PATH="/etc/zrepl"
+  local CURRENT_VERSION
+  local PATH_TO_THE_LOCAL_SETTINGS
+  local PATH_TO_THE_ZREPL_PATH
+  local LIST_OF_AVAILABLE_DATASETS
+  local LIST_OF_AVAILABLE_ZPOOLS
+  local LIST_OF_ZREPL_FILESYSTEMS
+
+  CURRENT_VERSION=1
+  PATH_TO_THE_LOCAL_SETTINGS="${HOME}/.local/net_bazzline/shell_config/zfs"
+  PATH_TO_THE_ZREPL_PATH="/etc/zrepl"
+
   declare -a LIST_OF_AVAILABLE_DATASETS=( $(zfs list | cut -f 1 -d " " | tail -n +2) )
   declare -a LIST_OF_AVAILABLE_ZPOOLS=()
   declare -a LIST_OF_ZREPL_FILESYSTEMS=()
@@ -96,7 +102,7 @@ function _main ()
     ##zpools are datasets without an >>/<<
     if [[ ${CURRENT_DATASET} != */* ]];
     then
-      LIST_OF_AVAILABLE_ZPOOLS+=(${CURRENT_DATASET})
+      LIST_OF_AVAILABLE_ZPOOLS+=("${CURRENT_DATASET}")
     fi
 
     LIST_OF_ZREPL_FILESYSTEMS+=("    \"${CURRENT_DATASET}<\":true,")
@@ -150,9 +156,7 @@ ${LIST_OF_ZREPL_FILESYSTEMS}
         count: 21
 DELIM"
 
-    zrepl configcheck --config ${PATH_TO_THE_ZREPL_PATH}/zrepl.yml
-
-    if [[ ${?} -ne 0 ]];
+    if ! zrepl configcheck --config ${PATH_TO_THE_ZREPL_PATH}/zrepl.yml;
     then
       echo ":: Error"
       echo "   Created zrepl configuration yaml >>${PATH_TO_THE_ZREPL_PATH}/zrepl.yml<< is not valid."
@@ -161,7 +165,36 @@ DELIM"
     fi
   fi
   #eo: zrepl
+
+  #bo: swap
+  # ref: https://wiki.archlinux.org/title/ZFS#Swap_volume
+
+  if $(swapon -s | wc -l) -eq 0;
+  then
+    zfs list
+    read -p -r "> Please input local root zpool (e.g. zroot). "
+
+    sudo zfs create -V 8G             \
+      -b $(getconf PAGESIZE)          \
+      -o compression=zle              \
+      -o logbias=throughput           \
+      -o sync=always                  \
+      -o primarycache=metadata        \
+      -o secondarycache=none          \
+      -o com.sun:auto-snapshot=false  \
+      "${REPLY}/swap"
+
+    sudo mkswap -f "/dev/zvol/${REPLY}/swap"
+    sudo swapon "/dev/zvol/${REPLY}/swap"
+
+    sudo bash -c "cat >> /etc/fstab <<DELIM
+/dev/zvol/${REPLY}/swap none  swap  discard 0 0
+DELIM"
+  else
+    echo "   Skipping swap creation, there is a swap available already"
+  fi
+  #eo: swap
 }
 
-_main ${@}
+_main "${@}"
 
