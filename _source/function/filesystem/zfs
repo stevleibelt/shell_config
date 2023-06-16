@@ -191,7 +191,7 @@ function net_bazzline_list_zfs_snapshots()
 {
     local NAME_OF_THE_POOL
 
-    if [[ ${} -lt 1 ]];
+    if [[ ${#} -lt 1 ]];
     then
         zfs list -t snapshot
     else
