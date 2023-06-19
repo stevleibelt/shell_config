@@ -1,11 +1,8 @@
 #!/bin/bash
 ####
-# Setup ufw
+# Setup docker
 ####
-# ref:
-#   https://wiki.archlinux.org/title/Uncomplicated_Firewall
-#   https://www.digitalocean.com/community/tutorials/how-to-set-up-a-firewall-with-ufw-on-ubuntu-20-04
-# @since 2023-06-14
+# @since 2023-06-19
 # @author stev leibelt <artodeto@arcor.de>
 ####
 
