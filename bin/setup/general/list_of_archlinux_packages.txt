@@ -12,6 +12,7 @@ archiso
 autorandr
 bat
 bind
+borg
 btop
 calc
 catdoc
@@ -22,6 +23,8 @@ clang
 composer
 curlie
 dbeaver
+docker
+docker-compose
 dmenu
 dunst
 element-desktop
@@ -97,6 +100,7 @@ pulseaudio
 pulseaudio-alsa
 pulsemixer
 python
+python-llfuse
 python-pip
 qemu-full
 ranger
