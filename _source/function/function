@@ -2977,9 +2977,7 @@ function net_bazzline_unmount_sshfs ()
     if [[ -d "${MOUNT_POINT}" ]];
     then
 
-      mount | grep -v "${MOUNT_POINT}"
-
-      if [[ ${?} -eq 0 ]];
+      if mountpoint -q "${MOUNT_POINT}";
       then
         umount "${MOUNT_POINT}"
 
