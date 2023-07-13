@@ -123,6 +123,9 @@ texlive-core
 telegram-desktop
 tree
 testdisk
+tesseract
+tesseract-data-eng
+tesseract-data-deu
 thunderbird
 terminus-font
 ttf-terminus-nerd
