@@ -1,6 +1,7 @@
 #!/bin/bash
 
 #c
+alias cdToCurrentUserGvfs='cd /run/user/${UID}/gvfs'
 alias createSha512sumFromFile=net_bazzline_filesystem_create_sha512sum_from_file
 
 #f
