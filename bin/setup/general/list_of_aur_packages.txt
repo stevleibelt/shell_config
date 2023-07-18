@@ -3,6 +3,7 @@ cyanrip
 ddev-bin
 jetbrains-toolbox
 librewolf-bin
+mangohud
 potato
 rustdesk-bin
 shellcheck-bin
