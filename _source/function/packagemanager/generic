@@ -67,17 +67,14 @@ function net_bazzline_packagemanager_arch_linux_software_upgrade ()
     #bo: check if lock file exists
     if [[ -f ${PACMAN_LOCK_FILE_PATH} ]];
     then
-        read -p -r ":: Lockfile exists. Remove it? (y|N) " yn
-
-        case ${yn} in
-            [Yy]* )
-              echo "   Removing lock file."
-              sudo rm ${PACMAN_LOCK_FILE_PATH}
-              break;;
-            * )
-              echo "   Aborting.";
-              return 2;
-        esac
+      if net_bazzline_core_ask_yes_or_no "Lockfile exists. Remove it? (y|N)"
+      then
+        echo "   Removing lock file."
+        sudo rm ${PACMAN_LOCK_FILE_PATH}
+      else
+        echo "   Aborting.";
+        return 2;
+      fi
     fi
     #bo: check if lock file exists
 
