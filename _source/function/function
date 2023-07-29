@@ -58,7 +58,7 @@ function net_bazzline_batch_convert_video_to_libx264 ()
     local SEARCH_PATH="${2:-.}"
 
     #@todo use parallel if available
-    find "${SEARCH_PATH}" -maxdepth "${MAX_DEPTH}" -type f -iregex '.*\.\(mp4\|mov\|flv\|avi\)$' -print0 | while read -r -d $'\0' FILE_PATH;
+    find "${SEARCH_PATH}" -maxdepth "${MAX_DEPTH}" -type f -iregex '.*\.\(mp4\|mov\|flv\|avi\|webm\)$' -print0 | while read -r -d $'\0' FILE_PATH;
     do
         #@see: https://stackoverflow.com/a/25535717
         #skip all files ending with ".converted264.mkv"
@@ -94,7 +94,7 @@ function net_bazzline_batch_convert_video_to_librav1e ()
 
     #@todo use parallel if available
     #find ${SEARCH_PATH} -maxdepth ${MAX_DEPTH} -type f -print0 | while read -d $'\0' FILE_PATH;
-    find "${SEARCH_PATH}" -maxdepth "${MAX_DEPTH}" -type f -iregex '.*\.\(mp4\|mov\|flv\|avi\)$' -print0 | while read -r -d $'\0' FILE_PATH;
+    find "${SEARCH_PATH}" -maxdepth "${MAX_DEPTH}" -type f -iregex '.*\.\(mp4\|mov\|flv\|avi\|webm\)$' -print0 | while read -r -d $'\0' FILE_PATH;
     do
         #@see: https://stackoverflow.com/a/25535717
         #if [[ ${FILE_PATH} != *"converted265"* ]];
@@ -128,7 +128,7 @@ function net_bazzline_batch_convert_video_to_libx265 ()
 
     #@todo use parallel if available
     #find ${SEARCH_PATH} -maxdepth ${MAX_DEPTH} -type f -print0 | while read -d $'\0' FILE_PATH;
-    find "${SEARCH_PATH}" -maxdepth "${MAX_DEPTH}" -type f -iregex '.*\.\(mp4\|mov\|flv\|avi\)$' -print0 | while read -r -d $'\0' FILE_PATH;
+    find "${SEARCH_PATH}" -maxdepth "${MAX_DEPTH}" -type f -iregex '.*\.\(mp4\|mov\|flv\|avi\|webm\)$' -print0 | while read -r -d $'\0' FILE_PATH;
     do
         #@see: https://stackoverflow.com/a/25535717
         #if [[ ${FILE_PATH} != *"converted265"* ]];
