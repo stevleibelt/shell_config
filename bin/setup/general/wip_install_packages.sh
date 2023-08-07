@@ -153,6 +153,10 @@ function _main()
   then
     _install_archlinux_packages "${PATH_OF_THE_CALLED_SCRIPT}/list_of_archlinux_packages.txt" 0
     rustup default stable
+    sudo enable autorandr-lid-listener.service
+    sudo enable autorandr.service
+    sudo start autorandr-lid-listener.service
+    sudo start autorandr.service
   fi
 
   if [[ ${INSTALL_AUR_PACKAGES} -gt 0 ]];
