@@ -172,6 +172,13 @@ if ${PACKAGEMANAGER_COMMAND} -Syyu --ignore=${PACKGES_TO_IGNORE};
 then
   echo ":: Cleaning up" 
   ${PACKAGEMANAGER_COMMAND} -Sc
+  
+  if [[ -f /usr/bin/fwupdmgr ]];
+  then
+    echo ":: Updating firmware"
+    sudo fwupdmgr refresh
+    sudo fwupdmgr update
+  fi
 else
   echo ":: Something bad happens."
   read -n 1 -s -r -p "Press any key to continue"
@@ -197,6 +204,13 @@ then
   then
     echo ":: Cleaning up" 
     ${PACKAGEMANAGER_COMMAND} -Sc
+  
+    if [[ -f /usr/bin/fwupdmgr ]];
+    then
+      echo ":: Updating firmware"
+      sudo fwupdmgr refresh
+      sudo fwupdmgr update
+    fi
   else
     echo ":: Something bad happens.";
     read -n 1 -s -r -p "Press any key to continue"
@@ -254,6 +268,7 @@ function net_bazzline_packagemanager_apt_software_upgrade ()
 
     screen -r ${NET_BAZZLINE_FUNCTION_PACKAGEMANAGER_SYSTEM_UPGRADE_SCREEN_SESSION_NAME}
 }
+
 
 #c
 
