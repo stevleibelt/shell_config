@@ -18,9 +18,7 @@ function _enable_and_start_zfs_timer_if_needed ()
 {
   local SYSTEMCTL_TIMER="${1}"
 
-  sudo systemctl -q is-enabled "${SYSTEMCTL_TIMER}"
-
-  if [[ ${?} -ne 0 ]];
+  if ! sudo systemctl -q is-enabled "${SYSTEMCTL_TIMER}";
   then
     echo "   Enabling and staring >>${SYSTEMCTL_TIMER}<<."
 
@@ -32,9 +30,19 @@ function _enable_and_start_zfs_timer_if_needed ()
 function _main ()
 {
   #bo: user input
-  local CURRENT_VERSION=1
-  local PATH_TO_THE_LOCAL_SETTINGS="${HOME}/.local/net_bazzline/shell_config/zfs"
-  local PATH_TO_THE_ZREPL_PATH="/etc/zrepl"
+  local CURRENT_VERSION
+  local PATH_OF_THE_CURRENT_SCRIPT
+  local PATH_TO_THE_LOCAL_SETTINGS
+  local PATH_TO_THE_ZREPL_PATH
+  local LIST_OF_AVAILABLE_DATASETS
+  local LIST_OF_AVAILABLE_ZPOOLS
+  local LIST_OF_ZREPL_FILESYSTEMS
+
+  CURRENT_VERSION=1
+  PATH_OF_THE_CURRENT_SCRIPT=$(cd $(dirname "${BASH_SOURCE[0]}"); pwd)
+  PATH_TO_THE_LOCAL_SETTINGS="${HOME}/.local/net_bazzline/shell_config/zfs"
+  PATH_TO_THE_ZREPL_PATH="/etc/zrepl"
+
   declare -a LIST_OF_AVAILABLE_DATASETS=( $(zfs list | cut -f 1 -d " " | tail -n +2) )
   declare -a LIST_OF_AVAILABLE_ZPOOLS=()
   declare -a LIST_OF_ZREPL_FILESYSTEMS=()
@@ -96,7 +104,7 @@ function _main ()
     ##zpools are datasets without an >>/<<
     if [[ ${CURRENT_DATASET} != */* ]];
     then
-      LIST_OF_AVAILABLE_ZPOOLS+=(${CURRENT_DATASET})
+      LIST_OF_AVAILABLE_ZPOOLS+=("${CURRENT_DATASET}")
     fi
 
     LIST_OF_ZREPL_FILESYSTEMS+=("    \"${CURRENT_DATASET}<\":true,")
@@ -150,9 +158,7 @@ ${LIST_OF_ZREPL_FILESYSTEMS}
         count: 21
 DELIM"
 
-    zrepl configcheck --config ${PATH_TO_THE_ZREPL_PATH}/zrepl.yml
-
-    if [[ ${?} -ne 0 ]];
+    if ! zrepl configcheck --config ${PATH_TO_THE_ZREPL_PATH}/zrepl.yml;
     then
       echo ":: Error"
       echo "   Created zrepl configuration yaml >>${PATH_TO_THE_ZREPL_PATH}/zrepl.yml<< is not valid."
@@ -161,7 +167,17 @@ DELIM"
     fi
   fi
   #eo: zrepl
+
+  if [[ -f "${PATH_OF_THE_CURRENT_SCRIPT}/create_arc_size_max.sh" ]];
+  then
+    bash "${PATH_OF_THE_CURRENT_SCRIPT}/create_arc_size_max.sh"
+  fi
+
+  if [[ -f "${PATH_OF_THE_CURRENT_SCRIPT}/create_swap.sh" ]];
+  then
+    bash "${PATH_OF_THE_CURRENT_SCRIPT}/create_swap.sh"
+  fi
 }
 
-_main ${@}
+_main "${@}"
 

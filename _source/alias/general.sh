@@ -23,7 +23,7 @@ alias batchConvertVideoToLibx264=net_bazzline_batch_convert_video_to_libx264
 alias batchConvertVideoToLibx265=net_bazzline_batch_convert_video_to_libx265
 #alias batchConvertVideoToLibrav1e=net_bazzline_batch_convert_video_to_librav1e
 alias batchDirectoryPathToLower=net_bazzline_batch_directory_path_to_lower
-alias batchFilesPathToLower=net_bazzline_batch_file_path_to_lower
+alias batchFilePathToLower=net_bazzline_batch_file_path_to_lower
 alias bootstrapShellConfigurationInVerboseMode='net_bazzline_shell_config_bootstrap 1'
 alias burn=net_bazzline_burn
 
@@ -60,6 +60,7 @@ alias createPathOrReturnErrorIfPathExistsAlready=net_bazzline_create_path_or_ret
 alias decompress=net_bazzline_decompress
 alias deleteEmptyDirectories=net_bazzline_delete_empty_directories
 alias deleteFilesOlderThan=net_bazzline_delete_files_older_than
+alias diff='diff --color=auto'
 alias diffTwoPaths=net_bazzline_diff_two_paths
 
 #f
@@ -85,10 +86,11 @@ alias hideFileSystemObject=net_bazzline_hide_file_system_object
 
 #i
 alias iftop='iftop -P -B'
+alias ip='ip -color=auto'
 alias iostat='iostat -x 2'
 
 #l
-alias l='ls -hAlt'
+alias l='ls -hAlt --color=auto'
 alias lh=net_bazzline_list_filesystem_items_head
 alias listDomainInformation=net_bazzline_list_domain_information
 alias listEmptyDirectories=net_bazzline_list_empty_directories

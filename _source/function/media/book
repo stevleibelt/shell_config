@@ -1,5 +1,41 @@
 #!/bin/bash
 
+if [[ -f /usr/bin/naps2 ]];
+then
+  function net_bazzline_media_book_add_ocr_to_pdf ()
+  {
+    local DESTINATION_FILE_PATH
+    local SOURCE_FILE_PATH
+    # ref: https://www.loc.gov/standards/iso639-2/php/code_list.php
+    local OCR_LANGUAGE
+
+    DESTINATION_FILE_PATH="${3:-${1}}"
+    OCR_LANGUAGE="${2:-deu}"
+    SOURCE_FILE_PATH="${1}"
+
+    if [[ -f "${SOURCE_FILE_PATH}" ]];
+    then
+      # ref: https://www.naps2.com/doc/command-line
+      #
+      # --enableocr:  enables usage of ocr
+      # --force:      overwrite if output file path exists
+      # -i:           import file path
+      # -n 0:         scan 0 pages
+      # -o:           output file path
+      # --ocrlang:    defines ocr language
+      if [[ "${SOURCE_FILE_PATH}" == "${DESTINATION_FILE_PATH}" ]];
+      then
+        naps2 console -i "${SOURCE_FILE_PATH}" -n 0 --enableocr --ocrlang "${OCR_LANGUAGE}" --force -o "${DESTINATION_FILE_PATH}"
+      else
+        naps2 console -i "${SOURCE_FILE_PATH}" -n 0 --enableocr --ocrlang "${OCR_LANGUAGE}" -o "${DESTINATION_FILE_PATH}"
+      fi
+    else
+      echo ":: Invalid source file path provided"
+      echo "   >>${SOURCE_FILE_PATH}<< does not exist"
+    fi
+  }
+fi
+
 ####
 # finds all *.md files in current working directory
 # converts each md file in a pdf file

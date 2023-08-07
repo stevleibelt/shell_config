@@ -1,27 +1,192 @@
 #!/bin/bash
 
+function net_bazzline_zfs_create_pool()
+{
+  local ARRAY_OF_DEVICES
+  local BE_VERBOSE
+  local CURRENT_DEVICE
+  local CURRENT_OPTION
+  local DEVICES_AS_STRING
+  local ENCRYPT
+  local NAME
+  local RANDOMIZED_NAME_EXTENSION
+  local SHOW_HELP
+  local WIPE_DEVICES
+
+  declare -a ARRAY_OF_DEVICES=()
+  BE_VERBOSE=0
+  CURRENT_OPTION=""
+  DEVICES_AS_STRING=""
+  ENCRYPT=0
+  NAME="zroot"
+  OPTIND=1
+  RANDOMIZED_NAME_EXTENSION=$(tr -dc a-z0-9 < /dev/urandom | head -c 4)
+  SHOW_HELP=0
+  WIPE_DEVICES=0
+
+  while getopts "d:ehn:vw" CURRENT_OPTION;
+  do
+    case ${CURRENT_OPTION} in
+      d)
+        if [[ -b "${OPTARG}" ]];
+        then
+          ARRAY_OF_DEVICES+=("${OPTARG}")
+          DEVICES_AS_STRING="${DEVICES_AS_STRING}${OPTARG} "
+        else
+          echo ":: Error: >>${OPTARG}<< is not a valid device."
+        fi
+        ;;
+      e)
+        ENCRYPT=1
+        ;;
+      h)
+        SHOW_HELP=1
+        ;;
+      n)
+        NAME="${OPTARG}"
+        ;;
+      v)
+        BE_VERBOSE=1
+        ;;
+      w)
+        WIPE_DEVICES=1
+        ;;
+    esac
+  done
+
+  if [[ $SHOW_HELP -eq 1 ]];
+  then
+    echo ":: Usage"
+    echo "   ${0} -d <string: /dev/disk/by-uuid/foo> [-d [...]] [-p] [-v] [-w]"
+    echo "   -d: Device for the pool"
+    echo "   -e: Encrypt the pool"
+    echo "   -n: Name of the pool, default is >>zroot<< plus for randomized characters"
+    echo "   -v: Be verbose"
+    echo "   -w: Wipe data on all provided devices"
+
+    return 0
+  fi
+
+  NAME="${NAME}-${RANDOMIZED_NAME_EXTENSION}"
+
+  if [[ ${#ARRAY_OF_DEVICES[@]} -lt 1 ]];
+  then
+    echo ":: Error: No device provided"
+
+    ls -l /dev/disk/by-id
+
+    return 1
+  fi
+
+  if [[ ${#DEVICES_AS_STRING} -lt 1 ]];
+  then
+    echo ":: Error: Invalid device string"
+
+    ls -l /dev/disk/by-id
+
+    return 1
+  fi
+
+  for CURRENT_DEVICE in "${ARRAY_OF_DEVICES[@]}";
+  do
+    if [[ $WIPE_DEVICES -eq 1 ]];
+    then
+        if [[ $BE_VERBOSE -eq 1 ]];
+        then
+          echo ":: Start wiping device >>${CURRENT_DEVICE}<<."
+        fi
+
+        sudo dd if=/dev/zero of="${CURRENT_DEVICE}" bs=512 count=1
+        sudo wipefs -af "${CURRENT_DEVICE}"
+        sudo sgdisk -Zo "${CURRENT_DEVICE}"
+    fi
+
+    if [[ $BE_VERBOSE -eq 1 ]];
+    then
+      echo ":: Start partitioning device >>${CURRENT_DEVICE}<<."
+    fi
+
+    #sudo sgdisk -n1:0:0 -t1:bf01 "${CURRENT_DEVICE}"
+    sudo sgdisk -o "${CURRENT_DEVICE}"
+
+    # Inform kernel
+    sudo partprobe "${CURRENT_DEVICE}"
+  done
+
+  DEVICES_AS_STRING="${DEVICES_AS_STRING:0:-1}"
+
+  if [[ $ENCRYPT -gt 0 ]];
+  then
+    if [[ $BE_VERBOSE -eq 1 ]];
+    then
+      echo ":: Creating encrypted zfs pool"
+    fi
+
+    sudo zpool create -f            \
+      -o ashift=12                  \
+      -o autotrim=on                \
+      -O acltype=posixacl           \
+      -O compression=zstd           \
+      -O relatime=on                \
+      -O xattr=sa                   \
+      -O dnodesize=legacy           \
+      -O encryption=aes-256-gcm     \
+      -O keyformat=passphrase       \
+      -O keylocation=prompt         \
+      -O normalization=formD        \
+      -O mountpoint="/mnt/${NAME}"  \
+      -O canmount=off               \
+      -O devices=off                \
+      -R /mnt                       \
+      "${NAME}" "${DEVICES_AS_STRING}"
+  else
+    if [[ $BE_VERBOSE -eq 1 ]];
+    then
+      echo ":: Creating zfs pool"
+    fi
+
+    sudo zpool create -f            \
+      -o ashift=12                  \
+      -o autotrim=on                \
+      -O acltype=posixacl           \
+      -O compression=zstd           \
+      -O relatime=on                \
+      -O xattr=sa                   \
+      -O dnodesize=legacy           \
+      -O normalization=formD        \
+#      -O mountpoint=none          \
+      -O mountpoint="/mnt/${NAME}"  \
+      -O canmount=off               \
+      -O devices=off                \
+      -R /mnt                       \
+      "${NAME}" "${DEVICES_AS_STRING}"
+  fi
+}
+
 ####
 # [@param string <name of the snapshot>, default is current date
 # [@param string <name of the zfs pool>]
 ####
 function net_bazzline_create_zfs_snapshot()
 {
-    net_bazzline_record_function_usage ${FUNCNAME[0]}
+    local NAME_OF_THE_POOL
+    local NAME_OF_THE_SNAPSHOT
+    local RESULT_OF_SNAPSHOT_CREATION
 
-    local NAME_OF_THE_POOL="${NET_BAZZLINE_ZFS_DEFAULT_POOL}"
-    local NAME_OF_THE_SNAPSHOT=$(date +'%Y-%m-%d_%H-%M-%S')
+    NAME_OF_THE_POOL="${NET_BAZZLINE_ZFS_DEFAULT_POOL}"
+    NAME_OF_THE_SNAPSHOT=$(date +'%Y-%m-%d_%H-%M-%S')
 
-    if [[ $# -gt 0 ]];
+    if [[ ${#} -gt 0 ]];
     then
-        local NAME_OF_THE_SNAPSHOT="${1}"
+        NAME_OF_THE_SNAPSHOT="${1}"
     elif [[ $# -gt 1 ]]; then
-        local NAME_OF_THE_SNAPSHOT="${1}"
-        local NAME_OF_THE_POOL="${2}"
+        NAME_OF_THE_SNAPSHOT="${1}"
+        NAME_OF_THE_POOL="${2}"
     fi
 
-    echo "Trying to create snapshot >>${NAME_OF_THE_SNAPSHOT}<< for pool >>${NAME_OF_THE_POOL}<<"
+    echo ":: Trying to create snapshot >>${NAME_OF_THE_SNAPSHOT}<< for pool >>${NAME_OF_THE_POOL}<<"
 
-    local RESULT_OF_SNAPSHOT_CREATION=$(sudo zfs snapshot -r ${NAME_OF_THE_POOL}@${NAME_OF_THE_SNAPSHOT});
+    RESULT_OF_SNAPSHOT_CREATION=$(sudo zfs snapshot -r ${NAME_OF_THE_POOL}@${NAME_OF_THE_SNAPSHOT});
 
     return ${RESULT_OF_SNAPSHOT_CREATION}
 }
@@ -39,9 +204,7 @@ function net_bazzline_create_zfs_snapshot()
 ####
 function net_bazzline_delete_zfs_snapshot()
 {
-    net_bazzline_record_function_usage ${FUNCNAME[0]}
-
-    if [[ $# -lt 1 ]];
+    if [[ ${#} -lt 1 ]];
     then
         echo ":: Invalid number of arguments"
         echo ":: Usage"
@@ -50,8 +213,11 @@ function net_bazzline_delete_zfs_snapshot()
         return 1
     fi
 
-    local NAME_OF_THE_POOL="${2:-${NET_BAZZLINE_ZFS_DEFAULT_POOL}}"
-    local NAME_OF_THE_SNAPSHOT="${1}"
+    local NAME_OF_THE_POOL
+    local NAME_OF_THE_SNAPSHOT
+
+    NAME_OF_THE_POOL="${2:-${NET_BAZZLINE_ZFS_DEFAULT_POOL}}"
+    NAME_OF_THE_SNAPSHOT="${1}"
 
     if sudo zfs list -t snapshot | grep -q "${NAME_OF_THE_POOL}@${NAME_OF_THE_SNAPSHOT}";
     then
@@ -66,8 +232,6 @@ function net_bazzline_delete_zfs_snapshot()
         echo ":: Failure"
         echo "   Snapshot \"${NAME_OF_THE_SNAPSHOT}\" does not exist on pool \"${NAME_OF_THE_POOL}\""
     fi
-
-    return $?
 }
 
 ####
@@ -77,9 +241,7 @@ function net_bazzline_delete_zfs_snapshot()
 ####
 function net_bazzline_delete_list_of_dated_zfs_snapshots()
 {
-    net_bazzline_record_function_usage ${FUNCNAME[0]}
-
-    if [[ $# -lt 2 ]];
+    if [[ ${#} -lt 2 ]];
     then
         echo ":: Invalid number of arguments"
         echo "   net_bazzline_delete_zfs_snapshots <name of inital snapshot number> <name of the final snapshot number> [<name of the zfs pool>]"
@@ -93,9 +255,17 @@ function net_bazzline_delete_list_of_dated_zfs_snapshots()
         echo "   ${INITIAL_SNAPSHOT_NUMBER} greater than ${FINAL_SNAPSHOT_NUMBER}"
     fi
 
-    local NAME_OF_THE_POOL="${3:-${NET_BAZZLINE_ZFS_DEFAULT_POOL}}"
-    local INITIAL_SNAPSHOT_NUMBER="${1}"
-    local FINAL_SNAPSHOT_NUMBER="${2}"
+    local ARRAY_OF_AVAILABLE_SNAPSHOTS
+    local DAY
+    local MONTH
+    local NAME_OF_THE_POOL
+    local INITIAL_SNAPSHOT_NUMBER
+    local FINAL_SNAPSHOT_NUMBER
+    local YEAR
+
+    NAME_OF_THE_POOL="${3:-${NET_BAZZLINE_ZFS_DEFAULT_POOL}}"
+    INITIAL_SNAPSHOT_NUMBER="${1}"
+    FINAL_SNAPSHOT_NUMBER="${2}"
 
     echo ":: Calculating reclaimed disk space."
     #@see: https://jrs-s.net/2020/02/08/estimating-space-occupied-by-multiple-zfs-snapshots/
@@ -104,7 +274,7 @@ function net_bazzline_delete_list_of_dated_zfs_snapshots()
     #fetch all available snapshots into an array
     #-o name - only display the name like zfspool/dataset@my_snapshot
     #@see: https://stackoverflow.com/q/18884992
-    local ARRAY_OF_AVAILABLE_SNAPSHOTS=$(zfs list -t snapshot -o name | grep -i ${NAME_OF_THE_POOL})
+    ARRAY_OF_AVAILABLE_SNAPSHOTS=$(zfs list -t snapshot -o name | grep -i ${NAME_OF_THE_POOL})
     #echo "Available snapshots: ${ARRAY_OF_AVAILABLE_SNAPSHOTS[@]}"
 
     echo ":: Deleting available snapshots."
@@ -113,9 +283,9 @@ function net_bazzline_delete_list_of_dated_zfs_snapshots()
     do
         #expected date for CURRENT_SNAPSHOT_NUMBER is yyyymmdd
         #@see http://stackoverflow.com/questions/10759162/check-if-argument-is-a-valid-date-in-bash-shell
-        local DAY=${CURRENT_SNAPSHOT_NUMBER:6:4}
-        local MONTH=${CURRENT_SNAPSHOT_NUMBER:4:2}
-        local YEAR=${CURRENT_SNAPSHOT_NUMBER:0:4}
+        DAY=${CURRENT_SNAPSHOT_NUMBER:6:4}
+        MONTH=${CURRENT_SNAPSHOT_NUMBER:4:2}
+        YEAR=${CURRENT_SNAPSHOT_NUMBER:0:4}
 
         #check if the date is valid
         if date -d "${YEAR}-${MONTH}-${DAY}" &> /dev/null;
@@ -143,9 +313,15 @@ function net_bazzline_delete_list_of_dated_zfs_snapshots()
 ####
 function net_bazzline_list_zfs_snapshot_diskspace()
 {
-    if [[ $# -lt 1 ]];
+    local ARRAY_OF_DATASET_NAME
+    local CURRENT_DATASET_NAME
+    local FIRST_SNAPSHOT_NAME
+    local LAST_SNAPSHOT_NAME
+    local NUMBER_OF_AVAILABLE_SNAPSHOTS
+
+    if [[ ${#} -lt 1 ]];
     then
-        local ARRAY_OF_DATASET_NAME=($(zfs list -Ho name))
+        ARRAY_OF_DATASET_NAME=($(zfs list -Ho name))
     else
         declare -a ARRAY_OF_DATASET_NAME
 
@@ -158,12 +334,12 @@ function net_bazzline_list_zfs_snapshot_diskspace()
     for CURRENT_DATASET_NAME in ${ARRAY_OF_DATASET_NAME[@]};
     do
         #with >>2>/dev/null<< we are preventing the >>no datasets available<< error message
-        local NUMBER_OF_AVAILABLE_SNAPSHOTS=$(zfs list -t snapshot ${CURRENT_DATASET_NAME} 2>/dev/null | wc -l)
+        NUMBER_OF_AVAILABLE_SNAPSHOTS=$(zfs list -t snapshot ${CURRENT_DATASET_NAME} 2>/dev/null | wc -l)
 
         if [[ ${NUMBER_OF_AVAILABLE_SNAPSHOTS} -gt 0 ]];
         then
-            local FIRST_SNAPSHOT_NAME=$(zfs list -t snapshot ${CURRENT_DATASET_NAME} | head -n2 | tail -n1 | cut -d " " -f1 | cut -d "@" -f2)
-            local LAST_SNAPSHOT_NAME=$(zfs list -t snapshot ${CURRENT_DATASET_NAME} | tail -n1 | cut -d " " -f1 | cut -d "@" -f2)
+            FIRST_SNAPSHOT_NAME=$(zfs list -t snapshot ${CURRENT_DATASET_NAME} | head -n2 | tail -n1 | cut -d " " -f1 | cut -d "@" -f2)
+            LAST_SNAPSHOT_NAME=$(zfs list -t snapshot ${CURRENT_DATASET_NAME} | tail -n1 | cut -d " " -f1 | cut -d "@" -f2)
 
             echo ":: Destroying >>${NUMBER_OF_AVAILABLE_SNAPSHOTS}<< snapshots on dataset >>${CURRENT_DATASET_NAME}<<."
             zfs destroy -nvr ${CURRENT_DATASET_NAME}@${FIRST_SNAPSHOT_NAME}%${LAST_SNAPSHOT_NAME} | tail -n1
@@ -176,72 +352,15 @@ function net_bazzline_list_zfs_snapshot_diskspace()
 ####
 function net_bazzline_list_zfs_snapshots()
 {
-    net_bazzline_record_function_usage ${FUNCNAME[0]}
+    local NAME_OF_THE_POOL
 
-    if [[ $# -lt 1 ]];
+    if [[ ${#} -lt 1 ]];
     then
         zfs list -t snapshot
     else
-        local NAME_OF_THE_POOL="${1}"
+        NAME_OF_THE_POOL="${1}"
 
-        zfs list -t snapshot | grep --color ${NAME_OF_THE_POOL}
-    fi
-}
-
-####
-# @param string <mount point>
-# @param string <zfs pool name>
-# @param string <uuid of device>
-# [@param string <uuid of device>]
-# [...]
-####
-function net_bazzline_mount_crypto_zfs_pool ()
-{
-    net_bazzline_record_function_usage ${FUNCNAME[0]}
-
-    if [[ $# -ge 3 ]];
-    then
-        local MOUNT_POINT="${1}"
-        local ZFS_POOL_NAME="${2}"
-
-        shift 2
-
-        #begin of duplicated code - remove empty path if possible
-        if [[ -d ${MOUNT_POINT} ]];
-        then
-            #check if directory is not empty
-            if [[ $(ls -A "${MOUNT_POINT}") ]];
-            then
-                echo ":: Mount point exists and is not empty."
-                echo "   ${MOUNT_POINT}"
-
-                return 2
-            else
-                echo ":: Mount point exists but is empty."
-                echo "   Removing ${MOUNT_POINT}"
-
-                net_bazzline_execute_as_super_user_when_not_beeing_root rmdir ${MOUNT_POINT}
-            fi
-        fi
-        #end of duplicated code - remove empty path if possible
-
-        net_bazzline_execute_as_super_user_when_not_beeing_root mkdir -p ${MOUNT_POINT}
-
-        for CURRENT_ARGUMENT_NUMBER in $(seq ${#});
-        do
-            UUID=${1}
-            echo ":: disk ${CURRENT_ARGUMENT_NUMBER}"
-            net_bazzline_execute_as_super_user_when_not_beeing_root cryptsetup luksOpen /dev/disk/by-uuid/${UUID} crypt-${ZFS_POOL_NAME}-${CURRENT_ARGUMENT_NUMBER}
-            shift
-        done
-
-        net_bazzline_execute_as_super_user_when_not_beeing_root zpool import ${ZFS_POOL_NAME}
-    else
-        echo ":: called with invalid number of arguments."
-        echo "Usage:"
-        echo "    ${FUNCNAME[0]} <mount point> <zfs pool name> <uuid of device> [<uuid of device> [...]]"
-
-        return 1
+        zfs list -t snapshot | grep --color "${NAME_OF_THE_POOL}"
     fi
 }
 
@@ -249,14 +368,14 @@ function net_bazzline_mount_crypto_zfs_pool ()
 # @param string <zfs pool name>
 # [@param string <mount point>]
 ####
-function net_bazzline_mount_native_encrypted_zfs_pool ()
+function net_bazzline_mount_encrypted_zfs_pool ()
 {
-    if [[ $# -gt 0 ]];
+    if [[ ${#} -gt 0 ]];
     then
         local ZFS_POOL_NAME="${1}"
 
         #@20201128 - unsure if this will be ever used
-        if [[ $# -gt 1 ]];
+        if [[ ${#} -gt 1 ]];
         then
            local MOUNT_POINT="${2}"
 
@@ -373,66 +492,26 @@ function net_bazzline_scrub_list_of_zfs_pools()
 }
 
 ####
-# @param string <mount point>
-# @param string <zfs pool name>
-# @param string <uuid of device>
-# [@param string <uuid of device>]
-# [...]
+# @param <string: source> - e.g. zroot@my_snapshot
+# @param <string: destination> - e.g. backup-pool/zroot
 ####
-function net_bazzline_umount_crypto_zfs_pool ()
+function net_bazzline_zfs_send_and_receive()
 {
-    net_bazzline_record_function_usage ${FUNCNAME[0]}
+  local DESTINATION
+  local SOURCE
 
-    if [[ $# -ge 3 ]];
-    then
-        MOUNT_POINT="${1}"
-        ZFS_POOL_NAME="${2}"
+  if [[ ${#} -lt 2 ]];
+  then
+    echo ":: Invalid amount of parameters"
+    echo "   ${0} <source> <destination>"
 
-        shift 2
+    return 1
+  fi
 
-        if [[ -d ${MOUNT_POINT} ]];
-        then
-            if [[ "$(ls -A ${MOUNT_POINT})" ]];
-            then
-                CURRENT_WORKING_DIRECTORY=$(pwd)
-                SUB_STRING="${CURRENT_WORKING_DIRECTORY:0:${#CURRENT_WORKING_DIRECTORY}}"
+  DESTINATION="${2}"
+  SOURCE="${1}"
 
-                #change to home if user is a sub directory of the mount point
-                if [[ "${SUB_STRING}" == "${MOUNT_POINT}" ]];
-                then
-                    cd ${HOME}
-                fi
-
-                net_bazzline_execute_as_super_user_when_not_beeing_root zpool export ${ZFS_POOL_NAME}
-
-                for CURRENT_ARGUMENT_NUMBER in $(seq ${#});
-                do
-                    UUID=${1}
-                    echo ":: disk ${CURRENT_ARGUMENT_NUMBER}"
-                    net_bazzline_execute_as_super_user_when_not_beeing_root cryptsetup luksClose crypt-${ZFS_POOL_NAME}-${CURRENT_ARGUMENT_NUMBER}
-                    shift
-                done
-
-                if [[ ! "$(ls -A ${MOUNT_POINT})" ]];
-                then
-                    net_bazzline_execute_as_super_user_when_not_beeing_root rmdir ${MOUNT_POINT}
-                else
-                    echo ":: can not remove mount point, there is still content inside."
-                    ls -A ${MOUNT_POINT}
-                fi
-            else
-                echo ":: mountpoint ${MOUNT_POINT} exists but is empty"
-            fi
-        else
-            echo ":: mountpoint ${MOUNT_POINT} does not exist"
-        fi
-    else
-        echo ":: called with invalid number of arguments."
-        echo "Usage:"
-        echo "    ${FUNCNAME[0]} <mount point> <zfs pool name> <uuid of device> [<uuid of device> [...]]"
-
-        return 1
-    fi
+  sudo zfs send -v -w -R "${SOURCE}" | zfs receive "${DESTINATION}"
 }
 
 ####
@@ -443,7 +522,7 @@ function net_bazzline_umount_zfs_pool ()
 {
     net_bazzline_record_function_usage ${FUNCNAME[0]}
 
-    if [[ $# -eq 2 ]];
+    if [[ ${#} -eq 2 ]];
     then
         MOUNT_POINT="${1}"
         ZFS_POOL_NAME="${2}"

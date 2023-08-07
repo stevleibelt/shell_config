@@ -1,0 +1,16 @@
+check-broken-packages-pacman-hook-git
+cyanrip
+ddev-bin
+jetbrains-toolbox
+librewolf-bin
+mangohud
+potato
+rustdesk-bin
+shellcheck-bin
+shelldap
+tor-browser
+umlet
+ventoy-bin
+vscodium-bin
+zrepl-bin
+vobcopy
