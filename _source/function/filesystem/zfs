@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# @deprecated - should be put into separate script since it is not used daily anymore
 function net_bazzline_zfs_create_pool()
 {
   local ARRAY_OF_DEVICES
@@ -164,6 +165,7 @@ function net_bazzline_zfs_create_pool()
 }
 
 ####
+# @deprecated - should be put into separate script since it is not used daily anymore
 # [@param string <name of the snapshot>, default is current date
 # [@param string <name of the zfs pool>]
 ####
@@ -192,6 +194,7 @@ function net_bazzline_create_zfs_snapshot()
 }
 
 ####
+# @deprecated - should be put into separate script since it is not used daily anymore
 # @param string <name of the snapshot>
 # @param string <name of the zfs pool>
 # @todo
@@ -348,6 +351,7 @@ function net_bazzline_list_zfs_snapshot_diskspace()
 }
 
 ####
+# @deprecated - should be put into separate script since it is not used daily anymore
 # [@param string <name of the zfs pool>]
 ####
 function net_bazzline_list_zfs_snapshots()
@@ -365,6 +369,7 @@ function net_bazzline_list_zfs_snapshots()
 }
 
 ####
+# @deprecated - should be put into separate script since it is not used daily anymore
 # @param string <zfs pool name>
 # [@param string <mount point>]
 ####
@@ -412,6 +417,7 @@ function net_bazzline_mount_encrypted_zfs_pool ()
 }
 
 ####
+# @deprecated - should be put into separate script since it is not used daily anymore
 # @param string <mount point>
 # @param string <zfs pool name>
 ####
@@ -456,18 +462,7 @@ function net_bazzline_mount_zfs_pool ()
 }
 
 ####
-# @param string <path to zfs pool>
-# [@param int number of snapshots to keep, default is 1]
-# @todo
-####
-function net_bazzline_rotate_zfs_snapshot()
-{
-    net_bazzline_record_function_usage ${FUNCNAME[0]}
-
-    echo 'work in progress'
-}
-
-####
+# @deprecated - should be put into separate script since it is not used daily anymore
 # [@param string <zfs pool name>] - If no argument is provided, the content of NET_BAZZLINE_ZFS_LIST_OF_POOLS_TO_SCRUB will be used
 # [@param string <zfs pool name>]
 # ...
@@ -492,29 +487,7 @@ function net_bazzline_scrub_list_of_zfs_pools()
 }
 
 ####
-# @param <string: source> - e.g. zroot@my_snapshot
-# @param <string: destination> - e.g. backup-pool/zroot
-####
-function net_bazzline_zfs_send_and_receive()
-{
-  local DESTINATION
-  local SOURCE
-
-  if [[ ${#} -lt 2 ]];
-  then
-    echo ":: Invalid amount of parameters"
-    echo "   ${0} <source> <destination>"
-
-    return 1
-  fi
-
-  DESTINATION="${2}"
-  SOURCE="${1}"
-
-  sudo zfs send -v -w -R "${SOURCE}" | zfs receive "${DESTINATION}"
-}
-
-####
+# @deprecated - should be put into separate script since it is not used daily anymore
 # @param string <mount point>
 # @param string <zfs pool name>
 ####
