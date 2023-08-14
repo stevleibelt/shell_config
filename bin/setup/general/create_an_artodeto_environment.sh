@@ -105,6 +105,10 @@ function _main ()
   sudo systemctl start nohang-desktop.service 
   # eo: ommd nohang
 
+  # bo: docker
+  sudo gpasswd -a ${USER} docker
+  # eo: docker
+
   echo ":: @todo"
   echo "   Add >>NOPASSWD: /usr/bin/light<< to created user"
 
