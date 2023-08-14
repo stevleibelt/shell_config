@@ -65,6 +65,7 @@ function net_bazzline_packagemanager_arch_linux_software_upgrade ()
     #eo: check if packagemanager is valid
 
     #bo: check if lock file exists
+    #@todo: move this into the generated script below, make sure to check if function net_bazzline_core_ask_yes_or_no exists
     if [[ -f ${PACMAN_LOCK_FILE_PATH} ]];
     then
       if net_bazzline_core_ask_yes_or_no "Lockfile exists. Remove it? (y|N)"
@@ -79,6 +80,7 @@ function net_bazzline_packagemanager_arch_linux_software_upgrade ()
     #bo: check if lock file exists
 
     #bo: snapshot creation
+    #@todo: move this into the generated script below, make sure to check if function net_bazzline_core_ask_yes_or_no exists
     if [[ ${NET_BAZZLINE_ZFS_IS_AVAILABLE} -eq 1 ]];
     then
       if sudo zfs list -t snapshot | grep -q "${ZFS_SNAPSHOT_NAME}";
