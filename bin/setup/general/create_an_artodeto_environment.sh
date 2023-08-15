@@ -109,6 +109,31 @@ function _main ()
   sudo gpasswd -a ${USER} docker
   # eo: docker
 
+  # bo: ssh agent
+  # ref: https://wiki.archlinux.org/title/SSH_keys#Start_ssh-agent_with_systemd_user
+  if [[ ! -f ~/.config/systemd/user/ssh-agent.service ]];
+  then
+    cat > ~/.config/systemd/user/ssh-agent.service <<DELIM
+[Unit]
+Description=SSH key agent
+
+[Service]
+Type=simple
+Environment=SSH_AUTH_SOCK=%t/ssh-agent.socket
+# DISPLAY required for ssh-askpass to work
+Environment=DISPLAY=:0
+ExecStart=/usr/bin/ssh-agent -D -a \$SSH_AUTH_SOCK
+
+[Install]
+WantedBy=default.target
+DELIM
+    echo 'export SSH_AUTH_SOCK=$XDG_RUNTIME_DIR/ssh-agent.socket' >> ~/software/source/com/github/stevleibelt/shell_config/local.export
+
+    systemctl --user enable ssh-agent.service
+    systemctl --user start ssh-agent.service
+  fi
+  # eo: ssh agent
+
   echo ":: @todo"
   echo "   Add >>NOPASSWD: /usr/bin/light<< to created user"
 
