@@ -97,9 +97,9 @@ function net_bazzline_zfs_create_pool()
           echo ":: Start wiping device >>${CURRENT_DEVICE}<<."
         fi
 
-        sudo dd if=/dev/zero of="${CURRENT_DEVICE}" bs=512 count=1
-        sudo wipefs -af "${CURRENT_DEVICE}"
-        sudo sgdisk -Zo "${CURRENT_DEVICE}"
+        net_bazzline_execute_as_super_user_when_not_beeing_root dd if=/dev/zero of="${CURRENT_DEVICE}" bs=512 count=1
+        net_bazzline_execute_as_super_user_when_not_beeing_root wipefs -af "${CURRENT_DEVICE}"
+        net_bazzline_execute_as_super_user_when_not_beeing_root sgdisk -Zo "${CURRENT_DEVICE}"
     fi
 
     if [[ $BE_VERBOSE -eq 1 ]];
@@ -108,10 +108,10 @@ function net_bazzline_zfs_create_pool()
     fi
 
     #sudo sgdisk -n1:0:0 -t1:bf01 "${CURRENT_DEVICE}"
-    sudo sgdisk -o "${CURRENT_DEVICE}"
+    net_bazzline_execute_as_super_user_when_not_beeing_root sgdisk -o "${CURRENT_DEVICE}"
 
     # Inform kernel
-    sudo partprobe "${CURRENT_DEVICE}"
+    net_bazzline_execute_as_super_user_when_not_beeing_root partprobe "${CURRENT_DEVICE}"
   done
 
   DEVICES_AS_STRING="${DEVICES_AS_STRING:0:-1}"
@@ -123,7 +123,7 @@ function net_bazzline_zfs_create_pool()
       echo ":: Creating encrypted zfs pool"
     fi
 
-    sudo zpool create -f            \
+    net_bazzline_execute_as_super_user_when_not_beeing_root zpool create -f            \
       -o ashift=12                  \
       -o autotrim=on                \
       -O acltype=posixacl           \
@@ -146,7 +146,7 @@ function net_bazzline_zfs_create_pool()
       echo ":: Creating zfs pool"
     fi
 
-    sudo zpool create -f            \
+    net_bazzline_execute_as_super_user_when_not_beeing_root zpool create -f            \
       -o ashift=12                  \
       -o autotrim=on                \
       -O acltype=posixacl           \
@@ -188,7 +188,7 @@ function net_bazzline_create_zfs_snapshot()
 
     echo ":: Trying to create snapshot >>${NAME_OF_THE_SNAPSHOT}<< for pool >>${NAME_OF_THE_POOL}<<"
 
-    RESULT_OF_SNAPSHOT_CREATION=$(sudo zfs snapshot -r ${NAME_OF_THE_POOL}@${NAME_OF_THE_SNAPSHOT});
+    RESULT_OF_SNAPSHOT_CREATION=$(net_bazzline_execute_as_super_user_when_not_beeing_root zfs snapshot -r ${NAME_OF_THE_POOL}@${NAME_OF_THE_SNAPSHOT});
 
     return ${RESULT_OF_SNAPSHOT_CREATION}
 }
@@ -222,11 +222,11 @@ function net_bazzline_delete_zfs_snapshot()
     NAME_OF_THE_POOL="${2:-${NET_BAZZLINE_ZFS_DEFAULT_POOL}}"
     NAME_OF_THE_SNAPSHOT="${1}"
 
-    if sudo zfs list -t snapshot | grep -q "${NAME_OF_THE_POOL}@${NAME_OF_THE_SNAPSHOT}";
+    if net_bazzline_execute_as_super_user_when_not_beeing_root zfs list -t snapshot | grep -q "${NAME_OF_THE_POOL}@${NAME_OF_THE_SNAPSHOT}";
     then
         if net_bazzline_core_ask_yes_or_no "Remove snapshot >>${NAME_OF_THE_POOL}@${NAME_OF_THE_SNAPSHOT}? (y|N)"
         then
-          if sudo zfs destroy -R "${NAME_OF_THE_POOL}@${NAME_OF_THE_SNAPSHOT}"
+          if net_bazzline_execute_as_super_user_when_not_beeing_root zfs destroy -R "${NAME_OF_THE_POOL}@${NAME_OF_THE_SNAPSHOT}"
           then
               echo ":: Snapshot \"${NAME_OF_THE_SNAPSHOT}\" deleted from pool \"${NAME_OF_THE_POOL}\""
           fi
@@ -238,6 +238,7 @@ function net_bazzline_delete_zfs_snapshot()
 }
 
 ####
+# @deprecated - should be put into separate script since it is not used daily anymore
 # @param string <initial snapshot number>
 # @param string <final snapshot number>
 # [@param string <name of zfs pool>]
@@ -272,12 +273,12 @@ function net_bazzline_delete_list_of_dated_zfs_snapshots()
 
     echo ":: Calculating reclaimed disk space."
     #@see: https://jrs-s.net/2020/02/08/estimating-space-occupied-by-multiple-zfs-snapshots/
-    sudo zfs destroy -nv "${NAME_OF_THE_POOL}@${INITIAL_SNAPSHOT_NUMBER}%${FINAL_SNAPSHOT_NUMBER}"
+    net_bazzline_execute_as_super_user_when_not_beeing_root zfs destroy -nv "${NAME_OF_THE_POOL}@${INITIAL_SNAPSHOT_NUMBER}%${FINAL_SNAPSHOT_NUMBER}"
 
     #fetch all available snapshots into an array
     #-o name - only display the name like zfspool/dataset@my_snapshot
     #@see: https://stackoverflow.com/q/18884992
-    ARRAY_OF_AVAILABLE_SNAPSHOTS=$(zfs list -t snapshot -o name | grep -i ${NAME_OF_THE_POOL})
+    ARRAY_OF_AVAILABLE_SNAPSHOTS=$(net_bazzline_execute_as_super_user_when_not_beeing_root zfs list -t snapshot -o name | grep -i ${NAME_OF_THE_POOL})
     #echo "Available snapshots: ${ARRAY_OF_AVAILABLE_SNAPSHOTS[@]}"
 
     echo ":: Deleting available snapshots."
@@ -324,7 +325,7 @@ function net_bazzline_list_zfs_snapshot_diskspace()
 
     if [[ ${#} -lt 1 ]];
     then
-        ARRAY_OF_DATASET_NAME=($(zfs list -Ho name))
+        ARRAY_OF_DATASET_NAME=($(net_bazzline_execute_as_super_user_when_not_beeing_root zfs list -Ho name))
     else
         declare -a ARRAY_OF_DATASET_NAME
 
@@ -337,15 +338,15 @@ function net_bazzline_list_zfs_snapshot_diskspace()
     for CURRENT_DATASET_NAME in ${ARRAY_OF_DATASET_NAME[@]};
     do
         #with >>2>/dev/null<< we are preventing the >>no datasets available<< error message
-        NUMBER_OF_AVAILABLE_SNAPSHOTS=$(zfs list -t snapshot ${CURRENT_DATASET_NAME} 2>/dev/null | wc -l)
+        NUMBER_OF_AVAILABLE_SNAPSHOTS=$(net_bazzline_execute_as_super_user_when_not_beeing_root zfs list -t snapshot ${CURRENT_DATASET_NAME} 2>/dev/null | wc -l)
 
         if [[ ${NUMBER_OF_AVAILABLE_SNAPSHOTS} -gt 0 ]];
         then
-            FIRST_SNAPSHOT_NAME=$(zfs list -t snapshot ${CURRENT_DATASET_NAME} | head -n2 | tail -n1 | cut -d " " -f1 | cut -d "@" -f2)
-            LAST_SNAPSHOT_NAME=$(zfs list -t snapshot ${CURRENT_DATASET_NAME} | tail -n1 | cut -d " " -f1 | cut -d "@" -f2)
+            FIRST_SNAPSHOT_NAME=$(net_bazzline_execute_as_super_user_when_not_beeing_root zfs list -t snapshot ${CURRENT_DATASET_NAME} | head -n2 | tail -n1 | cut -d " " -f1 | cut -d "@" -f2)
+            LAST_SNAPSHOT_NAME=$(net_bazzline_execute_as_super_user_when_not_beeing_root zfs list -t snapshot ${CURRENT_DATASET_NAME} | tail -n1 | cut -d " " -f1 | cut -d "@" -f2)
 
             echo ":: Destroying >>${NUMBER_OF_AVAILABLE_SNAPSHOTS}<< snapshots on dataset >>${CURRENT_DATASET_NAME}<<."
-            zfs destroy -nvr ${CURRENT_DATASET_NAME}@${FIRST_SNAPSHOT_NAME}%${LAST_SNAPSHOT_NAME} | tail -n1
+            net_bazzline_execute_as_super_user_when_not_beeing_root zfs destroy -nvr ${CURRENT_DATASET_NAME}@${FIRST_SNAPSHOT_NAME}%${LAST_SNAPSHOT_NAME} | tail -n1
         fi
     done
 }
@@ -360,11 +361,11 @@ function net_bazzline_list_zfs_snapshots()
 
     if [[ ${#} -lt 1 ]];
     then
-        zfs list -t snapshot
+        net_bazzline_execute_as_super_user_when_not_beeing_root zfs list -t snapshot
     else
         NAME_OF_THE_POOL="${1}"
 
-        zfs list -t snapshot | grep --color "${NAME_OF_THE_POOL}"
+        net_bazzline_execute_as_super_user_when_not_beeing_root zfs list -t snapshot | grep --color "${NAME_OF_THE_POOL}"
     fi
 }
 
