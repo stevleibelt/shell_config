@@ -54,6 +54,7 @@ alias convertVideoToLibrav1e=net_bazzline_convert_video_to_librav1e
 alias convertWavToMp3=net_bazzline_convert_wav_to_mp3
 alias createAMp3FileForEachMpcFileInTheCurrentWorkingDirectory=net_bazzline_create_a_mp3_file_for_each_mpc_file_in_the_current_directory
 alias createNewSshKey='ssh-keygen -b 4096 -t rsa'
+alias createNewSshEdKey='ssh-keygen -t ed25519 -a 420'
 alias createPathOrReturnErrorIfPathExistsAlready=net_bazzline_create_path_or_return_error_if_path_exists_already
 
 #d
