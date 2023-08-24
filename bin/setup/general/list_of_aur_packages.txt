@@ -4,6 +4,7 @@ ddev-bin
 jetbrains-toolbox
 librewolf-bin
 mangohud
+pdfsam
 potato
 rustdesk-bin
 shellcheck-bin
