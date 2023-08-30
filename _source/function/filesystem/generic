@@ -154,6 +154,20 @@ function net_bazzline_filesystem_create_sha512sum_from_file ()
 }
 
 ####
+# [@param <int: NUMBER_OF_DAYS_TO_DELETE]> - Default is 14
+####
+function net_bazzline_filesystem_generic_empty_tmp ()
+{
+  local NUMBER_OF_DAYS_TO_DELETE="${1:-14}"
+
+  if [[ -d /tmp ]];
+  then
+    net_bazzline_core_echo_if_be_verbose "Executing: sudo find /tmp -type f,s -atime +${NUMBER_OF_DAYS_TO_DELETE} -delete"
+    sudo find /tmp -type f,s -atime +${NUMBER_OF_DAYS_TO_DELETE} -delete
+  fi
+}
+
+####
 # @param <string: path to the file>
 #
 # @see: https://opensource.com/article/21/9/sed-replace-smart-quotes

@@ -4,6 +4,9 @@
 alias cdToCurrentUserGvfs='cd /run/user/${UID}/gvfs'
 alias createSha512sumFromFile=net_bazzline_filesystem_create_sha512sum_from_file
 
+#e
+alias emptyTmp=net_bazzline_filesystem_generic_empty_tmp
+
 #f
 alias fixQuotes=net_bazzline_filesystem_generic_fix_quotes
 
