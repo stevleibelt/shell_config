@@ -85,7 +85,7 @@ ntfs-3g
 okular
 openssh
 openvpn
-pandoc
+pandoc-cli
 parallel
 pavucontrol-qt
 picard
