@@ -98,8 +98,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added
 
-* Added `emptyTmp` and `net_bazzline_filesystem_generic_empty_tmp`
-* Added `addOcrToPdf=net_bazzline_media_book_add_ocr_to_pdf` if naps2 is installed
+* Added `createAlphanumericString` alias and `net_bazzline_string_create_random_alphanumeric_string` function
+* Added `emptyTmp` alias and `net_bazzline_filesystem_generic_empty_tmp` function
+* Added `addOcrToPdf` alias and `net_bazzline_media_book_add_ocr_to_pdf` function if naps2 is installed
 * Added function `net_bazzline_zfs_send_and_receive`
 * Added function `net_bazzline_core_ask_yes_or_no` can be used with default values or like `net_bazzline_core_ask_yes_or_no "(n|Y)?" "y"`
 * Added variable `NET_BAZZLINE_IS_ZFS_DKMS` including adaptation of `bin/configure_local_setting.sh` and usage for `software-upgrade-without-kernel`
