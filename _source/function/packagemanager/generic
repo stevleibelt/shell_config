@@ -5,8 +5,7 @@ NET_BAZZLINE_FUNCTION_PACKAGEMANAGER_SYSTEM_UPGRADE_SCREEN_SESSION_NAME='system_
 
 ####
 # @param: <string> packagemanager_command
-# [@param: <int> is_lts_kernel = 1]
-# [@param: <int> skip_kernel_packages = 1]
+# [@param: <string> comma_separated_list_of_packages_to_ignore]
 ####
 function net_bazzline_packagemanager_arch_linux_software_upgrade ()
 {
@@ -14,44 +13,27 @@ function net_bazzline_packagemanager_arch_linux_software_upgrade ()
     if [[ $# -lt 1 ]];
     then
         echo ":: Invalid amount of arguments provided."
-        echo "   ${FUNCNAME[0]} <packagemanager_command: sudo pacman | yay> [<is_lts_kernel>: 0|1] [<skip_kernel_packages>: 0|1]"
+        echo "   ${FUNCNAME[0]} <string: packagemanager_command: sudo pacman | yay> [<string: comma_separated_list_of_packages_to_ignore>"
 
         return 1;
     fi
 
     local CURRENT_DATETIME
     local CURRENT_TIMESTAMP
-    local IS_LTS_KERNEL
     local LAST_SYSTEM_UPDATE_FILE_PATH
     local LOG_FILE_PATH
     local PACKAGEMANAGER_COMMAND
-    local PACKGES_TO_IGNORE
+    local PACKAGES_TO_IGNORE
     local PACMAN_LOCK_FILE_PATH
-    local SKIP_KERNEL_PACKAGES
     local UPGRADE_SCRIPT_FILE_PATH
     local ZFS_SNAPSHOT_NAME
 
-    IS_LTS_KERNEL="${2:-1}"
+    PACKAGES_TO_IGNORE="${2:-''}"
     LOG_FILE_PATH="/var/log/pacman.log"
     PACKAGEMANAGER_COMMAND="${1}"
     PACMAN_LOCK_FILE_PATH='/var/lib/pacman/db.lck'
-    SKIP_KERNEL_PACKAGES="${3:-1}"
     UPGRADE_SCRIPT_FILE_PATH="/tmp/net_bazzline_system_upgrade.sh"
     ZFS_SNAPSHOT_NAME='net_bazzline_before_system_upgrade'
-
-    #@todo: @see: https://github.com/archzfs/archzfs/issues/446#issuecomment-1103320350
-    #implement something like this: pacman -Syyu $(for i in {zfs-,}{nvidia,linux}{,-lts,-hardened,-zen}{,-headers}; do echo --ignore $i; done)
-    if [[ ${IS_LTS_KERNEL} -eq 1 ]];
-    then
-      PACKGES_TO_IGNORE="linux-lts,linux-lts-headers,zfs-linux-lts,zfs-utils"
-    else
-      PACKGES_TO_IGNORE="linux,linux-headers,zfs-linux,zfs-utils"
-    fi
-
-    if [[ ${NET_BAZZLINE_IS_ZFS_DKMS} -eq 1 ]];
-    then
-      PACKGES_TO_IGNORE+=",zfs-dkms"
-    fi
     #eo: setup
 
     #bo: check if packagemanager is valid
@@ -165,9 +147,9 @@ DELIM
       then
         cat > ${UPGRADE_SCRIPT_FILE_PATH} <<DELIM
 #!/bin/bash
-echo ":: Trying upgrade with ignoring following packages >>${PACKGES_TO_IGNORE}<<"
+echo ":: Trying upgrade with ignoring following packages >>${PACKAGES_TO_IGNORE}<<"
 
-if ${PACKAGEMANAGER_COMMAND} -Syyu --ignore=${PACKGES_TO_IGNORE};
+if ${PACKAGEMANAGER_COMMAND} -Syyu --ignore=${PACKAGES_TO_IGNORE};
 then
   echo ":: Cleaning up" 
   ${PACKAGEMANAGER_COMMAND} -Sc
@@ -197,9 +179,9 @@ ${PACKAGEMANAGER_COMMAND} -Syyu
 if [[ ${?} -ne 0 ]];
 then
   echo ":: Ignoring zfs packages";
-  echo "   Ignoring packages >>${PACKGES_TO_IGNORE}<<";
+  echo "   Ignoring packages >>${PACKAGES_TO_IGNORE}<<";
 
-  if ${PACKAGEMANAGER_COMMAND} -Syyu --ignore=${PACKGES_TO_IGNORE};
+  if ${PACKAGEMANAGER_COMMAND} -Syyu --ignore=${PACKAGES_TO_IGNORE};
   then
     echo ":: Cleaning up" 
     ${PACKAGEMANAGER_COMMAND} -Sc

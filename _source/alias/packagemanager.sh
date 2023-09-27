@@ -14,6 +14,8 @@ else
 fi
 
 #@todo: validate against https://wiki.archlinux.org/index.php/Pacman/Rosetta
+PACKAGES_TO_IGNORE="linux,linux-headers,linux-lts,linux-lts-headers,zfs-linux-lts,zfs-utils,zfs-dkms"
+
 if [[ ${NET_BAZZLINE_PACKAGE_MANAGER} = 'yay' ]];
 then
     alias software-check-unneeded-dependencies='yay -Qqdt'
@@ -40,8 +42,8 @@ then
     alias software-search='yay -Ss'
     alias software-search-added='yay -Qs'
     alias software-upgrade-from-cache='yay -uu'
-    alias software-upgrade="net_bazzline_packagemanager_arch_linux_software_upgrade yay ${NET_BAZZLINE_IS_LTS_KERNEL}"
-    alias software-upgrade-without-kernel="net_bazzline_packagemanager_arch_linux_software_upgrade yay ${NET_BAZZLINE_IS_LTS_KERNEL} 0"
+    alias software-upgrade="net_bazzline_packagemanager_arch_linux_software_upgrade yay"
+    alias software-upgrade-without-ignored-packages="net_bazzline_packagemanager_arch_linux_software_upgrade yay ${PACKAGES_TO_IGNORE}"
     alias software-repository-info='yay -Si'
 elif [[ ${NET_BAZZLINE_PACKAGE_MANAGER} = 'pacman' ]];
 then
@@ -68,8 +70,8 @@ then
     alias software-search='pacman -Ss'
     alias software-search-added='sudo pacman -Qs'
     alias software-upgrade-from-cache='sudo pacman -u'
-    alias software-upgrade="net_bazzline_packagemanager_arch_linux_software_upgrade 'sudo pacman' ${NET_BAZZLINE_IS_LTS_KERNEL}"
-    alias software-upgrade-without-kernel="net_bazzline_packagemanager_arch_linux_software_upgrade packman ${NET_BAZZLINE_IS_LTS_KERNEL} 0"
+    alias software-upgrade="net_bazzline_packagemanager_arch_linux_software_upgrade 'sudo pacman'"
+    alias software-upgrade-without-ignored-packages="net_bazzline_packagemanager_arch_linux_software_upgrade packman ${PACKAGES_TO_IGNORE}"
     alias software-repository-info='sudo pacman -Si'
 elif [[ ${NET_BAZZLINE_PACKAGE_MANAGER} = 'apk' ]];
 then
