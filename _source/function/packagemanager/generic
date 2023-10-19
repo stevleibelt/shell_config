@@ -34,6 +34,9 @@ function net_bazzline_packagemanager_arch_linux_software_upgrade ()
     PACMAN_LOCK_FILE_PATH='/var/lib/pacman/db.lck'
     UPGRADE_SCRIPT_FILE_PATH="/tmp/net_bazzline_system_upgrade.sh"
     ZFS_SNAPSHOT_NAME='net_bazzline_before_system_upgrade'
+    #@todo
+    # eval if we can use znp or its idea
+    # ref: https://gist.github.com/erikw/eeec35be33e847c211acd886ffb145d5
     #eo: setup
 
     #bo: check if packagemanager is valid
