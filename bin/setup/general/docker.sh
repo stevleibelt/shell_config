@@ -50,7 +50,7 @@ function _main()
     sudo bash -c 'cat > /etc/docker/daemon.json <<DELIM
 {
   "storage-driver": "zfs",
-  "live-restore": true
+  "live-restore": true,
   "log-driver": "syslog",
   "userland-proxy": false
 }
@@ -59,7 +59,7 @@ DELIM'
     echo "   Creating daemon.json"
     sudo bash -c 'cat > /etc/docker/daemon.json <<DELIM
 {
-  "live-restore": true
+  "live-restore": true,
   "log-driver": "syslog",
   "userland-proxy": false
 }
