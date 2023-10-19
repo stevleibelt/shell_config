@@ -40,11 +40,14 @@ function _main()
     fi
     sudo rm -rf /var/lib/docker/*
 
-    DEFAULT_DATA_SET="zroot/data/docker"
-    read -e -i "${DEFAULT_DATA_SET}" -p ":: Please adapt zfs data set for docker: " DATA_SET
-    DATA_SET="${DATA_SET:-$DEFAULT_DATA_SET}"
-    echo "   Creating zfs data set >>${DATA_SET}<<"
-    zfs create -o mountpoint=/var/lib/docker "${DATA_SET}"
+    if sudo zfs list | grep -q zroot/data/docker;
+    then
+      DEFAULT_DATA_SET="zroot/data/docker"
+      read -e -i "${DEFAULT_DATA_SET}" -p ":: Please adapt zfs data set for docker: " DATA_SET
+      DATA_SET="${DATA_SET:-$DEFAULT_DATA_SET}"
+      echo "   Creating zfs data set >>${DATA_SET}<<"
+      sudo zfs create -o mountpoint=/var/lib/docker "${DATA_SET}"
+    fi
 
     echo "   Creating daemon.json with zfs storage driver"
     sudo bash -c 'cat > /etc/docker/daemon.json <<DELIM
