@@ -29,10 +29,15 @@ function _main()
     mv -v /etc/docker/daemon.json "/etc/docker/daemon.json.${CURRENT_DATE_TIME}"
   fi
 
+  sudo systemctl stop docker.socket
+
   if [[ -f /usr/bin/zfs ]];
   then
     # ref: https://docs.docker.com/storage/storagedriver/zfs-driver/
-    sudo cp -au /var/lib/docker /var/lib/docker.overlay2
+    if [[ ! -d /var/lib/docker.overlay2 ]];
+    then
+      sudo cp -au /var/lib/docker /var/lib/docker.overlay2
+    fi
     sudo rm -rf /var/lib/docker/*
 
     DEFAULT_DATA_SET="zroot/data/docker"
