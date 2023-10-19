@@ -29,13 +29,37 @@ function _main()
     mv -v /etc/docker/daemon.json "/etc/docker/daemon.json.${CURRENT_DATE_TIME}"
   fi
 
-  sudo bash -c 'cat > /etc/docker/daemon.json <<DELIM
+  if [[ -f /usr/bin/zfs ]];
+  then
+    # ref: https://docs.docker.com/storage/storagedriver/zfs-driver/
+    sudo cp -au /var/lib/docker /var/lib/docker.overlay2
+    sudo rm -rf /var/lib/docker/*
+
+    DEFAULT_DATA_SET="zroot/data/docker"
+    read -e -i "${DEFAULT_DATA_SET}" -p ":: Please adapt zfs data set for docker: " DATA_SET
+    DATA_SET="${DATA_SET:-$DEFAULT_DATA_SET}"
+    echo "   Creating zfs data set >>${DATA_SET}<<"
+    zfs zfs create -o mountpoint=/var/lib/docker "${DATA_SET}"
+
+    echo "   Creating daemon.json with zfs storage driver"
+    sudo bash -c 'cat > /etc/docker/daemon.json <<DELIM
+{
+  "storage-driver": "zfs",
+  "live-restore": true
+  "log-driver": "syslog",
+  "userland-proxy": false
+}
+DELIM'
+  else
+    echo "   Creating daemon.json"
+    sudo bash -c 'cat > /etc/docker/daemon.json <<DELIM
 {
   "live-restore": true
   "log-driver": "syslog",
   "userland-proxy": false
 }
 DELIM'
+  fi
 
   if ! sudo systemctl is-active docker.socket;
   then
