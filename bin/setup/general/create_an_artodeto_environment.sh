@@ -106,7 +106,8 @@ function _main ()
   # eo: ommd nohang
 
   # bo: docker
-  sudo gpasswd -a ${USER} docker
+  bash "${PATH_TO_THIS_SCRIPT}/docker.sh"
+  sudo gpasswd -a "${USER}" docker
   # eo: docker
 
   # bo: ssh agent
