@@ -26,7 +26,7 @@ function _main()
   elif [[ -f /etc/docker/daemon.json ]];
   then
     echo ":: Moving >>/etc/docker/daemon.json<< to /etc/d"
-    mv -v /etc/docker/daemon.json "/etc/docker/daemon.json.${CURRENT_DATE_TIME}"
+    sudo mv -v /etc/docker/daemon.json "/etc/docker/daemon.json.${CURRENT_DATE_TIME}"
   fi
 
   sudo systemctl stop docker.socket
