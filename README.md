@@ -36,7 +36,8 @@ updateShellConfiguration
 
 # Links
 
-* [bash-config](https://github.com/victorbrca/bash-config) - 20210409
+* [bash-config: github.com](https://github.com/victorbrca/bash-config) - 20210409
+* [Zenburn 256 color scheme for the color GNU ls utility: github.com](https://github.com/ivoarch/dircolors-zenburn#zenburn-256-color-scheme-for-the-color-gnu-ls-utility) - 20231023
 
 # Contributers
 

@@ -12,6 +12,7 @@
 function net_bazzline_shell_config_bootstrap ()
 {
     local LEVEL_OF_VERBOSITY=${1:-0}
+
     # order is important
     # path starting with _source/ are handled differently
     #   it is assumed that this are more complex with a dedicated autoloading
@@ -60,3 +61,5 @@ function net_bazzline_shell_config_bootstrap ()
 }
 
 net_bazzline_shell_config_bootstrap
+# Can not be moved into function
+eval $( dircolors -b "${PATH_SHELL_CONFIG}/dir_colors" )
