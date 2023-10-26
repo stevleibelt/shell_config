@@ -43,7 +43,7 @@ function net_bazzline_core_ask_yes_or_no ()
 # ref: https://stackoverflow.com/a/58598185
 function net_bazzline_core_capture_command_output ()
 {
-  tee "/tmp/net_bazzline_core_${HOME}_captured_command.out"
+  tee "/tmp/net_bazzline_core_${USER}_captured_command.out"
 }
 
 ####
@@ -60,6 +60,6 @@ function net_bazzline_core_echo_if_be_verbose ()
 # ref: https://stackoverflow.com/a/58598185
 function net_bazzline_core_return_command_output ()
 {
-  cat "/tmp/net_bazzline_core_${HOME}_captured_command.out"
+  cat "/tmp/net_bazzline_core_${USER}_captured_command.out"
 }
 
