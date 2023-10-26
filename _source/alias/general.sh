@@ -29,6 +29,10 @@ alias burn=net_bazzline_burn
 
 #c
 alias c=clear
+if [[ -x $(command -v tee) ]];
+then
+  alias captureCommandOutput=net_bazzline_core_capture_command_output
+fi
 alias cd=net_bazzline_cd
 alias cdToTheShellConfiguration="cd ${PATH_SHELL_CONFIG}"
 alias checkExt4Device=net_bazzline_check_ext4_device
@@ -140,9 +144,13 @@ alias removeAllDockerImages='docker ps -a -q | xargs docker rm'
 alias renameAllToLower=net_bazzline_filename_to_lower_batch_rename
 alias renameGitBranch=net_bazzline_rename_git_branch
 alias replaceStringInFiles=net_bazzline_replace_string_in_files
+if [[ -x $(command -v tee) ]];
+then
+  alias returnCommandOutput=net_bazzline_core_return_command_output
+fi
 if [[ -x $(command -v rsync) ]];
 then
-    alias rsync=net_bazzline_rsync
+ alias rsync=net_bazzline_rsync
 fi
 alias runJar='java -jar '
 
