@@ -351,8 +351,28 @@ function net_bazzline_image_batch_convert_to_webp ()
                 convert ${FILE} -verbose -geometry ${GEOMETRY}x${GEOMETRY} -quality ${IMAGE_QUALITY} -comment "made with linux and love" "${NEW_FILE_NAME}"
             fi
         done;
+
+        for FILE in *.[pP][nN][gG];
+        do
+            local NEW_FILE_NAME="${FILE:0:-4}.webp"
+
+            if [[ ! -f "${NEW_FILE_NAME}" ]];
+            then
+                convert ${FILE} -verbose -geometry ${GEOMETRY}x${GEOMETRY} -quality ${IMAGE_QUALITY} -comment "made with linux and love" "${NEW_FILE_NAME}"
+            fi
+        done;
     else
         for FILE in *.[jJ][pP][gG];
+        do
+            local NEW_FILE_NAME="${FILE:0:-4}.webp"
+
+            if [[ ! -f "${NEW_FILE_NAME}" ]];
+            then
+                convert ${FILE} -verbose -quality ${IMAGE_QUALITY} -comment "made with linux and love" "${NEW_FILE_NAME}"
+            fi
+        done;
+
+        for FILE in *.[pP][nN][gG];
         do
             local NEW_FILE_NAME="${FILE:0:-4}.webp"
 
