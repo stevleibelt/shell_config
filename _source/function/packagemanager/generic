@@ -150,7 +150,12 @@ DELIM
       then
         cat > ${UPGRADE_SCRIPT_FILE_PATH} <<DELIM
 #!/bin/bash
-echo ":: Trying upgrade with ignoring following packages >>${PACKAGES_TO_IGNORE}<<"
+# @todo: only echo if PACKAGES_TO_IGNORE has string lenght > 0
+
+if [[ ${#PACKAGES_TO_IGNORE} > 0 ]];
+then
+  echo ":: Trying upgrade with ignoring following packages >>${PACKAGES_TO_IGNORE}<<"
+fi
 
 if ${PACKAGEMANAGER_COMMAND} -Syyu --ignore=${PACKAGES_TO_IGNORE};
 then
