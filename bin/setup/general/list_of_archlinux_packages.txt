@@ -121,6 +121,7 @@ sshfs
 syncthing
 texlive-core
 telegram-desktop
+tk
 tree
 testdisk
 tesseract
