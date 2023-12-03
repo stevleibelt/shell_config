@@ -100,9 +100,11 @@ function _main ()
   bash settings/xdg/install.sh
 
   # bo: ommd nohang
-  yay -S nohang
-  sudo systemctl enable nohang-desktop.service 
-  sudo systemctl start nohang-desktop.service 
+  # Removed since it is currently not working
+  # ref: https://github.com/hakavlad/nohang/issues/135#issuecomment-1829207312
+  #yay -S nohang
+  #sudo systemctl enable nohang-desktop.service 
+  #sudo systemctl start nohang-desktop.service 
   # eo: ommd nohang
 
   # bo: docker
