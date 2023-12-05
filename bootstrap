@@ -11,7 +11,11 @@
 ####
 function net_bazzline_shell_config_bootstrap ()
 {
-    local LEVEL_OF_VERBOSITY=${1:-1}
+    local LEVEL_OF_VERBOSITY
+    local LOCAL_SECTION_TO_LOAD
+    local SECTION_NAME
+
+    LEVEL_OF_VERBOSITY=${1:-0}
 
     # order is important
     # path starting with _source/ are handled differently
@@ -30,13 +34,13 @@ function net_bazzline_shell_config_bootstrap ()
         #determine section type
         if [[ "${SECTION_TO_LOAD}" = "_source/"* ]]; #if SECTION_TO_LOAD starts with _source/
         then
-            local SECTION_NAME=${SECTION_TO_LOAD:8:-13}    #returns the part between "_source/" and "/bootstrap"
+            SECTION_NAME=${SECTION_TO_LOAD:8:-13}    #returns the part between "_source/" and "/bootstrap"
 
             source "${PATH_SHELL_CONFIG}/${SECTION_TO_LOAD}"
-            local LOCAL_SECTION_TO_LOAD="local.${SECTION_NAME}"
+            LOCAL_SECTION_TO_LOAD="local.${SECTION_NAME}"
         else
             source "${PATH_SHELL_CONFIG}/${SECTION_TO_LOAD}"
-            local LOCAL_SECTION_TO_LOAD="local.${SECTION_TO_LOAD}"
+            LOCAL_SECTION_TO_LOAD="local.${SECTION_TO_LOAD}"
         fi
 
         if [[ ${LEVEL_OF_VERBOSITY} -gt 0 ]];
