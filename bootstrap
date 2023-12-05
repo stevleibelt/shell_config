@@ -21,8 +21,8 @@ function net_bazzline_shell_config_bootstrap ()
         'variable'
         'source'
         'export'
-        '_source/function/bootstrap'
-        '_source/alias/bootstrap'
+        '_source/function/bootstrap.sh'
+        '_source/alias/bootstrap.sh'
     )
 
     # automatic loads files and optional existing local.* files
