@@ -144,6 +144,7 @@ xorg-server
 xorg-apps
 xterm
 yamllint
+yubikey-manager
 widelands
 wesnoth
 cataclysm-dda
