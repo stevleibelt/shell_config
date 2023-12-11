@@ -3020,9 +3020,13 @@ function net_bazzline_update_shell_configuration ()
     #change to the repostiory
     cd ${PATH_SHELL_CONFIG}
     #update repository
-    git pull
-    #reload bash environment
-    source ~/.bashrc && clear
+    if git pull;
+    then
+      #reload bash environment
+      source ~/.bashrc && clear
+    else
+      echo ":: Something went wrong while updating ..."
+    fi
     #change back to the current working directory
     cd ${CURRENT_WORKING_DIRECTORY}
 }
