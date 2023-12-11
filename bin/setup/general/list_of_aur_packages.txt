@@ -5,6 +5,7 @@ jetbrains-toolbox
 librewolf-bin
 mangohud
 pdfsam
+#pomatez
 potato
 rustdesk-bin
 shellcheck-bin
