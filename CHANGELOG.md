@@ -145,6 +145,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 
+* Fix broken last system update time detection for pacman based systems
 * Update `software-upgrade-without-kernel` for `yay` or `pacman` by providing a generic, comma separated list of packages to ignore
 * Add starting of reflector.service if last system update was to old
 * Extended `bin/configure_local_setting.sh`
