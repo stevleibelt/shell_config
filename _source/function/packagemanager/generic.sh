@@ -114,7 +114,7 @@ function net_bazzline_packagemanager_arch_linux_software_upgrade ()
       local LAST_SYSTEM_UPDATE_TIMESTAMP
       local LAST_VALID_TIMESTAMP
 
-      LAST_SYSTEM_UPDATE_TIMESTAMP=$(head -n 4 "${LAST_SYSTEM_UPDATE_FILE_PATH}" | tail -n 1)
+      LAST_SYSTEM_UPDATE_TIMESTAMP=$(head -n 5 "${LAST_SYSTEM_UPDATE_FILE_PATH}" | tail -n 1)
       LAST_VALID_TIMESTAMP=$(("${CURRENT_TIMESTAMP}" - 1209600))   #86400 (sec/day) * 14 (day) = 1209600 (sec)
 
       if [[ ${LAST_SYSTEM_UPDATE_TIMESTAMP} -lt ${LAST_VALID_TIMESTAMP} ]];
