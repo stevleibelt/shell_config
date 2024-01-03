@@ -26,6 +26,7 @@ dbeaver
 docker
 docker-compose
 dmenu
+dmidecode
 dunst
 element-desktop
 exfatprogs
