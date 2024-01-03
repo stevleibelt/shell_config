@@ -177,6 +177,13 @@ then
     sudo fwupdmgr refresh
     sudo fwupdmgr update
   fi
+
+  if [[ -f /usr/bin/rustup ]];
+  then
+    echo ":: Updating rust"
+    rustup update
+  fi
+
 else
   echo ":: Something bad happens."
   read -n 1 -s -r -p "Press any key to continue"
