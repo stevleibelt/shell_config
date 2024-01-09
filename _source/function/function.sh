@@ -324,8 +324,6 @@ function net_bazzline_cd ()
 ####
 function net_bazzline_check_ext4_device ()
 {
-    net_bazzline_record_function_usage ${FUNCNAME[0]}
-
     if [[ $# -gt 0 ]];
     then
         DEVICE_PATH="${1}"
@@ -378,8 +376,6 @@ function net_bazzline_check_fat_device ()
 ####
 function net_bazzline_compress ()
 {
-    net_bazzline_record_function_usage ${FUNCNAME[0]}
-
     if [[ $# -lt 1 ]];
     then
         echo 'No valid arguments supplied.'
@@ -406,8 +402,6 @@ function net_bazzline_compress ()
 ####
 function net_bazzline_convert_file_names_to_utf_8 ()
 {
-    net_bazzline_record_function_usage ${FUNCNAME[0]}
-
     if [[ $# -lt 1 ]];
     then
         echo 'usage: <command> <path> [dry-run|d]'
@@ -459,8 +453,6 @@ function net_bazzline_convert_file_names_to_utf_8 ()
 ####
 function net_bazzline_convert_m4a_to_wav ()
 {
-    net_bazzline_record_function_usage ${FUNCNAME[0]}
-
     for i in *.m4a;
     do
         faad -f 1 -o "$i.wav" "$i"
@@ -477,8 +469,6 @@ function net_bazzline_convert_m4a_to_wav ()
 ####
 function net_bazzline_convert_mkv_to_avi ()
 {
-    net_bazzline_record_function_usage ${FUNCNAME[0]}
-
     if [[ $# -eq 1 ]];
     then
         #export -f net_bazzline_get_name_from_filename
@@ -508,8 +498,6 @@ function net_bazzline_convert_mkv_to_avi ()
 ####
 function net_bazzline_convert_mp3_to_wav ()
 {
-    net_bazzline_record_function_usage ${FUNCNAME[0]}
-
     for i in *.mp3; 
     do 
         lame --decode "$i" "$(basename "$i" .mp3)".wav;
@@ -540,8 +528,6 @@ function net_bazzline_convert_mp4_to_mp3 ()
 ####
 function net_bazzline_convert_video_to_screen_size ()
 {
-    net_bazzline_record_function_usage ${FUNCNAME[0]}
-
     if [[ $# -lt 2 ]];
     then
         echo "invalid number of arguments supplied"
@@ -568,8 +554,6 @@ function net_bazzline_convert_video_to_screen_size ()
 ####
 function net_bazzline_convert_video_to_libx264 ()
 {
-    net_bazzline_record_function_usage ${FUNCNAME[0]}
-
     if [[ $# -lt 1 ]];
     then
         net_bazzline_handle_invalid_number_of_arguments_supplied "${FUNCNAME[0]} <source> [<destination>]"
@@ -604,8 +588,6 @@ function net_bazzline_convert_video_to_libx264 ()
 ####
 function net_bazzline_convert_video_to_librav1e ()
 {
-    net_bazzline_record_function_usage ${FUNCNAME[0]}
-
     if [[ $# -lt 1 ]];
     then
         net_bazzline_handle_invalid_number_of_arguments_supplied "${FUNCNAME[0]} <source> [<destination>]"
@@ -638,8 +620,6 @@ function net_bazzline_convert_video_to_librav1e ()
 ####
 function net_bazzline_convert_video_to_libx265 ()
 {
-    net_bazzline_record_function_usage ${FUNCNAME[0]}
-
     if [[ $# -lt 1 ]];
     then
         net_bazzline_handle_invalid_number_of_arguments_supplied "${FUNCNAME[0]} <source> [<destination>]"
@@ -676,8 +656,6 @@ function net_bazzline_convert_video_to_libx265 ()
 ####
 function net_bazzline_convert_wav_to_mp3 ()
 {
-    net_bazzline_record_function_usage ${FUNCNAME[0]}
-
     for i in *.wav;
     do
         lame --replaygain-accurate -v -h -b 192 "$i" "$i.mp3";
@@ -693,8 +671,6 @@ function net_bazzline_convert_wav_to_mp3 ()
 ####
 function net_bazzline_count_number_of_items_in_path()
 {
-    net_bazzline_record_function_usage ${FUNCNAME[0]}
-
     if [[ $# -gt 0 ]]
     then
         local PATH="$1"
@@ -718,8 +694,6 @@ function net_bazzline_count_number_of_items_in_path()
 ####
 function net_bazzline_create_path_or_return_error_if_path_exists_already()
 {
-    net_bazzline_record_function_usage ${FUNCNAME[0]}
-
     if [[ $# -lt 1 ]];
     then
         echo "Invalid number of arguments:"
@@ -754,8 +728,6 @@ function net_bazzline_create_path_or_return_error_if_path_exists_already()
 ####
 function net_bazzline_decompress ()
 {
-    net_bazzline_record_function_usage ${FUNCNAME[0]}
-
     if [[ $# -lt 1 ]]; then
         echo 'No valid arguments supplied.'
         echo 'Try net_bazzline_decompress $nameOfCompressedFile [$pathToDecompress]'
@@ -779,8 +751,6 @@ function net_bazzline_decompress ()
 ####
 function net_bazzline_delete_empty_directories ()
 {
-    net_bazzline_record_function_usage ${FUNCNAME[0]}
-
     #begin of default settings
     local MAX_DEPTH=1
     local ROOT_PATH="."
@@ -838,8 +808,6 @@ function net_bazzline_delete_files_older_than ()
 
 function net_bazzline_determine_filesystem_path_age ()
 {
-    net_bazzline_record_function_usage ${FUNCNAME[0]}
-
     age () { stat=$(stat --printf="%Y %F\n" "$1"); echo "The ${stat#* } '$1' is $((($(date +%s) - ${stat%% *})/60)) minutes old."; }
 }
 
@@ -853,7 +821,6 @@ function net_bazzline_determine_filesystem_path_age ()
 # @since 2013-05-21
 function net_bazzline_diff_two_paths ()
 {
-    net_bazzline_record_function_usage ${FUNCNAME[0]}
     local SECOND_PATH=${2}
     local FIRST_PATH=${1}
     local INPUT_VARIABLES_ARE_VALID=0
@@ -893,8 +860,6 @@ function net_bazzline_diff_two_paths ()
 ####
 function net_bazzline_ends_with ()
 {
-    net_bazzline_record_function_usage ${FUNCNAME[0]}
-
     if [[ $# -eq 2 ]]; 
     then
         local STRING="$1"
@@ -921,8 +886,6 @@ function net_bazzline_ends_with ()
 ####
 function net_bazzline_execute_as_super_user_when_not_beeing_root ()
 {
-    net_bazzline_record_function_usage ${FUNCNAME[0]}
-
     if [[ $# -lt 1 ]];
     then
         echo "Invalid number of arguments provided"
@@ -1038,8 +1001,6 @@ function net_bazzline_find_file ()
 ####
 function net_bazzline_get_extension_from_filename ()
 {
-    net_bazzline_record_function_usage ${FUNCNAME[0]}
-
     if [[ $# -eq 1 ]]; then
         local EXTENSION="${1#*.}"
         echo $EXTENSION
@@ -1066,8 +1027,6 @@ function net_bazzline_get_extension_from_filename ()
 ####
 function net_bazzline_get_filename_from_filepath ()
 {
-    net_bazzline_record_function_usage ${FUNCNAME[0]}
-
     if [[ $# -eq 1 ]]; then
         local FILENAME=$(basename "$1")
         echo $FILENAME
@@ -1093,8 +1052,6 @@ function net_bazzline_get_filename_from_filepath ()
 ####
 function net_bazzline_get_name_from_filename ()
 {
-    net_bazzline_record_function_usage ${FUNCNAME[0]}
-
     if [[ $# -eq 1 ]]; then
         local NAME="${1%%.*}"
         echo $NAME
@@ -1114,8 +1071,6 @@ function net_bazzline_get_name_from_filename ()
 ####
 function net_bazzline_git_update_all_repositories()
 {
-    net_bazzline_record_function_usage ${FUNCNAME[0]}
-
     if [[ $# -lt 1 ]]; then
         echo 'invalid number of arguments'
         echo '    net_bazzline_git_update_all_repositories <path to the repositories>'
@@ -1175,8 +1130,6 @@ function net_bazzline_handle_invalid_number_of_arguments_supplied ()
 ####
 function net_bazzline_hide_file_system_object()
 {
-    net_bazzline_record_function_usage ${FUNCNAME[0]}
-
     if [[ $# -eq 1 ]]; then
 # @todo validate if identifier is file or directory and if first character is not "."
 # @todo use net_bazzline_string_starts_with
@@ -1196,8 +1149,6 @@ function net_bazzline_hide_file_system_object()
 ####
 function net_bazzline_is_directory_empty ()
 {
-    net_bazzline_record_function_usage ${FUNCNAME[0]}
-
     if [[ $# -lt 1 ]];
     then
         echo "Usage: net_bazzline_is_directory_empty <path to the directory>"
@@ -1225,8 +1176,6 @@ function net_bazzline_is_directory_empty ()
 ####
 function net_bazzline_list_domain_information ()
 {
-    net_bazzline_record_function_usage ${FUNCNAME[0]}
-
     if [[ $# -ne 1 ]];
     then
         net_bazzline_handle_invalid_number_of_arguments_supplied "${FUNCNAME[0]} <url>"
@@ -1268,8 +1217,6 @@ function net_bazzline_list_domain_information ()
 ####
 function net_bazzline_list_empty_directories ()
 {
-    net_bazzline_record_function_usage ${FUNCNAME[0]}
-
     #begin of default settings
     MAX_DEPTH=1
     ROOT_PATH="."
@@ -1300,8 +1247,6 @@ function net_bazzline_list_empty_directories ()
 ####
 function net_bazzline_list_files_older_than ()
 {
-    net_bazzline_record_function_usage ${FUNCNAME[0]}
-
     #begin of default settings
     local NAME=""
     local MAX_DEPTH=1
@@ -1347,8 +1292,6 @@ function net_bazzline_list_files_older_than ()
 ####
 function net_bazzline_list_filesystem_items_head ()
 {
-    net_bazzline_record_function_usage ${FUNCNAME[0]}
-
     if [[ $# -eq 0 ]];
     then
         ls -hAlt | head
@@ -1365,8 +1308,6 @@ function net_bazzline_list_filesystem_items_head ()
 ####
 function net_bazzline_list_filesystem_items_tail ()
 {
-    net_bazzline_record_function_usage ${FUNCNAME[0]}
-
     if [[ $# -eq 0 ]];
     then
         ls -hAlt | tail
@@ -1383,8 +1324,6 @@ function net_bazzline_list_filesystem_items_tail ()
 ####
 function net_bazzline_list_groups ()
 {
-    net_bazzline_record_function_usage ${FUNCNAME[0]}
-
     getent group | awk -F ':' '{ print $1 }' | sort
 }
 
@@ -1396,8 +1335,6 @@ function net_bazzline_list_groups ()
 ####
 function net_bazzline_list_interfaces ()
 {
-    net_bazzline_record_function_usage ${FUNCNAME[0]}
-
     # also possible
     # ls /sys/class/net
     ip a | grep ':\ '
@@ -1412,8 +1349,6 @@ function net_bazzline_list_interfaces ()
 ####
 function net_bazzline_list_process_environment ()
 {
-    net_bazzline_record_function_usage ${FUNCNAME[0]}
-
     if [[ $# -lt 1 ]];
     then
         net_bazzline_handle_invalid_number_of_arguments_supplied "${FUNCNAME[0]} <process id>"
@@ -1440,8 +1375,6 @@ function net_bazzline_list_process_environment ()
 ####
 function net_bazzline_list_symbolic_links ()
 {
-    net_bazzline_record_function_usage ${FUNCNAME[0]}
-
     if [[ $# -gt 1 ]]; then
         echo "usage: <command> <path>"
         return 1
@@ -1463,8 +1396,6 @@ function net_bazzline_list_symbolic_links ()
 ####
 function net_bazzline_virtual_box_list_information_of_machine ()
 {
-    net_bazzline_record_function_usage ${FUNCNAME[0]}
-
     if [[ $# -lt 1 ]];
     then
         net_bazzline_handle_invalid_number_of_arguments_supplied "${FUNCNAME[0]} <virtual box name or id>"
@@ -1484,8 +1415,6 @@ function net_bazzline_virtual_box_list_information_of_machine ()
 ####
 function net_bazzline_virtual_box_list_ip_address_of_machine ()
 {
-    net_bazzline_record_function_usage ${FUNCNAME[0]}
-
     if [[ $# -lt 1 ]];
     then
         net_bazzline_handle_invalid_number_of_arguments_supplied "${FUNCNAME[0]} <virtual box name or id>"
@@ -1504,8 +1433,6 @@ function net_bazzline_virtual_box_list_ip_address_of_machine ()
 ####
 function net_bazzline_virtual_box_list_briged_interfaces ()
 {
-    net_bazzline_record_function_usage ${FUNCNAME[0]}
-
     VBoxManage list bridgedifs
 }
 
@@ -1517,8 +1444,6 @@ function net_bazzline_virtual_box_list_briged_interfaces ()
 ####
 function net_bazzline_virtual_box_list_all_machines ()
 {
-    net_bazzline_record_function_usage ${FUNCNAME[0]}
-
     VBoxManage list vms
 }
 
@@ -1530,8 +1455,6 @@ function net_bazzline_virtual_box_list_all_machines ()
 ####
 function net_bazzline_virtual_box_list_running_machines ()
 {
-    net_bazzline_record_function_usage ${FUNCNAME[0]}
-
     VBoxManage list runningvms
 }
 
@@ -1543,8 +1466,6 @@ function net_bazzline_virtual_box_list_running_machines ()
 ####
 function net_bazzline_virtual_box_power_off_machine ()
 {
-    net_bazzline_record_function_usage ${FUNCNAME[0]}
-
     if [[ $# -lt 1 ]];
     then
         net_bazzline_handle_invalid_number_of_arguments_supplied "${FUNCNAME[0]} <virtual box name or id>"
@@ -1563,8 +1484,6 @@ function net_bazzline_virtual_box_power_off_machine ()
 ####
 function net_bazzline_show_system_users ()
 {
-    net_bazzline_record_function_usage ${FUNCNAME[0]}
-
     getent passwd | grep -v '/home' | awk -F ':' '{ print $1 }' | sort
 }
 
@@ -1576,8 +1495,6 @@ function net_bazzline_show_system_users ()
 ####
 function net_bazzline_list_users ()
 {
-    net_bazzline_record_function_usage ${FUNCNAME[0]}
-
     getent passwd | grep '/home' | awk -F ':' '{ print $1 }' | sort
 }
 
@@ -1587,8 +1504,6 @@ function net_bazzline_list_users ()
 ####
 function net_bazzline_load_ssh_key_in_keychain()
 {
-    net_bazzline_record_function_usage ${FUNCNAME[0]}
-
     if [[ -f /usr/bin/keychain ]];
     then
         local PATH_TO_THE_SSH_KEY=${1:-${HOME}/.ssh/id_rsa}
@@ -1611,8 +1526,6 @@ function net_bazzline_load_ssh_key_in_keychain()
 ####
 function net_bazzline_luks_dump_information()
 {
-    net_bazzline_record_function_usage ${FUNCNAME[0]}
-
     if [[ $# -lt 1 ]];
     then
         net_bazzline_handle_invalid_number_of_arguments_supplied "${FUNCNAME[0]} <path to the lukes device>"
@@ -1634,8 +1547,6 @@ function net_bazzline_luks_dump_information()
 ####
 function net_bazzline_luks_header_backup()
 {
-    net_bazzline_record_function_usage ${FUNCNAME[0]}
-
     if [[ $# -lt 2 ]];
     then
         net_bazzline_handle_invalid_number_of_arguments_supplied "${FUNCNAME[0]} <path to the lukes device> <path to the backup file>"
@@ -1658,8 +1569,6 @@ function net_bazzline_luks_header_backup()
 ####
 function net_bazzline_luks_header_restore()
 {
-    net_bazzline_record_function_usage ${FUNCNAME[0]}
-
     if [[ $# -lt 2 ]];
     then
         net_bazzline_handle_invalid_number_of_arguments_supplied "${FUNCNAME[0]} <path to the lukes device> <path to the backup file>"
@@ -1680,8 +1589,6 @@ function net_bazzline_luks_header_restore()
 ####
 function net_bazzline_make_picture_via_webcam()
 {
-    net_bazzline_record_function_usage ${FUNCNAME[0]}
-
     if [[ -f /usr/bin/fswebcam ]]; then
         local CURRENT_DATE_TIME=$(date +'%Y_%m_%d_%H_%M_%S')
         local FILE_NAME=$CURRENT_DATE_TIME'.jpg'
@@ -1706,8 +1613,6 @@ function net_bazzline_make_picture_via_webcam()
 ####
 function net_bazzline_mkdir ()
 {
-    net_bazzline_record_function_usage ${FUNCNAME[0]}
-
     #check if at least one argument is supplied
     if [[ $# -eq 0 ]];
     then
@@ -1755,8 +1660,6 @@ function net_bazzline_mkdir ()
 ####
 function net_bazzline_mkdir_prefix_with_current_date ()
 {
-    net_bazzline_record_function_usage ${FUNCNAME[0]}
-
     if [[ $# -eq 1 ]]; then
         NAME_OF_THE_DIRECTORY=`eval date +%Y%m%d`"_${1}"
 
@@ -1774,8 +1677,6 @@ function net_bazzline_mkdir_prefix_with_current_date ()
 ####
 function net_bazzline_mkdir_with_the_name_of_the_current_date ()
 {
-    net_bazzline_record_function_usage ${FUNCNAME[0]}
-
     NAME_OF_THE_DIRECTORY=`eval date +%Y%m%d`
 
     net_bazzline_mkdir "${NAME_OF_THE_DIRECTORY}"
@@ -1790,8 +1691,6 @@ function net_bazzline_mkdir_with_the_name_of_the_current_date ()
 ####
 function net_bazzline_monitor_process ()
 {
-    net_bazzline_record_function_usage ${FUNCNAME[0]}
-
     if [[ $# -lt 1 ]];
     then
         net_bazzline_handle_invalid_number_of_arguments_supplied "${FUNCNAME[0]} <source one> [<source ...>] <target>"
@@ -1822,8 +1721,6 @@ function net_bazzline_monitor_process ()
 ####
 function net_bazzline_move_in_chunks()
 {
-    net_bazzline_record_function_usage ${FUNCNAME[0]}
-
     #source [source[...]] destination [--chunk_size=<int>] [--number_of_seconds_to_wait=<int>]
     #begin of input validation
     #@todo do it nicer
@@ -1913,8 +1810,6 @@ function net_bazzline_move_in_chunks()
 ####
 function net_bazzline_mount_luks_zpool ()
 {
-    net_bazzline_record_function_usage ${FUNCNAME[0]}
-
     echo $#
     if [[ $# -lt 3 ]];
     then
@@ -2000,8 +1895,6 @@ function net_bazzline_mount_sshfs ()
 ####
 function net_bazzline_organize_directory_content()
 {
-    net_bazzline_record_function_usage ${FUNCNAME[0]}
-
     #begin of input validation
     if [[ $# -eq 0 ]]; then
         declare -a local DIRECTORY_NAMES=("0" "1" "2" "3" "4" "5" "6" "7" "8" "9" "a" "b" "c" "d" "e" "f" "g" "h" "i" "j" "k" "l" "m" "n" "o" "p" "q" "r" "s" "t" "u" "v" "w" "x" "y" "z");
@@ -2104,8 +1997,6 @@ function net_bazzline_organize_directory_content()
 ####
 function net_bazzline_php_start_internal_webserver ()
 {
-    net_bazzline_record_function_usage ${FUNCNAME[0]}
-
     if [[ $# -eq 2 ]]; then
         local DIRECTORY="$1";
         local PORT="$2";
@@ -2130,9 +2021,7 @@ function net_bazzline_php_start_internal_webserver ()
 ####
 function net_bazzline_psgrep ()
 {
-    net_bazzline_record_function_usage ${FUNCNAME[0]}
-
-    if [[ $# -eq 1 ]];
+    if [[ ${#} -eq 1 ]];
     then
         #last and duplicated grep in the pipe line is just there to enable color highlighting
         ps aux | \grep -i "${1}" | \grep -v "grep -i ${1}" | \grep --color -i "${1}"
@@ -2191,8 +2080,6 @@ function net_bazzline_record_function_usage ()
 ####
 function net_bazzline_refresh_interface ()
 {
-    net_bazzline_record_function_usage ${FUNCNAME[0]}
-
     local LENGTH=${#NET_BAZZLINE_INTERFACES[@]}
 
     if [[ ${LENGTH} -eq 0 ]];
@@ -2235,8 +2122,6 @@ function net_bazzline_refresh_interface ()
 ####
 function net_bazzline_rename_git_branch ()
 {
-    net_bazzline_record_function_usage ${FUNCNAME[0]}
-
     if [[ $# -eq 0 ]];
     then
         net_bazzline_handle_invalid_number_of_arguments_supplied "${FUNCNAME[0]} <old branch name> <new branch name> [<path to the repository>]"
@@ -2314,8 +2199,6 @@ function net_bazzline_rename_git_branch ()
 ####
 function net_bazzline_replace_string_in_files ()
 {
-    net_bazzline_record_function_usage ${FUNCNAME[0]}
-
     if [[ $# -lt 2 ]]; then
         net_bazzline_handle_invalid_number_of_arguments_supplied "${FUNCNAME[0]} <search pattern> <replace with> [<path to search in> [<file extension>]]"
 
@@ -2360,8 +2243,6 @@ function net_bazzline_replace_string_in_files ()
 ####
 function net_bazzline_run_command_in_the_background ()
 {
-    net_bazzline_record_function_usage ${FUNCNAME[0]}
-
     {
         eval "$@"
     }&
@@ -2372,8 +2253,6 @@ function net_bazzline_run_command_in_the_background ()
 ####
 function net_bazzline_run_command_quietly_in_the_background ()
 {
-    net_bazzline_record_function_usage ${FUNCNAME[0]}
-
     net_bazzline_run_command_in_the_background "$@" &> /dev/null
 }
 
@@ -2385,8 +2264,6 @@ function net_bazzline_run_command_quietly_in_the_background ()
 ####
 function net_bazzline_search_in_composer_files()
 {
-    net_bazzline_record_function_usage ${FUNCNAME[0]}
-
     local SEARCH_PATTERN="$1"
 
     if [[ $# -gt 1 ]]; then
@@ -2406,10 +2283,6 @@ function net_bazzline_search_in_composer_files()
 ####
 function net_bazzline_search_in_journalctl_since_boot ()
 {
-    net_bazzline_record_function_usage ${FUNCNAME[0]}
-
-    net_bazzline_record_function_usage ${FUNCNAME[0]}
-
     if [[ $# -gt 1 ]];
     then
         SEARCH_TERM="${1}"
@@ -2427,8 +2300,6 @@ function net_bazzline_search_in_journalctl_since_boot ()
 ####
 function net_bazzline_scan_network ()
 {
-    net_bazzline_record_function_usage ${FUNCNAME[0]}
-
     if [[ $# -lt 1 ]];
     then
         net_bazzline_handle_invalid_number_of_arguments_supplied "${FUNCNAME[0]} <ip address/range - 192.168.0.0/24>"
@@ -2448,8 +2319,6 @@ function net_bazzline_scan_network ()
 ####
 function net_bazzline_scp_from_host()
 {
-    net_bazzline_record_function_usage ${FUNCNAME[0]}
-
     if [[ $# -eq 4 ]];
     then
         local DESTINATION_PATH="${4}"
@@ -2485,8 +2354,6 @@ function net_bazzline_scp_from_host()
 ####
 function net_bazzline_scp_to_host()
 {
-    net_bazzline_record_function_usage ${FUNCNAME[0]}
-
     if [[ $# -eq 4 ]];
     then
         local PATH_TO_SSH_KEY="${1}"
@@ -2524,8 +2391,6 @@ function net_bazzline_scp_to_host()
 ####
 function net_bazzline_screenshot ()
 {
-    net_bazzline_record_function_usage ${FUNCNAME[0]}
-
     if [[ $# -eq 0 ]];
     then
         local FILENAME='screenshot.jpg'
@@ -2556,8 +2421,6 @@ function net_bazzline_shuffle_number ()
 ####
 function net_bazzline_silent_grep ()
 {
-    net_bazzline_record_function_usage ${FUNCNAME[0]}
-
     if [[ -f /usr/bin/rg ]];
     then
         rg -i "$@"
@@ -2592,8 +2455,6 @@ function net_bazzline_silent_grep ()
 ####
 function net_bazzline_string_contains()
 {
-    net_bazzline_record_function_usage ${FUNCNAME[0]}
-
     if [[ $# -eq 2 ]];
     then
         local CONTAINS=1
@@ -2625,8 +2486,6 @@ function net_bazzline_string_contains()
 ####
 function net_bazzline_string_starts_with ()
 {
-    net_bazzline_record_function_usage ${FUNCNAME[0]}
-
     if [[ $# -eq 2 ]];
     then
         local STRING="$1"
@@ -2657,8 +2516,6 @@ function net_bazzline_string_starts_with ()
 ####
 function net_bazzline_svn_diff ()
 {
-    net_bazzline_record_function_usage ${FUNCNAME[0]}
-
     if [[ -x "/usr/bin/colordiff" ]];
     then
         svn diff "${@}" | /usr/bin/colordiff
@@ -2678,8 +2535,6 @@ function net_bazzline_svn_diff ()
 ####
 function net_bazzline_svn_log_grep ()
 {
-    net_bazzline_record_function_usage ${FUNCNAME[0]}
-
     if [[ $# -eq 1 ]];
     then
         svn log --limit 1000 | grep -B2 "${1}"
@@ -2708,8 +2563,6 @@ function net_bazzline_svn_log_grep ()
 ####
 function net_bazzline_svn_repository_diff ()
 {
-    net_bazzline_record_function_usage ${FUNCNAME[0]}
-
     if [[ $# -eq 3 ]];
     then
         svn diff --summarize "${1}/${3}" "${2}/${3}"
@@ -2736,8 +2589,6 @@ function net_bazzline_svn_repository_diff ()
 ####
 function net_bazzline_sync_from_host ()
 {
-    net_bazzline_record_function_usage ${FUNCNAME[0]}
-
     if [[ $# -eq 4 ]]; then
         local USER="$1"
         local HOST="$2"
@@ -2768,8 +2619,6 @@ function net_bazzline_sync_from_host ()
 ####
 function net_bazzline_sync_to ()
 {
-    net_bazzline_record_function_usage ${FUNCNAME[0]}
-
     if [[ $# -eq 0 ]]; then
         echo 'invalid number of variables provided'
         echo 'command [source one] [source ...] target'
@@ -2795,8 +2644,6 @@ function net_bazzline_sync_to ()
 ####
 function net_bazzline_sync_to_host ()
 {
-    net_bazzline_record_function_usage ${FUNCNAME[0]}
-
     if [[ $# -eq 4 ]]; then
         local USER="$1"
         local HOST="$2"
@@ -2832,8 +2679,6 @@ function net_bazzline_sync_to_host ()
 ####
 function net_bazzline_tar_create ()
 {
-    net_bazzline_record_function_usage ${FUNCNAME[0]}
-
     if [[ $# -lt 2 ]]; then
         echo 'No valid arguments supplied.'
         echo 'archive path1 [pathX]'
@@ -2859,8 +2704,6 @@ function net_bazzline_tar_create ()
 ####
 function net_bazzline_tar_extract ()
 {
-    net_bazzline_record_function_usage ${FUNCNAME[0]}
-
     if [[ $# -eq 1 ]]; then
         tar -xf "$1"
     else
@@ -2881,8 +2724,6 @@ function net_bazzline_tar_extract ()
 ####
 function net_bazzline_tar_list ()
 {
-    net_bazzline_record_function_usage ${FUNCNAME[0]}
-
     if [[ $# -eq 1 ]]; then
         tar -tvf "$1"
     else
@@ -2903,8 +2744,6 @@ function net_bazzline_tar_list ()
 ####
 function net_bazzline_touch_with_prefix_of_current_date ()
 {
-    net_bazzline_record_function_usage ${FUNCNAME[0]}
-
     if [[ $# -eq 1 ]]; then
         directoryName=`eval date +%Y%m%d`"_$1"
 
@@ -2924,8 +2763,6 @@ function net_bazzline_touch_with_prefix_of_current_date ()
 ####
 function net_bazzline_unhide_file_system_object()
 {
-    net_bazzline_record_function_usage ${FUNCNAME[0]}
-
     if [[ $# -eq 1 ]]; then
         local IDENTIFIER="$1";
 # @todo validate if identifier is file or directory and if first character is "."
@@ -2952,8 +2789,6 @@ function net_bazzline_unhide_file_system_object()
 ####
 function net_bazzline_unmount_luks_zpool ()
 {
-    net_bazzline_record_function_usage ${FUNCNAME[0]}
-
     if [[ $# -lt 3 ]];
     then
         echo "usage: <command> <zpool> <crypto name> <zpool>"
@@ -3013,8 +2848,6 @@ function net_bazzline_unmount_sshfs ()
 
 function net_bazzline_update_shell_configuration ()
 {
-    net_bazzline_record_function_usage ${FUNCNAME[0]}
-
     #store current working directory
     CURRENT_WORKING_DIRECTORY=$(pwd)
     #change to the repostiory
@@ -3035,8 +2868,6 @@ function net_bazzline_update_shell_configuration ()
 
 function net_bazzline_update_vim_bundles_and_plugins_with_vundle()
 {
-    net_bazzline_record_function_usage ${FUNCNAME[0]}
-
     echo "vundlevim is not available anymore :/"
 
     CURRENT_WORKING_DIRECTORY=$(pwd)
@@ -3074,8 +2905,6 @@ function net_bazzline_update_vim_bundles_and_plugins_with_vundle()
 ####
 function net_bazzline_what_is_listening_on_that_port()
 {
-    net_bazzline_record_function_usage ${FUNCNAME[0]}
-
     if [[ $# -eq 1 ]]; then
         netstat -tulpn | grep --color :$1
     else
