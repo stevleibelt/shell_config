@@ -18,9 +18,9 @@ function net_bazzline_media_rip_cd_as_mp3()
 
   if [[ ${SELECT_A_RELEASE} -eq 1 ]];
   then
-    cyanrip -o mp3 -R "${SELECTED_RELEASE}"
+    cyanrip -o mp3 -s 0 -R "${SELECTED_RELEASE}"
   else
-    cyanrip -o mp3
+    cyanrip -o mp3 -s 0
   fi
 }
 
