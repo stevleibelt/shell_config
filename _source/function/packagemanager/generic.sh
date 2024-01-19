@@ -150,84 +150,97 @@ DELIM
     #bo: check if screen session exists
     net_bazzline_packagemanager_check_if_system_upgrade_screen_session_exists
 
+    if [[ -f "${UPGRADE_SCRIPT_FILE_PATH}" ]];
+    then
+      rm "${UPGRADE_SCRIPT_FILE_PATH}" || echo ":: Error: Could not remove file >>${UPGRADE_SCRIPT_FILE_PATH}<<"
+    fi
+
     if  [[ ${?} -eq 1 ]];
     then
       #bo: upgrade script generation
       echo ":: Generating >>${UPGRADE_SCRIPT_FILE_PATH}<<"
-      
-      if [[ ${SKIP_KERNEL_PACKAGES} -eq 0 ]];
-      then
+
         cat > ${UPGRADE_SCRIPT_FILE_PATH} <<DELIM
 #!/bin/bash
-# @todo: only echo if PACKAGES_TO_IGNORE has string lenght > 0
+####
 
-if [[ ${#PACKAGES_TO_IGNORE} > 0 ]];
-then
-  echo ":: Trying upgrade with ignoring following packages >>${PACKAGES_TO_IGNORE}<<"
-fi
+function _do_regular_upgrade ()
+{
+  echo ":: Running upgrade"
 
-if ${PACKAGEMANAGER_COMMAND} -Syyu --ignore=${PACKAGES_TO_IGNORE};
-then
-  echo ":: Cleaning up" 
-  ${PACKAGEMANAGER_COMMAND} -Sc
-  
-  if [[ -f /usr/bin/fwupdmgr ]];
-  then
+  ${PACKAGEMANAGER_COMMAND} -Syyu
+}
+
+function _do_upgrade_with_ignored_packages ()
+{
+  echo ":: Running upgrade"
+  echo "   Ignoring packages >>${PACKAGES_TO_IGNORE}<<"
+
+  ${PACKAGEMANAGER_COMMAND} -Syyu --ignore=${PACKAGES_TO_IGNORE}
+}
+
+function _do_cleanup ()
+{
+    echo ":: Cleaning up" 
+
+    ${PACKAGEMANAGER_COMMAND} -Sc
+}
+
+function _do_fwupdmgr ()
+{
     echo ":: Updating firmware"
+
     sudo fwupdmgr refresh
     sudo fwupdmgr update
-  fi
+}
 
-  if [[ -f /usr/bin/rustup ]];
-  then
-    echo ":: Updating rust"
-    rustup update
-  fi
-
-else
-  echo ":: Something bad happens."
+function _show_bad_message ()
+{
+  echo ":: Something bad happens.";
   read -n 1 -s -r -p "Press any key to continue"
-fi
+}
 
-echo ":: Waiting for 30 seconds."
-echo " Hit CTRL+C to terminate this waiting."
-sleep 30
-DELIM
-    else
-        cat > ${UPGRADE_SCRIPT_FILE_PATH} <<DELIM
-#!/bin/bash
-echo ":: Trying default upgrade"
-
-${PACKAGEMANAGER_COMMAND} -Syyu
-
-if [[ ${?} -ne 0 ]];
-then
-  echo ":: Ignoring zfs packages";
-  echo "   Ignoring packages >>${PACKAGES_TO_IGNORE}<<";
-
-  if ${PACKAGEMANAGER_COMMAND} -Syyu --ignore=${PACKAGES_TO_IGNORE};
-  then
-    echo ":: Cleaning up" 
-    ${PACKAGEMANAGER_COMMAND} -Sc
-  
-    if [[ -f /usr/bin/fwupdmgr ]];
-    then
-      echo ":: Updating firmware"
-      sudo fwupdmgr refresh
-      sudo fwupdmgr update
-    fi
-  else
-    echo ":: Something bad happens.";
-    read -n 1 -s -r -p "Press any key to continue"
-  fi
-
+function _show_waiting_message ()
+{
   echo ":: Waiting for 30 seconds."
-  echo " Hit CTRL+C to terminate this waiting."
+  echo "   Hit CTRL+C to terminate this waiting."
 
   sleep 30
-fi
+}
+
+function _main ()
+{
 DELIM
-      fi
+
+  echo ":: This script was generated in path >>${UPGRADE_SCRIPT_FILE_PATH}<<"
+
+  if [[ ${SKIP_KERNEL_PACKAGES} -eq 0 ]];
+  then
+    cat >> ${UPGRADE_SCRIPT_FILE_PATH}  <<DELIM
+  if _do_regular_upgrade -ne 0;
+  then
+    _do_upgrade_with_ignored_packages
+  fi 
+DELIM
+  else
+    cat >> ${UPGRADE_SCRIPT_FILE_PATH}  <<DELIM
+  _do_upgrade_with_ignored_packages
+DELIM
+  fi
+
+  cat >> ${UPGRADE_SCRIPT_FILE_PATH} <<DELIM
+  if [[ \${?} -ne 0 ]];
+  then
+    _do_cleanup
+    _do_fwupdmgr
+    _show_waiting_message
+  else
+    _show_bad_message
+  fi
+}
+
+_main \"\${@}\"
+DELIM
       #eo: upgrade script generation
       
       screen -dmS ${NET_BAZZLINE_FUNCTION_PACKAGEMANAGER_SYSTEM_UPGRADE_SCREEN_SESSION_NAME} bash ${UPGRADE_SCRIPT_FILE_PATH}
