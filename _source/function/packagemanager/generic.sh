@@ -26,6 +26,7 @@ function net_bazzline_packagemanager_arch_linux_software_upgrade ()
   local PACKAGEMANAGER_COMMAND
   local PACKAGES_TO_IGNORE
   local PACMAN_LOCK_FILE_PATH
+  local SEND_NOTIFY
   local UPGRADE_SCRIPT_FILE_PATH
   local ZFS_SNAPSHOT_NAME
 
@@ -35,6 +36,13 @@ function net_bazzline_packagemanager_arch_linux_software_upgrade ()
   PACMAN_LOCK_FILE_PATH='/var/lib/pacman/db.lck'
   UPGRADE_SCRIPT_FILE_PATH="/tmp/net_bazzline_system_upgrade.sh"
   ZFS_SNAPSHOT_NAME='net_bazzline_before_system_upgrade'
+
+  if [[ -f /usr/bin/notify-send ]];
+  then
+    SEND_NOTIFY="/usr/bin/notify-send "
+  else
+    SEND_NOTIFY="# "
+  fi
   #@todo
   # eval if we can use znp or its idea
   # ref: https://gist.github.com/erikw/eeec35be33e847c211acd886ffb145d5
@@ -173,23 +181,23 @@ function _do_upgrade ()
   ${PACKAGEMANAGER_COMMAND} -Syyu --ignore=${PACKAGES_TO_IGNORE}
 }
 DELIM
-      fi
+    fi
 
-        cat >> ${UPGRADE_SCRIPT_FILE_PATH} <<DELIM
+    cat >> ${UPGRADE_SCRIPT_FILE_PATH} <<DELIM
 
 function _do_cleanup ()
 {
-    echo ":: Cleaning up" 
+  echo ":: Cleaning up" 
 
-    ${PACKAGEMANAGER_COMMAND} -Sc
+  ${PACKAGEMANAGER_COMMAND} -Sc
 }
 
 function _do_fwupdmgr ()
 {
-    echo ":: Updating firmware"
+  echo ":: Updating firmware"
 
-    sudo fwupdmgr refresh
-    sudo fwupdmgr update
+  sudo fwupdmgr refresh
+  sudo fwupdmgr update
 }
 
 function _show_bad_message ()
@@ -209,10 +217,13 @@ function _show_waiting_message ()
 function _main ()
 {
   _do_upgrade
+  ${SEND_NOTIFY} "Upgrading done"
   if [[ \${?} -ne 0 ]];
   then
     _do_cleanup
+    ${SEND_NOTIFY} "Cleanup done"
     _do_fwupdmgr
+    ${SEND_NOTIFY} "Firmware update done"
     _show_waiting_message
   else
     _show_bad_message
