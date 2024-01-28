@@ -14,7 +14,7 @@ else
 fi
 
 #@todo: validate against https://wiki.archlinux.org/index.php/Pacman/Rosetta
-PACKAGES_TO_IGNORE="linux,linux-headers,linux-lts,linux-lts-headers,zfs-linux-lts,zfs-utils,zfs-dkms"
+PACKAGES_TO_IGNORE="linux,linux-headers,zfs-linux,linux-lts,linux-lts-headers,zfs-linux-lts,zfs-utils,zfs-dkms"
 
 if [[ ${NET_BAZZLINE_PACKAGE_MANAGER} = 'yay' ]];
 then
