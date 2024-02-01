@@ -37,11 +37,16 @@ function net_bazzline_packagemanager_arch_linux_software_upgrade ()
   UPGRADE_SCRIPT_FILE_PATH="/tmp/net_bazzline_system_upgrade.sh"
   ZFS_SNAPSHOT_NAME='net_bazzline_before_system_upgrade'
 
+  SEND_NOTIFY="# "
   if [[ -f /usr/bin/notify-send ]];
   then
-    SEND_NOTIFY="/usr/bin/notify-send "
-  else
-    SEND_NOTIFY="# "
+    # xset q prints status information for current user
+    # $? = 0 -> user is running a x session
+    # $? != 0 -> user is not running a x session
+    if xset q &>/dev/null;
+    then
+      SEND_NOTIFY="/usr/bin/notify-send "
+    fi
   fi
   #@todo
   # eval if we can use znp or its idea
