@@ -74,6 +74,7 @@ man-db
 man-pages
 man2html
 mesa
+minicom
 mplayer
 mpv
 mupdf
