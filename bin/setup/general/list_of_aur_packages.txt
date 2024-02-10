@@ -4,6 +4,7 @@ ddev-bin
 jetbrains-toolbox
 librewolf-bin
 mangohud
+pandoc-bin
 pdfsam
 #pomatez
 potato
