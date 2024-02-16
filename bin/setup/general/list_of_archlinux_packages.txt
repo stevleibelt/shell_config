@@ -60,6 +60,7 @@ keepassxc
 libcoverart
 libdiscid
 libreoffice-fresh
+libreplaygain
 light
 linux-headers
 lm_sensors
@@ -75,6 +76,7 @@ man-pages
 man2html
 mesa
 minicom
+mixxx
 mplayer
 mpv
 mupdf
