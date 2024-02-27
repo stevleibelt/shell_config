@@ -109,7 +109,7 @@ function _main ()
 
   # bo: docker
   bash "${PATH_TO_THIS_SCRIPT}/docker.sh"
-  sudo gpasswd -a "${USER}" docker
+  sudo gpasswd -a ${USER} docker
   # eo: docker
 
   # bo: ssh agent
@@ -137,8 +137,8 @@ DELIM
   fi
   # eo: ssh agent
 
-  echo ":: @todo"
-  echo "   Add >>NOPASSWD: /usr/bin/light<< to created user"
+  # ref: https://wiki.archlinux.org/title/Backlight#light
+  sudo gpasswd -a ${USER} video
 
   cd "${CURRENT_WORKING_DIRECTORY}"
 }
