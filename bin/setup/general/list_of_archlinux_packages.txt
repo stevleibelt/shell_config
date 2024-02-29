@@ -13,7 +13,8 @@ autorandr
 bat
 bind
 borg
-btop
+bottom
+#btop
 calc
 catdoc
 cppcheck
