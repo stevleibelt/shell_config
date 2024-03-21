@@ -7,11 +7,28 @@
 
 function _main ()
 {
+  local CURRENT_OPTION
+  local FORCE
+
+  FORCE=0
+
+  while getopts "f" CURRENT_OPTION;
+  do
+    case ${CURRENT_OPTION} in
+      f)
+        FORCE=1
+        ;;
+    esac
+  done
+
   if [[ -f /usr/bin/yay ]];
   then
-    echo ":: Yay is already installed."
+    if [[ ${FORCE} -ne 1 ]];
+    then
+      echo ":: Yay is already installed."
 
-    return 0
+      return 0
+    fi
   fi
 
   #begin of testing if we are on the right system
