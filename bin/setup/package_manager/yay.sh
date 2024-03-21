@@ -9,17 +9,39 @@ function _main ()
 {
   local CURRENT_OPTION
   local FORCE
+  local SHOW_HELP
+  local USE_SOURCE
 
   FORCE=0
+  SHOW_HELP=0
+  USE_SOURCE=0
 
-  while getopts "f" CURRENT_OPTION;
+  while getopts "fhs" CURRENT_OPTION;
   do
     case ${CURRENT_OPTION} in
       f)
         FORCE=1
         ;;
+      h)
+        SHOW_HELP=1
+        ;;
+      s)
+        USE_SOURCE=1
+        ;;
     esac
   done
+
+  if [[ ${SHOW_HELP} -eq 1 ]];
+  then
+    echo ":: Usage"
+    echo "${0} [-f] [-h] [-s]"
+    echo ""
+    echo "-f  - Force installation, even if it is installed already"
+    echo "-h  - Show this help"
+    echo "-s  - Use yay.git instead of yay-bin.git"
+
+    return 0
+  fi
 
   if [[ -f /usr/bin/yay ]];
   then
@@ -75,8 +97,12 @@ function _main ()
 
   ##begin of building and installing
   cd ${TEMPORARY_DIRECTORY_PATH}
-  #git clone https://aur.archlinux.org/yay.git .
-  git clone https://aur.archlinux.org/yay-bin.git .
+  if [[ ${USE_SOURCE} -eq 1 ]];
+  then
+    git clone https://aur.archlinux.org/yay.git .
+  else
+    git clone https://aur.archlinux.org/yay-bin.git .
+  fi
   makepkg -si
   ##end of building and installing
 
