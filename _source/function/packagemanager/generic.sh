@@ -224,11 +224,11 @@ function _main ()
   _do_upgrade
   if [[ \${?} -ne 0 ]];
   then
+    _do_fwupdmgr
+    ${SEND_NOTIFY} "Firmware update done"
     ${SEND_NOTIFY} "Upgrading done"
     _do_cleanup
     ${SEND_NOTIFY} "Cleanup done"
-    _do_fwupdmgr
-    ${SEND_NOTIFY} "Firmware update done"
     _show_waiting_message
   else
     ${SEND_NOTIFY} "Error while upgrading"
