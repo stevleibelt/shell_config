@@ -53,7 +53,6 @@ htop
 httpie
 hwinfo
 i3-wm
-perl-anyevent-i3
 i3status
 iw
 jq
@@ -94,6 +93,7 @@ parallel
 pavucontrol-qt
 picard
 pcmanfm
+perl-anyevent-i3
 perl-io-socket-ssl
 picocom
 plantuml
@@ -103,6 +103,7 @@ progress
 pulseaudio
 pulseaudio-alsa
 pulsemixer
+proxychains-ng
 python
 python-llfuse
 python-pip
