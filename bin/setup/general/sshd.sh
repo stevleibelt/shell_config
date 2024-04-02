@@ -56,6 +56,13 @@ Subsystem sftp  /usr/lib/ssh/sftp-server -f AUTHPRIV -l INFO
 # Using regular users in combination with /bin/su or /usr/bin/sudo ensure a clear audit track.
 PermitRootLogin No
 DELIM"
+
+  if sudo systemctl is-active --quiet sshd.service;
+  then
+    echo "   Restarting sshd service"
+    sudo systemctl restart sshd.service
+    sudo systemctl status sshd.service
+  fi
 }
 
 install_if_needed
