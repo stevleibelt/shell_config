@@ -30,6 +30,13 @@ function _main()
   #sudo ufw allow from 1.23.456.0/24
   #sudo ufw allow from 1.23.456.789 in on enp2s0 to any port 22
 
+  if [[ -f /usr/bin/syncthing ]];
+  then
+    # ref: https://docs.syncthing.net/users/firewall.html
+    sudo ufw allow syncthing
+    sudo ufw allow syncthing-gui
+  fi
+
   if ! sudo ufw status | grep -q 'Status: active';
   then
     sudo ufw enable
