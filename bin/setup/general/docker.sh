@@ -69,7 +69,7 @@ DELIM'
 DELIM'
   fi
 
-  if ! sudo systemctl is-active docker.socket;
+  if ! sudo systemctl is-active --quiet docker.socket;
   then
     sudo systemctl enable docker.socket
     sudo systemctl start docker.socket

@@ -16,7 +16,7 @@ function _main()
     sudo pacman -S ufw
   fi
 
-  if ! sudo systemctl is-active ufw.service;
+  if ! sudo systemctl is-active --quiet ufw.service;
   then
     sudo systemctl enable ufw.service
     sudo systemctl start ufw.service

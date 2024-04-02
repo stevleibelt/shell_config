@@ -45,7 +45,7 @@ function _main()
     fi
   fi
 
-  if ! sudo systemctl is-active nohang-desktop.service;
+  if ! sudo systemctl is-active --quiet nohang-desktop.service;
   then
     sudo systemctl enable nohang-desktop.service
     sudo systemctl start nohang-desktop.service
