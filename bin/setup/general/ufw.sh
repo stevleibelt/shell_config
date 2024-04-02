@@ -9,7 +9,8 @@
 # @author stev leibelt <artodeto@arcor.de>
 ####
 
-function _main() {
+function _main()
+{
   if [[ ! -f /usr/bin/ufw ]];
   then
     sudo pacman -S ufw
