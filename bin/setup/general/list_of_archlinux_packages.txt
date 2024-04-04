@@ -10,7 +10,7 @@ ansible-lint
 arandr
 archiso
 autorandr
-bat
+#bat
 bind
 borg
 bottom
@@ -49,6 +49,7 @@ glibc
 gvfs
 gvfs-smb
 hdparm
+heroic
 htop
 httpie
 hwinfo
