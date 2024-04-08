@@ -10,6 +10,8 @@ function _main()
 {
   local CURRENT_DATE_TIME
 
+  CURRENT_DATE_TIME=$(date +'%Y%m%d.%H%M')
+
   if [[ ! -f /usr/bin/docker ]];
   then
     sudo pacman -S docker
@@ -25,7 +27,7 @@ function _main()
     sudo mkdir /etc/docker
   elif [[ -f /etc/docker/daemon.json ]];
   then
-    echo ":: Moving >>/etc/docker/daemon.json<< to /etc/d"
+    echo ":: Moving >>/etc/docker/daemon.json<< to /etc/docker/daemon.json.${CURRENT_DATE_TIME}"
     sudo mv -v /etc/docker/daemon.json "/etc/docker/daemon.json.${CURRENT_DATE_TIME}"
   fi
 
