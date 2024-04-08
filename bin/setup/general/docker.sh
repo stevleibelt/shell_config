@@ -54,7 +54,7 @@ function _main()
     echo "   Creating daemon.json with zfs storage driver"
     sudo bash -c 'cat > /etc/docker/daemon.json <<DELIM
 {
-  "bib": "172.119.0.1/16",
+  "bip": "172.119.0.1/16",
   "default-address-pools": [
     {
       "base": "172.120.0.0/16",
@@ -71,7 +71,7 @@ DELIM'
     echo "   Creating daemon.json"
     sudo bash -c 'cat > /etc/docker/daemon.json <<DELIM
 {
-  "bib": "172.119.0.1/16",
+  "bip": "172.119.0.1/16",
   "default-address-pools": [
     {
       "base": "172.120.0.0/16",
