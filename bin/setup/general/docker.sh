@@ -42,7 +42,7 @@ function _main()
     fi
     sudo rm -rf /var/lib/docker/*
 
-    if sudo zfs list | grep -q zroot/data/docker;
+    if ! ( sudo zfs list | grep -q zroot/data/docker)
     then
       DEFAULT_DATA_SET="zroot/data/docker"
       read -e -i "${DEFAULT_DATA_SET}" -p ":: Please adapt zfs data set for docker: " DATA_SET
