@@ -52,9 +52,16 @@ function _main()
     echo "   Creating daemon.json with zfs storage driver"
     sudo bash -c 'cat > /etc/docker/daemon.json <<DELIM
 {
-  "storage-driver": "zfs",
+  "bib": "172.119.0.1/16",
+  "default-address-pools": [
+    {
+      "base": "172.120.0.0/16",
+      "size": 24
+    }
+  ],
   "live-restore": true,
-  "log-driver": "syslog",
+  "log-driver": "journald",
+  "storage-driver": "zfs",
   "userland-proxy": false
 }
 DELIM'
@@ -62,8 +69,15 @@ DELIM'
     echo "   Creating daemon.json"
     sudo bash -c 'cat > /etc/docker/daemon.json <<DELIM
 {
+  "bib": "172.119.0.1/16",
+  "default-address-pools": [
+    {
+      "base": "172.120.0.0/16",
+      "size": 24
+    }
+  ],
   "live-restore": true,
-  "log-driver": "syslog",
+  "log-driver": "journald",
   "userland-proxy": false
 }
 DELIM'
