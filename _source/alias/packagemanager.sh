@@ -38,7 +38,7 @@ then
     alias software-list-unofficial-added='yay -Qem'
     alias software-prepare-for-upgrade='yay -Swyu'
     alias software-remove="sudo pacman -Rsu"
-    alias software-remove-orphaned='sudo pacman -Rs $(yay -Qdtq)'
+    alias software-remove-not-needed-dependencies='sudo pacman -Rs $(yay -Qdtq)'
     alias software-search='yay -Ss'
     alias software-search-added='yay -Qs'
     alias software-upgrade-from-cache='yay -uu'
@@ -66,7 +66,7 @@ then
     alias software-list-unofficial-added='sudo pacman -Qemq'
     alias software-prepare-for-upgrade='sudo pacman -Swyu'
     alias software-remove='sudo pacman -Rsu'
-    alias software-remove-orphaned='sudo pacman -Rs $(pacman -Qdtq)'
+    alias software-remove-not-needed-dependencies='sudo pacman -Rs $(pacman -Qdtq)'
     alias software-search='pacman -Ss'
     alias software-search-added='sudo pacman -Qs'
     alias software-upgrade-from-cache='sudo pacman -u'
