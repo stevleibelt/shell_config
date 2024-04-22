@@ -222,7 +222,7 @@ function _show_waiting_message ()
 function _main ()
 {
   _do_upgrade
-  if [[ \${?} -ne 0 ]];
+  if [[ \${?} -eq 0 ]];
   then
     _do_fwupdmgr
     ${SEND_NOTIFY} "Firmware update done"
