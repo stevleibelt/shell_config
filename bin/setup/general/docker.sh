@@ -67,6 +67,14 @@ function _main()
   "userland-proxy": false
 }
 DELIM'
+
+  if [[ -f /etc/zrepl/zrepl.yml ]];
+  then
+    echo "Found existing zrepl.yml"
+    echo "  Please adapt the configuration by a line in section >>filesystems<<:"
+    echo "   >>\"zroot/data/docker<\":false"
+  fi
+
   else
     echo "   Creating daemon.json"
     sudo bash -c 'cat > /etc/docker/daemon.json <<DELIM
