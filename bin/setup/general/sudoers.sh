@@ -33,7 +33,7 @@ function install_if_needed()
 
   if [[ -f /etc/sudoers.d/pwfeedback ]];
   then
-    echo "   Removing pwfeeedback"
+    echo "   Removing pwfeedback"
     sudo rm /etc/sudoers.d/pwfeedback
   fi
 }
