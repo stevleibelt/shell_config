@@ -1,0 +1,46 @@
+#!/bin/bash
+####
+# Installs and configures sudo
+####
+# ref: https://wiki.archlinux.org/title/Sudo#Configuration
+# @since 2024-05-07
+# @author stev leibelt <artodeto@arcor.de>
+####
+
+function install_if_needed()
+{
+  echo ":: Installing and configuring sudo if needed"
+  if [[ ! -f /usr/bin/pacman ]];
+  then
+      echo "   Aborting."
+      echo "   No /usr/bin/pacman installed."
+
+      exit 1
+  fi
+
+  if [[ -f /usr/bin/sudo ]];
+  then
+    echo "   Sudo is installed already"
+  else
+    sudo pacman -S sudo
+  fi
+
+  echo "   Configuring sudo"
+
+  sudo bash -c "cat > /etc/sudoers.d/editor <DELIM
+  Defaults editor=/usr/bin/vim
+  DELIM"
+
+  sudo bash -c "cat > /etc/sudoers.d/rootpw <DELIM
+  Defaults rootpw
+  DELIM"
+
+  if [[ -f /etc/sudoers.d/pwfeedback ]];
+  then
+    echo "   Removing pwfeeedback"
+    sudo rm /etc/sudoers.d/pwfeedback
+  fi
+}
+
+install_if_needed
+
