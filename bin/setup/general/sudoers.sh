@@ -27,13 +27,9 @@ function install_if_needed()
 
   echo "   Configuring sudo"
 
-  sudo bash -c "cat > /etc/sudoers.d/editor <DELIM
-  Defaults editor=/usr/bin/vim
-  DELIM"
+  sudo bash -c "echo 'Defaults editor=/usr/bin/vim' > /etc/sudoers.d/editor"
 
-  sudo bash -c "cat > /etc/sudoers.d/rootpw <DELIM
-  Defaults rootpw
-  DELIM"
+  sudo bash -c "echo 'Defaults rootpw' > /etc/sudoers.d/rootpw"
 
   if [[ -f /etc/sudoers.d/pwfeedback ]];
   then
