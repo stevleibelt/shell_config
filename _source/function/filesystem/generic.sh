@@ -174,9 +174,13 @@ function net_bazzline_filesystem_generic_empty_tmp ()
 ####
 function net_bazzline_filesystem_generic_fix_quotes ()
 {
-    local PATH_TO_THE_FILE="${1}"
-    local SINGLEQUOTE_CHARACTER=$(echo -ne '\u2018\u2019')
-    local DOUBLEQUOTE_CHARACTER=$(echo -ne '\u201C\u201D')
+    local PATH_TO_THE_FILE
+    local SINGLEQUOTE_CHARACTER
+    local DOUBLEQUOTE_CHARACTER
+
+    PATH_TO_THE_FILE="${1}"
+    SINGLEQUOTE_CHARACTER=$(echo -ne '\u2018\u2019')
+    DOUBLEQUOTE_CHARACTER=$(echo -ne '\u201C\u201D')
 
     if [[ ! -f "${PATH_TO_THE_FILE}" ]];
     then
@@ -189,6 +193,15 @@ function net_bazzline_filesystem_generic_fix_quotes ()
 }
 
 ####
+# @param <string: pattern to grep>
+####
+function net_bazzline_filesystem_ls_grep ()
+{
+  # shellcheck disable=SC2010
+  ls -hal | grep -i "${1}"
+}
+
+####
 # [@param int $NUMBER_OF_DIRECTORIES_TO_OUTPUT=20]
 ####
 # @see
@@ -198,7 +211,9 @@ function net_bazzline_filesystem_generic_fix_quotes ()
 # @author stev leibelt
 function net_bazzline_filesystem_list_biggest_directories ()
 {
-    local NUMBER_OF_DIRECTORIES_TO_OUTPUT=${1:-20}
+    local NUMBER_OF_DIRECTORIES_TO_OUTPUT
+    # $((input)) converts string to int
+    NUMBER_OF_DIRECTORIES_TO_OUTPUT=$((${1:-20}))
 
     du -hsx -- * | sort -rh | head -n${NUMBER_OF_DIRECTORIES_TO_OUTPUT}
 }
@@ -210,7 +225,9 @@ function net_bazzline_filesystem_list_biggest_directories ()
 ####
 function net_bazzline_filesystem_list_biggest_swap_space_consumers ()
 {
-    for file in /proc/*/status ; do awk '/VmSwap|Name/{printf $2 " " $3}END{ print ""}' $file; done | sort -k 2 -n -r | less
+  local CURRENT_FILE
+
+  for CURRENT_FILE in /proc/*/status ; do awk '/VmSwap|Name/{printf $2 " " $3}END{ print ""}' "${CURRENT_FILE}"; done | sort -k 2 -n -r | less
 }
 
 ####
@@ -222,10 +239,13 @@ function net_bazzline_filesystem_list_biggest_swap_space_consumers ()
 # @author stev leibelt
 function net_bazzline_list_inodes ()
 {
-    local CURRENT_PATH=${1:-'/'}
-    local NUMBER_OF_ENTRIES_TO_DISPLAY=${2:-'20'}
+    local CURRENT_PATH
+    local NUMBER_OF_ENTRIES_TO_DISPLAY
 
-    { find ${CURRENT_PATH} -xdev -printf '%h\n' | sort | uniq -c | sort -rn; } 2>/dev/null | head -n ${NUMBER_OF_ENTRIES_TO_DISPLAY}
+    CURRENT_PATH=${1:-'/'}
+    NUMBER_OF_ENTRIES_TO_DISPLAY=$((${2:-'20'}))
+
+    { find "${CURRENT_PATH}" -xdev -printf '%h\n' | sort | uniq -c | sort -rn; } 2>/dev/null | head -n ${NUMBER_OF_ENTRIES_TO_DISPLAY}
 }
 
 ####
@@ -236,9 +256,11 @@ function net_bazzline_list_inodes ()
 ####
 function net_bazzline_list_softlinks ()
 {
-    local CURRENT_PATH=${1:-'.'}
+  local CURRENT_PATH
 
-    find -L "${CURRENT_PATH}" -xtype l
+  CURRENT_PATH=${1:-'.'}
+
+  find -L "${CURRENT_PATH}" -xtype l
 }
 
 ####
@@ -246,19 +268,18 @@ function net_bazzline_list_softlinks ()
 ####
 function net_bazzline_rsync ()
 {
-    net_bazzline_record_function_usage ${FUNCNAME[0]}
+  if [[ $# -lt 1 ]];
+  then
+    net_bazzline_handle_invalid_number_of_arguments_supplied "${FUNCNAME[0]} <source> [<destination>]"
 
-    if [[ $# -lt 1 ]];
-    then
-        net_bazzline_handle_invalid_number_of_arguments_supplied "${FUNCNAME[0]} <source> [<destination>]"
+    return 1
+  fi
 
-        return 1
-    fi
-
-    #@see:
-    #   https://opensource.com/article/19/5/advanced-rsync
-    #   https://utcc.utoronto.ca/~cks/space/blog/sysadmin/RsyncAndHardlinks
-    /usr/bin/rsync -caqHS --delete ${@}
+  #@see:
+  #   https://opensource.com/article/19/5/advanced-rsync
+  #   https://utcc.utoronto.ca/~cks/space/blog/sysadmin/RsyncAndHardlinks
+  # shellcheck disable=SC2068
+  /usr/bin/rsync -caqHS --delete ${@}
 }
 
 ####
