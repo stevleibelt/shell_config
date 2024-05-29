@@ -2744,13 +2744,25 @@ function net_bazzline_tar_list ()
 ####
 function net_bazzline_touch_with_prefix_of_current_date ()
 {
-    if [[ $# -eq 1 ]]; then
-        directoryName=`eval date +%Y%m%d`"_$1"
+  if [[ ${#} -eq 1 ]];
+  then
+    local CURRENT_DATE
+    local FILE_NAME
 
-        touch "$directoryName"
+    CURRENT_DATE=$(date +%Y%m%d)
+
+    if [[ ${1:0:1} == '.' ]];
+    then
+      #if only a file extension is provided
+      FILE_NAME="${CURRENT_DATE}${1}"
     else
-        echo 'Should be called with exactly one parameter'
+      FILE_NAME="${CURRENT_DATE}_${1}"
     fi
+
+    touch "${FILE_NAME}"
+  else
+    echo 'Should be called with exactly one parameter'
+  fi
 }
 
 #u
