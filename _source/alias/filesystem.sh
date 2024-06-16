@@ -1,10 +1,12 @@
 #!/bin/bash
 
 #c
+alias catLatestFile='cat $(listLatestFile)'
 alias cdToCurrentUserGvfs='cd /run/user/${UID}/gvfs'
 alias createSha512sumFromFile=net_bazzline_filesystem_create_sha512sum_from_file
 
 #e
+alias editLatestFile='$EDITOR $(listLatestFile)'  # either editLatestFile or openLatestFile wins
 alias emptyTmp=net_bazzline_filesystem_generic_empty_tmp
 
 #f
@@ -17,7 +19,7 @@ alias listLatestFile="ls -t | head -n 1"
 alias lsGrep=net_bazzline_filesystem_ls_grep
 
 #o
-alias openLatestFile='$EDITOR $(listLatestFile)'
+alias openLatestFile='$EDITOR $(listLatestFile)'  # either openLatestFile or editLatestFile wins
 
 #w
 alias watchForSync=net_bazzline_filesystem_watch_for_sync
