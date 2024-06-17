@@ -7,6 +7,7 @@
 
 # c
 alias createRandomAlphanumericString=net_bazzline_string_create_random_alphanumeric_string
+alias createRandomAlphanumericLowercaseString=net_bazzline_string_create_random_alphanumeric_lowercase_string
 
 # l
 alias leftTrim=net_bazzline_string_left_trim
