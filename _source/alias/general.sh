@@ -192,7 +192,6 @@ alias v=vim
 
 #w
 alias watchForSystemTemperatur="watch -n10 'sensors'"
-alias wgetWholeWebPage='wget -np -r -k'
 alias whatIsListeningOnPort=net_bazzline_what_is_listening_on_that_port
 
 #x
