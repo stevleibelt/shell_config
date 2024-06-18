@@ -35,6 +35,7 @@ firefox
 ffmpeg
 flameshot
 freeplane
+foremost
 fwupd
 gvfs-mtp
 gcc
