@@ -1665,7 +1665,7 @@ function net_bazzline_mkdir_prefix_with_current_date ()
 
   CURRENT_DATE=$(date +%Y%m%d)
 
-  if [[ $# -eq 1 ]];
+  if [[ $# -ge 1 ]];
   then
     DIRECTORY_NAME="${CURRENT_DATE}_${1}"
 
