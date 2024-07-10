@@ -1660,13 +1660,20 @@ function net_bazzline_mkdir ()
 ####
 function net_bazzline_mkdir_prefix_with_current_date ()
 {
-    if [[ $# -eq 1 ]]; then
-        NAME_OF_THE_DIRECTORY=`eval date +%Y%m%d`"_${1}"
+  local CURRENT_DATE
+  local DIRECTORY_NAME
 
-        net_bazzline_mkdir "${NAME_OF_THE_DIRECTORY}"
-    else
-        echo 'Should be called with exactly one parameter'
-    fi
+  CURRENT_DATE=$(date +%Y%m%d)
+
+  if [[ $# -eq 1 ]];
+  then
+    DIRECTORY_NAME="${CURRENT_DATE}_${1}"
+
+  else
+    DIRECTORY_NAME="${CURRENT_DATE}"
+  fi
+
+  net_bazzline_mkdir "${DIRECTORY_NAME}"
 }
 
 ####
