@@ -36,14 +36,22 @@ function net_bazzline_convert_video_to_gif ()
 ####
 function net_bazzline_media_rip_dvd_to_mkv ()
 {
-  local FFMPEG_VIDEO_CODEC="${3:-libx265}"
-  local INPUT_DEVICE="${2:-/dev/sr0}"
-  local PROCESS_PRIORITY=${4:--19}
-  local MOVIE_NAME=${1:-'movie'}
+  local FFMPEG_VIDEO_CODEC
+  local INPUT_DEVICE
+  local MERGED_VOB_FILE_NAME
+  local MOVIE_NAME
+  local NUMBER_OF_VOB_FILES
+  local OUTPUT_FILE_NAME
+  local PROCESS_PRIORITY
 
-  local MERGED_VOB_FILE_NAME="${MOVIE_NAME}.vob"
-  local NUMBER_OF_VOB_FILES=$(ls * | grep -c ".vob")
-  local OUTPUT_FILE_NAME="${MOVIE_NAME}.mkv"
+  FFMPEG_VIDEO_CODEC="${3:-libx265}"
+  INPUT_DEVICE="${2:-/dev/sr0}"
+  PROCESS_PRIORITY=${4:--19}
+  MOVIE_NAME=${1:-'movie'}
+
+  MERGED_VOB_FILE_NAME="${MOVIE_NAME}.vob"
+  NUMBER_OF_VOB_FILES=$(ls * | grep -c ".vob")
+  OUTPUT_FILE_NAME="${MOVIE_NAME}.mkv"
 
   if [[ ${NUMBER_OF_VOB_FILES} -eq 0 ]];
   then
