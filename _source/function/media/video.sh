@@ -1,28 +1,6 @@
 #!/bin/bash
 
 ####
-# @param <string> path_to_the_video_file
-# @see: https://www.linuxnix.com/linuxunix-convert-a-video-file-to-gif-file/
-####
-function net_bazzline_convert_video_to_gif ()
-{
-    #@todo
-    # check if mplayer and convert is installed
-    # check if input file exists
-    #
-    # get file base name
-    # create temp dir
-    # convert to temp dir
-    # convert to file base name gif
-    # optimize gif
-    #mplayer -ao null <video file name> -vo jpeg:outdir=output
-    #convert output/* output.gif
-    #convert output.gif -fuzz 10% -layers Optimize optimised.gif
-
-    echo "not done yet"
-}
-
-####
 # Uses vobcopy and ffmpeg to rip the biggest vob's, merges them and create a
 #   mkv file with all audio streams.
 ####
