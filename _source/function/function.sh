@@ -775,7 +775,7 @@ function net_bazzline_delete_empty_directories ()
 }
 
 ####
-# [@param int $MINUTES - default is 97200] - 27*60*60 = 97200, 27 days
+# [@param int $MINUTES - default is 334800] - 93*60*60 = 334800, 93 days
 # [@param string $NAME - default is empty]
 # [@param string $ROOT_PATH - default is cwd]
 # [@param int $MAX_DEPTH - default is 1]
