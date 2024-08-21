@@ -155,7 +155,6 @@ fi
 alias runJar='java -jar '
 
 #s
-alias scanWirelessNetwork='clear & iwlist wlan0 scan'
 alias searchInComposerFiles=net_bazzline_search_in_composer_files
 alias setOpticalDriveSpeed=net_bazzline_set_optical_drive_speed
 alias silentGrep=net_bazzline_silent_grep
