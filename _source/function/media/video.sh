@@ -56,9 +56,47 @@ function net_bazzline_media_rip_dvd_to_mkv ()
   fi
 
   echo ":: Converting vob to mkv"
+
+  net_bazzline_convert_video_to_mkv "${MERGED_VOB_FILE_NAME}" "${OUTPUT_FILE_NAME}" "${FFMPEG_VIDEO_CODEC}" ${PROCESS_PRIORITY}
+
+  echo "   Please remove the >>${MERGED_VOB_FILE_NAME}<< manually after you've validated the mkv file."
+}
+
+
+####
+# Convertes a given video file into a mkv
+####
+# [@param <string: source_file_path>
+# [@param <string: destination_file_path> - default is movie.mkv
+# [@param <string: ffmpeg_video_codec] - default is libx265
+# [@param <int: process_prority> - default is -19
+# @see:
+#   https://www.internalpointers.com/post/convert-vob-files-mkv-ffmpeg
+#   https://stackoverflow.com/questions/37820083/ffmpeg-not-copying-all-audio-streams
+####
+function net_bazzline_convert_video_to_mkv ()
+{
+  local DESTINATION_FILE_PATH
+  local FFMPEG_VIDEO_CODEC
+  local PROCESS_PRIORITY
+  local SOURCE_FILE_PATH
+
+  DESTINATION_FILE_PATH=${2:-'movie.mkv'}
+  FFMPEG_VIDEO_CODEC="${3:-libx265}"
+  PROCESS_PRIORITY=${4:--19}
+  SOURCE_FILE_PATH="${1}"
+
+  if [[ ! -f "${SOURCE_FILE_PATH}" ]];
+  then
+    echo ":: Invalid source file path provided"
+    echo "   >>${SOURCE_FILE_PATH}<< is not a file"
+
+    return 10
+  fi
+  
   nice ${PROCESS_PRIORITY} \
     ffmpeg \
-    -i ${MERGED_VOB_FILE_NAME} \
+    -i ${SOURCE_FILE_PATH} \
     -analyzeduration 100M -probesize 100M \
     -dn \
     -map 0:a \
@@ -68,8 +106,7 @@ function net_bazzline_media_rip_dvd_to_mkv ()
     -codec:a libmp3lame \
     -qscale:a 2 \
     -codec:s copy \
-    ${OUTPUT_FILE_NAME}
+    ${DESTINATION_FILE_PATH}
 
-  echo "   File >>${OUTPUT_FILE_NAME}<< created."
-  echo "   Please remove the >>${MERGED_VOB_FILE_NAME}<< manually after you've validated the mkv file."
+  echo "   File >>${DESTINATION_FILE_PATH}<< created."
 }
