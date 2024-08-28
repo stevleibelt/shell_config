@@ -24,6 +24,9 @@ function install_if_needed()
     sudo pacman -S openssh
   fi
 
+  # @todo: allow only for dedicated user groups
+  #   man sshd_config
+  #   AllowGroups
   echo "   Configuring sshd"
   sudo bash -c "cat > /etc/ssh/sshd_config.d/10-elbzone.conf <<DELIM
 # ref: https://infosec.mozilla.org/guidelines/openssh.html
