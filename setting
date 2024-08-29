@@ -176,7 +176,7 @@ set show-all-if-unmodified on
 
 ####
 #@see: https://opensource.com/article/18/5/bash-tricks
-#allow bash history for multiple users
+# Append to one history file instead of overwriting it
 shopt -s histappend
 #enable spell support to guess/correct "/tpm" to "/tmp"
 shopt -s cdspell

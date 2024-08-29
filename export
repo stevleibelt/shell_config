@@ -13,7 +13,7 @@ export EDITOR="vim"
 export HISTCONTROL=ignorespace:erasedups
 export HISTIGNORE="ls:cd:top:ps:exit:date"
 export HISTSIZE=20
-export HISTFILESIZE=${HISTSIZE}
+export HISTFILESIZE=40
 #prepend all entries with a timestamp YYYY-MM-DD\ HH:MM:SS
 export HISTTIMEFORMAT="%F %T  "
 
