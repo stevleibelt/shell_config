@@ -508,7 +508,6 @@ function net_bazzline_convert_mkv_to_avi ()
         INPUT_FILE="${1}";
         OUTPUT_FILE="${2}";
     else
-    else
         echo "invalid number of arguments supplied"
         echo "inputfile [outputfile]"
         return 1
