@@ -174,3 +174,4 @@ blinken
 gcompris-qt
 kanagram
 khangman
+s-tui
