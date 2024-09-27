@@ -140,7 +140,10 @@ alias r='rm -fr';
 alias refreshInterface='net_bazzline_refresh_interface'
 alias relogin='bash -l'
 alias reloadBashEnvironment='source ~/.bashrc; clear;'
-alias removeAllDockerImages='docker ps -a -q | xargs docker rm'
+if [[ -f /usr/bin/docker ]];
+then
+  alias removeAllDockerContainers='docker ps -a -q | docker stop && docker ps -a -q | xargs docker rm'
+fi
 alias renameAllToLower=net_bazzline_filename_to_lower_batch_rename
 alias renameGitBranch=net_bazzline_rename_git_branch
 alias replaceStringInFiles=net_bazzline_replace_string_in_files
