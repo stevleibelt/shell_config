@@ -11,6 +11,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 #### Priority High
 
+* For `software-upgrade`
+  * Add option to backup existing dkms modules and kernels
+  * Ref garuda: `+ rsync -AHXal --ignore-existing /usr/lib/modules/backup/6.11.8-zen1-2-zen /usr/lib/modules/`
 * Enrich skripts from `bin/setup` with [ansible](https://opensource.com/article/23/2/linux-kde-desktop-ansible)
 * Disable [systemd-sleep](https://man.archlinux.org/man/systemd-sleep.8) or [any|one fitting] [systemd-*suspend*](https://man.archlinux.org/man/systemd.special.7) units **before** starting an update, enable it **after** the update has been finished
 * Add check of battery status and charging status (if available) before doing `software-upgrade`
