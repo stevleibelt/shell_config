@@ -8,10 +8,12 @@
 function _main ()
 {
   local CURRENT_OPTION
+  local ENABLE_PACCACHE
   local FORCE
   local SHOW_HELP
   local USE_SOURCE
 
+  ENABLE_PACCACHE=0
   FORCE=0
   SHOW_HELP=0
   USE_SOURCE=0
@@ -24,6 +26,9 @@ function _main ()
         ;;
       h)
         SHOW_HELP=1
+        ;;
+      p)
+        ENABLE_PACCACHE=1
         ;;
       s)
         USE_SOURCE=1
@@ -38,9 +43,18 @@ function _main ()
     echo ""
     echo "-f  - Force installation, even if it is installed already"
     echo "-h  - Show this help"
+    echo "-p  - Enable Paccache"
     echo "-s  - Use yay.git instead of yay-bin.git"
 
     return 0
+  fi
+
+  if [[ ${ENABLE_PACCACHE} -eq 1 ]];
+  then
+    echo ":: Enabling paccache.timer"
+
+    sudo systemctl enable paccache.timer
+    sudo systemctl start paccache.timer
   fi
 
   if [[ -f /usr/bin/yay ]];
