@@ -5,6 +5,7 @@ alias catLatestFile='cat $(listLatest)'
 alias cdToCurrentUserGvfs='cd /run/user/${UID}/gvfs'
 alias cdToLatestDirectory='cd $(listLatest)'
 alias createSha512sumFromFile=net_bazzline_filesystem_create_sha512sum_from_file
+alias cpLatestFile='cp $(listLatest)'
 
 #e
 alias editLatestFile='$EDITOR $(listLatest)'  # either editLatestFile or openLatestFile wins

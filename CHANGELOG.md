@@ -101,6 +101,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added
 
+* Added alias `cpLastestFile`
 * Added `rustup update` for `software-update` on pacman based systems
 * Added `disableAutomaticSuspend` and `enableAutomaticSuspend`
 * Added `createAlphanumericString` alias and `net_bazzline_string_create_random_alphanumeric_string` function
