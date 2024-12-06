@@ -13,9 +13,12 @@ then
 fi
 
 #r
-if [[ -f /usr/bin/cyanrip  ]];
+if [[ -f /usr/bin/whipper  ]];
 then
-  alias ripCdAsMp3=net_bazzline_media_rip_cd_as_mp3
+  alias ripCdAsMp3='whipper cd rip'
+elif [[ -f /usr/bin/cyanrip  ]];
+then
+  alias ripCdAsMp3=net_bazzline_media_rip_cd_as_mp3_with_cyanrip
 fi
 
 if [[ -f /usr/bin/vobcopy ]] && [[ -f /usr/bin/ffmpeg ]];

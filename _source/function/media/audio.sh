@@ -3,7 +3,7 @@
 ####
 # [@param int <selcted_release>
 ####
-function net_bazzline_media_rip_cd_as_mp3()
+function net_bazzline_media_rip_cd_as_mp3_with_cyanrip()
 {
   local SELECT_A_RELEASE
   local SELECTED_RELEASE
