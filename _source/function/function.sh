@@ -1009,9 +1009,9 @@ function net_bazzline_filesystem_path_to_lower ()
 function net_bazzline_find_directory ()
 {
     if [[ $# -eq 1 ]]; then
-        find . -iname "$1" -type d 2>/dev/null
+        find . -iname "${1}" -type d 2>/dev/null
     elif [[ $# -eq 2 ]]; then
-        find "$2" -iname "$1" -type d 2>/dev/null
+        find "${2}" -iname "${1}" -type d 2>/dev/null
     else
         net_bazzline_handle_invalid_number_of_arguments_supplied "${FUNCNAME[0]} <string: search pattern> [<string: path>]"
 
