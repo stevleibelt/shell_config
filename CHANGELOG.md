@@ -16,7 +16,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   * Ref garuda: `+ rsync -AHXal --ignore-existing /usr/lib/modules/backup/6.11.8-zen1-2-zen /usr/lib/modules/`
 * Enrich skripts from `bin/setup` with [ansible](https://opensource.com/article/23/2/linux-kde-desktop-ansible)
 * Disable [systemd-sleep](https://man.archlinux.org/man/systemd-sleep.8) or [any|one fitting] [systemd-*suspend*](https://man.archlinux.org/man/systemd.special.7) units **before** starting an update, enable it **after** the update has been finished
-* Add check of battery status and charging status (if available) before doing `software-upgrade`
 * unify all `show`, `display` and `watch` commands
 * for all video conversion
     * create directories "in_progres", "done" and "with_error" (last one maybe)
@@ -146,6 +145,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 * Added function `net_bazzline_network_list_open_ports`
 * Added support for `NET_BAZZLINE_IS_LTS_KERNEL` detection in `local.setting` creation
 * Added a bit more verbosity in `software-upgrade`
+* Added check of battery status and charging status (if available) before doing `software-upgrade`
 
 ### Changed
 

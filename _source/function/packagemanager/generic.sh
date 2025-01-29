@@ -26,6 +26,8 @@ function net_bazzline_packagemanager_arch_linux_software_upgrade ()
   local PACKAGEMANAGER_COMMAND
   local PACKAGES_TO_IGNORE
   local PACMAN_LOCK_FILE_PATH
+  local POWER_STATUS
+  local POWER_STATUS_FILE_PATH
   local SEND_NOTIFY
   local UPGRADE_SCRIPT_FILE_PATH
   local ZFS_SNAPSHOT_NAME
@@ -34,6 +36,8 @@ function net_bazzline_packagemanager_arch_linux_software_upgrade ()
   LOG_FILE_PATH="/var/log/pacman.log"
   PACKAGEMANAGER_COMMAND="${1}"
   PACMAN_LOCK_FILE_PATH='/var/lib/pacman/db.lck'
+  POWER_STATUS=0
+  POWER_STATUS_FILE_PATH='/sys/class/power_supply/AC/online'
   UPGRADE_SCRIPT_FILE_PATH="/tmp/net_bazzline_system_upgrade.sh"
   ZFS_SNAPSHOT_NAME='net_bazzline_before_system_upgrade'
 
@@ -62,6 +66,30 @@ function net_bazzline_packagemanager_arch_linux_software_upgrade ()
       return 2;
   fi
   #eo: check if packagemanager is valid
+
+  #bo: check if system is running on battery
+  if [[ -f ${POWER_STATUS_FILE_PATH} ]];
+  then
+    POWER_STATUS=$(cat ${POWER_STATUS_FILE_PATH})
+  fi
+
+  if [[ ${POWER_STATUS} != 1 ]];
+  then
+    echo ":: Printing capacity per battery"
+    for CAPACITY_FILE_PATH in $(ls /sys/class/power_supply/BAT*/capacity);
+    do
+      cat "${CAPACITY_FILE_PATH}"
+    done
+
+    if net_bazzline_core_ask_yes_or_no "System is running on battery. Continue? (Y|n)" "y"
+    then
+      echo "   Doing update while on battery power"
+    else
+      echo "   Aborting"
+      return 10;
+    fi
+  fi
+  #eo: check if system is running on battery
 
   #bo: check if lock file exists
   #@todo: move this into the generated script below, make sure to check if function net_bazzline_core_ask_yes_or_no exists
