@@ -1,7 +1,9 @@
 #battop
 check-broken-packages-pacman-hook-git
+ctop
 cyanrip
 ddev-bin
+dive
 jetbrains-toolbox
 librewolf-bin
 mangohud
