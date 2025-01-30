@@ -106,6 +106,8 @@ then
     alias software-add='sudo apt-get install'
     alias software-add-local='sudo dpkg -i'
     alias software-list='sudo dpkg -l'
+    #alias software-list-depends-on='sudo dpkg -l | grep'
+    alias software-list-depends-on='sudo apt-cache depends'
     alias software-remove='sudo apt-get remove'
     alias software-search='apt-cache search'
     #alias software-search-added='echo "todo"'
