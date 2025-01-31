@@ -100,6 +100,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added
 
+* Added creation of local `inputrc` file in [install.sh](bin/install.sh)
 * Added alias `cpLastestFile`
 * Added `rustup update` for `software-update` on pacman based systems
 * Added `disableAutomaticSuspend` and `enableAutomaticSuspend`

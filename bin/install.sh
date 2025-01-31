@@ -16,6 +16,7 @@ function _main ()
   local ADAPT_XINIT
   local PATH_TO_THE_BASH_PROFILE
   local PATH_TO_THE_BASH_RC
+  local PATH_TO_THE_INPUT_RC
   local PATH_TO_THE_XINIT
   local PATH_TO_THIS_SCRIPT
   local PATH_TO_THE_TEMPORARY_XINIT
@@ -27,6 +28,7 @@ function _main ()
   ADAPT_XINIT=1
   PATH_TO_THE_BASH_PROFILE="${HOME}/.bash_profile"
   PATH_TO_THE_BASH_RC="${HOME}/.bashrc"
+  PATH_TO_THE_INPUT_RC="${HOME}/.inputrc"
   PATH_TO_THE_XINIT="${HOME}/.xinitrc"
   PATH_TO_THIS_SCRIPT=$(cd $(dirname "${0}"); pwd)
 
@@ -102,6 +104,19 @@ DELIM
     echo "   Nothing to do."
   fi
   ##end of adapting bash_profile
+
+  ##begin of adapting inputrc
+  if [[ ! -f "${PATH_TO_THE_INPUT_RC}" ]];
+  then
+    echo ":: Creating and adapting ${PATH_TO_THE_BASH_RC}"
+    # ref: https://www.phoronix.com/forums/forum/phoronix/latest-phoronix-articles/1522705-gparted-1-7-released-with-support-for-bcachefs-network-block-devices?p=1522749#post1522749
+    echo '$include /etc/inputrc' > "${PATH_TO_THE_INPUT_RC}"
+    echo 'set completion-ignore-case on' >> "${PATH_TO_THE_INPUT_RC}"
+  else
+    echo ":: ${PATH_TO_THE_BASH_RC} found."
+    echo "   Nothing to do."
+  fi
+  ##end of adapting inputrc
 
   ##begin of creating local user files
   echo ""
