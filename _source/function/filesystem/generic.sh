@@ -207,6 +207,7 @@ function net_bazzline_filesystem_ls_grep ()
 # @see
 #   https://opensource.com/article/18/9/shell-dotfile
 #   https://www.cyberciti.biz/faq/how-do-i-find-the-largest-filesdirectories-on-a-linuxunixbsd-filesystem/
+#   https://utcc.utoronto.ca/~cks/space/blog/unix/GNUSortHOption
 # @since 2018-09-06
 # @author stev leibelt
 function net_bazzline_filesystem_list_biggest_directories ()
