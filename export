@@ -4,6 +4,9 @@
 # @since 2013-04-24
 ####
 
+#d - disables also powershell foo from ~/.cache/powershell/telemetrie.uuid
+export DOTNET_CLI_TELEMETRY_OPTOUT=1
+
 #e
 export EDITOR="vim"
 
