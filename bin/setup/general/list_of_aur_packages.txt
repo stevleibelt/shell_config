@@ -11,6 +11,7 @@ pandoc-bin
 pdfsam
 #pomatez
 potato
+powershell-bin
 rustdesk-bin
 shellcheck-bin
 shelldap
