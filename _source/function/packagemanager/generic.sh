@@ -13,7 +13,7 @@ function net_bazzline_packagemanager_arch_linux_software_upgrade ()
   if [[ $# -lt 1 ]];
   then
       echo ":: Invalid amount of arguments provided."
-      echo "   ${FUNCNAME[0]} <string: packagemanager_command: sudo pacman | yay> [<string: comma_separated_list_of_packages_to_ignore>"
+      echo "   ${FUNCNAME[0]} <string: packagemanager_command: sudo pacman | yay | paru> [<string: comma_separated_list_of_packages_to_ignore>"
 
       return 1;
   fi

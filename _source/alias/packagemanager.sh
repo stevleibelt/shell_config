@@ -16,7 +16,36 @@ fi
 #@todo: validate against https://wiki.archlinux.org/index.php/Pacman/Rosetta
 PACKAGES_TO_IGNORE="linux,linux-headers,zfs-linux,linux-lts,linux-lts-headers,zfs-linux-lts,zfs-utils,zfs-dkms"
 
-if [[ ${NET_BAZZLINE_PACKAGE_MANAGER} = 'yay' ]];
+if [[ ${NET_BAZZLINE_PACKAGE_MANAGER} = 'paru' ]];
+then
+    alias software-check-unneeded-dependencies='paru -Qqdt'
+    alias software-clean-cache='paru -Scc && echo "" && echo "removing ~/.cache/paru" && sudo rm -fr ~/.cache/paru'
+    alias software-fetch='paru -G'
+    alias software-fill-the-cache='paru -Sy'
+    alias software-info='paru -Qi'
+    alias software-add='paru -S'
+    alias software-add-local='sudo pacman -U'
+    alias software-list='paru -Qlm'
+    if [[ -f /usr/bin/pactree ]];
+    then
+        alias software-list-depends-on='pactree -r'
+    else
+        alias software-list-depends-on='echo "pactree is missing, please add pacman-contrib!"'
+    fi
+    alias software-list-added='paru -Qen' #use pacman -Qqen to create a list you can use to add like "pacman -Qqen > added && pacman -S < added
+    alias software-list-foreign='paru -Qmq'
+    alias software-list-orphaned='paru -Qdtq'
+    alias software-list-unofficial-adparu='paru -Qem'
+    alias software-prepare-for-upgrade='paru -Swyu'
+    alias software-remove="sudo pacman -Rsu"
+    alias software-remove-not-needed-dependencies='sudo pacman -Rs $(paru -Qdtq)'
+    alias software-search='paru -Ss'
+    alias software-search-added='paru -Qs'
+    alias software-upgrade-from-cache='paru -uu'
+    alias software-upgrade="net_bazzline_packagemanager_arch_linux_software_upgrade paru"
+    alias software-upgrade-without-ignored-packages="net_bazzline_packagemanager_arch_linux_software_upgrade paru ${PACKAGES_TO_IGNORE}"
+    alias software-repository-info='paru -Si'
+elif [[ ${NET_BAZZLINE_PACKAGE_MANAGER} = 'yay' ]];
 then
     alias software-check-unneeded-dependencies='yay -Qqdt'
     alias software-clean-cache='yay -Scc && echo "" && echo "removing ~/.cache/yay" && sudo rm -fr ~/.cache/yay'
