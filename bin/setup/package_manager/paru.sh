@@ -73,6 +73,8 @@ function _main ()
     echo "   Set toolchain default to stable"
     rustup default stable
   fi
+
+  rustup update
   #eo: test rustup toolchain set
 
   CURRENT_WORKING_DIRECTORY=$(pwd)
