@@ -66,6 +66,15 @@ function _main ()
   fi
   #eo: test if base-devel is installed
 
+  #bo: test rustup toolchain set
+  if rustup show | grep -q 'no active toolchain';
+  then
+    echo ":: No default rustup toolchain set"
+    echo "   Set toolchain default to stable"
+    rustup default stable
+  fi
+  #eo: test rustup toolchain set
+
   CURRENT_WORKING_DIRECTORY=$(pwd)
 
   #bo: clone source and build paru
