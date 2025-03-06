@@ -62,11 +62,18 @@ function _main ()
   #bo: test if base-devel is installed
   if ! pacman -Qen | grep -iq base-devel;
   then
+    echo ":: Installing mandatory package base-devel"
     sudo pacman -S --needed base-devel
   fi
   #eo: test if base-devel is installed
 
   #bo: test rustup toolchain set
+  if ! pacman -Qen | grep -iq rustup;
+  then
+    echo ":: Installing mandatory package rustup"
+    sudo pacman -S --needed rustup
+  fi
+
   if rustup show | grep -q 'no active toolchain';
   then
     echo ":: No default rustup toolchain set"
