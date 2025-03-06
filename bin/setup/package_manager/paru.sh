@@ -31,7 +31,7 @@ function _main ()
   if [[ ${SHOW_HELP} -eq 1 ]];
   then
     echo ":: Usage"
-    echo "${0} [-f] [-h] [-s]"
+    echo "${0} [-f] [-h]"
     echo ""
     echo "-f  - Force installation, even if it is installed already"
     echo "-h  - Show this help"
