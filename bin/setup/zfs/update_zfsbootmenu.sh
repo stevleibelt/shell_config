@@ -7,6 +7,7 @@
 function _main ()
 {
   local CURRENT_OPTION
+  local CURRENT_WORKING_DIRECTORY
   local FORCE
   local NAME_OF_THE_IMAGE
   local FILE_PATH_TO_THE_IMAGE
@@ -14,6 +15,7 @@ function _main ()
   local FILE_PATH_TO_THE_IMAGE_TO_COMPARE
   local PATH_TO_THE_IMAGE
   local SHOW_HELP
+  local TEMPORARY_DIRECTORY_PATH
 
   FORCE=0
   NAME_OF_THE_IMAGE="vmlinuz.EFI"
@@ -53,11 +55,7 @@ function _main ()
     return 0
   fi
 
-  FILE_PATH_TO_THE_IMAGE="${PATH_TO_THE_IMAGE}/${NAME_OF_THE_IMAGE}"
-  FILE_PATH_TO_THE_IMAGE_BACKUP="${PATH_TO_THE_IMAGE}/${NAME_OF_THE_IMAGE}.previous"
-  FILE_PATH_TO_THE_IMAGE_TO_COMPARE="${PATH_TO_THE_IMAGE}/${NAME_OF_THE_IMAGE}.fresh"
-
-  #bo: testing environment
+  #bo: setup
   if [[ ! -d "${PATH_TO_THE_IMAGE}" ]];
   then
     echo ":: Image path does not exist"
@@ -71,38 +69,55 @@ function _main ()
     echo ":: Installing mandatory package wget"
     sudo pacman -S wget
   fi
-  #eo: testing environment
+
+  FILE_PATH_TO_THE_IMAGE="${PATH_TO_THE_IMAGE}/${NAME_OF_THE_IMAGE}"
+  FILE_PATH_TO_THE_IMAGE_BACKUP="${PATH_TO_THE_IMAGE}/${NAME_OF_THE_IMAGE}.previous"
+  #eo: setup
 
   #eo: downloading image
-  if [[ -f "${FILE_PATH_TO_THE_IMAGE_TO_COMPARE}" ]];
+  CURRENT_WORKING_DIRECTORY=$(pwd)
+  TEMPORARY_DIRECTORY_PATH=$(mktemp -d)
+
+  if [[ ! -d "${TEMPORARY_DIRECTORY_PATH}" ]];
   then
-    sudo rm "${FILE_PATH_TO_THE_IMAGE_TO_COMPARE}"
+    echo ":: Error, could not create directory"
+    echo "   ${TEMPORARY_DIRECTORY_PATH}"
+
+    exit 20
   fi
 
-  sudo wget https://get.zfsbootmenu.org/latest.EFI -O "${FILE_PATH_TO_THE_IMAGE_TO_COMPARE}"
+  FILE_PATH_TO_THE_IMAGE_TO_COMPARE="${TEMPORARY_DIRECTORY_PATH}/${NAME_OF_THE_IMAGE}.fresh"
+
+  wget https://get.zfsbootmenu.org/latest.EFI -O "${FILE_PATH_TO_THE_IMAGE_TO_COMPARE}"
   #eo: downloading image
 
   #bo: updating image
   if [[ ! -f "${FILE_PATH_TO_THE_IMAGE}" ]];
   then
-    echo ":: No image exist"
     sudo mv "${FILE_PATH_TO_THE_IMAGE_TO_COMPARE}" "${FILE_PATH_TO_THE_IMAGE}"
-    echo "   File created >>${FILE_PATH_TO_THE_IMAGE}<<"
+    echo "   ${FILE_PATH_TO_THE_IMAGE}"
+
+    echo ":: Image created"
+    echo "   ${FILE_PATH_TO_THE_IMAGE}"
   else
     if cmp -s "${FILE_PATH_TO_THE_IMAGE_TO_COMPARE}" "${FILE_PATH_TO_THE_IMAGE}";
     then
-      # new is wrong, we can only say that the downloaded image differs
-      echo ":: No newer image available."
-      sudo rm "${FILE_PATH_TO_THE_IMAGE_TO_COMPARE}"
+      echo ":: Nothing to do, downloaded image does not differ"
     else
-      echo ":: Downloaded image differs"
-      echo "   Renaming >>${FILE_PATH_TO_THE_IMAGE}<< to >>${FILE_PATH_TO_THE_IMAGE_BACKUP}<<"
       sudo mv "${FILE_PATH_TO_THE_IMAGE}" "${FILE_PATH_TO_THE_IMAGE_BACKUP}"
       sudo mv "${FILE_PATH_TO_THE_IMAGE_TO_COMPARE}" "${FILE_PATH_TO_THE_IMAGE}"
-      echo "   File created >>${FILE_PATH_TO_THE_IMAGE}<<"
+
+      echo ":: Backup created"
+      echo "   ${FILE_PATH_TO_THE_IMAGE_BACKUP}"
+      echo ":: Image created"
+      echo "   ${FILE_PATH_TO_THE_IMAGE}"
     fi
   fi
   #eo: updating image
+
+  #bo: tear down
+  rm -fr "${TEMPORARY_DIRECTORY_PATH}"
+  #eo: tear down
 }
 
 _main "${@}"
