@@ -91,10 +91,11 @@ function _main ()
   else
     if cmp -s "${FILE_PATH_TO_THE_IMAGE_TO_COMPARE}" "${FILE_PATH_TO_THE_IMAGE}";
     then
-      echo ":: Downloaded version does not differ"
+      # new is wrong, we can only say that the downloaded image differs
+      echo ":: No newer image available."
       sudo rm "${FILE_PATH_TO_THE_IMAGE_TO_COMPARE}"
     else
-      echo ":: Downloaded version differs"
+      echo ":: Downloaded image differs"
       echo "   Renaming >>${FILE_PATH_TO_THE_IMAGE}<< to >>${FILE_PATH_TO_THE_IMAGE_BACKUP}<<"
       sudo mv "${FILE_PATH_TO_THE_IMAGE}" "${FILE_PATH_TO_THE_IMAGE_BACKUP}"
       sudo mv "${FILE_PATH_TO_THE_IMAGE_TO_COMPARE}" "${FILE_PATH_TO_THE_IMAGE}"
