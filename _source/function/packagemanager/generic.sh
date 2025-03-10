@@ -185,6 +185,14 @@ function net_bazzline_packagemanager_arch_linux_software_upgrade ()
 
   if  [[ ${?} -eq 1 ]];
   then
+    local UPGRADE_COMMAND_FLAGS
+
+    UPGRADE_COMMAND_FLAGS="-Syyu"
+
+    if [[ ${PACKAGEMANAGER_COMMAND} == "paru" ]];
+    then
+      UPGRADE_COMMAND_FLAGS="${UPGRADE_COMMAND_FLAGS} --skipreview"
+    fi
     #bo: upgrade script generation
     echo ":: Generating >>${UPGRADE_SCRIPT_FILE_PATH}<<"
 

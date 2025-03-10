@@ -41,7 +41,7 @@ then
     alias software-remove-not-needed-dependencies='sudo pacman -Rs $(paru -Qdtq)'
     alias software-search='paru -Ss'
     alias software-search-added='paru -Qs'
-    alias software-upgrade-from-cache='paru -uu'
+    alias software-upgrade-from-cache='paru -uu --skipreview'
     alias software-upgrade="net_bazzline_packagemanager_arch_linux_software_upgrade paru"
     alias software-upgrade-without-ignored-packages="net_bazzline_packagemanager_arch_linux_software_upgrade paru ${PACKAGES_TO_IGNORE}"
     alias software-repository-info='paru -Si'
