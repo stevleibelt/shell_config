@@ -8,18 +8,18 @@
 ####
 
 ####
-# @param <string: systemctl.timer>
+# @param <string: systemctl.service>
 ####
-function _enable_and_start_zfs_timer_if_needed ()
+function _enable_and_start_zfs_service_if_needed ()
 {
-  local SYSTEMCTL_TIMER="${1}"
+  local SYSTEMCTL_SERVICE="${1}"
 
-  if ! sudo systemctl -q is-enabled "${SYSTEMCTL_TIMER}";
+  if ! sudo systemctl -q is-enabled "${SYSTEMCTL_SERVICE}";
   then
-    echo "   Enabling and staring >>${SYSTEMCTL_TIMER}<<."
+    echo "   Enabling and staring >>${SYSTEMCTL_SERVICE}<<."
 
-    sudo systemctl enable "${SYSTEMCTL_TIMER}"
-    sudo systemctl start "${SYSTEMCTL_TIMER}"
+    sudo systemctl enable "${SYSTEMCTL_SERVICE}"
+    sudo systemctl start "${SYSTEMCTL_SERVICE}"
   fi
 }
 
@@ -39,6 +39,22 @@ function _main ()
   #eo: user input
 
   #bo: zrepl
+  if [[ ! -f /usr/bin/zrepl ]];
+  then
+    echo ":: Zrepl not found"
+
+    if [[ -f /usr/bin/paru ]];
+    then
+      paru -S zrepl-bin
+    elif [[ -f /usr/bin/yay ]];
+    then
+      yay -S zrepl-bin
+    else
+      echo "   Can not detect your aur install helper."
+      echo "   Please install it first from aur"
+    fi
+  fi
+
   if [[ -f "${PATH_TO_THE_ZREPL_PATH}/zrepl.yml" ]];
   then
     echo ":: Zrepl configuration exist. Nothing to do here."
@@ -80,7 +96,7 @@ DELIM"
     echo ":: Error"
     echo "   Created zrepl configuration yaml >>${PATH_TO_THE_ZREPL_PATH}/zrepl.yml<< is not valid."
 
-    _enable_and_start_zfs_timer_if_needed "zrepl.service"
+    _enable_and_start_zfs_service_if_needed "zrepl.service"
   fi
   #eo: zrepl
 }
