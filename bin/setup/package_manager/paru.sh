@@ -9,7 +9,9 @@ function _main ()
 {
   local CURRENT_OPTION
   local FORCE
+  local RUSTUP_SCRIPT_PATH
   local SHOW_HELP
+  local THIS_SCRIPT_PATH
 
   FORCE=0
   SHOW_HELP=0
@@ -55,7 +57,7 @@ function _main ()
       echo ":: Can not install on your system."
       echo "   No /usr/bin/pacman found."
 
-      return 1
+      return 10
   fi
   #eo: testing if we are on the right system
 
@@ -67,22 +69,19 @@ function _main ()
   fi
   #eo: test if base-devel is installed
 
-  #bo: test rustup toolchain set
-  if ! pacman -Qen | grep -iq rustup;
+  THIS_SCRIPT_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+  RUSTUP_SCRIPT_PATH="${THIS_SCRIPT_PATH}/../general/rustup.sh"
+
+  if [[ ! -f "${RUSTUP_SCRIPT_PATH}" ]];
   then
-    echo ":: Installing mandatory package rustup"
-    sudo pacman -S --needed rustup
+      echo ":: Can not install on your system."
+      echo "   No ${RUSTUP_SCRIPT_PATH} found."
+
+      return 11
   fi
 
-  if rustup show | grep -q 'no active toolchain';
-  then
-    echo ":: No default rustup toolchain set"
-    echo "   Set toolchain default to stable"
-    rustup default stable
-  fi
-
-  rustup update
-  #eo: test rustup toolchain set
+  bash "${RUSTUP_SCRIPT_PATH}"
 
   CURRENT_WORKING_DIRECTORY=$(pwd)
 
