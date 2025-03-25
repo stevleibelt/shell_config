@@ -36,7 +36,7 @@ function net_bazzline_packagemanager_arch_linux_software_upgrade ()
   LOG_FILE_PATH="/var/log/pacman.log"
   PACKAGEMANAGER_COMMAND="${1}"
   PACMAN_LOCK_FILE_PATH='/var/lib/pacman/db.lck'
-  POWER_STATUS=0
+  POWER_STATUS=1
   POWER_STATUS_FILE_PATH='/sys/class/power_supply/AC/online'
   UPGRADE_SCRIPT_FILE_PATH="/tmp/net_bazzline_system_upgrade.sh"
   ZFS_SNAPSHOT_NAME='net_bazzline_before_system_upgrade'
