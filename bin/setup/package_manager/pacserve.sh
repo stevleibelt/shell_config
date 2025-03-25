@@ -69,17 +69,22 @@ function _main ()
 
   CURRENT_WORKING_DIRECTORY=$(pwd)
 
-  #bo: clone source and build paru
-  TEMPORARY_DIRECTORY_PATH=$(mktemp -d)
-  echo "TEMPORARY_DIRECTORY_PATH: ${TEMPORARY_DIRECTORY_PATH}"
-  cd "${TEMPORARY_DIRECTORY_PATH}" || { echo "Could not cd into ${TEMPORARY_DIRECTORY_PATH}"; exit 10; }
+  if [[ -f /usr/bin/paru ]];
+  then
+    paru -S pacserve
+  else
+    #bo: clone source and build paru
+    TEMPORARY_DIRECTORY_PATH=$(mktemp -d)
+    echo "TEMPORARY_DIRECTORY_PATH: ${TEMPORARY_DIRECTORY_PATH}"
+    cd "${TEMPORARY_DIRECTORY_PATH}" || { echo "Could not cd into ${TEMPORARY_DIRECTORY_PATH}"; exit 10; }
 
-  git clone https://aur.archlinux.org/pacserve.git .
-  makepkg -si
+    git clone https://aur.archlinux.org/pacserve.git .
+    makepkg -si
 
-  cd "${CURRENT_WORKING_DIRECTORY}" || { echo "Could not cd into ${CURRENT_WORKING_DIRECTORY}"; exit 11; }
-  rm -fr "${TEMPORARY_DIRECTORY_PATH}"
-  #eo: clone source and build paru
+    cd "${CURRENT_WORKING_DIRECTORY}" || { echo "Could not cd into ${CURRENT_WORKING_DIRECTORY}"; exit 11; }
+    rm -fr "${TEMPORARY_DIRECTORY_PATH}"
+    #eo: clone source and build paru
+  fi
 
   #bo: firewall adaptation
   if [[ -f /usr/bin/ufw ]];
