@@ -12,10 +12,10 @@ function net_bazzline_packagemanager_arch_linux_software_upgrade ()
     #bo: setup
   if [[ $# -lt 1 ]];
   then
-      echo ":: Invalid amount of arguments provided."
-      echo "   ${FUNCNAME[0]} <string: packagemanager_command: sudo pacman | yay | paru> [<string: comma_separated_list_of_packages_to_ignore>"
+    echo ":: Invalid amount of arguments provided."
+    echo "   ${FUNCNAME[0]} <string: packagemanager_command: sudo pacman | yay | paru> [<string: comma_separated_list_of_packages_to_ignore>"
 
-      return 1;
+    return 1;
   fi
 
   local CURRENT_DATETIME
@@ -60,10 +60,10 @@ function net_bazzline_packagemanager_arch_linux_software_upgrade ()
   #bo: check if packagemanager is valid
   if [[ "${PACKAGEMANAGER_COMMAND}" != "sudo pacman"  &&  ! -x $(command -v "${PACKAGEMANAGER_COMMAND}") ]];
   then
-      echo ":: Invalid argument provided."
-      echo "   Command >>${PACKAGEMANAGER_COMMAND}<< does not exist."
+    echo ":: Invalid argument provided."
+    echo "   Command >>${PACKAGEMANAGER_COMMAND}<< does not exist."
 
-      return 2;
+    return 2;
   fi
   #eo: check if packagemanager is valid
 
@@ -306,27 +306,27 @@ DELIM
 ####
 function net_bazzline_packagemanager_apt_software_upgrade ()
 {
-    #bo: setup
-    if [[ $# -lt 1 ]];
-    then
-        echo ":: Invalid amount of arguments provided."
-        echo "   ${FUNCNAME[0]} <packagemanager_command: apt-get update && apt-get upgrade"
+  #bo: setup
+  if [[ $# -lt 1 ]];
+  then
+    echo ":: Invalid amount of arguments provided."
+    echo "   ${FUNCNAME[0]} <packagemanager_command: apt-get update && apt-get upgrade"
 
-        return 1;
+    return 1;
+  fi
+
+  local PACKAGEMANAGER_COMMAND="${1}"
+  #eo: setup
+
+  #bo: check if screen session exists
+  net_bazzline_packagemanager_check_if_system_upgrade_screen_session_exists
+
+  if  [[ $? -eq 1 ]];
+  then
+    screen -dmS ${NET_BAZZLINE_FUNCTION_PACKAGEMANAGER_SYSTEM_UPGRADE_SCREEN_SESSION_NAME} bash -c "${PACKAGEMANAGER_COMMAND}; echo \":: Waiting for 30 seconds.\"; echo \" Hit CTRL+C to terminate this waiting. \"; sleep 30"
     fi
 
-    local PACKAGEMANAGER_COMMAND="${1}"
-    #eo: setup
-
-    #bo: check if screen session exists
-    net_bazzline_packagemanager_check_if_system_upgrade_screen_session_exists
-
-    if  [[ $? -eq 1 ]];
-    then
-        screen -dmS ${NET_BAZZLINE_FUNCTION_PACKAGEMANAGER_SYSTEM_UPGRADE_SCREEN_SESSION_NAME} bash -c "${PACKAGEMANAGER_COMMAND}; echo \":: Waiting for 30 seconds.\"; echo \" Hit CTRL+C to terminate this waiting. \"; sleep 30"
-    fi
-
-    screen -r ${NET_BAZZLINE_FUNCTION_PACKAGEMANAGER_SYSTEM_UPGRADE_SCREEN_SESSION_NAME}
+  screen -r ${NET_BAZZLINE_FUNCTION_PACKAGEMANAGER_SYSTEM_UPGRADE_SCREEN_SESSION_NAME}
 }
 
 
@@ -334,6 +334,6 @@ function net_bazzline_packagemanager_apt_software_upgrade ()
 
 function net_bazzline_packagemanager_check_if_system_upgrade_screen_session_exists ()
 {
-    #grep -q will exit with an code != 0 if there is no running screen session.
-    screen -ls | grep -q ${NET_BAZZLINE_FUNCTION_PACKAGEMANAGER_SYSTEM_UPGRADE_SCREEN_SESSION_NAME}
+  #grep -q will exit with an code != 0 if there is no running screen session.
+  screen -ls | grep -q ${NET_BAZZLINE_FUNCTION_PACKAGEMANAGER_SYSTEM_UPGRADE_SCREEN_SESSION_NAME}
 }
