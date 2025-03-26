@@ -89,13 +89,13 @@ function _main ()
   #bo: add automatic adding pacserv to mirrorlist
   #65 because 60 is reflector and hooks are processed in alphabetically order
   #man pacman-hooks
-  if [[ ! -f /etc/pacman.d/hooks/65-trigger_adding_pacserv_to_mirrorlist.hook ]];
+  if [[ ! -f /etc/pacman.d/hooks/65-trigger_adding_pacserv_to_pacman_conf.hook ]];
   then
     sudo cp /etc/pacman.conf /etc/pacman.conf.$(date +%Y%m%d)
 
-    echo ":: Creating /etc/pacman.d/hooks/65-trigger_adding_pacserv_to_mirrorlist.hook"
+    echo ":: Creating /etc/pacman.d/hooks/65-trigger_adding_pacserv_to_pacman_conf.hook"
 
-    sudo bash -c "cat > /etc/pacman.d/hooks/65-trigger_adding_pacserv_to_mirrorlist.hook <<DELIM
+    sudo bash -c "cat > /etc/pacman.d/hooks/65-trigger_adding_pacserv_to_pacman_conf.hook <<DELIM
 [Trigger]
 Operation = Upgrade
 Type = Package
