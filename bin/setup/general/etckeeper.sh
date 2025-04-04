@@ -10,10 +10,13 @@
 function install_if_needed()
 {
   local CURRENT_PWD
+  local GIT_EMAIL_ADDRESS
+  local GIT_USER_NAME
 
   CURRENT_PWD=$(pwd)
+  GIT_EMAIL_ADDRESS="artodeto@bazzline.net"
+  GIT_USER_NAME="arto deto"
 
-  echo ":: Installing and configuring etckeeper if needed"
   if [[ ! -f /usr/bin/pacman ]];
   then
       echo "   Aborting."
@@ -21,6 +24,8 @@ function install_if_needed()
 
       exit 1
   fi
+
+  echo ":: Installing and configuring etckeeper if needed"
 
   if [[ -f /usr/bin/etckeeper ]];
   then
@@ -36,13 +41,17 @@ function install_if_needed()
   if ! sudo grep -q 'email = ' .git/config;
   then
     echo "   Setting default git user.email"
-    sudo git config user.email "artodeto@bazzline.net"
+    read -p "> Please input git user.mail (default: ${GIT_EMAIL_ADDRESS}): "
+
+    sudo git config user.email "${REPLY:-${GIT_EMAIL_ADDRESS}}"
   fi
 
   if ! sudo grep -q 'name = ' .git/config;
   then
     echo "   Setting default git user.name"
-    sudo git config user.name "arto deto"
+    read -p "> Please input git user.name (default: ${GIT_USER_NAME}): "
+
+    sudo git config user.name "${REPLY:-${GIT_USER_NAME}}"
   fi
 
   # if [[ -z $... ]]; then echo "no changes detected"
