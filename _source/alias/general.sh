@@ -92,7 +92,10 @@ alias hideFileSystemObject=net_bazzline_hide_file_system_object
 #i
 alias iftop='iftop -P -B'
 alias ip='ip -color=auto'
-alias iostat='iostat -x 2'
+if [[ -f /usr/bin/iostat ]];
+then
+  alias iostat='iostat -x 2'
+fi
 
 #l
 alias l='ls -hAlt --color=auto'
