@@ -25,7 +25,7 @@ function _install_if_needed()
     echo "   lemurs is installed already"
   else
     echo ":: Installing lemurs"
-    sudo pacman -S lemures
+    sudo pacman -S lemurs
   fi
 
   echo ":: Configuring etckeeper if needed"
