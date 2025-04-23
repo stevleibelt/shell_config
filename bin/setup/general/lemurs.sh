@@ -12,6 +12,10 @@
 
 function _install_if_needed()
 {
+  local PACKAGE
+
+  PACKAGE="lemurs"
+
   if [[ ! -f /usr/bin/pacman ]];
   then
       echo "   Aborting."
@@ -20,18 +24,18 @@ function _install_if_needed()
       return 10
   fi
 
-  if [[ -f /usr/bin/lemurs ]];
+  if [[ -f /usr/bin/${PACKAGE} ]];
   then
-    echo "   lemurs is installed already"
+    echo "   ${PACKAGE} is installed already"
   else
-    echo ":: Installing lemurs"
-    sudo pacman -S lemurs
+    echo ":: Installing ${PACKAGE}"
+    sudo pacman -S ${PACKAGE}
   fi
 
-  echo ":: Configuring etckeeper if needed"
+  echo ":: Configuring ${PACKAGE} if needed"
 
   sudo systemctl disable display-manager.service
-  sudo systemctl enable lemurs.service
+  sudo systemctl enable ${PACKAGE}.service
 }
 
 _install_if_needed "${@}"
