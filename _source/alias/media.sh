@@ -1,18 +1,20 @@
 #!/bin/bash
 
 #a
+
+#special
 if [[ -f /usr/bin/naps2 ]];
 then
   alias addOcrToPdf=net_bazzline_media_book_add_ocr_to_pdf
 fi
 
-#c
 if [[ -f /usr/bin/ffmpeg ]];
 then
+  alias batchConvertFlacToMp3=net_bazzline_media_batch_convert_flac_to_mp3
+  alias convertFlacToMp3=net_bazzline_media_convert_flac_to_mp3
   alias convertVideoToMkv=net_bazzline_convert_video_to_mkv
 fi
 
-#r
 if [[ -f /usr/bin/whipper  ]];
 then
   alias ripCdAsMp3='whipper cd rip'
