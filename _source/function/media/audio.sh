@@ -56,11 +56,13 @@ function net_bazzline_media_convert_flac_to_mp3()
   fi
 
   # -qscale:a 2, quality scale audio with 2, the lower the number, the higher the quality
+  # -map_metadata 0:s:0, map first metadata from source to first metadata on destination
   nice ${PROCESS_PRIORITY} \
     ffmpeg \
     -i "${SOURCE_FILE_PATH}" \
     -codec:a libmp3lame \
     -qscale:a 2 \
+    -map_metadata 0:s:0 \
     "${DESTINATION_FILE_PATH}"
 }
 
