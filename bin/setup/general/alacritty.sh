@@ -45,9 +45,14 @@ function install_if_needed() {
 
     /usr/bin/mkdir -p "${HOME}/.config/alacritty"
     cat > "${HOME}/.config/alacritty/alacritty.toml" <<DELIM
+# ref: https://wiki.archlinux.org/title/Alacritty
+[general]
 import = [
     "~/.config/alacritty/themes/themes/zenburn.toml"
 ]
+
+[font]
+size = 8.0
 DELIM
   fi
 }
