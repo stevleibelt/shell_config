@@ -171,6 +171,11 @@ alias scpToHost=net_bazzline_scp_to_host
 alias shuffelNumber=net_bazzline_shuffle_number
 alias showSystemTemperature=sensors
 alias showSystemUsers=net_bazzline_show_system_users
+if [[ -f /usr/bin/freeplan ]];
+then
+  # be able to start freeplan with modern java version installed
+  alias startFreeplan='archlinux-java-run --max 11 -- -jar /usr/share/freeplane/freeplanelauncher.jar'
+fi
 alias startSshAgent='eval $(ssh-agent)'
 alias startXorg='startx; exit'
 alias syncFromHost=net_bazzline_sync_from_host
