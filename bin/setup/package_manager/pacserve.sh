@@ -105,7 +105,7 @@ Target = pacman-mirrorlist
 Description = Updating pacman-mirrorlist with pacserve includes
 When = PostTransaction
 Depends = pacserve
-Exec = /bin/sh -c 'TEMPFILE=\\\$(mktemp) && pacman.conf-insert_pacserve > \\\$TEMPFILE && mv \\\$TEMPFILE /etc/pacman.conf'
+Exec = /bin/sh -c 'TEMPFILE=\\\$(mktemp) && pacman.conf-insert_pacserve > \\\$TEMPFILE && mv \\\$TEMPFILE /etc/pacman.conf && chmod 644 /etc/pacman.conf'
 DELIM"
   fi
   #eo: add automatic adding pacserv to mirrorlist
