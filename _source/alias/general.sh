@@ -193,6 +193,10 @@ alias touchPrefixCurrentDate=net_bazzline_touch_with_prefix_of_current_date
 
 #u
 alias updateAllRepositories=net_bazzline_git_update_all_repositories
+if [[ -f /usr/bin/fwupdmgr ]];
+then
+  alias updateFirmware='sudo fwupdmgr refresh && sudo fwupdmgr update'
+fi
 alias updateShellConfiguration=net_bazzline_update_shell_configuration
 alias updateVimBundlesAndPluginsWithVundle=net_bazzline_update_vim_bundles_and_plugins_with_vundle
 alias unhideFileSystemObject=net_bazzline_unhide_file_system_object
