@@ -93,7 +93,7 @@ DELIM'
   then
     echo "Found existing zrepl.yml"
     echo "  Please adapt the configuration by a line in section >>filesystems<<:"
-    echo "   >>\"zroot/data/docker<\":false"
+    echo "   >>\"${ZROOT}/data/docker<\":false"
   fi
 
   else
