@@ -42,9 +42,30 @@ function _main()
     fi
     sudo rm -rf /var/lib/docker/*
 
-    if ! ( sudo zfs list | grep -q zroot/data/docker)
+    if ! (sudo zfs list | grep -q "zroot ")
     then
-      DEFAULT_DATA_SET="zroot/data/docker"
+      local DEFAULT_ZROOT
+      local ZROOT
+
+      DEFAULT_ZROOT="zroot"
+
+      read -e -i "${DEFAULT_ZROOT}" -p ":: Please adapt zroot: " ZROOT
+
+      ZROOT="${ZROOT:-$DEFAULT_ZROOT}"
+    fi
+
+    if ! ( sudo zfs list | grep "${ZROOT}/data")
+    then
+      echo "   Creating zfs data set >>${ZROOT}/data<<"
+      sudo zfs create "${ZROOT}/data"
+    fi
+
+    if ! ( sudo zfs list | grep -q "${ZROOT}/data/docker")
+    then
+      local DATA_SET
+      local DEFAULT_DATA_SET
+
+      DEFAULT_DATA_SET="${ZROOT}/data/docker"
       read -e -i "${DEFAULT_DATA_SET}" -p ":: Please adapt zfs data set for docker: " DATA_SET
       DATA_SET="${DATA_SET:-$DEFAULT_DATA_SET}"
       echo "   Creating zfs data set >>${DATA_SET}<<"
