@@ -68,6 +68,8 @@ function _main ()
     if [[ ! "${CURRENT_DATASET}" == *"varcache"* && ! "${CURRENT_DATASET}" == *"varlog"* ]];
     then
       LIST_OF_ZREPL_FILESYSTEMS+=("    \"${CURRENT_DATASET}<\":true,")
+    else
+      LIST_OF_ZREPL_FILESYSTEMS+=("    \"${CURRENT_DATASET}<\":false,")
     fi
   done
 
