@@ -65,7 +65,10 @@ function _main ()
 
   for CURRENT_DATASET in "${LIST_OF_AVAILABLE_DATASETS[@]}";
   do
-    LIST_OF_ZREPL_FILESYSTEMS+=("    \"${CURRENT_DATASET}<\":true,")
+    if [[ ! "${CURRENT_DATASET}" == *"varcache"* && ! "${CURRENT_DATASET}" == *"varlog"* ]];
+    then
+      LIST_OF_ZREPL_FILESYSTEMS+=("    \"${CURRENT_DATASET}<\":true,")
+    fi
   done
 
   echo ":: Setup zrepl"
@@ -79,8 +82,15 @@ jobs:
 - name: net_bazzline_snapjob
   type: snap
   filesystems: {
+DELIM"
+
+for ZREPL_FILESYSTEM in "${LIST_OF_ZREPL_FILESYSTEMS[@]}";
+do
+  sudo bash -c "echo '${ZREPL_FILESYSTEM}' >> ${PATH_TO_THE_ZREPL_PATH}/zrepl.yml"
+done
 ${LIST_OF_ZREPL_FILESYSTEMS}
   }
+sudo bash -c "cat >> ${PATH_TO_THE_ZREPL_PATH}/zrepl.yml <<DELIM
   snapshotting:
     type: periodic
     interval: 24h
