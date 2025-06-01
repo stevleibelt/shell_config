@@ -88,9 +88,9 @@ for ZREPL_FILESYSTEM in "${LIST_OF_ZREPL_FILESYSTEMS[@]}";
 do
   sudo bash -c "echo '${ZREPL_FILESYSTEM}' >> ${PATH_TO_THE_ZREPL_PATH}/zrepl.yml"
 done
-${LIST_OF_ZREPL_FILESYSTEMS}
-  }
+
 sudo bash -c "cat >> ${PATH_TO_THE_ZREPL_PATH}/zrepl.yml <<DELIM
+  }
   snapshotting:
     type: periodic
     interval: 24h
