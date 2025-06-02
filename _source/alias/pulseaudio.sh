@@ -8,5 +8,9 @@
 
 if [[ ${NET_BAZZLINE_PULSEAUDIO_IS_AVAILABLE} -eq 1 ]];
 then
-    alias pulseaudio-equalizer=qpaeq
+  #p
+  alias pulseaudio-equalizer=qpaeq
+
+  #r
+  alias restartPulseAudio='sudo killall pulseaudio && systemctl --user restart pulseaudio.service'
 fi
