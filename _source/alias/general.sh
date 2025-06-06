@@ -215,6 +215,6 @@ alias xinit='startx; exit'
 if xinput --list | grep -q "Synaptics TouchPad";
 then
   _net_bazzline_xinput_synaptics_touchpad_device_id=$(xinput --list | grep "Synaptics TouchPad" | awk -F '=' '{ print $2 }' | awk -F ' ' '{ print $1 }')
-  disableTouchpad="xinput --disable ${_net_bazzline_xinput_synaptics_touchpad_device_id}"
-  enableTouchpad="xinput --enable ${_net_bazzline_xinput_synaptics_touchpad_device_id}"
+  alias disableTouchpad="xinput --disable ${_net_bazzline_xinput_synaptics_touchpad_device_id}"
+  alias enableTouchpad="xinput --enable ${_net_bazzline_xinput_synaptics_touchpad_device_id}"
 fi
