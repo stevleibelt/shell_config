@@ -108,8 +108,9 @@ DELIM"
     echo ":: Error"
     echo "   Created zrepl configuration yaml >>${PATH_TO_THE_ZREPL_PATH}/zrepl.yml<< is not valid."
 
-    _enable_and_start_zfs_service_if_needed "zrepl.service"
   fi
+
+  _enable_and_start_zfs_service_if_needed "zrepl.service"
   #eo: zrepl
 }
 
