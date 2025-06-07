@@ -60,6 +60,8 @@ function _main ()
     echo ":: Zrepl configuration exist. Nothing to do here."
     echo "   >>${PATH_TO_THE_ZREPL_PATH}/zrepl.yml<<"
 
+    _enable_and_start_zfs_service_if_needed "zrepl.service"
+
     exit 0
   fi
 
