@@ -29,6 +29,8 @@ function _install_if_needed()
   echo "   Configuring ${PACKAGE} if needed"
 
   if [[ ! -f ~/.config/whipper/whipper.conf ]];
+  then
+
     if [[ ! -d ~/media/audio/whipper ]];
     then
       /usr/bin/mkdir -p ~/media/audio/whipper
