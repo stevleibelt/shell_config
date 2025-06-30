@@ -26,7 +26,7 @@ export LESS='-C -M -I -j 10'
 
 #p
 #usefull for things like python or Jetbrains toolbox script generation
-export PATH=$PATH:${HOME}/.local/bin
+export PATH="${PATH}:${HOME}/.local/bin"
 
 #t
 #@see: https://wiki.archlinux.org/title/Xterm
