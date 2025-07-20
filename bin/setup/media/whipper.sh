@@ -23,7 +23,7 @@ function _install_if_needed()
 
   if [[ ! -f /usr/bin/${PACKAGE} ]];
   then
-    sudo pacman -S ${PACKAGE}
+    sudo pacman -S ${PACKAGE} lame ffmpeg
   fi
 
   echo "   Configuring ${PACKAGE} if needed"
