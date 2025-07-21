@@ -226,6 +226,18 @@ DELIM
 
     cat >> ${UPGRADE_SCRIPT_FILE_PATH} <<DELIM
 
+function _do_optional_cargo_update ()
+{
+  if [[ -f /usr/bin/rustup ]];
+  then
+    echo ":: Running rustup update"
+
+    rustup update
+
+    ${SEND_NOTIFY} "Cargo update done"
+  fi
+}
+
 function _do_cleanup ()
 {
   echo ":: Cleaning up" 
@@ -257,6 +269,7 @@ function _show_waiting_message ()
 
 function _main ()
 {
+  _do_optional_cargo_update
   _do_upgrade
   if [[ \${?} -eq 0 ]];
   then
