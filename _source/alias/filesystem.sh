@@ -20,6 +20,9 @@ alias listBiggestDirectories=net_bazzline_filesystem_list_biggest_directories
 alias listLatest="ls -t | head -n 1"
 alias lsGrep=net_bazzline_filesystem_ls_grep
 
+#m
+alias mvLatestFile='mv $(listLatest)'
+
 #o
 alias openLatestFile='$EDITOR $(listLatest)'  # either openLatestFile or editLatestFile wins
 
