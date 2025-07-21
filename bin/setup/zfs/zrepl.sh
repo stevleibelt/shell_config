@@ -60,12 +60,19 @@ function _main ()
     echo ":: Zrepl configuration exist. Nothing to do here."
     echo "   >>${PATH_TO_THE_ZREPL_PATH}/zrepl.yml<<"
 
+    _enable_and_start_zfs_service_if_needed "zrepl.service"
+
     exit 0
   fi
 
   for CURRENT_DATASET in "${LIST_OF_AVAILABLE_DATASETS[@]}";
   do
-    LIST_OF_ZREPL_FILESYSTEMS+=("    \"${CURRENT_DATASET}<\":true,")
+    if [[ ! "${CURRENT_DATASET}" == *"varcache"* && ! "${CURRENT_DATASET}" == *"varlog"* ]];
+    then
+      LIST_OF_ZREPL_FILESYSTEMS+=("    \"${CURRENT_DATASET}<\":true,")
+    else
+      LIST_OF_ZREPL_FILESYSTEMS+=("    \"${CURRENT_DATASET}<\":false,")
+    fi
   done
 
   echo ":: Setup zrepl"
@@ -79,7 +86,14 @@ jobs:
 - name: net_bazzline_snapjob
   type: snap
   filesystems: {
-${LIST_OF_ZREPL_FILESYSTEMS}
+DELIM"
+
+for ZREPL_FILESYSTEM in "${LIST_OF_ZREPL_FILESYSTEMS[@]}";
+do
+  sudo bash -c "echo '${ZREPL_FILESYSTEM}' >> ${PATH_TO_THE_ZREPL_PATH}/zrepl.yml"
+done
+
+sudo bash -c "cat >> ${PATH_TO_THE_ZREPL_PATH}/zrepl.yml <<DELIM
   }
   snapshotting:
     type: periodic
@@ -96,8 +110,9 @@ DELIM"
     echo ":: Error"
     echo "   Created zrepl configuration yaml >>${PATH_TO_THE_ZREPL_PATH}/zrepl.yml<< is not valid."
 
-    _enable_and_start_zfs_service_if_needed "zrepl.service"
   fi
+
+  _enable_and_start_zfs_service_if_needed "zrepl.service"
   #eo: zrepl
 }
 

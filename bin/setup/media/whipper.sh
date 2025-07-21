@@ -23,12 +23,14 @@ function _install_if_needed()
 
   if [[ ! -f /usr/bin/${PACKAGE} ]];
   then
-    sudo pacman -S ${PACKAGE}
+    sudo pacman -S ${PACKAGE} lame ffmpeg
   fi
 
   echo "   Configuring ${PACKAGE} if needed"
 
   if [[ ! -f ~/.config/whipper/whipper.conf ]];
+  then
+
     if [[ ! -d ~/media/audio/whipper ]];
     then
       /usr/bin/mkdir -p ~/media/audio/whipper
