@@ -210,15 +210,15 @@ DELIM"
   fi
   #eo: scrubbing timer
 
-  if [[ -f "${PATH_OF_THE_CURRENT_SCRIPT}/create_arc_size_max.sh" ]];
+  if [[ -f "${PATH_OF_THE_CURRENT_SCRIPT}/create_arc_size_max_and_min.sh" ]];
   then
     if _ask_with_question_and_positiv_answer "Adapt arc size max to current memory?";
     then
       if [[ $IS_DRY_RUN -ne 1 ]];
       then
-        bash "${PATH_OF_THE_CURRENT_SCRIPT}/create_arc_size_max.sh"
+        bash "${PATH_OF_THE_CURRENT_SCRIPT}/create_arc_size_max_and_min.sh"
       else
-        echo "bash \"${PATH_OF_THE_CURRENT_SCRIPT}/create_arc_size_max.sh\""
+        echo "bash \"${PATH_OF_THE_CURRENT_SCRIPT}/create_arc_size_max_and_min.sh\""
       fi
     fi
   fi
