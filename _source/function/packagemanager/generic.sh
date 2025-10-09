@@ -13,7 +13,6 @@ function net_bazzline_packamanager_arch_linux_remove_not_needed_electron ()
   # -s: search locally installed packages
   for CURRENT_ELECTRON_PACKAGE in $(pacman -Qqs electron);
   do
-    echo "Checking: ${CURRENT_ELECTRON_PACKAGE}"
     # -l: linear print package names one per line
     # -r: reverse search to show packages depend on
     # -u: unique to remove duplicated result
@@ -22,7 +21,7 @@ function net_bazzline_packamanager_arch_linux_remove_not_needed_electron ()
     # The queried package itself is always part of the result list
     if [[ $NUMBER_OF_DEPENDENCIES -lt 2 ]];
     then
-      sudo pacman -R "${CURRENT_ELECTRON_PACKAGE}"
+      sudo pacman -R --noconfirm "${CURRENT_ELECTRON_PACKAGE}"
     fi
   done
 }
