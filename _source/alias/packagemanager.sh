@@ -39,6 +39,7 @@ then
     alias software-prepare-for-upgrade='paru -Swyu'
     alias software-remove="sudo pacman -Rsu"
     alias software-remove-not-needed-dependencies='sudo pacman -Rs $(paru -Qdtq)'
+    alias software-remove-not-needed-electron='net_bazzline_packamanager_arch_linux_remove_not_needed_electron'
     alias software-search='paru -Ss'
     alias software-search-added='paru -Qs'
     alias software-upgrade-from-cache='paru -uu --skipreview'
@@ -68,6 +69,7 @@ then
     alias software-prepare-for-upgrade='yay -Swyu'
     alias software-remove="sudo pacman -Rsu"
     alias software-remove-not-needed-dependencies='sudo pacman -Rs $(yay -Qdtq)'
+    alias software-remove-not-needed-electron='net_bazzline_packamanager_arch_linux_remove_not_needed_electron'
     alias software-search='yay -Ss'
     alias software-search-added='yay -Qs'
     alias software-upgrade-from-cache='yay -uu'
@@ -96,6 +98,7 @@ then
     alias software-prepare-for-upgrade='sudo pacman -Swyu'
     alias software-remove='sudo pacman -Rsu'
     alias software-remove-not-needed-dependencies='sudo pacman -Rs $(pacman -Qdtq)'
+    alias software-remove-not-needed-electron='net_bazzline_packamanager_arch_linux_remove_not_needed_electron'
     alias software-search='pacman -Ss'
     alias software-search-added='sudo pacman -Qs'
     alias software-upgrade-from-cache='sudo pacman -u'

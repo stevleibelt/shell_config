@@ -3,6 +3,30 @@ NET_BAZZLINE_FUNCTION_PACKAGEMANAGER_SYSTEM_UPGRADE_SCREEN_SESSION_NAME='system_
 
 #a
 
+function net_bazzline_packamanager_arch_linux_remove_not_needed_electron ()
+{
+  local CURRENT_ELECTRON_PACKAGE
+  local NUMBER_OF_DEPENDENCIES
+
+  # -Q: query package database
+  # -q: quiet to show less informations
+  # -s: search locally installed packages
+  for CURRENT_ELECTRON_PACKAGE in $(pacman -Qqs electron);
+  do
+    echo "Checking: ${CURRENT_ELECTRON_PACKAGE}"
+    # -l: linear print package names one per line
+    # -r: reverse search to show packages depend on
+    # -u: unique to remove duplicated result
+    NUMBER_OF_DEPENDENCIES=$(pactree -lru "${CURRENT_ELECTRON_PACKAGE}" | wc -l)
+    
+    # The queried package itself is always part of the result list
+    if [[ $NUMBER_OF_DEPENDENCIES -lt 2 ]];
+    then
+      sudo pacman -R "${CURRENT_ELECTRON_PACKAGE}"
+    fi
+  done
+}
+
 ####
 # @param: <string> packagemanager_command
 # [@param: <string> comma_separated_list_of_packages_to_ignore]
