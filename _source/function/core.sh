@@ -57,6 +57,12 @@ function net_bazzline_core_echo_if_be_verbose ()
   fi
 }
 
+# ref: https://github.com/jamesonhacking/coinflip/blob/main/coinflip.sh
+function net_bazzline_core_flip_a_coin ()
+{
+  cat < /dev/urandom | strings | grep -oh 'H\|T' | head -n 1 | sed 's/T/Tail/g' | sed 's/H/Head/g'
+}
+
 # ref: https://stackoverflow.com/a/58598185
 function net_bazzline_core_return_command_output ()
 {

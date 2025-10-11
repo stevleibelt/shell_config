@@ -79,6 +79,7 @@ if [[ ${NET_BAZZLINE_FWUPDMGR_IS_AVAILABLE} -eq 1 ]];
 then
   alias firmware-update="fwupdmgr refresh; fwupdmgr update;"
 fi
+alias flipACoin='net_bazzline_core_flip_a_coin'
 
 #g
 alias getExtensionFromFilename=net_bazzline_get_extension_from_filename
