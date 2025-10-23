@@ -280,6 +280,13 @@ function net_bazzline_rsync ()
   #   https://opensource.com/article/19/5/advanced-rsync
   #   https://utcc.utoronto.ca/~cks/space/blog/sysadmin/RsyncAndHardlinks
   # shellcheck disable=SC2068
+  #
+  # -a archive mode is -rlptgoD (no -A,-X,-U,-N,-H)
+  # -c: skip based on checksum, not mod-time & size
+  # -q: suppress non-error messages
+  # -H: preserve hard links
+  # -S: turn sequences of nulls into sparse blocks
+  # --delete: delete extraneous files from dest dirs
   /usr/bin/rsync -caqHS --delete ${@}
 }
 
