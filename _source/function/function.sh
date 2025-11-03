@@ -830,6 +830,7 @@ function net_bazzline_delete_empty_directories ()
 # [@param string $NAME - default is empty]
 # [@param string $ROOT_PATH - default is cwd]
 # [@param int $MAX_DEPTH - default is 1]
+# [@param int $BE_VERBOSE - default is 0]
 #
 # @author stev leibelt
 # @since 2016-12-27
@@ -850,10 +851,10 @@ function net_bazzline_delete_files_older_than ()
 
   if [[ ${NAME} == "" ]];
   then
-    # -print: prints the deleted files
-    find "${ROOT_PATH}" -maxdepth "${MAX_DEPTH}" -type f -mmin +"${MINUTES}" -delete -print
+    # Add `-print` to print the deleted files
+    find "${ROOT_PATH}" -maxdepth "${MAX_DEPTH}" -type f -mmin +"${MINUTES}" -delete
   else
-    find "${ROOT_PATH}" -maxdepth "${MAX_DEPTH}" -name "${NAME}" -type f -mmin +"${MINUTES}" -delete -print
+    find "${ROOT_PATH}" -maxdepth "${MAX_DEPTH}" -name "${NAME}" -type f -mmin +"${MINUTES}" -delete
   fi
 }
 
