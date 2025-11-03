@@ -137,6 +137,10 @@ alias obay=sudo
 alias organizeDirectoryContent=net_bazzline_organize_directory_content
 
 #p
+if [[ -f /usr/bin/docker ]];
+then
+  alias purgeAllDockerData='docker system prune -a --volumes'
+fi
 alias psGrep=net_bazzline_psgrep
 
 #r
