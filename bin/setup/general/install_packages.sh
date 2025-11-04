@@ -128,7 +128,7 @@ function _install_stage_3 ()
   _install_packages_with_yay umlet unrar
   
   echo "   Processing packages with >>v<<"
-  _install_packages_with_yay valgrind ventoy-bin vim vlc vscodium-bin
+  _install_packages_with_yay valgrind ventoy-bin vim vlc vlc-plugin-ffmpeg vscodium-bin
   
   echo "   Processing packages with >>w<<"
   _install_packages_with_yay wget wireguard-tools wireshark wine-staging
