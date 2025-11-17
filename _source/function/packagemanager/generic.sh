@@ -1,5 +1,5 @@
 #!/bin/bash
-NET_BAZZLINE_FUNCTION_PACKAGEMANAGER_SYSTEM_UPGRADE_SCREEN_SESSION_NAME='system_upgrade'
+NET_BAZZLINE_FUNCTION_PACKAGEMANAGER_SYSTEM_UPGRADE_SESSION_NAME='system_upgrade'
 
 #a
 
@@ -204,7 +204,7 @@ function net_bazzline_packagemanager_arch_linux_software_upgrade ()
   #eo: log file cleanup
 
   #bo: check if screen session exists
-  net_bazzline_packagemanager_check_if_system_upgrade_screen_session_exists
+  net_bazzline_packagemanager_check_if_system_upgrade_session_exists
 
   if  [[ ${?} -eq 1 ]];
   then
@@ -310,14 +310,28 @@ function _main ()
 
 _main "\${@}"
 DELIM
-  echo ":: This script was generated in path >>${UPGRADE_SCRIPT_FILE_PATH}<<"
-  #eo: upgrade script generation
+    echo ":: This script was generated in path >>${UPGRADE_SCRIPT_FILE_PATH}<<"
+    #eo: upgrade script generation
     
-    screen -dmS ${NET_BAZZLINE_FUNCTION_PACKAGEMANAGER_SYSTEM_UPGRADE_SCREEN_SESSION_NAME} bash ${UPGRADE_SCRIPT_FILE_PATH}
+    if [[ -f /usr/bin/tmux ]];
+    then
+      tmux new-session -d -s ${NET_BAZZLINE_FUNCTION_PACKAGEMANAGER_SYSTEM_UPGRADE_SESSION_NAME} bash ${UPGRADE_SCRIPT_FILE_PATH}
+    elif [[ -f /usr/bin/screen ]];
+    then
+      screen -dmS ${NET_BAZZLINE_FUNCTION_PACKAGEMANAGER_SYSTEM_UPGRADE_SESSION_NAME} bash ${UPGRADE_SCRIPT_FILE_PATH}
+    else
+      echo ":: Error: Neither screen or tmux is installed."
+      exit 10
+    fi
   fi
 
   #this line is working because we make sure that there is a screen session or we create one above this line
-  screen -r ${NET_BAZZLINE_FUNCTION_PACKAGEMANAGER_SYSTEM_UPGRADE_SCREEN_SESSION_NAME}
+  if [[ -f /usr/bin/tmux ]];
+  then
+    tmux attach -t ${NET_BAZZLINE_FUNCTION_PACKAGEMANAGER_SYSTEM_UPGRADE_SESSION_NAME}
+  else
+    screen -r ${NET_BAZZLINE_FUNCTION_PACKAGEMANAGER_SYSTEM_UPGRADE_SESSION_NAME}
+  fi
 
   cat > "${LAST_SYSTEM_UPDATE_FILE_PATH}" <<DELIM
 #!/bin/bash
@@ -355,21 +369,40 @@ function net_bazzline_packagemanager_apt_software_upgrade ()
   #eo: setup
 
   #bo: check if screen session exists
-  net_bazzline_packagemanager_check_if_system_upgrade_screen_session_exists
+  net_bazzline_packagemanager_check_if_system_upgrade_session_exists
 
   if  [[ $? -eq 1 ]];
   then
-    screen -dmS ${NET_BAZZLINE_FUNCTION_PACKAGEMANAGER_SYSTEM_UPGRADE_SCREEN_SESSION_NAME} bash -c "${PACKAGEMANAGER_COMMAND}; echo \":: Waiting for 30 seconds.\"; echo \" Hit CTRL+C to terminate this waiting. \"; sleep 30"
+    if [[ -f /usr/bin/tmux ]];
+    then
+      tmux new-session -d -s ${NET_BAZZLINE_FUNCTION_PACKAGEMANAGER_SYSTEM_UPGRADE_SESSION_NAME} bash -c "${PACKAGEMANAGER_COMMAND}; echo \":: Waiting for 30 seconds.\"; echo \" Hit CTRL+C to terminate this waiting. \"; sleep 30"
+    elif [[ -f /usr/bin/screen ]];
+    then
+      screen -dmS ${NET_BAZZLINE_FUNCTION_PACKAGEMANAGER_SYSTEM_UPGRADE_SESSION_NAME} bash -c "${PACKAGEMANAGER_COMMAND}; echo \":: Waiting for 30 seconds.\"; echo \" Hit CTRL+C to terminate this waiting. \"; sleep 30"
+    else
+      echo ":: Error: Neither screen or tmux is installed."
+      exit 10
     fi
+  fi
 
-  screen -r ${NET_BAZZLINE_FUNCTION_PACKAGEMANAGER_SYSTEM_UPGRADE_SCREEN_SESSION_NAME}
+  if [[ -f /usr/bin/tmux ]];
+  then
+    tmux attach -t ${NET_BAZZLINE_FUNCTION_PACKAGEMANAGER_SYSTEM_UPGRADE_SESSION_NAME}
+  else
+    screen -r ${NET_BAZZLINE_FUNCTION_PACKAGEMANAGER_SYSTEM_UPGRADE_SESSION_NAME}
+  fi
 }
 
 
 #c
 
-function net_bazzline_packagemanager_check_if_system_upgrade_screen_session_exists ()
+function net_bazzline_packagemanager_check_if_system_upgrade_session_exists ()
 {
   #grep -q will exit with an code != 0 if there is no running screen session.
-  screen -ls | grep -q ${NET_BAZZLINE_FUNCTION_PACKAGEMANAGER_SYSTEM_UPGRADE_SCREEN_SESSION_NAME}
+  if [[ -f /usr/bin/tmux ]];
+  then
+    tmux list-sessions | grep -q ${NET_BAZZLINE_FUNCTION_PACKAGEMANAGER_SYSTEM_UPGRADE_SESSION_NAME}
+  else
+    screen -ls | grep -q ${NET_BAZZLINE_FUNCTION_PACKAGEMANAGER_SYSTEM_UPGRADE_SESSION_NAME}
+  fi
 }
