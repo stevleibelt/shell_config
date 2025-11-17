@@ -142,6 +142,7 @@ unrar
 valgrind
 vim
 vlc
+vlc-plugin-ffmpeg
 wget
 wireguard-tools
 wireshark-cli
