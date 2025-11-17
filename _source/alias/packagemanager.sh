@@ -32,10 +32,17 @@ then
     else
         alias software-list-depends-on='echo "pactree is missing, please add pacman-contrib!"'
     fi
+    # -Q  : Query the package database
+    # -d  : Restrict or filter output to packages installed as dependencies
+    # -e  : Restrict or filter output to explicitly installed packages
+    # -m  : Restrict or filter output packages that are not found in the sync databases
+    # -n  : Restrict or filter output packages that are found in the sync databases
+    # -q  : Show less information for certain query operations
+    # -t  : Restrict or filter output to print only packages neither required nor optionally required
     alias software-list-added='paru -Qen' #use pacman -Qqen to create a list you can use to add like "pacman -Qqen > added && pacman -S < added
     alias software-list-foreign='paru -Qmq'
-    alias software-list-orphaned='paru -Qdtq'
-    alias software-list-unofficial-adparu='paru -Qem'
+    alias software-list-orphaned='paru -Qdt'
+    alias software-list-unofficial-added='paru -Qem'
     alias software-prepare-for-upgrade='paru -Swyu'
     alias software-remove="sudo pacman -Rsu"
     alias software-remove-not-needed-dependencies='sudo pacman -Rs $(paru -Qdtq)'
