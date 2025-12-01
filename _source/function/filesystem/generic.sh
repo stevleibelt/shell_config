@@ -123,6 +123,38 @@ function net_bazzline_cleanup_after_converting_files ()
 }
 
 ####
+# @param1 <string: destination_file_name> - default current date
+####
+function net_bazzline_filesystem_copy_paste_latest_file ()
+{
+  local DESTINATION_FILE_NAME
+  local FILE_EXTENSION
+  local SOURCE_FILE_NAME
+
+  SOURCE_FILE_NAME=$(net_bazzline_filesystem_list_latest_files 1)
+
+  if [[ -z "${1}" ]];
+  then
+    DESTINATION_FILE_NAME=$(date +%Y%m%d)
+
+    FILE_EXTENSION="${SOURCE_FILE_NAME##*.}"
+
+    if [[ -n "${FILE_EXTENSION}" ]];
+    then
+      DESTINATION_FILE_NAME="${DESTINATION_FILE_NAME}.${FILE_EXTENSION}"
+    fi
+  else
+    DESTINATION_FILE_NAME="${1}"
+  fi
+
+  if cp --update=none-fail "${SOURCE_FILE_NAME}" "${DESTINATION_FILE_NAME}";
+  then
+    # make this the latest file now
+    touch -m "${DESTINATION_FILE_NAME}"
+  fi
+}
+
+####
 # @param1 <string: checksum method to use>
 # @param2... <string: file path>
 ####
@@ -131,14 +163,19 @@ function net_bazzline_filesystem_create_checksum_from_file ()
     local CHECKSUM_METHOD
     local CURRENT_ARGUMENT
 
-    CHECKSUM_METHOD="${1}"
-    shift 1
+    if [[ -z "${1}" ]];
+    then
+      CHECKSUM_METHOD="${1}"
+      shift 1
+    else
+      CHECKSUM_METHOD="sha512sum"
+    fi
 
-    for CURRENT_ARGUMENT in ${@};
+    for CURRENT_ARGUMENT in "${@}";
     do
         if [[ -f "${CURRENT_ARGUMENT}" ]];
         then
-            sha512sum "${CURRENT_ARGUMENT}" > "${CURRENT_ARGUMENT}.sha512sum"
+            ${CHECKSUM_METHOD} "${CURRENT_ARGUMENT}" > "${CURRENT_ARGUMENT}.sha512sum"
         else
             echo "  Skipping >>${CURRENT_ARGUMENT}<< because it is not a file."
         fi
@@ -232,6 +269,14 @@ function net_bazzline_filesystem_list_biggest_swap_space_consumers ()
 }
 
 ####
+# [@param <int: number_of_listed_files>, default is 20]
+####
+function net_bazzline_filesystem_list_earliest_files ()
+{
+  net_bazzline_filesystem_list_files_by_modification_time 0 "${@}"
+}
+
+####
 # [@param string $CURRENT_PATH=/]
 # [@param int $NUMBER_OF_ENTRIES_TO_DISPLAY=20]
 ####
@@ -247,6 +292,57 @@ function net_bazzline_list_inodes ()
     NUMBER_OF_ENTRIES_TO_DISPLAY=$((${2:-'20'}))
 
     { find "${CURRENT_PATH}" -xdev -printf '%h\n' | sort | uniq -c | sort -rn; } 2>/dev/null | head -n ${NUMBER_OF_ENTRIES_TO_DISPLAY}
+}
+
+####
+# [@param <int: sort_order=0|1>, default is 0] - 0: earliest first, 1: latest first
+# [@param <int: number_of_listed_files>, default is 20]
+####
+function net_bazzline_filesystem_list_files_by_modification_time ()
+{
+  local NUMBER_OF_LISTED_FILES
+  local SORT_COMMAND
+
+  if [[ -z ${2} ]];
+  then
+    NUMBER_OF_LISTED_FILES=20
+  else
+    NUMBER_OF_LISTED_FILES=${2}
+  fi
+
+  if [[ ! -z ${1} ]] && [[ ${1} -eq 0 ]];
+  then
+    SORT_COMMAND="sort -n"
+  else
+    SORT_COMMAND="sort -n -r"
+  fi
+
+  # ls has no build in filter to only list files
+  # explanation for command
+  # find          : use find
+  #   .           : use pwd
+  #   -maxdepth 1 : prevent recursive search
+  #   -type f     : filter for files
+  #   -exec stat  : use stat to print out modification unix timestamp (first column) and file name (second column)
+  #   {} +        : apply stat call to each found file name
+  # sort          : sort full result of find call
+  #   -n          : sort naturally by column one
+  #   -r          : reverse sort order
+  # head|tail -n  : select the amount of files
+  # awk           : use awk
+  #   $1=""       : set content of first column to empty string
+  #   sub(/^ ...) : remove empty space in beginning of the string
+  #   sub(/^\...) : remove "./" from the beginning of the string
+  #   print       : print string
+  find . -maxdepth 1 -type f -exec stat --format='%Y %n' {} + | ${SORT_COMMAND} | head -n ${NUMBER_OF_LISTED_FILES} | awk '{$1=""; sub(/^ +/, ""); sub(/^\.\//, ""); print}'
+}
+
+####
+# [@param <int: number_of_listed_files>, default is 20]
+####
+function net_bazzline_filesystem_list_latest_files ()
+{
+  net_bazzline_filesystem_list_files_by_modification_time 1 "${@}"
 }
 
 ####
