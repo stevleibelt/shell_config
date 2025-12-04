@@ -18,7 +18,7 @@ function install_if_needed() {
       exit 1
   fi
 
-  paru -S heroic wine wine-gecko wine-mono proton-ge-custom-bin protontricks
+  paru -S heroic-games-launcher-bin wine wine-gecko wine-mono proton-ge-custom-bin protontricks
 
 }
 
