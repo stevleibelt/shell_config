@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 #### Priority High
 
+* Manipulate "sleep when lid closed" to "no" while doing a system upgrade
 * For `software-upgrade`
   * Add option to backup existing dkms modules and kernels
   * Ref garuda: `+ rsync -AHXal --ignore-existing /usr/lib/modules/backup/6.11.8-zen1-2-zen /usr/lib/modules/`
