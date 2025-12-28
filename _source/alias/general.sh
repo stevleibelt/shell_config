@@ -108,7 +108,7 @@ alias listGroups=net_bazzline_list_groups
 alias listInodes=net_bazzline_list_inodes
 alias listInterfaces=net_bazzline_list_interfaces
 alias listLocalIpAddress=net_bazzline_list_local_ip_address
-alias listMemoryUsageByProcess=net_bazzline_list_memory_usage_by_process
+alias listMemoryUsageByProcess=net_bazzline_device_list_memory_usage_by_process
 alias listOpenNetworkPorts='lsof +M -i4 -i6'
 alias listProcessEnvironment=net_bazzline_list_process_environment
 alias listSoftLinks=net_bazzline_list_softlinks
@@ -167,7 +167,7 @@ alias runJar='java -jar '
 
 #s
 alias searchInComposerFiles=net_bazzline_search_in_composer_files
-alias setOpticalDriveSpeed=net_bazzline_set_optical_drive_speed
+alias setOpticalDriveSpeed=net_bazzline_device_set_optical_drive_speed
 alias silentGrep=net_bazzline_silent_grep
 alias searchAndReplaceInFiles=net_bazzline_replace_string_in_files
 alias scanNetworkForIpAddressRange=net_bazzline_scan_network
