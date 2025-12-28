@@ -17,9 +17,9 @@ function _main() {
     exit 10
   fi
 
-  if [[ ! -f /etc/systemd/logind.conf.d/handle_lid_switch.conf ]];
+  if [[ ! -f /etc/systemd/logind.conf.d/500_handle_lid_switch.conf ]];
   then
-    sudo bash -c 'cat <<DELIM > /etc/systemd/logind.conf.d/handle_lid_switch.conf
+    sudo bash -c 'cat <<DELIM > /etc/systemd/logind.conf.d/500_handle_lid_switch.conf
 [Login]
 HandleLidSwitchExternalPower=ignore
 HandleLidSwitchDocked=ignore
