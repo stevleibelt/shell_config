@@ -132,7 +132,7 @@ function net_bazzline_packagemanager_arch_linux_software_upgrade ()
   #eo: check if lock file exists
 
   #bo: disable logind lid closed behavior
-  if [[ ${NET_BAZZLINE_SYSTEMD_IS_AVAILABLE} -eq 1 ]];
+  if [[ "${NET_BAZZLINE_SYSTEMD_IS_AVAILABLE}" -eq 1 ]];
   then
     sudo bash -c "cat <<DELIM > ${SYSTEMD_LOGIND_LID_CONF_FILE_PATH}
 HandleLidSwitch=ignore
@@ -365,9 +365,9 @@ DELIM
   #eo: check if screen session exists
 
   #bo: remove overwritten logind lid closed behavior
-  if [[ -f ${SYSTEMD_LOGIND_LID_CONF_FILE_PATH} -eq 1 ]];
+  if [[ -f "${SYSTEMD_LOGIND_LID_CONF_FILE_PATH}" ]];
   then
-    sudo rm ${SYSTEMD_LOGIND_LID_CONF_FILE_PATH}
+    sudo rm "${SYSTEMD_LOGIND_LID_CONF_FILE_PATH}"
     sudo systemctl reload systemd-logind.service
   fi
   #eo: remove overwritten logind lid closed behavior
