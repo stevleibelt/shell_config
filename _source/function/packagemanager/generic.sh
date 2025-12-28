@@ -52,6 +52,7 @@ function net_bazzline_packagemanager_arch_linux_software_upgrade ()
   local POWER_STATUS
   local POWER_STATUS_FILE_PATH
   local SEND_NOTIFY
+  local SYSTEMD_LOGIND_LID_CONF_FILE_PATH
   local UPGRADE_SCRIPT_FILE_PATH
   local ZFS_SNAPSHOT_NAME
 
@@ -61,6 +62,7 @@ function net_bazzline_packagemanager_arch_linux_software_upgrade ()
   PACMAN_LOCK_FILE_PATH='/var/lib/pacman/db.lck'
   POWER_STATUS=1
   POWER_STATUS_FILE_PATH='/sys/class/power_supply/AC/online'
+  SYSTEMD_LOGIND_LID_CONF_FILE_PATH='/etc/systemd/logind.conf.d/999_disable_led_suspend'
   UPGRADE_SCRIPT_FILE_PATH="/tmp/net_bazzline_system_upgrade.sh"
   ZFS_SNAPSHOT_NAME='net_bazzline_before_system_upgrade'
 
@@ -127,7 +129,19 @@ function net_bazzline_packagemanager_arch_linux_software_upgrade ()
       return 2;
     fi
   fi
-  #bo: check if lock file exists
+  #eo: check if lock file exists
+
+  #bo: disable logind lid closed behavior
+  if [[ ${NET_BAZZLINE_SYSTEMD_IS_AVAILABLE} -eq 1 ]];
+  then
+    sudo bash -c "cat <<DELIM > ${SYSTEMD_LOGIND_LID_CONF_FILE_PATH}
+HandleLidSwitch=ignore
+HandleLidSwitchExternalPower=ignore
+HandleLidSwitchDocked=ignore
+DELIM"
+    sudo systemctl reload systemd-logind.service
+  fi
+  #eo: disable logind lid closed behavior
 
   #bo: snapshot creation
   #@todo: move this into the generated script below, make sure to check if function net_bazzline_core_ask_yes_or_no exists
@@ -349,6 +363,14 @@ DELIM
     echo "   ZFS Snapshotname before upgrade: >>${ZFS_SNAPSHOT_NAME}<<"
   fi
   #eo: check if screen session exists
+
+  #bo: remove overwritten logind lid closed behavior
+  if [[ -f ${SYSTEMD_LOGIND_LID_CONF_FILE_PATH} -eq 1 ]];
+  then
+    sudo rm ${SYSTEMD_LOGIND_LID_CONF_FILE_PATH}
+    sudo systemctl reload systemd-logind.service
+  fi
+  #eo: remove overwritten logind lid closed behavior
 }
 
 ####
