@@ -6,6 +6,7 @@ ddev-bin
 dive
 jetbrains-toolbox
 librewolf-bin
+localsend-bin
 mangohud
 pandoc-bin
 pdfsam
