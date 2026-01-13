@@ -1,4 +1,5 @@
 #battop
+auto-cpufreq
 check-broken-packages-pacman-hook-git
 ctop
 cyanrip
