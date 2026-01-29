@@ -25,7 +25,7 @@ function _upgrade()
         PACKAGEMANAGER='yay';
     elif [[ -f /usr/bin/paru ]];
     then
-        PACKAGEMANAGER='yay';
+        PACKAGEMANAGER='paru';
     else
         echo ":: Can not upgrade your aur python packages."
         echo "   Neither yay or paru was found."
