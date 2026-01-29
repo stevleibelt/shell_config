@@ -8,12 +8,8 @@
 function _upgrade()
 {
   local PACKAGEMANAGER
-  local PATH_TO_OUTDATED_PYTHON_PACKAGE
-  local PATH_TO_LATEST_PYTHON_PACKAGE
 
   PACKAGEMANAGER='';
-  PATH_TO_OUTDATED_PYTHON_PACKAGE="/usr/lib/python*"
-  PATH_TO_LATEST_PYTHON_PACKAGE=$(find /usr/lib/ -maxdepth 1 -iname "python*" -type d | sort | uniq | tail -1)
 
   #begin of testing if we are on the right system
   if [[ ! -f /usr/bin/pacman ]];
@@ -37,25 +33,35 @@ function _upgrade()
     return 2
   fi
 
-  if [[ ! -d ${PATH_TO_LATEST_PYTHON_PACKAGE} ]];
+  if [[ ! -f /usr/bin/expac ]];
   then
-    echo ":: Expected latest python package not found."
-    echo "   >>${PATH_TO_LATEST_PYTHON_PACKAGE}<< is missing."
-    echo "   Please do a systemupdate first."
-    echo "   Just execute something like >>${PACKAGEMANAGER} -Syyu<<."
-
-    return 3
+    echo ":: Installing mandatory expac"
+    sudo pacman -S expac
   fi
 
-  echo ":: Fetching python packages to upgrade."
-  pacman -Qoq "${PATH_TO_OUTDATED_PYTHON_PACKAGE}"
+  echo ":: Fetching python aur packages to upgrade."
+  # ref: https://forum.endeavouros.com/t/python-update-be-aware-to-rebuild-aur-builds-using-python/54459/6
+  # comm: compares two files
+  #   -1: supress column 1 (lines unique to FILE 1)
+  #   -2: supress column 1 (lines unique to FILE 1)
+  # (pacman -Qqm | sort):
+  #   -Q: Queries database
+  #   -q: Show less information
+  #   -m: Filter to packages not found in the sync database
+  # (expac -Q "%e %E" | grep python | awk '{print $1}' | sort)
+  # expac: alpm data extraction utility
+  #   -Q: Queries local database
+  #   %e: Package base
+  #   %E: Depends on (no version strings)
+  #
+  # Way simpler, maybe:
+  #   pacman -S rebuild-detector
+  #   checkrebuild python
+  comm -12 <(pacman -Qqm | sort) <( expac -Q "%e %E" | grep python | awk '{print $1}' | sort)
 
   echo ""
   echo ":: Rebuilding packages."
-  pacman -Qoq "${PATH_TO_OUTDATED_PYTHON_PACKAGE}" | "${PACKAGEMANAGER}" -S - --rebuild
-
-  echo ":: Just for testing ... fetching python packages to upgrade."
-  pacman -Qoq "${PATH_TO_OUTDATED_PYTHON_PACKAGE}"
+  comm -12 <(pacman -Qqm | sort) <( expac -Q "%e %E" | grep python | awk '{print $1}' | sort) | "${PACKAGEMANAGER}" -S - --rebuild
 }
 
 _upgrade
