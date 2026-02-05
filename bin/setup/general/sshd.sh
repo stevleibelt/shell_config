@@ -60,6 +60,13 @@ Subsystem sftp  /usr/lib/ssh/sftp-server -f AUTHPRIV -l INFO
 PermitRootLogin No
 DELIM"
 
+  #bo: firewall adaptation
+  if [[ -f /usr/bin/ufw ]];
+  then
+    sudo ufw limit ssh
+  fi
+  #eo: firewall adaptation
+
   if sudo systemctl is-active --quiet sshd.service;
   then
     echo "   Restarting sshd service"
