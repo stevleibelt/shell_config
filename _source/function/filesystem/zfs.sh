@@ -88,6 +88,11 @@ function net_bazzline_zfs_create_pool()
     return 1
   fi
 
+  if [[ ! -f /usr/bin/sgdisk ]];
+  then
+    net_bazzline_execute_as_super_user_when_not_beeing_root pacman -S gptfdisk
+  fi
+
   for CURRENT_DEVICE in "${ARRAY_OF_DEVICES[@]}";
   do
     if [[ $WIPE_DEVICES -eq 1 ]];
