@@ -160,7 +160,6 @@ function net_bazzline_zfs_create_pool()
       -O xattr=sa                   \
       -O dnodesize=legacy           \
       -O normalization=formD        \
-#      -O mountpoint=none          \
       -O mountpoint="/mnt/${NAME}"  \
       -O canmount=off               \
       -O devices=off                \
