@@ -140,10 +140,10 @@ function net_bazzline_zfs_create_pool()
       -O keyformat=passphrase       \
       -O keylocation=prompt         \
       -O normalization=formD        \
-      -O mountpoint="/mnt/${NAME}"  \
+      -O mountpoint="/"             \
       -O canmount=off               \
       -O devices=off                \
-      -R /mnt                       \
+      -R /                          \
       "${NAME}" "${DEVICES_AS_STRING}"
   else
     if [[ $BE_VERBOSE -eq 1 ]];
@@ -160,10 +160,10 @@ function net_bazzline_zfs_create_pool()
       -O xattr=sa                   \
       -O dnodesize=legacy           \
       -O normalization=formD        \
-      -O mountpoint="/mnt/${NAME}"  \
+      -O mountpoint="/"             \
       -O canmount=off               \
       -O devices=off                \
-      -R /mnt                       \
+      -R /                          \
       "${NAME}" "${DEVICES_AS_STRING}"
   fi
 }
