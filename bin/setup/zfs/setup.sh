@@ -248,7 +248,19 @@ DELIM"
       fi
     fi
   fi
+
+  if [[ -f "${PATH_OF_THE_CURRENT_SCRIPT}/switch_to_latest_respository.sh" ]];
+  then
+    if _ask_with_question_and_positiv_answer "Setup switch_to_latest_respository?";
+    then
+      if [[ $IS_DRY_RUN -ne 1 ]];
+      then
+        bash "${PATH_OF_THE_CURRENT_SCRIPT}/switch_to_latest_respository.sh"
+      else
+        echo "bash \"${PATH_OF_THE_CURRENT_SCRIPT}/switch_to_latest_respository.sh\""
+      fi
+    fi
+  fi
 }
 
 _main "${@}"
-
