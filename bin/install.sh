@@ -30,7 +30,7 @@ function _main ()
   PATH_TO_THE_BASH_RC="${HOME}/.bashrc"
   PATH_TO_THE_INPUT_RC="${HOME}/.inputrc"
   PATH_TO_THE_XINIT="${HOME}/.xinitrc"
-  PATH_TO_THIS_SCRIPT=$(cd $(dirname "${0}"); pwd)
+  PATH_TO_THIS_SCRIPT=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 
   PATH_TO_THE_TEMPORARY_XINIT="${PATH_TO_THE_XINIT}.temporary"
   #end of setup

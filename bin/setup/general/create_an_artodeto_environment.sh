@@ -21,9 +21,13 @@ function _step_was_not_done ()
 
 function _main () 
 {
-  local CURRENT_WORKING_DIRECTORY=$(pwd)
-  local FILE_PATH_TO_THE_INSTALLATION_JOURNAL="${HOME}/.config/net_bazzline/setup/journal.txt"
-  local PATH_TO_THIS_SCRIPT=$(cd $(dirname "${0}"); pwd)
+  local CURRENT_WORKING_DIRECTORY
+  local FILE_PATH_TO_THE_INSTALLATION_JOURNAL
+  local PATH_TO_THIS_SCRIPT
+
+  CURRENT_WORKING_DIRECTORY=$(pwd)
+  FILE_PATH_TO_THE_INSTALLATION_JOURNAL="${HOME}/.config/net_bazzline/setup/journal.txt"
+  PATH_TO_THIS_SCRIPT=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 
   if [[ ! -f /usr/bin/pacman ]];
   then

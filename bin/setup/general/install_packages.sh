@@ -216,14 +216,18 @@ function _install_stage_7 ()
 ####
 function _main ()
 {
-  local PATH_TO_THIS_SCRIPT=$(cd $(dirname "$0"); pwd)
-  local STAGE=${1:-}
+  local EXCLUSIVE_STAGE_SELECTED
+  local PATH_TO_THIS_SCRIPT
+  local STAGE
+
+  PATH_TO_THIS_SCRIPT=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
+  STAGE=${1:-}
 
   if [[ ${STAGE} -gt 0 && ${STAGE} -lt 7 ]];
   then
-    local EXCLUSIVE_STAGE_SELECTED=0
+    EXCLUSIVE_STAGE_SELECTED=0
   else
-    local EXCLUSIVE_STAGE_SELECTED=1
+    EXCLUSIVE_STAGE_SELECTED=1
   fi
 
   if [[ ! -f /usr/bin/pacman ]];

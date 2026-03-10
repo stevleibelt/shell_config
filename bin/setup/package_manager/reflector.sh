@@ -9,7 +9,7 @@ function _main()
 {
   #bo: variable
   local PATH_TO_THIS_SCRIPT
-  PATH_TO_THIS_SCRIPT=$(cd $(dirname "$0"); pwd)
+  PATH_TO_THIS_SCRIPT=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
   #eo: variable
 
   #begin of testing if we are on the right system

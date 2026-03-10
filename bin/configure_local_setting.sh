@@ -208,7 +208,7 @@ function _main ()
 
   CURRENT_WORKING_DIRECTORY=$(pwd)
   CURRENT_DATE_TIME=$(date +'%Y%m%d-%H%M%S')
-  PATH_TO_THIS_SCRIPT=$(cd $(dirname "$0"); pwd)
+  PATH_TO_THIS_SCRIPT=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 
   PROJECT_ROOT_PATH="${PATH_TO_THIS_SCRIPT}/.."
 
