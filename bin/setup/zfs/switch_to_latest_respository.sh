@@ -12,11 +12,13 @@ set -e
 
 function _main ()
 {
+  local ARCHZFS_CONF_FILE_PATH
   local CURRENT_DATE_TIME
   local LATEST_REPOSITORY_KEY
   local LATEST_REPOSITORY_URI
   local PACMAN_CONF_FILE_PATH
 
+  ARCHZFS_CONF_FILE_PATH="/etc/pacman.d/archzfs"
   CURRENT_DATE_TIME=$(date +'%Y%m%d_%H%M%S')
   LATEST_REPOSITORY_KEY="3A9917BF0DED5C13F69AC68FABEC0A1208037BE9"
   LATEST_REPOSITORY_URI="https://github.com/archzfs/archzfs/releases/download/experimental"
@@ -24,8 +26,8 @@ function _main ()
 
   if [[ ${EUID} -ne 0 ]];
   then
-    echo ":: Skript must be ran as root"
-    exit 10
+    # Restart script by using sudo if we are not root
+    sudo "${0}" "${@}"
   fi
 
   if [[ ! -f "${PACMAN_CONF_FILE_PATH}" ]];
@@ -34,24 +36,38 @@ function _main ()
     exit 12
   fi
 
-  if ! grep -q "${LATEST_REPOSITORY_URI}" "${PACMAN_CONF_FILE_PATH}";
+  if [[ -f "${ARCHZFS_CONF_FILE_PATH}" ]];
   then
-    cp "${PACMAN_CONF_FILE_PATH}" "${PACMAN_CONF_FILE_PATH}.${CURRENT_DATE_TIME}"
-    echo ":: Created backup ${PACMAN_CONF_FILE_PATH}.${CURRENT_DATE_TIME}"
+    if ! grep -q "${LATEST_REPOSITORY_URI}" "${ARCHZFS_CONF_FILE_PATH}";
+    then
+      cp "${ARCHZFS_CONF_FILE_PATH}" "${ARCHZFS_CONF_FILE_PATH}.${CURRENT_DATE_TIME}"
+      echo ":: Created backup ${ARCHZFS_CONF_FILE_PATH}.${CURRENT_DATE_TIME}"
 
-    # -i:                               Modify file in place
-    # '/[archzfs]/,/^\[/':              Specifies the range for the next section as "all after >>[archzfs]<< and before >>[<< (or end of file)."
-    # '/{ /^Server = [^#]/ s/^/# /; }': Prefix each line starting with >>Server = << with >># << (comment this line out)
-    sed -i '/\[archzfs\]/,/^\[/ { /^Server = [^#]/ s/^/# /; }' "${PACMAN_CONF_FILE_PATH}"
+      cat > "${ARCHZFS_CONF_FILE_PATH}" <<DELIM
+SigLevel = Required
+Server = '"${LATEST_REPOSITORY_URI}"'
+DELIM
+    fi
+  else
+    if ! grep -q "${LATEST_REPOSITORY_URI}" "${PACMAN_CONF_FILE_PATH}";
+    then
+      cp "${PACMAN_CONF_FILE_PATH}" "${PACMAN_CONF_FILE_PATH}.${CURRENT_DATE_TIME}"
+      echo ":: Created backup ${PACMAN_CONF_FILE_PATH}.${CURRENT_DATE_TIME}"
 
-    # -i:                               Modify file in place
-    # '/\[archzfs\]/a\':		Append (>>/a<<) after >>[archzfs]<<
-    sed -i '/\[archzfs\]/a\
-SigLevel = Required\
-Server = '"${LATEST_REPOSITORY_URI}" "${PACMAN_CONF_FILE_PATH}"
+      # -i:                               Modify file in place
+      # '/[archzfs]/,/^\[/':              Specifies the range for the next section as "all after >>[archzfs]<< and before >>[<< (or end of file)."
+      # '/{ /^Server = [^#]/ s/^/# /; }': Prefix each line starting with >>Server = << with >># << (comment this line out)
+      sed -i '/\[archzfs\]/,/^\[/ { /^Server = [^#]/ s/^/# /; }' "${PACMAN_CONF_FILE_PATH}"
 
-    echo ":: Show changes made on ${PACMAN_CONF_FILE_PATH}"
-    diff "${PACMAN_CONF_FILE_PATH}" "${PACMAN_CONF_FILE_PATH}.${CURRENT_DATE_TIME}"
+      # -i:                               Modify file in place
+      # '/\[archzfs\]/a\':		Append (>>/a<<) after >>[archzfs]<<
+      sed -i '/\[archzfs\]/a\
+  SigLevel = Required\
+  Server = '"${LATEST_REPOSITORY_URI}" "${PACMAN_CONF_FILE_PATH}"
+
+      echo ":: Show changes made on ${PACMAN_CONF_FILE_PATH}"
+      diff "${PACMAN_CONF_FILE_PATH}" "${PACMAN_CONF_FILE_PATH}.${CURRENT_DATE_TIME}"
+    fi
   fi
 
   if ! pacman-key -l | grep -q "${LATEST_REPOSITORY_KEY}";
