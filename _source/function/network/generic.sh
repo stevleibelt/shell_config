@@ -23,7 +23,7 @@ function net_bazzline_list_local_ip_address ()
 }
 
 ####
-# @param <string: host_ip_address>
+# @param [<string: host_ip_address>]
 #
 # @see: https://linuxhandbook.com/check-open-ports-linux/
 # @since: 2022-10-18
@@ -31,16 +31,21 @@ function net_bazzline_list_local_ip_address ()
 ####
 function net_bazzline_network_list_open_ports ()
 {
-  if [[ $# -ne 1 ]];
+  local HOST_IP_ADDRESS
+
+  if [[ -z "${1}" ]];
   then
-    net_bazzline_handle_invalid_number_of_arguments_supplied "${FUNCNAME[0]} <string: host_ip_address>"
+    # ss...:    -t: show tcp, -u: show udp, -l: only listing, -n: show numeric
+    # awk...:   Only print the fifth column
+    # sed...:   Throw away all before ":" (the address)
+    # sort...:  Sort natural order
+    # uniq:     Remove duplicates
+    ss -tuln | awk '{print $5}' | sed 's/.*://' | sort -n | uniq
+  else
+    HOST_IP_ADDRESS="${1}"
 
-    return 1
+    nc -z -v "${HOST_IP_ADDRESS}" 1-65535 2>&1 | grep -v 'Connection refused'
   fi
-
-  local HOST_IP_ADDRESS="${1}"
-
-  nc -z -v ${HOST_IP_ADDRESS} 1-65535 2>&1 | grep -v 'Connection refused'
 }
 
 #s
