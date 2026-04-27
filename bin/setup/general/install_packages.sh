@@ -97,7 +97,7 @@ function _install_stage_3 ()
   _install_packages_with_yay keepassxc
   
   echo "   Processing packages with >>l<<"
-  _install_packages_with_yay libcoverart libdiscid libreoffice-fresh librewolf-bin light linux-headers lm_sensors lowdown lshw lutris lxterminal lynis
+  _install_packages_with_yay libcoverart libdiscid libinput libinput-tools libreoffice-fresh librewolf-bin light linux-headers lm_sensors lowdown lshw lutris lxterminal lynis
   
   echo "   Processing packages with >>m<<"
   _install_packages_with_yay make man-db man-pages man2html mesa mplayer mpv mupdf

@@ -11,7 +11,9 @@ arandr
 archiso
 autorandr
 #bat
+bandwhich
 bind
+binsider
 borg
 bottom
 #btop
@@ -62,6 +64,8 @@ jq
 keepassxc
 libcoverart
 libdiscid
+libinput
+libinput-tools
 libreoffice-fresh
 libreplaygain
 light
