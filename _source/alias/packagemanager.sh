@@ -15,6 +15,10 @@ fi
 
 #@todo: validate against https://wiki.archlinux.org/index.php/Pacman/Rosetta
 PACKAGES_TO_IGNORE="linux,linux-headers,zfs-linux,linux-lts,linux-lts-headers,zfs-linux-lts,zfs-utils,zfs-dkms"
+if [[ "${#NET_BAZZLINE_PACKAGES_TO_IGNORE}" -gt 0 ]];
+then
+  PACKAGES_TO_IGNORE="${PACKAGES_TO_IGNORE},${NET_BAZZLINE_PACKAGES_TO_IGNORE}"
+fi
 
 if [[ ${NET_BAZZLINE_PACKAGE_MANAGER} = 'paru' ]];
 then

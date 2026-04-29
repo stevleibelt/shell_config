@@ -101,6 +101,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added
 
+* Added support for `NET_BAZZLINE_PACKAGES_TO_IGNORE=` in `local.setting`
 * Added creation of local `inputrc` file in [install.sh](bin/install.sh)
 * Added alias `cpLastestFile`
 * Added `rustup update` for `software-update` on pacman based systems
