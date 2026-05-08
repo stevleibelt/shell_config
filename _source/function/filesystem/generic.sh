@@ -298,23 +298,50 @@ function net_bazzline_list_inodes ()
 # [@param <int: sort_order=0|1>, default is 0] - 0: earliest first, 1: latest first
 # [@param <int: number_of_listed_files>, default is 20]
 ####
+function net_bazzline_filesystem_list_directories_by_modification_time ()
+{
+  net_bazzline_filesystem_list_types_by_modification_time "d" ${1} ${2}
+}
+
+####
+# [@param <int: sort_order=0|1>, default is 0] - 0: earliest first, 1: latest first
+# [@param <int: number_of_listed_files>, default is 20]
+####
 function net_bazzline_filesystem_list_files_by_modification_time ()
 {
-  local NUMBER_OF_LISTED_FILES
-  local SORT_COMMAND
+  net_bazzline_filesystem_list_types_by_modification_time "f" ${1} ${2}
+}
 
-  if [[ -z ${2} ]];
+####
+# [@param <string: type, default is empty] - b, c, d, p, f, l, s
+# [@param <int: sort_order=0|1>, default is 0] - 0: earliest first, 1: latest first
+# [@param <int: number_of_listed_files>, default is 20]
+####
+function net_bazzline_filesystem_list_types_by_modification_time ()
+{
+  local NUMBER_OF_LISTED_ENTRIES
+  local SORT_COMMAND
+  local TYPE_ARGUMENT
+
+  if [[ -z ${3} ]];
   then
-    NUMBER_OF_LISTED_FILES=20
+    NUMBER_OF_LISTED_ENTRIES=20
   else
-    NUMBER_OF_LISTED_FILES=${2}
+    NUMBER_OF_LISTED_ENTRIES=${3}
   fi
 
-  if [[ ! -z ${1} ]] && [[ ${1} -eq 0 ]];
+  if [[ ! -z ${2} ]] && [[ ${2} -eq 0 ]];
   then
     SORT_COMMAND="sort -n"
   else
     SORT_COMMAND="sort -n -r"
+  fi
+
+  if [[ -z ${1} ]];
+  then
+    TYPE_ARGUMENT=""
+  else
+    TYPE_ARGUMENT=" -type ${1}"
   fi
 
   # ls has no build in filter to only list files
@@ -334,8 +361,10 @@ function net_bazzline_filesystem_list_files_by_modification_time ()
   #   sub(/^ ...) : remove empty space in beginning of the string
   #   sub(/^\...) : remove "./" from the beginning of the string
   #   print       : print string
-  find . -maxdepth 1 -type f -exec stat --format='%Y %n' {} + | ${SORT_COMMAND} | head -n ${NUMBER_OF_LISTED_FILES} | awk '{$1=""; sub(/^ +/, ""); sub(/^\.\//, ""); print}'
+  find . -maxdepth 1${TYPE_ARGUMENT} -exec stat --format='%Y %n' {} + | ${SORT_COMMAND} | head -n ${NUMBER_OF_LISTED_ENTRIES} | awk '{$1=""; sub(/^ +/, ""); sub(/^\.\//, ""); print}'
 }
+
+
 
 ####
 # [@param <int: number_of_listed_files>, default is 20]
