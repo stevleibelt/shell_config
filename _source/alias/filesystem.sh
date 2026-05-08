@@ -3,7 +3,7 @@
 #c
 alias catLatestFile='cat "$(listLatestFile)"'
 alias cdToCurrentUserGvfs='cd /run/user/${UID}/gvfs'
-alias cdToLatestDirectory='cd $(listLatest)'
+alias cdToLatestDirectory=net_bazzline_cd_into_latest_directory
 alias createSha512sumFromFile=net_bazzline_filesystem_create_sha512sum_from_file
 alias cpLatestFile='net_bazzline_filesystem_copy_paste_latest_file'
 

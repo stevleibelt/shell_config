@@ -1,4 +1,15 @@
 #!/bin/bash
+function net_bazzline_cd_into_latest_directory ()
+{
+  DIRECTORY_NAME=$(net_bazzline_filesystem_list_directories_by_modification_time 1 1)
+
+  if [[ -z "${DIRECTORY_NAME}" ]];
+  then
+    echo ":: Error, no directory available to change into into"
+  else
+    cd "${DIRECTORY_NAME}" || { echo ":: Error, can not change into ${DIRECTORY_NAME}"; exit 1; }
+  fi
+}
 
 ####
 # [@param string $FILE_NAME_PATTERN=*converted*]
@@ -300,7 +311,7 @@ function net_bazzline_list_inodes ()
 ####
 function net_bazzline_filesystem_list_directories_by_modification_time ()
 {
-  net_bazzline_filesystem_list_types_by_modification_time "d" ${1} ${2}
+  net_bazzline_filesystem_list_types_by_modification_time "d" "${@}"
 }
 
 ####
@@ -309,7 +320,7 @@ function net_bazzline_filesystem_list_directories_by_modification_time ()
 ####
 function net_bazzline_filesystem_list_files_by_modification_time ()
 {
-  net_bazzline_filesystem_list_types_by_modification_time "f" ${1} ${2}
+  net_bazzline_filesystem_list_types_by_modification_time "f" "${@}"
 }
 
 ####
