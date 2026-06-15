@@ -62,6 +62,7 @@ function net_bazzline_packagemanager_arch_linux_software_upgrade ()
   PACMAN_LOCK_FILE_PATH='/var/lib/pacman/db.lck'
   POWER_STATUS=1
   POWER_STATUS_FILE_PATH='/sys/class/power_supply/AC/online'
+  SYSTEMD_LOGIND_LID_CONF_DIRECTORY_PATH='/etc/systemd/logind.conf.d'
   SYSTEMD_LOGIND_LID_CONF_FILE_PATH='/etc/systemd/logind.conf.d/999_disable_led_suspend'
   UPGRADE_SCRIPT_FILE_PATH="/tmp/net_bazzline_system_upgrade.sh"
   ZFS_SNAPSHOT_NAME='net_bazzline_before_system_upgrade'
@@ -134,7 +135,9 @@ function net_bazzline_packagemanager_arch_linux_software_upgrade ()
   #bo: disable logind lid closed behavior
   if [[ "${NET_BAZZLINE_SYSTEMD_IS_AVAILABLE}" -eq 1 ]];
   then
-    sudo bash -c "cat <<DELIM > ${SYSTEMD_LOGIND_LID_CONF_FILE_PATH}
+    sudo mkdir -c "${SYSTEMD_LOGIND_LID_CONF_DIRECTORY_PATH}"
+
+    sudo bash -c "cat > ${SYSTEMD_LOGIND_LID_CONF_FILE_PATH} <<DELIM
 HandleLidSwitch=ignore
 HandleLidSwitchExternalPower=ignore
 HandleLidSwitchDocked=ignore

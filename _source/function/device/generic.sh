@@ -8,7 +8,9 @@
 ####
 function net_bazzline_device_disable_lid_suspend ()
 {
-  sudo bash -c 'cat <<DELIM > /etc/systemd/logind.conf.d/999_disable_led_switch.conf
+  sudo /usr/bin/mkdir -p "/etc/systemd/logind.conf.d"
+
+  sudo bash -c 'cat > /etc/systemd/logind.conf.d/999_disable_led_switch.conf<<DELIM
 HandleLidSwitch=ignore
 HandleLidSwitchExternalPower=ignore
 HandleLidSwitchDocked=ignore
