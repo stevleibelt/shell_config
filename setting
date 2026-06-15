@@ -60,6 +60,8 @@ NET_BAZZLINE_INTERFACES=()
 NET_BAZZLINE_NUMBER_OF_CPU_CORES=$(grep ^cpu\\scores /proc/cpuinfo | uniq |  awk '{print $4}')
 #allowed are [apk, apt, none, pacman, pacget]
 NET_BAZZLINE_PACKAGE_MANAGER='none'
+#separate package names with `,`
+NET_BAZZLINE_PACKAGES_TO_IGNORE=
 #either write statistics of function usage or not
 #1 turns it on, all other values disables it
 NET_BAZZLINE_RECORD_FUNCTION_USAGE=0
