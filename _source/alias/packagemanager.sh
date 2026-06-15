@@ -6,6 +6,8 @@
 # @since 2021-01-19
 ####
 
+declare -a _ARCH_LINUX_PACKAGE_MANAGER_LIST=("pacman" "paru" "yay");
+
 if [[ ${NET_BAZZLINE_PACKAGE_MANAGER} = 'apt' ]];
 then
     alias cal='ncal -w3 -m'
@@ -15,6 +17,13 @@ fi
 
 #@todo: validate against https://wiki.archlinux.org/index.php/Pacman/Rosetta
 PACKAGES_TO_IGNORE="linux,linux-headers,zfs-linux,linux-lts,linux-lts-headers,zfs-linux-lts,zfs-utils,zfs-dkms"
+
+if [[ "${_ARCH_LINUX_PACKAGE_MANAGER_LIST[*]}" =~ ${NET_BAZZLINE_PACKAGE_MANAGER} ]];
+then
+  echo "Arch package manager baby"
+else
+  echo "No arch :/"
+fi
 
 if [[ ${NET_BAZZLINE_PACKAGE_MANAGER} = 'paru' ]];
 then
