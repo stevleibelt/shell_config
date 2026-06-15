@@ -315,8 +315,13 @@ function _main ()
   then
     _do_cleanup
     ${SEND_NOTIFY} "Cleanup done"
-    _do_fwupdmgr
-    ${SEND_NOTIFY} "Firmware update done"
+    if [[ -f /usr/lib/fwupd ]];
+    then
+      _do_fwupdmgr
+      ${SEND_NOTIFY} "Firmware update done"
+    else
+      ${SEND_NOTIFY} "Please install fwupd"
+    fi
     ${SEND_NOTIFY} "Upgrading done"
     _show_waiting_message
   else
