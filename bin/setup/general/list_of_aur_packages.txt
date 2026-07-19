@@ -6,6 +6,7 @@ ctop
 cyanrip
 ddev-bin
 dive
+drain-rs-bin
 jetbrains-toolbox
 librewolf-bin
 localsend-bin
