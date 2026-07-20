@@ -181,3 +181,4 @@ gcompris-qt
 kanagram
 khangman
 s-tui
+vfim
