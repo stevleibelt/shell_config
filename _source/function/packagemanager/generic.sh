@@ -135,7 +135,7 @@ function net_bazzline_packagemanager_arch_linux_software_upgrade ()
   #bo: disable logind lid closed behavior
   if [[ "${NET_BAZZLINE_SYSTEMD_IS_AVAILABLE}" -eq 1 ]];
   then
-    sudo mkdir -c "${SYSTEMD_LOGIND_LID_CONF_DIRECTORY_PATH}"
+    sudo mkdir -p "${SYSTEMD_LOGIND_LID_CONF_DIRECTORY_PATH}"
 
     sudo bash -c "cat > ${SYSTEMD_LOGIND_LID_CONF_FILE_PATH} <<DELIM
 HandleLidSwitch=ignore
