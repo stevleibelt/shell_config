@@ -1,4 +1,4 @@
-#base
+# core packages
 +git
 +base-devel
 +acpi
@@ -11,7 +11,7 @@
 +archiso
 +autorandr
 #bat
-+bandwhich
+-bandwhich
 +bind
 +binsider
 +borg
@@ -21,10 +21,10 @@
 +catdoc
 +cppcheck
 +chromium
-+clamav
-+clang
+-clamav
+-clang
 +composer
-+curlie
+-curlie
 +dbeaver
 +docker
 +docker-compose
@@ -54,7 +54,7 @@
 +hdparm
 +heroic
 +htop
-+httpie
+-httpie
 +hwinfo
 +inetutils
 +i3-wm
@@ -71,7 +71,7 @@
 +light
 +linux-headers
 +lm_sensors
-+lowdown
+-lowdown
 +lshw
 +lsof
 +lutris
@@ -95,7 +95,7 @@
 +ntfs-3g
 +okular
 +openssh
-+openvpn
+-openvpn
 +parallel
 +pavucontrol-qt
 +picard
@@ -159,11 +159,12 @@
 +xterm
 +yamllint
 +yubikey-manager
+# games
 +widelands
 +wesnoth
 +cataclysm-dda
-0ad
-0ad-data
++0ad
++0ad-data
 +openttd
 +kollision
 +hedgewars
