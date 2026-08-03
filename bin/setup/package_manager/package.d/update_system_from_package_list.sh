@@ -1,6 +1,6 @@
 #!/bin/bash
 ####
-# @since 2026-08-02
+# @since 2026-08-03
 # @author stev leibelt <artodeto@bazzline.net>
 ####
 # cat > my_package_file.txt <<DELIM
@@ -10,6 +10,9 @@
 # # +my_ensured_installed_package
 # # -my_ensured_not_installed_package
 # DELIM
+####
+# TODO
+#   Add support for +? or -? to indicate "ask for action | is optional"
 #
 ####
 
@@ -44,6 +47,14 @@ function _main()
       echo "   Sorry dude, I can only install things on a arch linux."
 
       return 10
+  fi
+
+  if [[ ! -f /usr/bin/pactree ]];
+  then
+    echo ":: Mandatory package missing."
+    echo "   Installing >>pactree<<..."
+
+    sudo pacman -R pacman-contrib
   fi
 
   if [[ ! -f "${FILE_PATH}" ]];
@@ -81,14 +92,19 @@ function _main()
     echo ":: Ensuring following packages are installed."
     printf "   %s\n" "${PACKAGE_ARRAY_TO_KEEP[@]}"
 
-    ${PACKAGE_MANAGER} -S --needed "${PACKAGE_ARRAY_TO_KEEP[@]}"
+    ${PACKAGE_MANAGER} -S --noconfirm --needed "${PACKAGE_ARRAY_TO_KEEP[@]}"
   fi
 
   for CURRENT_PACKAGE in "${PACKAGE_ARRAY_TO_REMOVE[@]}";
   do
     if pacman -Qi "${CURRENT_PACKAGE}" &>/dev/null;
     then
-      INSTALLED_PACKAGE_ARRAY_TO_REMOVE+=("${CURRENT_PACKAGE}")
+      if pactree -r "${CURRENT_PACKAGE}" > /dev/null 2>&1;
+      then
+        echo ":: Skipping package >>${CURRENT_PACKAGE}<<, other packages are depending on it."
+      else
+        INSTALLED_PACKAGE_ARRAY_TO_REMOVE+=("${CURRENT_PACKAGE}")
+      fi
     fi
   done
 
