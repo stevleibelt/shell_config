@@ -53,6 +53,14 @@ function _main ()
   else
     bash "${THIS_SCRIPT_PATH}/paru.sh" "${SCRIPT_ARGUMENTS}"
   fi
+
+  read -p ">  Ensure mandatory packages are installed? [Y/n] " -r
+
+  if [[ ${REPLY} =~ ^[Yy]$ ]];
+  then
+    bash "${THIS_SCRIPT_PATH}/package.d/update_system_from_package_list.sh" "list_of_archlinux_packages.txt"
+    bash "${THIS_SCRIPT_PATH}/package.d/update_system_from_package_list.sh" "list_of_aur_packages.txt"
+  fi
 }
 
 _main "${@}"
