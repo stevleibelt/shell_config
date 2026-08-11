@@ -5,9 +5,9 @@ function net_bazzline_cd_into_latest_directory ()
 
   if [[ -z "${DIRECTORY_NAME}" ]];
   then
-    echo ":: Error, no directory available to change into into"
+    echo ":: Error, no directory available to change into into" >&2
   else
-    cd "${DIRECTORY_NAME}" || { echo ":: Error, can not change into ${DIRECTORY_NAME}"; exit 1; }
+    cd "${DIRECTORY_NAME}" || { echo ":: Error, can not change into ${DIRECTORY_NAME}" >&2; exit 1; }
   fi
 }
 
