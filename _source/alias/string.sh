@@ -6,6 +6,7 @@
 ####
 
 # c
+alias createRandomAlphaString=net_bazzline_string_create_random_alpha_string
 alias createRandomAlphanumericString=net_bazzline_string_create_random_alphanumeric_string
 alias createRandomAlphanumericLowercaseString=net_bazzline_string_create_random_alphanumeric_lowercase_string
 
