@@ -67,7 +67,7 @@ function net_bazzline_packagemanager_arch_linux_software_upgrade ()
   UPGRADE_SCRIPT_FILE_PATH="/tmp/net_bazzline_system_upgrade.sh"
   ZFS_SNAPSHOT_NAME='net_bazzline_before_system_upgrade'
 
-  SEND_NOTIFY="# "
+  SEND_NOTIFY="echo"
   if [[ -f /usr/bin/notify-send ]];
   then
     # xset q prints status information for current user
