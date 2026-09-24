@@ -38,13 +38,13 @@ function net_bazzline_backup_to ()
 ####
 function net_bazzline_batch_directory_path_to_lower ()
 {
-    local MAX_DEPTH
-    local SEARCH_PATH
+  local MAX_DEPTH
+  local SEARCH_PATH
 
-    MAX_DEPTH=${1:-1}
-    SEARCH_PATH="${2:-.}"
+  MAX_DEPTH=${1:-1}
+  SEARCH_PATH="${2:-.}"
 
-    net_bazzline_batch_filesystem_path_to_lower "${MAX_DEPTH}" "${SEARCH_PATH}" "d"
+  net_bazzline_batch_filesystem_path_to_lower "${MAX_DEPTH}" "${SEARCH_PATH}" "d"
 }
 
 ####
@@ -976,26 +976,32 @@ function net_bazzline_execute_as_super_user_when_not_beeing_root ()
 ####
 function net_bazzline_filesystem_path_to_lower ()
 {
-    if [[ $# -lt 1 ]];
-    then
-        net_bazzline_handle_invalid_number_of_arguments_supplied "${FUNCNAME[0]} <file path>"
+  local FILE_PATH
+  local FILE_PATH_CLEANED
+  local FILE_PATH_URL_DECODED
 
-        return 1
-    fi
+  if [[ $# -lt 1 ]];
+  then
+    net_bazzline_handle_invalid_number_of_arguments_supplied "${FUNCNAME[0]} <file path>"
 
-    FILE_PATH="${1}"
+    return 1
+  fi
 
-    #rename 'y/A-Z/a-z/' *
-    #@see:
-    #   https://stackoverflow.com/questions/23816264/remove-all-special-characters-and-case-from-string-in-bash#23816607
-    #   https://stackoverflow.com/a/15347915
-    #   https://www.linuxquestions.org/questions/programming-9/bash-replace-all-spaces-in-file-folder-names-635821/
-    FILE_PATH_CLEANED=$(echo "${FILE_PATH}" | tr -c '[:graph:]\n\r' '_' | tr '\?|!|&' '_' | tr -d '(|)|#|[|]|:|;' | tr -d "'" | tr '[:upper:]' '[:lower:]');
+  FILE_PATH="${1}"
 
-    if [[ "${FILE_PATH}" != "${FILE_PATH_CLEANED}" ]];
-    then
-        mv "${FILE_PATH}" "${FILE_PATH_CLEANED}"
-    fi
+  #rename 'y/A-Z/a-z/' *
+  #@see:
+  #   https://stackoverflow.com/questions/23816264/remove-all-special-characters-and-case-from-string-in-bash#23816607
+  #   https://stackoverflow.com/a/15347915
+  #   https://www.linuxquestions.org/questions/programming-9/bash-replace-all-spaces-in-file-folder-names-635821/
+  FILE_PATH_CLEANED=$(echo "${FILE_PATH}" | tr -c '[:graph:]\n\r' '_' | tr '\?|!|&' '_' | tr -d '(|)|#|[|]|:|;' | tr -d "'" | tr '[:upper:]' '[:lower:]');
+
+  FILE_PATH_URL_DECODED=$(net_bazzline_string_url_decode "${FILE_PATH_CLEANED}")
+
+  if [[ "${FILE_PATH}" != "${FILE_PATH_URL_DECODED}" ]];
+  then
+    mv "${FILE_PATH}" "${FILE_PATH_URL_DECODED}"
+  fi
 }
 
 ####
