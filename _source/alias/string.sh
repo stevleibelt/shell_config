@@ -25,3 +25,6 @@ then
   alias decodeBase64Jwt=net_bazzline_string_jq_decode_base64_jwt_token
 fi
 
+# u
+alias urlDecode=net_bazzline_string_url_decode
+

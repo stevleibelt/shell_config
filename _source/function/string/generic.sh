@@ -45,3 +45,58 @@ function net_bazzline_string_trim ()
   net_bazzline_string_left_trim | net_bazzline_string_right_trim
 }
 
+function net_bazzline_string_url_decode ()
+{
+    local CHAR
+    local DECODED
+    local HEX
+    local INPUT
+    local ITERATOR
+    local OUTPUT
+
+    INPUT="${1}"
+    DECODED=""
+    OUTPUT=""
+
+    # URL-decode percent-encoded bytes
+    for ((ITERATOR = 0; ITERATOR < ${#INPUT}; ITERATOR++)); do
+      CHAR="${INPUT:ITERATOR:1}"
+
+      if [[ $CHAR == '%' && ${#INPUT} -ge $((ITERATOR + 3)) ]];
+      then
+        HEX=${INPUT:ITERATOR+1:2}
+
+          if [[ $HEX =~ ^[0-9A-Fa-f]{2}$ ]]; then
+            # "\\x${HEX}": Creates a hex string
+            # '%b': Interpret backslash escaped
+            # -v CHAR: Store the result in variable CHAR and do not print it
+            printf -v CHAR '%b' "\\x$HEX"
+            ((ITERATOR += 2))
+          fi
+      fi
+
+      DECODED+=$CHAR
+  done
+
+  # Convert to lowercase and build the slug
+  DECODED=${DECODED,,}
+
+  for ((ITERATOR = 0; ITERATOR < ${#DECODED}; ITERATOR++));
+  do
+    CHAR=${DECODED:ITERATOR:1}
+
+    if [[ $CHAR =~ [a-z0-9] ]];
+    then
+      OUTPUT+=$CHAR
+    else
+      # Avoid repeated underscores
+      [[ $OUTPUT && ${OUTPUT: -1} != "_" ]] && OUTPUT+="_"
+    fi
+  done
+
+  # Remove a trailing underscore
+  OUTPUT=${OUTPUT%_}
+
+  printf '%s\n' "$OUTPUT"
+}
+
