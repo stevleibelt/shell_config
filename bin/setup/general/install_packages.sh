@@ -48,6 +48,8 @@ function _install_stage_2 ()
 
 function _install_stage_3 ()
 {
+  echo ":: Do not use this, use package_manager/package.d/update_system_from_package_list.sh instead!"
+  return
   #stage 3
   #use >>pacman -Qe<< to get a list of installed packages
   echo ":: Installing software"
@@ -61,7 +63,7 @@ function _install_stage_3 ()
   _install_packages_with_yay calc catdoc cppcheck check-broken-packages-pacman-hook-git chromium clamav clang composer curlie cyanrip
 
   echo "   Processing packages with >>d<<"
-  _install_packages_with_yay dbeaver ddev-bin dmenu dunst
+  _install_packages_with_yay dbeaver ddev-bin dmenu dunst drain-rs-bin
   
   echo "   Processing packages with >>e<<"
   _install_packages_with_yay element-desktop exfatprogs exfat-utils
@@ -84,7 +86,7 @@ function _install_stage_3 ()
   _install_packages_with_yay gcc gcc-libs geeqie geany gimp git gnome-terminal gparted glibc gvfs gvfs-mtb gvfs-smb
   
   echo "   Processing packages with >>h<<"
-  _install_packages_with_yay hdparm htop httpie hwinfo
+  _install_packages_with_yay hdparm htop httpie hwinfo hw-monitor
   
   echo "   Processing packages with >>i<<"
   # perl-anyevent-i3 is needed for i3-save-tree

@@ -6,6 +6,7 @@
 #ddev-bin
 +dive
 +drain-rs-bin
++hw-monitor
 +jetbrains-toolbox
 # alternative to ranger
 +joshuto-bin
