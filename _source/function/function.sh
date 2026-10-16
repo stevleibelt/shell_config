@@ -1006,7 +1006,11 @@ function net_bazzline_filesystem_path_to_lower ()
       # With this, we replace the last "_" with a "."
       FILE_PATH_URL_DECODED="${FILE_PATH_URL_DECODED%_*}.${FILE_PATH_URL_DECODED##*_}"
     fi
-    mv -- "${FILE_PATH}" "${FILE_PATH_URL_DECODED}"
+
+    if [[ "${FILE_PATH}" != "${FILE_PATH_URL_DECODED}" ]];
+    then
+      mv -- "${FILE_PATH}" "${FILE_PATH_URL_DECODED}"
+    fi
   fi
 }
 
